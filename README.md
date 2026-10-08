@@ -1,30 +1,35 @@
-# ATCON Home scroll story hero — design reference
+# ATCON Home — scroll story hero
 
-This is a design mockup created in a visual design tool, exported as a
-standalone page. Treat it as a REFERENCE MOCKUP, not production code:
-the markup and inline styles carry the design's precise values — colors,
-font sizes, spacing, radii, shadows, layout — which an implementation
-should replicate faithfully in its own components and styling system
-rather than copy wholesale.
+Static site, no build step. Everything served lives in `public/`:
 
-## Contents
+- `index.html` — the page
+- `atcon-ds.css` — ATCON design-system styles
+- `assets/` — videos, images and logo
+- `support.js`, `vendor/` — the runtime that renders the page
+- `_headers` — Cloudflare caching and security headers
 
-- `Main.dc.html` — the artboard (a Design Component: an `<x-dc>`
-  template + a small logic class). The values to replicate live in its
-  inline `style="…"` attributes and the `<helmet><style>` block.
-- `atcon-ds.css` — referenced resource
-- `assets/` — files uploaded to the design (images, fonts, media)
-- `support.js`, `vendor/react*.js` — the runtime that renders the
-  component in a browser; not part of the design.
+## Run locally
 
-## Uploaded files
+```
+python -m http.server 8765 --directory public
+```
 
-Images, fonts and media uploaded to the design are written once each under
-`assets/` — 7 in this export — and the exported files refer to them there. A
-reference a script puts together while the page runs (for example
-`"/_blob/" + id`) is not rewritten and does not load from this folder.
+Then open http://localhost:8765.
 
-## Viewing
+## Deploy to Cloudflare
 
-Serve the folder (e.g. `python3 -m http.server`) and open `Main.dc.html`;
-some browsers block the scripts over file://.
+**Option A — connect GitHub (deploys on every push)**
+
+1. Cloudflare dashboard → Workers & Pages → Create → Import a repository.
+2. Pick `sanskaratcon/atcon-films`.
+3. Leave the build command empty. Cloudflare reads `wrangler.jsonc` and serves `public/`.
+
+If you create it as a **Pages** project instead, set the build command to
+empty and the build output directory to `public`.
+
+**Option B — deploy from your computer**
+
+```
+npx wrangler login
+npx wrangler deploy
+```

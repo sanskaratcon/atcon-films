@@ -1,0 +1,9 @@
+// Cloudflare Workers config: serves the static site in ./public.
+// No build step. Deploy with `npx wrangler deploy` or by connecting the GitHub repo.
+{
+  "name": "atcon-films",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public"
+  }
+}
