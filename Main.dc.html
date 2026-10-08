@@ -1,0 +1,1604 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ATCON GLOBAL</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./atcon-ds.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#001025}
+a{color:#FFFFFF}a:hover{color:#E6ECF4}
+
+/* Page layout only. Tokens, type, buttons, menu and reveal helpers come from atcon-ds.css */
+.atc{position:relative;background:var(--atc-navy);color:var(--fg);font-family:var(--atc-font);overflow-x:clip;-webkit-font-smoothing:antialiased;
+  --lx:var(--rail);--ty:var(--rail);--rx:var(--right-x);--by:var(--line-y);--rt:var(--rail);--rh:calc(var(--line-y) - var(--rail))}
+.atc *{box-sizing:border-box}
+.atc-track{position:relative}
+.atc-stage{position:sticky;top:0;z-index:2;height:100vh;height:100svh;width:100%;overflow:hidden}
+
+.atc-layer{position:absolute;inset:0;will-change:opacity,transform}
+.atc-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:var(--atc-navy)}
+.atc-l4,.atc-l3{opacity:0}
+.atc-white{position:absolute;inset:0;z-index:1;background:#FFFFFF;opacity:0;pointer-events:none}
+
+/* Scene overlays, each tuned to the light of the frame under its text */
+.atc-ovs{position:absolute;inset:0;pointer-events:none;z-index:2}
+.atc-ov{position:absolute;inset:0;opacity:0;will-change:opacity}
+.atc-ov-0{opacity:1;
+  background:
+   linear-gradient(90deg,rgba(36,52,86,.8) 0%,rgba(42,60,96,.56) 32%,rgba(52,72,110,.14) 60%,rgba(52,72,110,0) 80%),
+   linear-gradient(180deg,rgba(40,56,90,.42) 0%,rgba(40,56,90,0) 22%),
+   linear-gradient(0deg,rgba(30,44,74,.5) 0%,rgba(30,44,74,0) 36%),
+   rgba(70,90,126,.30)}
+.atc-ov-1{background:
+   linear-gradient(90deg,rgba(245,243,238,.92) 0%,rgba(245,243,238,.72) 30%,rgba(245,243,238,.16) 58%,rgba(245,243,238,0) 74%),
+   linear-gradient(0deg,rgba(242,240,235,.6) 0%,rgba(242,240,235,0) 40%),
+   linear-gradient(180deg,rgba(245,243,238,.5) 0%,rgba(245,243,238,0) 20%)}
+
+/* Frame lines: positions are driven per frame (hero, framed, focus) */
+.atc-frame{position:fixed;inset:0;z-index:4;pointer-events:none}
+.atc-lines{position:absolute;inset:0;pointer-events:none;transition:opacity .7s var(--ease-io)}
+.atc[data-menu="open"] .atc-lines,.atc[data-menu="open"] .atc-prog{opacity:0}
+.atc-ln{position:absolute;background:var(--line);transition:background-color var(--dur-theme) ease}
+.atc-ln-rail{left:var(--lx);top:0;bottom:0;width:1px}
+.atc-ln-top{left:0;right:0;top:var(--ty);height:1px}
+.atc-ln-mid{left:0;right:0;top:var(--by);height:1px}
+.atc-ln-right{left:var(--rx);top:var(--rt);height:var(--rh);width:1px}
+.atc-star{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;color:var(--fg);transition:color var(--dur-theme) ease}
+.atc-star svg{display:block;width:100%;height:100%}
+.atc-star-l{left:calc(var(--lx) + .5px);top:var(--by)}
+.atc-star-r{left:calc(var(--rx) + .5px);top:var(--by)}
+
+.atc-prog{position:absolute;left:var(--lx);top:var(--ty);bottom:0;width:1px;pointer-events:none;transition:opacity .7s var(--ease-io)}
+.atc-prog-fill{position:absolute;left:-.5px;top:0;width:2px;height:100%;background:var(--prog);transform-origin:top;transform:scaleY(0);transition:background-color var(--dur-theme) ease}
+.atc-prog-head{position:absolute;left:-3.5px;top:0;width:8px;height:8px;border-radius:50%;background:var(--head);box-shadow:0 0 12px rgba(255,255,255,.55);transform:translateY(-4px);transition:background-color var(--dur-theme) ease}
+.atc[data-theme="light"] .atc-prog-head{box-shadow:none}
+
+.atc-chrome{position:fixed;inset:0;z-index:20;pointer-events:none}
+.atc-chrome a,.atc-chrome button{pointer-events:auto}
+.atc-logo{position:absolute;left:0;top:0;width:var(--rail);height:var(--rail);display:flex;align-items:center;justify-content:center;color:var(--fg);transition:color var(--dur-theme) ease}
+.atc-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
+.atc-burger{position:absolute;left:0;top:var(--rail);width:var(--rail);height:var(--rail)}
+.atc-contact{position:absolute;top:calc((var(--rail) - 44px) / 2);right:var(--gutter)}
+.atc[data-menu="open"] .atc-chrome{--fg:#FFFFFF;--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
+.atc .atc-nav{position:fixed;z-index:19}
+
+.atc-ch{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;visibility:hidden}
+.atc-ch a{pointer-events:auto}
+.atc-ch-0{opacity:1;visibility:visible}
+.atc-in{position:absolute;inset:0;will-change:transform}
+.atc-hero-in{opacity:0;transform:translateY(28px);transition:opacity var(--dur-reveal) var(--ease-out) .2s,transform var(--dur-reveal) var(--ease-out) .2s}
+.atc.is-ready .atc-hero-in{opacity:1;transform:none}
+
+.atc-block{position:absolute;left:var(--content-x);right:calc(100% - var(--right-x) + var(--gutter));bottom:calc(100% - var(--line-y) + 7%);display:flex;flex-direction:column;align-items:flex-start}
+.atc-hero-block{gap:var(--sp-6)}
+.atc-line{display:block;white-space:nowrap}
+.atc-hero-lede{max-width:min(23vw,30em);opacity:.92}
+.atc-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-2)}
+.atc-title{white-space:pre-line}
+
+/* Problem sections: copy on the left (top, bottom, top), graphic on the right */
+/* Problem list: an editorial column of hairline-divided rows, number on the right.
+   No boxes, no shadows; the current row is in full colour, earlier rows step back. */
+/* The list is wide enough for the longest line at the same size as the lines after the statement */
+.atc{--stack-w:min(44vw,calc(var(--fs-h2) * 17.6 + 76px))}
+.atc-stack{position:absolute;z-index:5;left:var(--content-x);width:var(--stack-w);top:var(--rail);bottom:3vh;padding-top:clamp(40px,9vh,112px);box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;visibility:hidden}
+/* Earlier points fold to their title as the next one arrives, leaving room around the list */
+.atc-card-acc{grid-column:1;grid-row:2;display:grid;grid-template-rows:1fr;transition:grid-template-rows .7s var(--ease-out),opacity .45s ease}
+.atc-card-acc-in{min-height:0;overflow:hidden;padding-top:clamp(6px,1vh,12px)}
+.atc-card:not(.is-open) .atc-card-acc{grid-template-rows:0fr;opacity:0}
+.atc-card{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(24px,3vw,56px);row-gap:0;padding:clamp(20px,4vh,46px) 0;border-top:1px solid rgba(0,16,37,.09);opacity:0;will-change:opacity,transform;transition:border-color .6s ease}
+.atc .atc-card:first-child{border-top-color:transparent}
+.atc-card-side{grid-column:2;grid-row:1;align-self:start;display:flex;align-items:center;gap:14px}
+/* Folded points can be opened again: a quiet plus that turns into a minus */
+.atc-card-tog{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;margin:-6px -4px -6px 0;padding:0;border:0;border-radius:6px;background:none;color:var(--atc-mute);cursor:pointer;
+  opacity:0;pointer-events:none;transition:opacity .4s ease,color .25s ease}
+.atc-card-tog svg{width:14px;height:14px;display:block;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.atc-card-tog .tog-v{transform-origin:8px 8px;transition:transform .4s var(--ease-out)}
+.atc-card-tog:hover,.atc-card-tog:focus-visible{color:var(--atc-navy);outline:none}
+.atc-card.is-in .atc-card-tog{opacity:1;pointer-events:auto}
+.atc-card.is-active .atc-card-tog{color:var(--atc-slate)}
+.atc-card.is-open .atc-card-tog .tog-v{transform:scaleY(0)}
+.atc .atc-card-title{grid-column:1;grid-row:1;display:flex;flex-direction:column}
+.atc .atc-card-body{margin:0;color:var(--atc-slate);max-width:30em;transition:color .6s ease}
+.atc-card-num{font-family:var(--atc-font);font-size:clamp(14px,1vw,17px);font-weight:500;letter-spacing:.02em;line-height:1.4;color:var(--atc-navy);font-variant-numeric:tabular-nums;transition:color .6s ease}
+.atc .atc-card-title .ds-rise{transition:color .6s ease}
+.atc .atc-card-lead{color:var(--fg-soft)}
+.atc-card.is-active:not(:first-child){border-top-color:rgba(0,16,37,.2)}
+.atc .atc-card.is-past .atc-card-title .ds-rise,.atc .atc-card.is-past .atc-card-body,.atc-card.is-past .atc-card-num{color:#B3BAC5}
+/* Side graphics start clear of the list */
+.atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
+/* "What actually happens" heads the list */
+.atc-wah{margin:0 0 clamp(12px,2.4vh,32px);will-change:transform}
+/* The 3D stack beside the list */
+.atc-iso{position:absolute;z-index:4;left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw));right:var(--content-x);top:calc(var(--rail) + 2vh);bottom:2vh;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
+.atc-iso svg{display:block;height:100%;width:auto;max-width:100%}
+.atc-iso .iso-tint{opacity:0;transition:opacity .7s var(--ease-out)}
+.atc-iso .isoL.is-on .iso-tint{opacity:1}
+.atc-iso .iso-c{transition:opacity .7s var(--ease-out)}
+.atc-iso .isoL.is-dim .iso-c{opacity:.3}
+/* "the right partner." fills into the brand gradient instead of navy */
+.atc-gphrase{background:var(--atc-grad);-webkit-background-clip:text;background-clip:text}
+.atc .ds-statement .atc-gphrase .ds-w.is-on{color:transparent}
+.atc-gfx{position:absolute;z-index:4;left:50%;right:var(--content-x);top:calc(var(--rail) + 4vh);bottom:calc(var(--rail) + 4vh);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
+.atc-gfx svg{width:min(100%,66vh);height:auto}
+
+@media (min-width:1100px){
+  .atc-two .ds-rise{white-space:nowrap}
+  /* Let the copy block grow to its longest title line so nothing is clipped by its mask */
+}
+
+/* "That gap…" intro: the line starts centred on the left with the A mark on the right */
+.atc-gapmark{position:absolute;z-index:4;left:50%;right:var(--content-x);top:var(--rail);bottom:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
+.atc-gapmark svg{display:block;width:min(22vw,40vh);height:auto}
+.atc-gap-head{will-change:transform}
+
+/* "That gap is where we come in": fixed title, then two lines in turn */
+.atc-gap{position:absolute;z-index:5;left:var(--content-x);right:44%;top:calc(var(--rail) + var(--gutter) + 5vh);display:flex;flex-direction:column;gap:var(--sp-5);visibility:hidden}
+.atc-gap-body{display:grid}
+.atc-gap-body > .atc-line{grid-area:1 / 1}
+.atc-line .ds-soft{font-weight:inherit}
+.atc-gfx4row{position:absolute;z-index:5;left:0;right:0;top:60%;display:flex;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
+.atc-gfx4row svg{display:block;width:min(86%,640px);height:auto}
+/* ATCON logo and tagline, bottom left, with "As a partner." */
+.atc-gapend{position:absolute;z-index:5;left:0;right:0;top:50%;display:grid;justify-items:center;text-align:center;visibility:hidden;pointer-events:none;padding:0 16px}
+.atc-gapend > *{grid-area:1 / 1}
+.atc-sign{display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
+.atc-sign-logo{display:block;width:clamp(140px,11vw,210px);height:auto}
+.atc .atc-sign-tag{color:var(--fg-soft);max-width:24em}
+.atc-line-grad{background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+
+/* White band behind the header, so content scrolling up passes under it */
+.atc-headfill{position:fixed;left:0;right:0;top:0;height:var(--ty);z-index:3;background:#FFFFFF;opacity:0;pointer-events:none}
+
+/* Closing video text */
+.atc-vov{position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:
+   linear-gradient(90deg,rgba(245,243,238,.92) 0%,rgba(245,243,238,.72) 30%,rgba(245,243,238,.16) 58%,rgba(245,243,238,0) 74%),
+   linear-gradient(0deg,rgba(242,240,235,.6) 0%,rgba(242,240,235,0) 40%),
+   linear-gradient(180deg,rgba(245,243,238,.5) 0%,rgba(245,243,238,0) 20%)}
+.atc-vtext{position:absolute;left:var(--content-x);right:44%;bottom:calc(var(--rail) + var(--gutter) + 6vh);display:flex;flex-direction:column;align-items:flex-start;gap:var(--cta-gap);visibility:hidden}
+.atc-vtext .ds-h1{max-width:14em}
+@media (max-width:760px){ .atc-vtext{right:16px} }
+
+/* Normal-flow sections after the story */
+.atc-after{position:relative;z-index:1;--cta-gap:var(--sp-6);--atc-paper:#FFFFFF;background:#FFFFFF;color:var(--atc-navy)}
+.atc-after a:not(.ds-btn){color:inherit}
+.atc-sec{padding:clamp(80px,11vh,140px) var(--content-x)}
+
+/* Closing video: the page turns white, the video emerges from the white screen, locked while it plays */
+.atc-vtrack{position:relative;background:#FFFFFF}
+.atc-vstage{position:sticky;top:0;height:100vh;height:100svh;width:100%;overflow:hidden;background:#FFFFFF}
+.atc-vstage .atc-video{background:#FFFFFF;transform-origin:50% 50%}
+.atc-vwhite{position:absolute;inset:0;background:#FFFFFF;pointer-events:none}
+.atc-who-head{display:grid;grid-template-columns:minmax(0,1fr)}
+.atc-who-head .ds-label{margin-bottom:var(--sp-5)}
+/* Pinned sections: the section fills the screen under the header, stays while you scroll a little,
+   then the next one comes up */
+.atc-pin{position:relative;height:calc(100vh + 32vh)}
+.atc-pin-in{position:sticky;top:0;height:100vh;height:100svh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;
+  padding-top:calc(var(--rail) + clamp(40px,9vh,112px));padding-bottom:5vh;overflow:hidden}
+.atc-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:var(--sp-7) var(--sp-6);margin-top:clamp(40px,8vh,112px)}
+.atc-col{display:flex;flex-direction:column}
+.atc-col .ds-rule{margin-bottom:var(--sp-7)}
+.atc-col-ic{width:72px;height:72px;margin-bottom:var(--sp-7)}
+.atc-col-ic svg{display:block;width:100%;height:100%}
+.atc-col .ds-h3{margin-bottom:var(--sp-3)}
+.atc-col .ds-body{color:var(--atc-slate);max-width:26em}
+/* The three points arrive one after another */
+/* Columns play in turn, left to right: the rule draws, the icon clears, then the lines rise */
+.atc-col .ds-rule{transform:scaleX(0);transform-origin:0 50%;transition:transform 1s var(--ease-out)}
+.atc-col-ic{opacity:0;filter:blur(8px);transform:scale(.96);transition:opacity .8s var(--ease-out),filter .8s var(--ease-out),transform .8s var(--ease-out)}
+.atc-col .ds-rise{transition:transform 1s var(--ease-out)}
+.atc-cols.is-play .ds-rule{transform:none}
+.atc-cols.is-play .atc-col-ic{opacity:1;filter:none;transform:none}
+.atc-cols.is-play .ds-rise{transform:none}
+.atc-cols.is-play .atc-col .ds-rule{transition-delay:calc(var(--i) * .38s)}
+.atc-cols.is-play .atc-col-ic{transition-delay:calc(var(--i) * .38s + .15s)}
+.atc-cols.is-play .atc-col .ds-h3 .ds-rise{transition-delay:calc(var(--i) * .38s + .3s)}
+.atc-cols.is-play .atc-col .ds-body .ds-rise{transition-delay:calc(var(--i) * .38s + .42s)}
+.atc-col:nth-child(1){--i:0}.atc-col:nth-child(2){--i:1}.atc-col:nth-child(3){--i:2}
+
+/* Proven results: laid out like the client section above it. Heading and lede on top,
+   three quiet cards below, each with its label and an inset panel holding the number */
+.atc-kpi .ds-label{margin-bottom:var(--sp-5)}
+.atc-kpi .atc-trust-side{padding-top:calc(var(--fs-label) + var(--sp-5) + .6em)}
+.atc-kpis{margin-top:clamp(32px,6vh,88px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto clamp(150px,23vh,250px);gap:0 clamp(16px,2.2vw,40px)}
+/* Each card shares the grid rows, so the number panels line up even when a label wraps */
+.atc-kpi-card{display:grid;grid-row:span 2;grid-template-rows:subgrid;box-sizing:border-box;border-radius:22px;border:1.5px solid #E7ECF5;background:#FFFFFF;
+  opacity:0;filter:blur(8px);transform:translateY(18px) scale(.985);
+  transition:opacity .9s var(--ease-out),filter .9s var(--ease-out),transform 1s var(--ease-out)}
+.atc-kpi-txt{padding:clamp(20px,min(2.4vw,3.8vh),36px) clamp(20px,2.4vw,36px) 0}
+.atc-kpi-name{margin:0;font-family:var(--atc-font);font-size:clamp(18px,1.5vw,28px);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:500;color:var(--atc-navy)}
+.atc .atc-kpi-cap{margin:var(--sp-1) 0 0;font-family:var(--atc-font);font-size:var(--fs-small);line-height:var(--lh-small);color:var(--atc-slate)}
+.atc-kpi-stage{min-height:0;margin:clamp(16px,3vh,36px) clamp(20px,2.4vw,36px) 0;border-top:1px solid #E7ECF5;
+  display:flex;align-items:center;justify-content:center}
+.atc-kpi-num{margin:0;font-family:var(--atc-font);font-size:clamp(52px,min(6vw,10.5vh),116px);line-height:1;letter-spacing:-0.05em;font-weight:400;color:var(--atc-navy);font-variant-numeric:tabular-nums}
+.atc-kpi-unit{margin-left:.02em;background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.atc .atc-kpi-base{display:flex;align-items:center;gap:var(--sp-3);margin-top:clamp(18px,3vh,32px);color:var(--atc-slate)}
+.atc-kpi-pin{flex:none;width:22px;height:22px}
+/* The cards arrive one after another once the section has settled; the numbers count up */
+.atc-kpis.is-play .atc-kpi-card{opacity:1;filter:none;transform:none}
+.atc-kpis.is-play .atc-kpi-card:nth-child(2){transition-delay:.3s}
+.atc-kpis.is-play .atc-kpi-card:nth-child(3){transition-delay:.6s}
+@media (max-width:900px){
+  .atc-kpis{grid-template-columns:minmax(0,1fr)}
+  .atc-kpis{grid-template-rows:none;row-gap:16px}
+  .atc-kpi-card{display:flex;flex-direction:column;grid-row:auto;min-height:220px}
+  .atc-kpi-stage{flex:1 1 auto;min-height:130px}
+  .atc-kpi .atc-trust-side{padding-top:0}
+}
+
+.atc-trust-head{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:var(--sp-7) var(--sp-8);align-items:start}
+.atc-trust-side{display:flex;flex-direction:column;align-items:flex-start;gap:var(--cta-gap);padding-top:.6em}
+.atc-trust-side .ds-lede{color:var(--atc-slate);font-weight:400}
+.atc-logos{margin-top:clamp(32px,6vh,88px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.5px;padding:1.5px;border-radius:22px;background:var(--atc-grad);
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 18%,#000 82%,transparent 100%)}
+.atc-logo-cell{display:flex;align-items:center;justify-content:center;min-height:clamp(96px,15vh,190px);background:var(--atc-paper);border-radius:20px;padding:var(--sp-5)}
+.atc-logo-cell .ds-small{color:var(--atc-mute)}
+
+.atc-foot{padding-top:clamp(64px,9vh,112px);padding-bottom:0;background:#FFFFFF}
+.atc-foot-legal{display:flex;flex-direction:column;gap:var(--sp-2);margin-top:var(--sp-6)}
+.atc-foot-legal .ds-small{color:var(--atc-mute)}
+.atc-foot-links{display:flex;gap:var(--sp-3);align-items:center}
+.atc-foot-links a{color:var(--atc-mute);text-decoration:none;transition:color .25s ease}
+.atc-foot-links a:hover,.atc-foot-links a:focus-visible{color:var(--atc-navy);text-decoration:underline;text-underline-offset:4px;outline:none}
+/* Wordmark: cropped at the bottom edge, brand gradient that fades into the page */
+.atc-wm{margin-top:clamp(28px,4vh,64px);aspect-ratio:673 / 104;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 30%,rgba(0,0,0,.7) 62%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 30%,rgba(0,0,0,.7) 62%,transparent 100%)}
+.atc-icdefs{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.atc-foot-top{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,auto));gap:var(--sp-7) clamp(40px,7vw,140px);align-items:start}
+.atc-foot-claim{font-weight:500;margin-bottom:var(--sp-6);max-width:16em}
+.atc-foot-addr{font-style:normal;color:var(--atc-slate)}
+.atc-foot-col{display:flex;flex-direction:column;gap:var(--sp-4);min-width:0}
+.atc-foot-col h3{margin:0 0 var(--sp-2);font-family:var(--atc-font);font-size:16px;font-weight:600;color:var(--atc-navy)}
+.atc-foot-col a,.atc-foot-col span{font-size:var(--fs-body);color:var(--atc-slate);text-decoration:none;transition:color .25s ease;white-space:nowrap}
+.atc-foot-col a:hover,.atc-foot-col a:focus-visible{color:var(--atc-navy);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;outline:none}
+.atc-wordmark{display:block;width:100%;height:auto;margin:0}
+
+@media (max-width:900px){
+  .atc-trust-head{grid-template-columns:minmax(0,1fr)}
+  .atc-logos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .atc-pin{height:auto}
+  .atc-pin-in{position:relative;height:auto;padding-top:clamp(80px,11vh,140px);padding-bottom:clamp(80px,11vh,140px)}
+  .atc-foot-top{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .atc-foot-top > :first-child{grid-column:1 / -1}
+}
+
+/* Focus statement */
+.atc-fam{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;padding:0 24px}
+.atc-fam-text{display:inline-block;text-align:center;max-width:min(22em,78vw)}
+.atc-fam-line{display:block}
+
+/* Splash: 1s over a blurred copy of the hero, then the blur clears and it vanishes.
+   The blur is drawn from the hero still itself, so it shows in every browser. */
+.atc-splash{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#3E5480}
+.atc-splash-bg{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;filter:blur(32px) saturate(1.05);transition:filter .8s var(--ease-io),opacity .8s var(--ease-io)}
+.atc-splash-tint{position:absolute;inset:0;background:rgba(36,52,86,.42);transition:opacity .8s var(--ease-io)}
+.atc-splash-logo{position:relative;width:clamp(44px,3.4vw,60px);color:#FFFFFF;opacity:0;transform:scale(.94);transition:opacity .35s var(--ease-out),transform .45s var(--ease-out),filter .45s var(--ease-out)}
+.atc-splash-logo svg{display:block;width:100%;height:auto}
+.atc-splash.is-in .atc-splash-logo{opacity:1;transform:none}
+/* Where the browser can blur the live video, the splash is a pane of frosted glass over the hero
+   itself, so clearing the blur reveals the same moving frame with no cut. */
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .atc-splash{background:transparent;backdrop-filter:blur(30px) saturate(1.05);-webkit-backdrop-filter:blur(30px) saturate(1.05);
+    transition:backdrop-filter .8s var(--ease-io),-webkit-backdrop-filter .8s var(--ease-io)}
+  .atc-splash-bg{display:none}
+  .atc-splash.is-out{backdrop-filter:blur(0) saturate(1);-webkit-backdrop-filter:blur(0) saturate(1)}
+}
+.atc-splash.is-out{background:transparent;pointer-events:none}
+.atc-splash.is-out .atc-splash-bg{filter:blur(0) saturate(1);opacity:0}
+.atc-splash.is-out .atc-splash-tint{opacity:0}
+.atc-splash.is-out .atc-splash-logo{opacity:0;transform:scale(1.04);filter:blur(8px);transition-duration:.5s}
+.atc-splash.is-gone{display:none}
+
+@media (max-width:760px){
+  .atc-block{left:calc(var(--rail) + 18px);right:16px}
+  .atc-line{white-space:normal;display:inline}
+  .atc-hero-lede{max-width:none}
+  .atc-contact{top:4px;right:12px}
+  .atc-stack{left:calc(var(--rail) + 18px);right:16px;width:auto;top:46%;bottom:20px;padding-top:0;justify-content:flex-end}
+  .atc-card.is-past{display:none}
+  .atc-gfx.atc-gfx--side{left:calc(var(--rail) + 12px)}
+  .atc-gfx{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
+  .atc-iso{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
+  .atc-gap{left:calc(var(--rail) + 18px);right:16px}
+  .atc-gapmark{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:62%}
+  .atc-gapmark svg{width:min(28vw,18vh)}
+  .atc-gfx--mid{top:46%;bottom:calc(var(--rail) + 120px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .atc-splash,.atc-splash-logo,.atc-hero-in{transition-duration:.01s !important}
+}
+</style>
+</helmet>
+<div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
+
+  <div class="atc-track" data-atc="track" style="height: {{trackHeight}}">
+    <div class="atc-stage" data-atc="stage">
+
+      <div class="atc-layer atc-l2">
+        <video class="atc-video" data-atc="v2" src="./assets/45cd9d94025fa28e42d01b38cb5a1b31.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
+      </div>
+      <div class="atc-layer atc-l4" data-atc="l4">
+        <video class="atc-video" data-atc="v4" src="./assets/c03963195534130e9a3cb4ef5482da04.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
+      </div>
+      <div class="atc-layer atc-l3" data-atc="l3">
+        <video class="atc-video" data-atc="v3" src="./assets/0fc68fd9a4d7976f6d036aa44532a113.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
+      </div>
+      <div class="atc-layer atc-l1" data-atc="l1">
+        <video class="atc-video" data-atc="v1" src="./assets/32948264897243d0716f64e0edd8dc54.mp4" poster="./assets/7fd504c3b366a5f976d84ad619881794.jpg" muted="" loop="" autoplay="" playsinline="" preload="auto" aria-hidden="true"></video>
+      </div>
+      <div class="atc-white" data-atc="white"></div>
+
+      <div class="atc-ovs" aria-hidden="true">
+        <span class="atc-ov atc-ov-0" data-atc="ov0"></span>
+        <span class="atc-ov atc-ov-1" data-atc="ov1"></span>
+      </div>
+
+
+      <section class="atc-ch atc-ch-0" data-atc="ch0" aria-label="Introduction">
+        <div class="atc-in" data-atc="in0">
+          <div class="atc-in atc-hero-in">
+            <div class="atc-block atc-hero-block">
+              <h1 class="ds-display"><span class="atc-line">A trusted tech partner </span><span class="atc-line">for business-led </span><span class="atc-line ds-soft">innovation.</span></h1>
+              <p class="ds-lede atc-hero-lede">We sit between strategy and execution, and solve what slows growth down.</p>
+              <div class="atc-ctas">
+                <a class="ds-btn" href="mailto:ankit.tanna@atconglobal.com">Start a conversation<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+                <a class="ds-btn ds-btn--secondary ds-btn-down" href="#problem" onClick="{{ seeProblem }}">See why<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2.5 6.5L6 10l3.5-3.5"></path></svg></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="atc-ch" id="problem" data-atc="ch1" aria-label="The challenge">
+        <div class="atc-in" data-atc="in1">
+          <div class="atc-block">
+            <h2 class="ds-h1 atc-title">Businesses often come to us
+with the same challenge.</h2>
+          </div>
+        </div>
+      </section>
+
+      <!-- The three problems: stroked cards stacked on the left, revealed one by one, all staying readable -->
+      <section class="atc-stack" data-atc="stack" aria-label="What actually happens">
+        <h2 class="ds-h1 atc-wah" data-atc="wah"><span class="ds-mask"><span class="ds-rise" data-atc="wahText">What actually happens</span></span></h2>
+        <article class="atc-card">
+          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">You have the tools.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Software for every team, paid for every month.</span></span></p></div></div>
+        </article>
+        <article class="atc-card">
+          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">02</span></span></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">You have the vendors.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each one delivering their own piece of the project.</span></span></p></div></div>
+        </article>
+        <article class="atc-card">
+          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">03</span></span></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise atc-card-lead">Everyone is involved.</span></span><span class="ds-mask"><span class="ds-rise">No one is accountable.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Every side has a say, but nobody owns the outcome.</span></span></p></div></div>
+        </article>
+        <article class="atc-card">
+          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">04</span></span></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">And so the idea is still on the whiteboard.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Months of meetings. Nothing you can actually use.</span></span></p></div></div>
+        </article>
+      </section>
+      <!-- Shared icon paint: one solid blue for strokes, one soft aurora fill for the second tone -->
+      <svg class="atc-icdefs" width="0" height="0" aria-hidden="true" focusable="false">
+        <defs>
+          <!-- Icon system: white soft-cornered tiles with periwinkle line glyphs; key moments as a brand-gradient node with soft halos -->
+          <linearGradient id="ic-node" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A5FE6"></stop><stop offset="0.55" stop-color="#3F7FCF"></stop><stop offset="1" stop-color="#8CC08A"></stop></linearGradient>
+          <linearGradient id="ic-halo2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFD1F6"></stop><stop offset="1" stop-color="#D6EBD8"></stop></linearGradient>
+        </defs>
+      </svg>
+
+      <!-- One project, four layers: shown as a single block, then opened up beside the list -->
+      <div class="atc-iso" data-atc="iso" aria-hidden="true">
+        <svg class="ds-graphic" viewBox="0 0 600 880">
+          <!-- Four layers of the same project, stacked as one block, then opened up: tools, vendors, people, and the wait -->
+          <defs><linearGradient id="iso-top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset="1" stop-color="#F4F6FB"></stop></linearGradient>
+<linearGradient id="iso-side" gradientUnits="userSpaceOnUse" x1="-170" y1="0" x2="170" y2="0"><stop offset="0" stop-color="#EEF1F7"></stop><stop offset="0.5" stop-color="#E9EDF5"></stop><stop offset="0.5" stop-color="#DCE2ED"></stop><stop offset="1" stop-color="#D3DAE8"></stop></linearGradient>
+<linearGradient id="iso-side-s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#EEF1F7"></stop><stop offset="0.5" stop-color="#E9EDF5"></stop><stop offset="0.5" stop-color="#DCE2ED"></stop><stop offset="1" stop-color="#D3DAE8"></stop></linearGradient>
+<linearGradient id="iso-puck-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3E78D6"></stop><stop offset="1" stop-color="#2A5FE6"></stop></linearGradient></defs>
+          <g class="isoL" data-i="3" transform="translate(300 473)"><path d="M150.7 9 L153.9 11.2 L156.5 13.7 L158.5 16.3 L159.6 19.1 L160 22 L159.6 24.9 L158.5 27.7 L156.5 30.3 L153.9 32.8 L150.7 35 L22.5 109 L18.7 110.9 L14.5 112.4 L9.8 113.5 L5 114.2 L0 114.4 L-5 114.2 L-9.8 113.5 L-14.5 112.4 L-18.7 110.9 L-22.5 109 L-150.7 35 L-153.9 32.8 L-156.5 30.3 L-158.5 27.7 L-159.6 24.9 L-160 22 L-159.6 19.1 L-158.5 16.3 L-156.5 13.7 L-153.9 11.2 L-150.7 9 L-22.5 -65 L-18.7 -66.9 L-14.5 -68.4 L-9.8 -69.5 L-5 -70.2 L0 -70.4 L5 -70.2 L9.8 -69.5 L14.5 -68.4 L18.7 -66.9 L22.5 -65 Z" fill="url(#iso-side)"></path><rect x="-160" y="0" width="320" height="22" fill="url(#iso-side)"></rect><path d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="url(#iso-top)" stroke="#E1E6F0" stroke-width="1.2" stroke-linejoin="round"></path><path class="iso-tint" d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="#EEF3FD" stroke="#C9D6F2" stroke-width="1.2"></path><path d="M123 -9 L125.2 -7.5 L127 -5.8 L128.4 -3.9 L129.2 -2 L129.4 0 L129.2 2 L128.4 3.9 L127 5.8 L125.2 7.5 L123 9 L15.6 71 L13 72.3 L10 73.3 L6.8 74.1 L3.4 74.6 L0 74.7 L-3.4 74.6 L-6.8 74.1 L-10 73.3 L-13 72.3 L-15.6 71 L-123 9 L-125.2 7.5 L-127 5.8 L-128.4 3.9 L-129.2 2 L-129.4 0 L-129.2 -2 L-128.4 -3.9 L-127 -5.8 L-125.2 -7.5 L-123 -9 L-15.6 -71 L-13 -72.3 L-10 -73.3 L-6.8 -74.1 L-3.4 -74.6 L0 -74.7 L3.4 -74.6 L6.8 -74.1 L10 -73.3 L13 -72.3 L15.6 -71 Z" fill="none" stroke="#E6EAF3" stroke-width="1.2"></path><g class="iso-c"><ellipse cx="0" cy="0" rx="56.9" ry="32.9" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse cx="0" cy="0" rx="36.7" ry="21.2" fill="url(#iso-puck-side)"></ellipse><rect x="-36.7" y="-16" width="73.5" height="16" fill="url(#iso-puck-side)"></rect><ellipse cx="0" cy="-16" rx="36.7" ry="21.2" fill="url(#ic-node)"></ellipse><g transform="translate(0 -16) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(1.25)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><circle r="11"></circle><path d="M0 -6 V0 L4.5 3"></path></g></g></g></g>
+          <g class="isoL" data-i="2" transform="translate(300 451)"><path d="M150.7 9 L153.9 11.2 L156.5 13.7 L158.5 16.3 L159.6 19.1 L160 22 L159.6 24.9 L158.5 27.7 L156.5 30.3 L153.9 32.8 L150.7 35 L22.5 109 L18.7 110.9 L14.5 112.4 L9.8 113.5 L5 114.2 L0 114.4 L-5 114.2 L-9.8 113.5 L-14.5 112.4 L-18.7 110.9 L-22.5 109 L-150.7 35 L-153.9 32.8 L-156.5 30.3 L-158.5 27.7 L-159.6 24.9 L-160 22 L-159.6 19.1 L-158.5 16.3 L-156.5 13.7 L-153.9 11.2 L-150.7 9 L-22.5 -65 L-18.7 -66.9 L-14.5 -68.4 L-9.8 -69.5 L-5 -70.2 L0 -70.4 L5 -70.2 L9.8 -69.5 L14.5 -68.4 L18.7 -66.9 L22.5 -65 Z" fill="url(#iso-side)"></path><rect x="-160" y="0" width="320" height="22" fill="url(#iso-side)"></rect><path d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="url(#iso-top)" stroke="#E1E6F0" stroke-width="1.2" stroke-linejoin="round"></path><path class="iso-tint" d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="#EEF3FD" stroke="#C9D6F2" stroke-width="1.2"></path><path d="M123 -9 L125.2 -7.5 L127 -5.8 L128.4 -3.9 L129.2 -2 L129.4 0 L129.2 2 L128.4 3.9 L127 5.8 L125.2 7.5 L123 9 L15.6 71 L13 72.3 L10 73.3 L6.8 74.1 L3.4 74.6 L0 74.7 L-3.4 74.6 L-6.8 74.1 L-10 73.3 L-13 72.3 L-15.6 71 L-123 9 L-125.2 7.5 L-127 5.8 L-128.4 3.9 L-129.2 2 L-129.4 0 L-129.2 -2 L-128.4 -3.9 L-127 -5.8 L-125.2 -7.5 L-123 -9 L-15.6 -71 L-13 -72.3 L-10 -73.3 L-6.8 -74.1 L-3.4 -74.6 L0 -74.7 L3.4 -74.6 L6.8 -74.1 L10 -73.3 L13 -72.3 L15.6 -71 Z" fill="none" stroke="#E6EAF3" stroke-width="1.2"></path><g class="iso-c"><g transform="translate(0 0) matrix(0.866 0.5 -0.866 0.5 0 0)"><circle r="20" fill="none" stroke="#C9D2E6" stroke-width="2" stroke-dasharray="3 6" stroke-linecap="round" vector-effect="non-scaling-stroke"></circle></g><g transform="translate(0 -48)"><ellipse rx="36.1" ry="20.8" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="23.3" ry="13.4" fill="url(#iso-puck-side)"></ellipse><rect x="-23.3" y="-8" width="46.5" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="23.3" ry="13.4" fill="url(#ic-node)"></ellipse></g><g transform="translate(0 -56) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.7)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><circle cy="-6" r="6.5"></circle><path d="M-12 13 C-12 5 -6 2 0 2 C6 2 12 5 12 13"></path></g></g><g transform="translate(83.1 0)"><ellipse rx="36.1" ry="20.8" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="23.3" ry="13.4" fill="url(#iso-puck-side)"></ellipse><rect x="-23.3" y="-8" width="46.5" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="23.3" ry="13.4" fill="url(#ic-node)"></ellipse></g><g transform="translate(83.1 -8) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.7)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><circle cy="-6" r="6.5"></circle><path d="M-12 13 C-12 5 -6 2 0 2 C6 2 12 5 12 13"></path></g></g><g transform="translate(-83.1 0)"><ellipse rx="36.1" ry="20.8" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="23.3" ry="13.4" fill="url(#iso-puck-side)"></ellipse><rect x="-23.3" y="-8" width="46.5" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="23.3" ry="13.4" fill="url(#ic-node)"></ellipse></g><g transform="translate(-83.1 -8) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.7)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><circle cy="-6" r="6.5"></circle><path d="M-12 13 C-12 5 -6 2 0 2 C6 2 12 5 12 13"></path></g></g><g transform="translate(0 48)"><ellipse rx="36.1" ry="20.8" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="23.3" ry="13.4" fill="url(#iso-puck-side)"></ellipse><rect x="-23.3" y="-8" width="46.5" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="23.3" ry="13.4" fill="url(#ic-node)"></ellipse></g><g transform="translate(0 40) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.7)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><circle cy="-6" r="6.5"></circle><path d="M-12 13 C-12 5 -6 2 0 2 C6 2 12 5 12 13"></path></g></g></g></g>
+          <g class="isoL" data-i="1" transform="translate(300 429)"><path d="M150.7 9 L153.9 11.2 L156.5 13.7 L158.5 16.3 L159.6 19.1 L160 22 L159.6 24.9 L158.5 27.7 L156.5 30.3 L153.9 32.8 L150.7 35 L22.5 109 L18.7 110.9 L14.5 112.4 L9.8 113.5 L5 114.2 L0 114.4 L-5 114.2 L-9.8 113.5 L-14.5 112.4 L-18.7 110.9 L-22.5 109 L-150.7 35 L-153.9 32.8 L-156.5 30.3 L-158.5 27.7 L-159.6 24.9 L-160 22 L-159.6 19.1 L-158.5 16.3 L-156.5 13.7 L-153.9 11.2 L-150.7 9 L-22.5 -65 L-18.7 -66.9 L-14.5 -68.4 L-9.8 -69.5 L-5 -70.2 L0 -70.4 L5 -70.2 L9.8 -69.5 L14.5 -68.4 L18.7 -66.9 L22.5 -65 Z" fill="url(#iso-side)"></path><rect x="-160" y="0" width="320" height="22" fill="url(#iso-side)"></rect><path d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="url(#iso-top)" stroke="#E1E6F0" stroke-width="1.2" stroke-linejoin="round"></path><path class="iso-tint" d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="#EEF3FD" stroke="#C9D6F2" stroke-width="1.2"></path><path d="M123 -9 L125.2 -7.5 L127 -5.8 L128.4 -3.9 L129.2 -2 L129.4 0 L129.2 2 L128.4 3.9 L127 5.8 L125.2 7.5 L123 9 L15.6 71 L13 72.3 L10 73.3 L6.8 74.1 L3.4 74.6 L0 74.7 L-3.4 74.6 L-6.8 74.1 L-10 73.3 L-13 72.3 L-15.6 71 L-123 9 L-125.2 7.5 L-127 5.8 L-128.4 3.9 L-129.2 2 L-129.4 0 L-129.2 -2 L-128.4 -3.9 L-127 -5.8 L-125.2 -7.5 L-123 -9 L-15.6 -71 L-13 -72.3 L-10 -73.3 L-6.8 -74.1 L-3.4 -74.6 L0 -74.7 L3.4 -74.6 L6.8 -74.1 L10 -73.3 L13 -72.3 L15.6 -71 Z" fill="none" stroke="#E6EAF3" stroke-width="1.2"></path><g class="iso-c"><g transform="translate(0 0) matrix(0.866 0.5 -0.866 0.5 0 0)"><g fill="none" stroke="#B4C1DF" stroke-width="2" stroke-linecap="round" stroke-dasharray="0.1 7" vector-effect="non-scaling-stroke"><path d="M-22 -40 L22 -40"></path><path d="M44 -14 L18 34"></path><path d="M-44 -14 L-18 34"></path></g></g><g transform="translate(-5.2 -43)"><ellipse rx="39.9" ry="23" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="25.7" ry="14.8" fill="url(#iso-puck-side)"></ellipse><rect x="-25.7" y="-8" width="51.4" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="25.7" ry="14.8" fill="url(#ic-node)"></ellipse></g><g transform="translate(-5.2 -51) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.8)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path d="M-11 11 L-11 5 L6 -12 L12 -6 L-5 11 Z M2 -8 L8 -2"></path></g></g><g transform="translate(74.5 3)"><ellipse rx="39.9" ry="23" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="25.7" ry="14.8" fill="url(#iso-puck-side)"></ellipse><rect x="-25.7" y="-8" width="51.4" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="25.7" ry="14.8" fill="url(#ic-node)"></ellipse></g><g transform="translate(74.5 -5) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.8)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path d="M-6 -9 L-15 0 L-6 9 M6 -9 L15 0 L6 9 M3 -12 L-3 12"></path></g></g><g transform="translate(-39.8 23)"><ellipse rx="39.9" ry="23" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="25.7" ry="14.8" fill="url(#iso-puck-side)"></ellipse><rect x="-25.7" y="-8" width="51.4" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="25.7" ry="14.8" fill="url(#ic-node)"></ellipse></g><g transform="translate(-39.8 15) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.8)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><ellipse cx="0" cy="-8" rx="13" ry="5"></ellipse><path d="M-13 -8 V8 A13 5 0 0 0 13 8 V-8 M-13 0 A13 5 0 0 0 13 0"></path></g></g></g></g>
+          <g class="isoL" data-i="0" transform="translate(300 407)"><path d="M150.7 9 L153.9 11.2 L156.5 13.7 L158.5 16.3 L159.6 19.1 L160 22 L159.6 24.9 L158.5 27.7 L156.5 30.3 L153.9 32.8 L150.7 35 L22.5 109 L18.7 110.9 L14.5 112.4 L9.8 113.5 L5 114.2 L0 114.4 L-5 114.2 L-9.8 113.5 L-14.5 112.4 L-18.7 110.9 L-22.5 109 L-150.7 35 L-153.9 32.8 L-156.5 30.3 L-158.5 27.7 L-159.6 24.9 L-160 22 L-159.6 19.1 L-158.5 16.3 L-156.5 13.7 L-153.9 11.2 L-150.7 9 L-22.5 -65 L-18.7 -66.9 L-14.5 -68.4 L-9.8 -69.5 L-5 -70.2 L0 -70.4 L5 -70.2 L9.8 -69.5 L14.5 -68.4 L18.7 -66.9 L22.5 -65 Z" fill="url(#iso-side)"></path><rect x="-160" y="0" width="320" height="22" fill="url(#iso-side)"></rect><path d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="url(#iso-top)" stroke="#E1E6F0" stroke-width="1.2" stroke-linejoin="round"></path><path class="iso-tint" d="M150.7 -13 L153.9 -10.8 L156.5 -8.3 L158.5 -5.7 L159.6 -2.9 L160 0 L159.6 2.9 L158.5 5.7 L156.5 8.3 L153.9 10.8 L150.7 13 L22.5 87 L18.7 88.9 L14.5 90.4 L9.8 91.5 L5 92.2 L0 92.4 L-5 92.2 L-9.8 91.5 L-14.5 90.4 L-18.7 88.9 L-22.5 87 L-150.7 13 L-153.9 10.8 L-156.5 8.3 L-158.5 5.7 L-159.6 2.9 L-160 0 L-159.6 -2.9 L-158.5 -5.7 L-156.5 -8.3 L-153.9 -10.8 L-150.7 -13 L-22.5 -87 L-18.7 -88.9 L-14.5 -90.4 L-9.8 -91.5 L-5 -92.2 L0 -92.4 L5 -92.2 L9.8 -91.5 L14.5 -90.4 L18.7 -88.9 L22.5 -87 Z" fill="#EEF3FD" stroke="#C9D6F2" stroke-width="1.2"></path><path d="M123 -9 L125.2 -7.5 L127 -5.8 L128.4 -3.9 L129.2 -2 L129.4 0 L129.2 2 L128.4 3.9 L127 5.8 L125.2 7.5 L123 9 L15.6 71 L13 72.3 L10 73.3 L6.8 74.1 L3.4 74.6 L0 74.7 L-3.4 74.6 L-6.8 74.1 L-10 73.3 L-13 72.3 L-15.6 71 L-123 9 L-125.2 7.5 L-127 5.8 L-128.4 3.9 L-129.2 2 L-129.4 0 L-129.2 -2 L-128.4 -3.9 L-127 -5.8 L-125.2 -7.5 L-123 -9 L-15.6 -71 L-13 -72.3 L-10 -73.3 L-6.8 -74.1 L-3.4 -74.6 L0 -74.7 L3.4 -74.6 L6.8 -74.1 L10 -73.3 L13 -72.3 L15.6 -71 Z" fill="none" stroke="#E6EAF3" stroke-width="1.2"></path><g class="iso-c"><g transform="translate(0 -34)"><ellipse rx="39.9" ry="23" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="25.7" ry="14.8" fill="url(#iso-puck-side)"></ellipse><rect x="-25.7" y="-8" width="51.4" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="25.7" ry="14.8" fill="url(#ic-node)"></ellipse></g><g transform="translate(0 -42) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.8)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path d="M-9 9 V2 M-3 9 V-3 M3 9 V0 M9 9 V-8"></path></g></g><g transform="translate(58.9 0)"><ellipse rx="39.9" ry="23" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="25.7" ry="14.8" fill="url(#iso-puck-side)"></ellipse><rect x="-25.7" y="-8" width="51.4" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="25.7" ry="14.8" fill="url(#ic-node)"></ellipse></g><g transform="translate(58.9 -8) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.8)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><rect x="-12" y="-8" width="24" height="16" rx="3"></rect><path d="M-11 -6 L0 2 L11 -6"></path></g></g><g transform="translate(-58.9 0)"><ellipse rx="39.9" ry="23" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="25.7" ry="14.8" fill="url(#iso-puck-side)"></ellipse><rect x="-25.7" y="-8" width="51.4" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="25.7" ry="14.8" fill="url(#ic-node)"></ellipse></g><g transform="translate(-58.9 -8) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.8)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path d="M-9 -14 H4 L11 -7 V14 H-9 Z M4 -14 V-7 H11 M-4 0 H6 M-4 6 H6"></path></g></g><g transform="translate(0 34)"><ellipse rx="39.9" ry="23" fill="url(#ic-halo2)" opacity="0.5"></ellipse><ellipse rx="25.7" ry="14.8" fill="url(#iso-puck-side)"></ellipse><rect x="-25.7" y="-8" width="51.4" height="8" fill="url(#iso-puck-side)"></rect><ellipse cy="-8" rx="25.7" ry="14.8" fill="url(#ic-node)"></ellipse></g><g transform="translate(0 26) matrix(0.866 0.5 -0.866 0.5 0 0)"><g transform="scale(0.8)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><circle r="5"></circle><path d="M0 -14 V-10 M0 10 V14 M-14 0 H-10 M10 0 H14 M-9.9 -9.9 L-7.1 -7.1 M7.1 7.1 L9.9 9.9 M-9.9 9.9 L-7.1 7.1 M7.1 -7.1 L9.9 -9.9"></path><circle r="10"></circle></g></g></g></g>
+        </svg>
+      </div>
+
+      <!-- Focus statement: locked, lines close in, text fills -->
+      <section class="atc-fam" data-atc="fam" aria-label="You are not alone">
+        <h2 class="ds-statement atc-fam-text" data-atc="famText"><span class="atc-fam-line"><span class="ds-w">If</span> <span class="ds-w">this</span> <span class="ds-w">feels</span> <span class="ds-w">familiar,</span> <span class="ds-w">you’re</span> <span class="ds-w">not</span> <span class="ds-w">alone.</span></span><span class="atc-fam-line"><span class="ds-w">You</span> <span class="ds-w">just</span> <span class="ds-w">haven’t</span> <span class="ds-w">met</span> <span class="atc-gphrase"><span class="ds-w">the</span> <span class="ds-w">right</span> <span class="ds-w">partner.</span></span></span></h2>
+      </section>
+
+      <!-- Where we come in: title holds, then two lines, each with its graphic playing on its own -->
+      <section class="atc-gap" data-atc="gap" aria-label="Where we come in">
+        <h2 class="ds-h1 atc-gap-head" data-atc="gapHead"><span class="ds-mask"><span class="ds-rise" data-atc="gapTitle">That gap is where we come in.</span></span></h2>
+        <div class="atc-gap-body">
+          <p class="ds-h3 atc-line" data-atc="lineA"><span class="ds-mask"><span class="ds-rise"><span class="ds-soft">Not as another</span> agency, dev shop,<br>advisory firm.</span></span></p>
+        </div>
+      </section>
+
+      <!-- Agency, dev shop, advisory firm: one at a time, left to right, each struck through -->
+      <div class="atc-gfx4row" data-atc="gfx4" aria-hidden="true">
+        <svg class="ds-graphic" viewBox="0 0 600 148">
+      <!-- Agency, dev shop, advisory firm: side by side, never joined, each struck through in turn -->
+      <g fill="none" stroke="#B4C1DF" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="0.1 8">
+        <path class="g4e" d="M140 74 L230 74" opacity="0"></path>
+        <path class="g4e" d="M370 74 L460 74" opacity="0"></path>
+      </g>
+      <g transform="translate(70 74)"><g class="g4i" opacity="0">
+        <g class="g4c"><circle r="58" fill="url(#ic-halo2)" opacity="0.5"></circle><circle r="40" fill="url(#ic-node)"></circle><g transform="scale(1.3)" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path d="M-13 -5 H-6 L8 -12 V12 L-6 5 H-13 Z M-6 5 L-3 13 M12 -5 C15 -2 15 2 12 5"></path></g></g>
+        <path class="g4s" d="M-62 48 L62 -48" fill="none" stroke="#D9483C" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"></path>
+      </g></g><g transform="translate(300 74)"><g class="g4i" opacity="0">
+        <g class="g4c"><circle r="58" fill="url(#ic-halo2)" opacity="0.5"></circle><circle r="40" fill="url(#ic-node)"></circle><g transform="scale(1.3)" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><rect x="-15" y="-12" width="30" height="24" rx="5"></rect><path d="M-15 -5 H15 M-4 1 L-8 5 L-4 9 M4 1 L8 5 L4 9"></path></g></g>
+        <path class="g4s" d="M-62 48 L62 -48" fill="none" stroke="#D9483C" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"></path>
+      </g></g><g transform="translate(530 74)"><g class="g4i" opacity="0">
+        <g class="g4c"><circle r="58" fill="url(#ic-halo2)" opacity="0.5"></circle><circle r="40" fill="url(#ic-node)"></circle><g transform="scale(1.3)" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"><path d="M-15 -11 H15 M-12 -11 V6 H12 V-11 M0 6 V10 M-6 15 L0 10 L6 15 M-6 1 L-1 -4 L3 0 L8 -5"></path></g></g>
+        <path class="g4s" d="M-62 48 L62 -48" fill="none" stroke="#D9483C" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"></path>
+      </g></g>
+        </svg>
+      </div>
+
+      <!-- The close: under the centred title, "As a partner." and then the ATCON logo and tagline -->
+      <div class="atc-gapend" data-atc="gapend">
+        <p class="ds-h2 atc-gapend-line" data-atc="lineB"><span class="ds-mask"><span class="ds-rise"><span class="ds-soft">As</span> <span class="atc-line-grad">a partner.</span></span></span></p>
+        <div class="atc-sign" data-atc="sign">
+          <span class="ds-mask"><span class="ds-rise"><img class="atc-sign-logo" src="./assets/798217b522466503844e74dfe6407be1.svg" alt="ATCON"></span></span>
+          <p class="ds-lede atc-sign-tag"><span class="ds-mask"><span class="ds-rise">The partner that finally works for your business.</span></span></p>
+        </div>
+      </div>
+
+      <!-- The A mark that accompanies the intro line -->
+      <div class="atc-gapmark" data-atc="gapmark" aria-hidden="true">
+        <svg viewBox="0 0 117.1 112">
+          <defs><linearGradient id="gm" gradientUnits="userSpaceOnUse" x1="84.5" y1="37.5" x2="117" y2="111.5"><stop offset="0" stop-color="#A6FFD6"></stop><stop offset="0.3" stop-color="#EBFF39"></stop><stop offset="0.65" stop-color="#5E9FA8"></stop><stop offset="1" stop-color="#0065ED"></stop></linearGradient></defs>
+          <path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path>
+          <path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#gm)"></path>
+        </svg>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <!-- Frame lines and progress rail: fixed, they stay until the footer -->
+  <div class="atc-headfill" data-atc="headfill" aria-hidden="true"></div>
+
+  <div class="atc-frame" data-atc="frame" aria-hidden="true">
+    <div class="atc-lines">
+      <span class="atc-ln atc-ln-rail"></span>
+      <span class="atc-ln atc-ln-top"></span>
+      <span class="atc-ln atc-ln-mid"></span>
+      <span class="atc-ln atc-ln-right"></span>
+      <span class="atc-star atc-star-r"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C12.6 7 17 11.4 24 12C17 12.6 12.6 17 12 24C11.4 17 7 12.6 0 12C7 11.4 11.4 7 12 0Z"></path></svg></span>
+    </div>
+    <div class="atc-prog" data-atc="progbox">
+      <span class="atc-prog-fill" data-atc="prog"></span>
+      <span class="atc-prog-head" data-atc="head"></span>
+    </div>
+  </div>
+
+      <nav class="ds-nav atc-nav" data-atc="nav" aria-label="Site menu">
+        <ul class="ds-nav-list">
+          <li class="ds-nav-item"><span class="ds-nav-num">01</span><a class="ds-nav-link" href="#" onClick="{{ goHome }}">Home</a></li>
+          <li class="ds-nav-item"><span class="ds-nav-num">02</span><a class="ds-nav-link" href="#insights" onClick="{{ navTo }}">Insights</a></li>
+          <li class="ds-nav-item"><span class="ds-nav-num">03</span><a class="ds-nav-link" href="#career" onClick="{{ navTo }}">Career</a></li>
+          <li class="ds-nav-item"><span class="ds-nav-num">04</span><a class="ds-nav-link" href="mailto:ankit.tanna@atconglobal.com" onClick="{{ closeMenu }}">Contact us</a></li>
+        </ul>
+      </nav>
+
+      <div class="atc-chrome">
+        <a class="atc-logo" href="#" aria-label="ATCON GLOBAL home" onClick="{{ goHome }}">
+          <svg viewBox="0 8 506 490" fill="currentColor" aria-hidden="true"><path d="M215 11H304L92 494H0Z"></path><path d="M365 173L506 493H417L320 272Z"></path></svg>
+        </a>
+        <button class="ds-burger atc-burger" data-atc="burger" type="button" aria-label="Open menu" aria-expanded="false" onClick="{{ toggleMenu }}"><span class="ds-burger-box"><span class="ds-burger-ln"></span><span class="ds-burger-ln"></span></span></button>
+        <a class="ds-btn ds-btn--sm atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+      </div>
+
+      <!-- Splash: blurred hero with the mark, 1s, then it clears into the hero -->
+      <div class="atc-splash" data-atc="splash" aria-hidden="true">
+        <img class="atc-splash-bg" src="./assets/7fd504c3b366a5f976d84ad619881794.jpg" alt="">
+        <span class="atc-splash-tint"></span>
+        <div class="atc-splash-logo">
+          <svg viewBox="0 8 506 490" fill="currentColor"><path d="M215 11H304L92 494H0Z"></path><path d="M365 173L506 493H417L320 272Z"></path></svg>
+        </div>
+      </div>
+
+  <div class="atc-after" data-theme="light">
+
+    <!-- Each section settles into the screen and holds for a moment before the next one comes up -->
+    <div class="atc-pin" id="who">
+    <section class="atc-sec atc-who atc-pin-in" aria-labelledby="who-title">
+      <div class="atc-who-head">
+        <div class="ds-rv" data-rv="">
+          <p class="ds-label ds-grad-text">Who we are</p>
+          <h2 class="ds-display" id="who-title">A business-first<br>technology partner.</h2>
+        </div>
+      </div>
+      <div class="atc-cols" data-atc="cols">
+        <article class="atc-col">
+          <hr class="ds-rule">
+          <div class="atc-col-ic" aria-hidden="true">
+            <!-- Think: an idea, shaped together -->
+            <svg viewBox="-40 -40 80 80"><circle r="38" fill="url(#ic-halo2)" opacity="0.5"></circle><circle r="26" fill="url(#ic-node)"></circle><g fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-5 8 C-5 4 -10 1.5 -10 -4.5 A10 10 0 0 1 10 -4.5 C10 1.5 5 4 5 8 Z M-4 12.5 H4"></path></g></svg>
+          </div>
+          <h3 class="ds-h3"><span class="ds-mask"><span class="ds-rise">We think with you.</span></span></h3>
+          <p class="ds-body"><span class="ds-mask"><span class="ds-rise">We start with your goals and challenge ideas before anything gets built.</span></span></p>
+        </article>
+        <article class="atc-col">
+          <hr class="ds-rule">
+          <div class="atc-col-ic" aria-hidden="true">
+            <!-- Build: blocks going up, piece by piece -->
+            <svg viewBox="-40 -40 80 80"><circle r="38" fill="url(#ic-halo2)" opacity="0.5"></circle><circle r="26" fill="url(#ic-node)"></circle><g fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="-6.5" y="-13" width="13" height="10" rx="2.5"></rect><rect x="-14" y="2" width="13" height="10" rx="2.5"></rect><rect x="1" y="2" width="13" height="10" rx="2.5"></rect></g></svg>
+          </div>
+          <h3 class="ds-h3"><span class="ds-mask"><span class="ds-rise">We build with you.</span></span></h3>
+          <p class="ds-body"><span class="ds-mask"><span class="ds-rise">The right experts, working alongside your team, with progress you can see.</span></span></p>
+        </article>
+        <article class="atc-col">
+          <hr class="ds-rule">
+          <div class="atc-col-ic" aria-hidden="true">
+            <!-- Stay: it works, and keeps improving -->
+            <svg viewBox="-40 -40 80 80"><circle r="38" fill="url(#ic-halo2)" opacity="0.5"></circle><circle r="26" fill="url(#ic-node)"></circle><g fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 -7.4 A13 13 0 1 0 12.6 3.4"></path><path d="M16.2 6.9 L13 1 L7.4 4.6"></path><path d="M-5 0 L-1.5 3.5 L5 -3"></path></g></svg>
+          </div>
+          <h3 class="ds-h3"><span class="ds-mask"><span class="ds-rise">We stay until it works.</span></span></h3>
+          <p class="ds-body"><span class="ds-mask"><span class="ds-rise">After launch, we keep improving it as your business grows.</span></span></p>
+        </article>
+      </div>
+    </section>
+    </div>
+
+    <div class="atc-pin" id="clients">
+    <section class="atc-sec atc-trust atc-pin-in" aria-labelledby="trust-title">
+      <div class="atc-trust-head">
+        <h2 class="ds-display ds-rv" data-rv="" id="trust-title">Trusted <span class="ds-mute">where</span><br><span class="ds-mute">the</span> stakes are high.</h2>
+        <div class="atc-trust-side ds-rv" data-rv="">
+          <p class="ds-lede">From fast-growing companies to complex enterprises, business leaders trust us to deliver what matters.</p>
+          <a class="ds-btn ds-btn--grad" href="mailto:hello@atconglobal.com">Start a conversation<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+        </div>
+      </div>
+      <div class="atc-logos ds-rv" data-rv="">
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 1]</span></div>
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 2]</span></div>
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 3]</span></div>
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 4]</span></div>
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 5]</span></div>
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 6]</span></div>
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 7]</span></div>
+        <div class="atc-logo-cell"><span class="ds-small">[Client logo 8]</span></div>
+      </div>
+    </section>
+    </div>
+
+    <!-- Proven results: the claim on the left, the numbers as a bento on the right -->
+    <div class="atc-pin" id="results">
+    <section class="atc-sec atc-kpi atc-pin-in" aria-labelledby="kpi-title">
+      <div class="atc-trust-head atc-kpi-top">
+        <div class="ds-rv" data-rv="">
+          <p class="ds-label ds-grad-text">Proven results</p>
+          <h2 class="ds-display" id="kpi-title">Proof,<br><span class="ds-mute">not promises.</span></h2>
+        </div>
+        <div class="atc-trust-side ds-rv" data-rv="">
+          <p class="ds-lede">Behind every number is the same habit: we stay accountable until it works.</p>
+          <a class="ds-btn ds-btn--grad" href="#how" onClick="{{ goHow }}">See how we work<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+        </div>
+      </div>
+      <div class="atc-kpis" data-atc="bento">
+        <article class="atc-kpi-card">
+          <div class="atc-kpi-txt">
+            <h3 class="atc-kpi-name">Real impact</h3>
+            <p class="atc-kpi-cap">Business outcomes delivered</p>
+          </div>
+          <div class="atc-kpi-stage"><p class="atc-kpi-num"><span data-atc-count="100">100</span><span class="atc-kpi-unit">+</span></p></div>
+        </article>
+        <article class="atc-kpi-card">
+          <div class="atc-kpi-txt">
+            <h3 class="atc-kpi-name">Long-term partnerships</h3>
+            <p class="atc-kpi-cap">Of clients come back for their next project</p>
+          </div>
+          <div class="atc-kpi-stage"><p class="atc-kpi-num"><span data-atc-count="95">95</span><span class="atc-kpi-unit">%</span></p></div>
+        </article>
+        <article class="atc-kpi-card">
+          <div class="atc-kpi-txt">
+            <h3 class="atc-kpi-name">Proven experience</h3>
+            <p class="atc-kpi-cap">Years in business technology</p>
+          </div>
+          <div class="atc-kpi-stage"><p class="atc-kpi-num"><span data-atc-count="20">20</span><span class="atc-kpi-unit">+</span></p></div>
+        </article>
+      </div>
+      <p class="ds-small atc-kpi-base ds-rv" data-rv="">
+        <svg class="atc-kpi-pin" viewBox="-12 -12 24 24" aria-hidden="true"><circle r="11.5" fill="url(#ic-node)"></circle><path d="M0 6.5 C-3.2 3 -4.6 0.6 -4.6 -1.4 A4.6 4.6 0 0 1 4.6 -1.4 C4.6 0.6 3.2 3 0 6.5 Z" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"></path><circle cy="-1.6" r="1.5" fill="#FFFFFF"></circle></svg>
+        <span>Based in Brussels. Trusted by teams across Europe and beyond.</span>
+      </p>
+    </section>
+    </div>
+
+    <section class="atc-vtrack" data-atc="vtrack" aria-label="Partnership" style="height: {{vtrackHeight}}">
+      <div class="atc-vstage">
+        <video class="atc-video" data-atc="v5" src="./assets/663fca74a410e0a46c02b45624f93a2c.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
+        <span class="atc-vov" data-atc="vov"></span>
+        <div class="atc-vtext" data-atc="vtext" data-theme="light">
+          <h2 class="ds-h1"><span class="ds-mask"><span class="ds-rise">Let’s make technology work for your business.</span></span></h2>
+          <span class="ds-mask"><span class="ds-rise"><a class="ds-btn" href="mailto:hello@atconglobal.com">Let’s talk<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a></span></span>
+        </div>
+        <span class="atc-vwhite" data-atc="vwhite"></span>
+      </div>
+    </section>
+
+    <footer class="atc-sec atc-foot">
+      <div class="atc-foot-top ds-rv" data-rv="">
+        <div>
+          <p class="ds-h3 atc-foot-claim">The partner that finally works for your business.</p>
+          <address class="ds-body atc-foot-addr">Avenue Louise 523<br>1050 Brussels, Belgium</address>
+          <div class="atc-foot-legal">
+            <span class="ds-small">© 2026 ATCON. All rights reserved.</span>
+            <span class="atc-foot-links ds-small"><a href="#privacy">Privacy Policy</a><span aria-hidden="true">·</span><a href="#cookies">Cookie Policy</a></span>
+          </div>
+        </div>
+        <nav class="atc-foot-col" aria-label="Explore">
+          <h3>Explore</h3>
+          <a href="#who" onClick="{{ goWho }}">Who we are</a>
+          <a href="#how" onClick="{{ goHow }}">How we work</a>
+          <a href="#clients" onClick="{{ goClients }}">Clients</a>
+        </nav>
+        <div class="atc-foot-col">
+          <h3>Contact</h3>
+          <a href="mailto:hello@atconglobal.com">hello@atconglobal.com</a>
+          <a href="tel:+32470204512">+32 470 20 45 12</a>
+          <a href="#linkedin">LinkedIn</a>
+        </div>
+        <div class="atc-foot-col">
+          <h3>Our values</h3>
+          <span>Integrity</span>
+          <span>Ownership</span>
+          <span>Delivery</span>
+        </div>
+      </div>
+      <div class="atc-wm" aria-hidden="true">
+      <svg class="atc-wordmark" viewBox="0 -10 673 134">
+        <defs>
+          <!-- Aurora gradient: mint, periwinkle blue, lime, back to blue -->
+          <linearGradient id="wm" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="673" y2="0"><stop offset="0" stop-color="#93DEB5"></stop><stop offset="0.3" stop-color="#5E8FEC"></stop><stop offset="0.52" stop-color="#8FB0F3"></stop><stop offset="0.76" stop-color="#D6EC5F"></stop><stop offset="1" stop-color="#7FA2EE"></stop></linearGradient>
+        </defs>
+        <g id="wmg" fill="url(#wm)" opacity="0.55">
+          <path d="M180.834 111.953V25.1359C180.834 25.0933 180.799 25.0588 180.756 25.0588L145.011 25.0588C144.968 25.0588 144.934 25.0243 144.934 24.9817V8.17755C144.934 8.13499 144.968 8.10049 145.011 8.10049L237.888 8.10049C237.93 8.10049 237.965 8.13499 237.965 8.17755V24.9817C237.965 25.0243 237.93 25.0588 237.888 25.0588H201.716C201.673 25.0588 201.639 25.0933 201.639 25.1359V111.89C201.639 111.932 201.604 111.967 201.562 111.967H180.847C180.84 111.967 180.834 111.961 180.834 111.953ZM323.934 113.231C323.937 113.237 323.933 113.245 323.926 113.245C311.966 113.243 301.668 111.06 293.033 106.696C284.394 102.236 277.738 96.0068 273.093 88.0335C268.434 80.0602 266.118 70.7025 266.118 59.9738C266.118 49.245 268.447 40.0338 273.093 32.0471C277.738 24.0605 284.394 17.8974 293.033 13.5314C301.671 9.0722 311.974 6.83594 323.941 6.83594C334.004 6.83594 342.843 8.3534 350.443 11.3883C358.137 14.4233 364.313 18.6961 368.959 24.2069C373.599 29.6956 376.443 36.0689 377.492 43.3533C377.499 43.3997 377.463 43.4414 377.416 43.4414H356.481C356.445 43.4414 356.414 43.4167 356.406 43.382C354.971 37.4197 351.275 32.6475 345.305 29.0521C339.422 25.4448 332.3 23.6345 323.941 23.6345C312.733 23.6345 303.801 26.8159 297.159 33.1786C290.61 39.4481 287.335 48.3798 287.335 59.9604C287.335 71.5411 290.61 80.6592 297.159 87.0219C303.801 93.2914 312.733 96.4195 323.941 96.4195C332.487 96.4195 339.701 94.6092 345.598 91.0019C351.568 87.3137 355.211 82.4356 356.553 76.3938C356.561 76.3584 356.592 76.3331 356.628 76.3331L377.417 76.3331C377.464 76.3331 377.499 76.374 377.494 76.42C376.537 83.8907 373.639 90.3576 368.812 95.8471C363.967 101.358 357.698 105.631 350.004 108.666C342.314 111.699 333.627 113.216 323.942 113.218C323.936 113.218 323.931 113.225 323.934 113.231ZM470.789 113.245C458.729 113.245 448.373 111.062 439.734 106.696C431.095 102.236 424.439 96.0068 419.794 88.0335C415.242 80.0602 412.952 70.7025 412.952 59.9738C412.952 49.245 415.281 40.0338 419.927 32.0471C424.586 24.0738 431.188 17.8974 439.734 13.5314C448.373 9.0722 458.729 6.83594 470.789 6.83594C482.848 6.83594 493.018 9.0722 501.564 13.5314C510.203 17.8974 516.805 24.0738 521.371 32.0471C526.03 40.0204 528.346 49.3382 528.346 59.9738C528.346 70.6093 526.016 80.0602 521.371 88.0335C516.712 96.0068 510.07 102.236 501.431 106.696C492.885 111.062 482.675 113.245 470.802 113.245H470.789ZM470.789 96.4328C481.903 96.4328 490.729 93.3047 497.291 87.0352C503.84 80.6725 507.115 71.6476 507.115 59.9738C507.115 48.2999 503.787 39.4614 497.144 33.1919C490.595 26.8292 481.81 23.6478 470.789 23.6478C459.767 23.6478 450.649 26.8292 444.007 33.1919C437.458 39.4614 434.183 48.3931 434.183 59.9738C434.183 71.5544 437.458 80.6725 444.007 87.0352C450.649 93.3047 459.581 96.4328 470.789 96.4328ZM568.359 111.953C568.373 111.953 568.385 111.942 568.385 111.927V8.17754C568.385 8.13499 568.42 8.10049 568.462 8.10049L593.984 8.10049C594.008 8.10049 594.031 8.11188 594.046 8.13124L651.836 84.9945C651.851 85.0138 651.873 85.0252 651.898 85.0252H652.632C652.675 85.0252 652.71 84.9897 652.709 84.9464L651.992 52.3997V8.17755C651.992 8.13499 652.027 8.10049 652.069 8.10049L672.72 8.10049C672.763 8.10049 672.797 8.13499 672.797 8.17755V111.876C672.797 111.919 672.763 111.953 672.72 111.953L647.625 111.953C647.6 111.953 647.578 111.942 647.563 111.923L589.906 35.6185C589.891 35.5992 589.869 35.5879 589.844 35.5879H588.817C588.774 35.5879 588.739 35.6236 588.74 35.667L589.59 66.9354V111.876C589.59 111.919 589.555 111.953 589.513 111.953H568.359Z"></path>
+          <path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z"></path>
+          <path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z"></path>
+        </g>
+      </svg>
+      </div>
+    </footer>
+
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pace":{"editor":"range","min":0.6,"max":1.6,"step":0.05,"default":0.9,"section":"Scroll story"},"overlay":{"editor":"range","min":0,"max":1.2,"step":0.05,"default":1,"section":"Scroll story"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
+  timeline() {
+    return {
+      U: 2765,
+      heroOut: [0, 50],
+      v2: [0, 288], v4: [288, 490], v3: [490, 690],
+      indoor: 216,
+      ch0: [-1, -1, 0, 32],
+      ch1: [223, 248, 352, 382],
+      frame: [335, 382],
+      white: [668, 694],
+      // Problem cards: each arrives in turn and stays; the graphic on the right follows the newest card
+      stack: {
+        // "What actually happens" rises centred, then moves to the top left as the 3D stack appears in the middle;
+        // the stack then moves right and opens up while the four points come in one below the other
+        title: 700, titleMove: [770, 865],
+        isoIn: [790, 850], isoMove: [885, 980], explode: [885, 1000],
+        ins: [895, 1000, 1105, 1210],
+        out: 1430
+      },
+      famIn: [1505, 1595],
+      famOut: [1865, 1915],
+      focus: [1530, 1625],
+      unfocus: [1885, 1965],
+      fill: [1625, 1825],
+      gap: {
+        // A mark arrives centred, slides to the right, then the line rises in on the left
+        mark: [1950, 2000, 2161, 2211], markMove: [2005, 2100],
+        title: 2106,
+        lift: [2166, 2226],
+        // "Not as another…": the page holds while the line and its icons play together (seconds)
+        a: 2241, aOut: 2316, aPlay: 1.95,
+        // The close: title to the centre, "As a partner.", then the logo and tagline
+        center: [2358, 2453], b: 2465, bOut: 2545, sign: 2589,
+        out: 2700
+      }
+    };
+  }
+
+  renderVals() {
+    var self = this;
+    var pace = this.props.pace ?? 0.9;
+    this._pace = pace;
+    this._ovk = this.props.overlay ?? 1;
+    if (!this._h) {
+      var scrollToUnit = function (unit, smooth) {
+        var track = self.q('track');
+        if (!track) return;
+        var vh = window.innerHeight || 800;
+        var span = track.offsetHeight - vh;
+        var se = document.scrollingElement || document.documentElement;
+        var top = track.getBoundingClientRect().top + (window.pageYOffset || se.scrollTop || 0) + span * (unit / self.timeline().U);
+        self.jump();
+        try { window.scrollTo({ top: top, behavior: smooth ? 'smooth' : 'auto' }); } catch (err) { window.scrollTo(0, top); }
+      };
+      var setMenu = function (open) {
+        var root = self.q('root'), burger = self.q('burger');
+        if (!root) return;
+        root.setAttribute('data-menu', open ? 'open' : 'closed');
+        if (burger) {
+          burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+          burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+        var de = document.documentElement;
+        de.style.overflow = open ? 'hidden' : '';
+        if (document.body) document.body.style.overflow = open ? 'hidden' : '';
+      };
+      this._h = {
+        seeProblem: function (e) { if (e && e.preventDefault) e.preventDefault(); self._cine = null; if (!self.storyCine()) scrollToUnit(256, true); },
+        toggleMenu: function (e) {
+          if (e && e.preventDefault) e.preventDefault();
+          var root = self.q('root');
+          setMenu(!(root && root.getAttribute('data-menu') === 'open'));
+        },
+        closeMenu: function () { setMenu(false); },
+        navTo: function (e) { if (e && e.preventDefault) e.preventDefault(); setMenu(false); },
+        goHome: function (e) {
+          if (e && e.preventDefault) e.preventDefault();
+          setMenu(false);
+          setTimeout(function () { scrollToUnit(0, true); }, 250);
+        },
+        goHow: function (e) { if (e && e.preventDefault) e.preventDefault(); scrollToUnit(1970, true); },
+        goWho: function (e) { if (e && e.preventDefault) e.preventDefault(); scrollToEl('who'); },
+        goClients: function (e) { if (e && e.preventDefault) e.preventDefault(); scrollToEl('clients'); }
+      };
+      var scrollToEl = function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var se = document.scrollingElement || document.documentElement;
+        var top = el.getBoundingClientRect().top + (window.pageYOffset || se.scrollTop || 0);
+        self.jump();
+        try { window.scrollTo({ top: top, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, top); }
+      };
+    }
+    return {
+      trackHeight: 'calc(100vh + ' + Math.round(this.timeline().U * pace) + 'vh)',
+      vtrackHeight: 'calc(100vh + ' + Math.round(320 * pace) + 'vh)',
+      seeProblem: this._h.seeProblem,
+      toggleMenu: this._h.toggleMenu,
+      closeMenu: this._h.closeMenu,
+      navTo: this._h.navTo,
+      goHome: this._h.goHome,
+      goHow: this._h.goHow,
+      goWho: this._h.goWho,
+      goClients: this._h.goClients
+    };
+  }
+
+  componentDidMount() {
+    var self = this;
+    this._p = 0;
+    this._last = 0;
+    this._el = {};
+    this._all = {};
+    this._primed = false;
+    this._splashT = 0;
+    this._waitT = 0;
+    this._splash = 0;
+    var tick = function (now) {
+      self._raf = requestAnimationFrame(tick);
+      try { self.frame(now || 0); } catch (e) {}
+    };
+    this._raf = requestAnimationFrame(tick);
+    this.prime();
+
+    // Every load starts at the top, so the splash and hero are what you see first.
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    try { window.scrollTo(0, 0); } catch (e) {}
+
+    // Coming back to the page from the browser cache plays the splash again.
+    this._onShow = function (e) { if (e && e.persisted) self.resetSplash(); };
+    window.addEventListener('pageshow', this._onShow);
+
+    // While a graphic plays on its own, wheel, touch and scroll keys wait for it
+    this._onHold = function (e) {
+      if (!self._lock || performance.now() > self._lock.until) return;
+      if (e.type === 'keydown') {
+        var t = e.target, tag = t && t.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || (t && t.isContentEditable)) return;
+        if ([' ', 'Spacebar', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End'].indexOf(e.key) < 0) return;
+      }
+      if (e.cancelable) e.preventDefault();
+    };
+    window.addEventListener('wheel', this._onHold, { passive: false });
+    window.addEventListener('touchmove', this._onHold, { passive: false });
+    window.addEventListener('keydown', this._onHold);
+
+    // Folded points open and close from their plus / minus
+    this._onTog = function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('.atc-card-tog') : null;
+      if (!b) return;
+      e.preventDefault();
+      var card = b.closest('.atc-card');
+      if (!card || !card.classList.contains('is-in')) return;
+      var idx = self.qa('[data-atc="stack"] .atc-card').indexOf(card);
+      self._openIdx = idx === self._openIdx ? -1 : idx;
+    };
+    document.addEventListener('click', this._onTog);
+
+    // When scrolling stops part-way through a reveal, let it finish
+    this._lastY = window.pageYOffset || 0;
+    this._onScroll = function () {
+      var y = window.pageYOffset || (document.scrollingElement || document.documentElement).scrollTop || 0;
+      if (y > self._lastY) self._dir = 1; else if (y < self._lastY) self._dir = -1;
+      self._lastY = y;
+      clearTimeout(self._settleT);
+      if (performance.now() < (self._snapUntil || 0)) return;
+      self._settleT = setTimeout(function () { self.settle(); }, 180);
+    };
+    this._onTouch = function (e) {
+      self._touching = e.type === 'touchstart';
+      if (self._touching) { self._glide = null; self._cine = null; }
+      if (!self._touching) { clearTimeout(self._settleT); self._settleT = setTimeout(function () { self.settle(); }, 220); }
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onTake = function () { self._glide = null; self._cine = null; };
+    window.addEventListener('wheel', this._onTake, { passive: true });
+    window.addEventListener('mousedown', this._onTake, { passive: true });
+    window.addEventListener('keydown', this._onTake);
+    window.addEventListener('touchstart', this._onTouch, { passive: true });
+    window.addEventListener('touchend', this._onTouch, { passive: true });
+
+    // Sections after the story fade up as they enter the screen.
+    var rv = Array.prototype.slice.call(document.querySelectorAll('[data-rv]'));
+    if ('IntersectionObserver' in window) {
+      this._io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('is-in'); self._io.unobserve(en.target); }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      rv.forEach(function (el) { self._io.observe(el); });
+    } else {
+      rv.forEach(function (el) { el.classList.add('is-in'); });
+    }
+  }
+
+  resetSplash() {
+    var el = this.q('splash'), root = this.q('root');
+    clearTimeout(this._goneT);
+    if (el) { el.classList.remove('is-out', 'is-gone', 'is-in'); }
+    if (root) root.classList.remove('is-ready');
+    this._splash = 0; this._splashT = 0; this._waitT = 0; this._onT = 0;
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this._raf);
+    clearTimeout(this._goneT);
+    if (this._onShow) window.removeEventListener('pageshow', this._onShow);
+    if (this._onHold) {
+      window.removeEventListener('wheel', this._onHold, { passive: false });
+      window.removeEventListener('touchmove', this._onHold, { passive: false });
+      window.removeEventListener('keydown', this._onHold);
+    }
+    this._lock = null;
+    clearTimeout(this._settleT);
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._onTake) {
+      window.removeEventListener('wheel', this._onTake);
+      window.removeEventListener('mousedown', this._onTake);
+      window.removeEventListener('keydown', this._onTake);
+    }
+    if (this._onTog) document.removeEventListener('click', this._onTog);
+    this._cine = null;
+    this._glide = null;
+    if (this._onTouch) {
+      window.removeEventListener('touchstart', this._onTouch);
+      window.removeEventListener('touchend', this._onTouch);
+    }
+    if (this._io) this._io.disconnect();
+    if (this._sio) this._sio.disconnect();
+    document.documentElement.style.overflow = '';
+    if (document.body) document.body.style.overflow = '';
+  }
+
+  q(key) {
+    var el = this._el && this._el[key];
+    if (!el || !el.isConnected) {
+      el = document.querySelector('[data-atc="' + key + '"]');
+      if (this._el) this._el[key] = el;
+    }
+    return el;
+  }
+
+  qa(sel) {
+    var list = this._all && this._all[sel];
+    if (!list || !list.length || !list[0].isConnected) {
+      list = Array.prototype.slice.call(document.querySelectorAll(sel));
+      if (this._all) this._all[sel] = list;
+    }
+    return list;
+  }
+
+  prime() {
+    var v1 = this.q('v1'), v2 = this.q('v2'), v4 = this.q('v4'), v3 = this.q('v3'), v5 = this.q('v5');
+    [v1, v2, v4, v3, v5].forEach(function (v) {
+      if (!v) return;
+      v.muted = true;
+      v.defaultMuted = true;
+      v.playsInline = true;
+      v.setAttribute('playsinline', '');
+    });
+    if (v1) { v1.loop = true; var pr = v1.play(); if (pr && pr.catch) pr.catch(function () {}); }
+    [v2, v4, v3, v5].forEach(function (v) {
+      if (!v) return;
+      var p = v.play();
+      if (p && p.then) p.then(function () { v.pause(); v.currentTime = 0; }).catch(function () {});
+      else v.pause();
+    });
+    this._primed = !!(v1 && v2 && v4 && v3 && v5);
+  }
+
+  // The splash's 1 second only counts while a person can actually see the page:
+  // the tab is visible, the page is on screen and not covered (for example by the
+  // app's own loading screen), and the hero video has a frame to reveal.
+  watchSplash(el) {
+    var self = this;
+    if (this._sio || !('IntersectionObserver' in window)) return;
+    var opts = { threshold: [0, 0.5, 1] };
+    try { opts.trackVisibility = true; opts.delay = 100; } catch (e) {}
+    try {
+      this._sio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          self._sOn = en.isIntersecting && en.intersectionRatio >= 0.5;
+          self._sVis = (typeof en.isVisible === 'boolean') ? en.isVisible : null;
+        });
+      }, opts);
+      this._sio.observe(el);
+    } catch (e) {
+      try {
+        this._sio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { self._sOn = en.isIntersecting && en.intersectionRatio >= 0.5; self._sVis = null; });
+        }, { threshold: [0, 0.5, 1] });
+        this._sio.observe(el);
+      } catch (e2) { this._sOn = true; this._sVis = null; }
+    }
+  }
+
+  splash(dt) {
+    if (this._splash >= 2) return;
+    var el = this.q('splash'), root = this.q('root'), v1 = this.q('v1');
+    if (!el) return;
+    this.watchSplash(el);
+    this._waitT += dt;
+    var hidden = document.visibilityState && document.visibilityState !== 'visible';
+    if (hidden) return;
+    if (this._splash === 0) { el.classList.add('is-in'); this._splash = 1; }
+
+    var bg = el.querySelector('.atc-splash-bg');
+    var media = (v1 && v1.readyState >= 2 && (!bg || bg.offsetParent === null || bg.complete)) || this._waitT > 4000;
+    var onScreen = this._sio ? !!this._sOn : true;
+    // Browsers that report occlusion: wait until nothing covers the page. Where the
+    // report stays false for other reasons (a scaled preview), give up after 2.5s on screen.
+    if (onScreen) this._onT = (this._onT || 0) + dt; else this._onT = 0;
+    var seen = onScreen && (this._sVis === null || this._sVis === true || this._onT > 2500);
+    if (!(media && seen) && this._waitT < 9000) return;
+
+    this._splashT += dt;
+    if (this._splashT >= 600) {
+      el.classList.add('is-out');
+      if (root) root.classList.add('is-ready');
+      this._splash = 2;
+      if (this._sio) { this._sio.disconnect(); this._sio = null; }
+      this._goneT = setTimeout(function () { el.classList.add('is-gone'); }, 900);
+    }
+  }
+
+  frame(now) {
+    if (!this._primed) this.prime();
+    var dt = this._last ? Math.min(64, now - this._last) : 16;
+    this._last = now;
+    this.splash(dt);
+
+    var track = this.q('track');
+    if (!track) return;
+    this.holdScroll();
+    if (this._cine) { if (this._lock) this._cine = null; else this.cineStep(now); }
+    if (this._glide && !this._lock && !this._cine) this.glideStep(now); else this._glide = null;
+    var clamp = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
+    var map = function (x, a, b) { return clamp((x - a) / (b - a), 0, 1); };
+    var ease = function (t) { return t * t * (3 - 2 * t); };
+    this._fx = { clamp: clamp, map: map, ease: ease };
+
+    var rect = track.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight || 1;
+    var span = Math.max(1, rect.height - vh);
+    var target = clamp(-rect.top / span, 0, 1);
+    var k = 1 - Math.pow(1 - 0.14, dt / 16.67);
+    this._p += (target - this._p) * k;
+    if (Math.abs(target - this._p) < 0.00005) this._p = target;
+
+    var T = this.timeline();
+    var u = this._p * T.U;
+
+    // Hero loop dissolves into video 2
+    var heroOut = ease(map(u, T.heroOut[0], T.heroOut[1]));
+    var l1 = this.q('l1'), v1 = this.q('v1');
+    if (l1) {
+      l1.style.opacity = String(1 - heroOut);
+      // Opacity and scale only: both stay on the GPU, so the hand-off to the scrubbed video stays fluid
+      l1.style.transform = 'scale(' + (1 + heroOut * 0.03).toFixed(4) + ')';
+    }
+    if (v1 && this._splash >= 1) {
+      if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
+      else if (v1.paused) { var pr = v1.play(); if (pr && pr.catch) pr.catch(function () {}); }
+    }
+
+    // Scrubbed videos
+    this.seek(this.q('v2'), map(u, T.v2[0], T.v2[1]));
+    this.seek(this.q('v4'), map(u, T.v4[0], T.v4[1]));
+    this.seek(this.q('v3'), map(u, T.v3[0], T.v3[1]));
+    var l4 = this.q('l4'), l3 = this.q('l3'), white = this.q('white');
+    if (l4) l4.style.opacity = String(ease(map(u, T.v4[0] - 3, T.v4[0] + 4)));
+    if (l3) l3.style.opacity = String(ease(map(u, T.v3[0] - 3, T.v3[0] + 4)));
+    if (white) white.style.opacity = String(ease(map(u, T.white[0], T.white[1])));
+
+    // Progress rail covers the whole story
+    // Closing video: the client section fades into white, the video rises out of the white
+    // laptop screen while the section is locked, then the footer scrolls up.
+    var vt = this.q('vtrack');
+    if (vt) {
+      var vr = vt.getBoundingClientRect();
+      var vtarget = clamp(-vr.top / Math.max(1, vr.height - vh), 0, 1);
+      if (this._vp == null) this._vp = vtarget;
+      this._vp += (vtarget - this._vp) * k;
+      if (Math.abs(vtarget - this._vp) < 0.00005) this._vp = vtarget;
+      var vp = this._vp;
+      // Header band: white behind the nav from "That gap…" through the client section.
+      var hf = this.q('headfill');
+      if (hf) {
+        var hon = ease(map(u, T.gap.title - 30, T.gap.title)) * (1 - ease(map(vr.top, vh * 0.6, vh * 0.1)));
+        hf.style.opacity = hon.toFixed(3);
+      }
+      // Closing line and CTA rise in over the handshake, on the same haze as the indoor scenes.
+      var vov = this.q('vov'), vtext = this.q('vtext');
+      if (vov) vov.style.opacity = ease(map(vp, 0.55, 0.7)).toFixed(3);
+      if (vtext) {
+        vtext.style.visibility = vp > 0.58 ? 'visible' : 'hidden';
+        var vr2 = this.qa('[data-atc="vtext"] .ds-rise');
+        for (var vi = 0; vi < vr2.length; vi++) {
+          var vk = ease(map(vp, 0.6 + vi * 0.04, 0.72 + vi * 0.04));
+          vr2[vi].style.transform = 'translateY(' + ((1 - vk) * 112).toFixed(2) + '%)';
+        }
+      }
+      // Who we are: the columns play once the section has settled under the header
+      var whoEl = document.getElementById('who'), cols = this.q('cols');
+      if (whoEl && cols) {
+        var wt = whoEl.getBoundingClientRect().top, ct = cols.getBoundingClientRect().top;
+        var narrow = (window.innerWidth || 1200) <= 760;
+        var play = cols.classList.contains('is-play');
+        if (!play && ct < vh * 0.88 && (narrow || wt < vh * 0.12)) cols.classList.add('is-play');
+        else if (play && wt > vh * 0.8) cols.classList.remove('is-play');
+      }
+      // Proven results: cards arrive in turn once the section has settled, and the numbers count up
+      var resEl = document.getElementById('results'), bento = this.q('bento');
+      if (resEl && bento) {
+        var rt = resEl.getBoundingClientRect().top, bt = bento.getBoundingClientRect().top;
+        var narrowK = (window.innerWidth || 1200) <= 760;
+        var kp = bento.classList.contains('is-play');
+        if (!kp && bt < vh * 0.88 && (narrowK || rt < vh * 0.12)) { bento.classList.add('is-play'); this._kpiT0 = now; }
+        else if (kp && rt > vh * 0.8) { bento.classList.remove('is-play'); this._kpiT0 = null; }
+        var nums = this.qa('[data-atc="bento"] [data-atc-count]');
+        for (var ni = 0; ni < nums.length; ni++) {
+          var to = parseInt(nums[ni].getAttribute('data-atc-count'), 10) || 0;
+          var kt = this._kpiT0 == null ? 0 : map((now - this._kpiT0) / 1000, 0.25 + ni * 0.35, 1.85 + ni * 0.35);
+          var shown = String(Math.round(to * (1 - Math.pow(1 - kt, 3))));
+          if (nums[ni].textContent !== shown) nums[ni].textContent = shown;
+        }
+      }
+      var clients = document.getElementById('results');
+      if (clients) clients.style.opacity = (1 - ease(map(vr.top, vh * 0.95, vh * 0.2))).toFixed(3);
+      var vwhite = this.q('vwhite'), v5 = this.q('v5');
+      if (vwhite) vwhite.style.opacity = (1 - ease(map(vp, 0.0, 0.14))).toFixed(3);
+      if (v5) {
+        // A touch of zoom on the first frames keeps the laptop bezel out of view until the camera pulls back.
+        v5.style.transform = 'scale(' + (1.06 - 0.06 * ease(map(vp, 0.08, 0.24))).toFixed(4) + ')';
+        if (vr.top < vh && vr.bottom > 0) this.seek(v5, map(vp, 0.06, 0.96));
+      }
+    }
+
+    // Progress runs from the top of the page to the footer; the frame fades as the footer arrives.
+    var foot = this.qa('.atc-foot')[0], frameEl = this.q('frame');
+    var footTop = foot ? foot.getBoundingClientRect().top : vh * 2;
+    var scrolled = -rect.top;
+    var toFoot = Math.max(1, scrolled + footTop - vh);
+    var prog = clamp(scrolled / toFoot, 0, 1);
+    if (frameEl) {
+      var fv = map(footTop, vh * 0.35, vh * 0.95);
+      frameEl.style.opacity = fv.toFixed(3);
+      frameEl.style.visibility = fv > 0.003 ? 'visible' : 'hidden';
+    }
+    var fill = this.q('prog'), head = this.q('head'), box = this.q('progbox');
+    if (fill) fill.style.transform = 'scaleY(' + prog.toFixed(4) + ')';
+    if (head && box) head.style.transform = 'translateY(' + (prog * box.clientHeight - 4).toFixed(1) + 'px)';
+
+    var root = this.q('root');
+    if (root) {
+      var want = u >= T.indoor ? 'light' : 'dark';
+      if (root.getAttribute('data-theme') !== want) root.setAttribute('data-theme', want);
+    }
+
+    // Hero and video 2 text, with their overlays
+    var ranges = [T.ch0, T.ch1];
+    var ovk = this._ovk == null ? 1 : this._ovk;
+    for (var i = 0; i < ranges.length; i++) {
+      var r = ranges[i];
+      var a = r[0] < 0 ? 1 : ease(map(u, r[0], r[1]));
+      var b = ease(map(u, r[2], r[3]));
+      var o = Math.min(a, 1 - b);
+      var shift = (1 - o) * 26 * (b > 0 ? -1 : 1);
+      var ch = this.q('ch' + i), inner = this.q('in' + i), ov = this.q('ov' + i);
+      if (ch) {
+        ch.style.opacity = o.toFixed(3);
+        ch.style.visibility = o > 0.01 ? 'visible' : 'hidden';
+      }
+      if (inner) inner.style.transform = 'translateY(' + shift.toFixed(1) + 'px)';
+      if (ov) {
+        var oa = r[0] < 0 ? 1 : ease(map(u, r[0] - 14, r[1]));
+        var ob = ease(map(u, r[2], r[3] + 14));
+        ov.style.opacity = Math.min(1, Math.min(oa, 1 - ob) * ovk).toFixed(3);
+      }
+    }
+
+    // Lines: hero layout, then an even frame, then they close in around the statement
+    this.lines(ease(map(u, T.frame[0], T.frame[1])), ease(map(u, T.focus[0], T.focus[1])) * (1 - ease(map(u, T.unfocus[0], T.unfocus[1]))), vh);
+
+    // Problem sections
+    this.stack(T.stack, u);
+
+    // Focus statement
+    var fam = this.q('fam');
+    var sl = ease(map(u, T.famIn[0], T.famIn[1]));
+    var so = ease(map(u, T.famOut[0], T.famOut[1]));
+    if (fam) {
+      var fo = sl * (1 - so);
+      fam.style.opacity = fo.toFixed(3);
+      fam.style.visibility = fo > 0.005 ? 'visible' : 'hidden';
+      fam.style.filter = so > 0.001 ? 'blur(' + (so * 8).toFixed(2) + 'px)' : 'none';
+      fam.style.transform = 'translateY(' + ((1 - sl) * vh * 0.55 + so * 30).toFixed(1) + 'px)';
+    }
+    this.gap(T.gap, u);
+    this._lastU = u;
+    var words = this.qa('[data-atc="famText"] .ds-w');
+    var wp = map(u, T.fill[0], T.fill[1]) * words.length;
+    for (var w = 0; w < words.length; w++) {
+      var on = wp > w + 0.4;
+      if (words[w].classList.contains('is-on') !== on) words[w].classList.toggle('is-on', on);
+    }
+  }
+
+  stack(S, u) {
+    var map = this._fx.map, ease = this._fx.ease;
+    var box = this.q('stack');
+    if (!box) return;
+    var live = u > S.title - 4 && u < S.out + 100;
+    box.style.visibility = live ? 'visible' : 'hidden';
+    var cards = this.qa('[data-atc="stack"] .atc-card');
+    var active = -1;
+    for (var i = 0; i < S.ins.length; i++) if (u >= S.ins[i]) active = i;
+    // Each new point opens itself and folds the rest; a point opened by hand stays open until the next one arrives
+    if (this._openFor !== active) { this._openFor = active; this._openIdx = active; }
+    var focus = this._openIdx >= 0 ? this._openIdx : active;
+    var gone = ease(map(u, S.out, S.out + 50));
+    for (var c = 0; c < cards.length; c++) {
+      var card = cards[c], t0 = S.ins[c];
+      var kin = ease(map(u, t0, t0 + 50));
+      var kout = ease(map(u, S.out + c * 10, S.out + c * 10 + 50));
+      card.style.opacity = (kin * (1 - kout)).toFixed(3);
+      card.style.transform = 'translateY(' + ((1 - kin) * 24).toFixed(1) + 'px)';
+      card.classList.toggle('is-active', c === active && kout < 0.5);
+      var past = c < active;
+      if (card.classList.contains('is-past') !== past) card.classList.toggle('is-past', past);
+      var arrived = c <= active, open = arrived && c === this._openIdx;
+      if (card.classList.contains('is-in') !== arrived) {
+        card.classList.toggle('is-in', arrived);
+        var tg0 = card.querySelector('.atc-card-tog');
+        if (tg0) tg0.tabIndex = arrived ? 0 : -1;
+      }
+      if (card.classList.contains('is-open') !== open) {
+        card.classList.toggle('is-open', open);
+        var tg = card.querySelector('.atc-card-tog');
+        if (tg) { tg.setAttribute('aria-expanded', open ? 'true' : 'false'); tg.setAttribute('aria-label', open ? 'Hide details' : 'Show details'); }
+      }
+      if (live) {
+        // Lines rise out of their masks in order, and sink back together when the column leaves.
+        var rises = card.querySelectorAll('.ds-rise');
+        for (var j = 0; j < rises.length; j++) {
+          var rin = ease(map(u, t0 + 6 + j * 8, t0 + 6 + j * 8 + 44));
+          rises[j].style.transform = 'translateY(' + ((1 - rin) * 112 + kout * 112).toFixed(2) + '%)';
+        }
+      }
+    }
+
+    // "What actually happens": rises in the middle of the page, then glides to its place above the list,
+    // at the same pace as the frame lines closing in around the statement later on.
+    var wah = this.q('wah'), wr = this.q('wahText');
+    if (wah && wr && live) {
+      wr.style.transform = 'translateY(' + ((1 - ease(map(u, S.title, S.title + 46))) * 112 + gone * 112).toFixed(2) + '%)';
+      var k = 1 - ease(map(u, S.titleMove[0], S.titleMove[1]));
+      var tx = 0, ty = 0;
+      if (k > 0) {
+        var vh = window.innerHeight || 800, vw = window.innerWidth || 1200;
+        var pb = this.q('progbox');
+        var rail = pb ? pb.getBoundingClientRect().left : 0;
+        var rg = this._rg2 || (this._rg2 = document.createRange());
+        rg.selectNodeContents(wr);
+        var tw = rg.getBoundingClientRect().width;
+        var left = box.offsetLeft + wah.offsetLeft, top = box.offsetTop + wah.offsetTop;
+        tx = (vw / 2 - (left + tw / 2)) * k;
+        ty = (vh / 2 - wah.offsetHeight / 2 - top) * k;
+      }
+      wah.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
+    }
+
+    // The 3D stack: appears in the middle as one block, moves to the right and opens up into its four layers;
+    // the layer for the point being read lights up.
+    var iso = this.q('iso');
+    if (iso) {
+      var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
+      this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
+      if (gv > 0.003) {
+        var e = ease(map(u, S.explode[0], S.explode[1]));
+        var gap = 22 + (210 - 22) * e;
+        var layers = this.qa('[data-atc="iso"] .isoL');
+        for (var l = 0; l < layers.length; l++) {
+          var li = parseInt(layers[l].getAttribute('data-i'), 10) || 0;
+          layers[l].setAttribute('transform', 'translate(300 ' + (440 + (li - 1.5) * gap).toFixed(1) + ')');
+          var on = e > 0.85 && li === focus;
+          if (layers[l].classList.contains('is-on') !== on) layers[l].classList.toggle('is-on', on);
+          var dim = e > 0.02 && li !== Math.max(focus, 0);
+          if (layers[l].classList.contains('is-dim') !== dim) layers[l].classList.toggle('is-dim', dim);
+        }
+      }
+    }
+  }
+
+  setGfx(el, gv) {
+    if (!el) return;
+    el.style.visibility = gv > 0.003 ? 'visible' : 'hidden';
+    el.style.opacity = gv.toFixed(3);
+    el.style.transform = 'scale(' + (0.96 + 0.04 * gv).toFixed(4) + ')';
+    el.style.filter = gv < 0.999 ? 'blur(' + ((1 - gv) * 10).toFixed(2) + 'px)' : 'none';
+  }
+
+  gap(G, u) {
+    var map = this._fx.map, ease = this._fx.ease;
+    var box = this.q('gap'), end = this.q('gapend');
+    var live = u > G.title - 6 && u < G.out + 70;
+    var sink = ease(map(u, G.out, G.out + 44));
+    // The first line plays in time: the page holds as it arrives, the line and its graphic together
+    var tA = this.beat('a', u, G.a, G.a - 10, G.aPlay);
+    var outA = ease(map(u, G.aOut, G.aOut + 40));
+    if (box) box.style.visibility = live ? 'visible' : 'hidden';
+    var endLive = u > G.b - 6 && u < G.out + 60;
+    if (end) end.style.visibility = endLive ? 'visible' : 'hidden';
+    if (live) {
+      var title = this.q('gapTitle');
+      if (title) title.style.transform = 'translateY(' + ((1 - ease(map(u, G.title, G.title + 46))) * 112 + sink * 112).toFixed(2) + '%)';
+      var head = this.q('gapHead');
+      if (head) {
+        var vh = window.innerHeight || 800, vw = window.innerWidth || 1200;
+        var natural = box.offsetTop + head.offsetTop;
+        // 1. The line first sits vertically centred, then lifts to its top position for "Not as another…"
+        var centre = (vh - head.offsetHeight) / 2 - natural;
+        var lift = ease(map(u, G.lift[0], G.lift[1]));
+        var ty = centre * (1 - lift), tx = 0;
+        // 2. For the close it glides to the middle of the page, with the next line centred under it
+        var k = ease(map(u, G.center[0], G.center[1]));
+        var pb = this.q('progbox');
+        var rail = pb ? pb.getBoundingClientRect().left : 0;
+        var cx = vw / 2, cy = vh / 2;
+        var sign = this.q('sign');
+        var gapPx = 28, below = sign ? sign.offsetHeight : 90;
+        var titleTop = cy - (head.offsetHeight + gapPx + below) / 2;
+        if (k > 0 && title) {
+          var rg = this._rg || (this._rg = document.createRange());
+          rg.selectNodeContents(title);
+          var tw = rg.getBoundingClientRect().width;
+          var left = box.offsetLeft + head.offsetLeft;
+          tx = (cx - (left + tw / 2)) * k;
+          ty = ty + (titleTop - natural - ty) * k;
+        }
+        head.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
+        if (end) {
+          end.style.left = '0px';
+          end.style.top = (titleTop + head.offsetHeight + gapPx).toFixed(1) + 'px';
+        }
+      }
+      var g4 = this.q('gfx4'), la = this.q('lineA');
+      if (g4 && la) {
+        var lr = la.getBoundingClientRect(), pb2 = this.q('progbox');
+        g4.style.left = '0px';
+        g4.style.top = (lr.bottom + Math.max(32, Math.min(80, (window.innerHeight || 800) * 0.07))).toFixed(1) + 'px';
+      }
+      var ra = this.qa('[data-atc="lineA"] .ds-rise')[0];
+      if (ra) ra.style.transform = 'translateY(' + ((1 - ease(map(tA, 0, 0.75))) * 112 + outA * 112).toFixed(2) + '%)';
+    }
+
+    // "As a partner." rises under the centred title on scroll, then makes way for the ATCON logo and tagline
+    var rb = this.qa('[data-atc="lineB"] .ds-rise')[0];
+    if (rb) rb.style.transform = 'translateY(' + ((1 - ease(map(u, G.b, G.b + 44))) * 112 + ease(map(u, G.bOut, G.bOut + 40)) * 112).toFixed(2) + '%)';
+    var srises = this.qa('[data-atc="sign"] .ds-rise');
+    for (var j = 0; j < srises.length; j++) {
+      var sk = ease(map(u, G.sign + j * 12, G.sign + j * 12 + 46));
+      srises[j].style.transform = 'translateY(' + ((1 - sk) * 112 + sink * 112).toFixed(2) + '%)';
+    }
+
+    // The A mark: arrives centred, glides to the right, dissolves as the line lifts
+    var gm = Math.min(ease(map(u, G.mark[0], G.mark[1])), 1 - ease(map(u, G.mark[2], G.mark[3])));
+    this.markAt(this.q('gapmark'), gm, ease(map(u, G.markMove[0], G.markMove[1])));
+
+    // Graphic A: agency, dev shop, advisory firm at the corners of a triangle, never joined, each struck through
+    var gA = Math.min(ease(map(tA, 0, 0.5)), 1 - ease(map(u, G.aOut + 6, G.aOut + 50)));
+    this.setGfx(this.q('gfx4'), gA);
+    if (gA > 0.003) {
+      var ai = this.qa('[data-atc="gfx4"] .g4i'), ast = this.qa('[data-atc="gfx4"] .g4s'), ac = this.qa('[data-atc="gfx4"] .g4c'), ae = this.qa('[data-atc="gfx4"] .g4e');
+      for (var i = 0; i < ai.length; i++) {
+        var a0 = 0.15 + i * 0.42;
+        var ap = ease(map(tA, a0, a0 + 0.55));
+        ai[i].setAttribute('opacity', ap.toFixed(3));
+        ai[i].setAttribute('transform', 'translate(' + (-(1 - ap) * 18).toFixed(2) + ' 0) scale(' + (0.92 + 0.08 * ap).toFixed(4) + ')');
+        // A single red line strikes the icon through, and the icon steps back
+        var st = ease(map(tA, a0 + 0.45, a0 + 0.9));
+        if (ast[i]) ast[i].setAttribute('stroke-dashoffset', (157 * (1 - st)).toFixed(2));
+        if (ac[i]) ac[i].setAttribute('opacity', (1 - 0.55 * st).toFixed(3));
+        // The broken edge to the next corner fades in once both ends are there
+        if (ae[i]) ae[i].setAttribute('opacity', ease(map(tA, 0.15 + Math.min(i + 1, 2) * 0.42 + 0.2, 0.15 + Math.min(i + 1, 2) * 0.42 + 0.6)).toFixed(3));
+      }
+    }
+  }
+
+  // Rest points: every reveal runs between a start and an end unit. If the scroll stops part-way through
+  // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
+  motionRanges() {
+    if (this._ranges) return this._ranges;
+    var T = this.timeline(), S = T.stack, G = T.gap, r = [];
+    r.push(T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
+    r.push([S.title, S.title + 46], S.titleMove, S.isoIn, S.isoMove, S.explode);
+    for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 56]);
+    r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
+    r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
+      [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
+    this._ranges = r;
+    return r;
+  }
+
+  settle() {
+    if (this._lock || this._touching || this._cine) return;
+    var now = performance.now();
+    if (now < (this._jumpUntil || 0)) return;
+    var root = this.q('root');
+    if (root && root.getAttribute('data-menu') === 'open') return;
+    var dir = this._dir || 1, vh = window.innerHeight || 800;
+    var se = document.scrollingElement || document.documentElement;
+    var y = window.pageYOffset || se.scrollTop || 0;
+    var track = this.q('track');
+    if (!track) return;
+    var tr = track.getBoundingClientRect(), span = Math.max(1, tr.height - vh), U = this.timeline().U;
+    var u = -tr.top / span * U, target = null;
+    if (u > 0.5 && u < U - 0.5) {
+      var r = this.motionRanges(), t = null, k, n;
+      for (k = 0; k < r.length; k++) {
+        if (u > r[k][0] + 1 && u < r[k][1] - 1) {
+          var edge = dir > 0 ? r[k][1] : r[k][0];
+          if (t === null || (dir > 0 ? edge < t : edge > t)) t = edge;
+        }
+      }
+      // An edge can land inside an overlapping reveal; carry on to where that one settles too
+      for (n = 0; t !== null && n < 6; n++) {
+        var moved = false;
+        for (k = 0; k < r.length; k++) {
+          if (t > r[k][0] + 1 && t < r[k][1] - 1) { t = dir > 0 ? r[k][1] : r[k][0]; moved = true; }
+        }
+        if (!moved) break;
+      }
+      if (t !== null && Math.abs(t - u) <= 150) target = y + (t - u) / U * span;
+    } else if (u >= U - 0.5 && dir > 0) {
+      // Sections after the story: one that has started to come up finishes settling under the header
+      var pins = document.querySelectorAll('.atc-pin');
+      for (var p = 0; p < pins.length; p++) {
+        var pt = pins[p].getBoundingClientRect().top;
+        if (pt > vh * 0.02 && pt < vh * 0.5) { target = y + pt; break; }
+      }
+    }
+    if (target === null || Math.abs(target - y) < 2) return;
+    // A calm glide: longer for longer distances, eased in and out like an unhurried scroll
+    var dist = Math.abs(target - y);
+    var dur = Math.max(1000, Math.min(2000, 900 + dist * 0.8));
+    this._glide = { from: y, to: target, t0: now, dur: dur };
+    this._snapUntil = now + dur + 250;
+  }
+
+  // Runs every frame while an auto-glide is in progress
+  glideStep(now) {
+    var g = this._glide;
+    if (!g) return;
+    var t = Math.min(1, (now - g.t0) / g.dur);
+    var k = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    window.scrollTo(0, g.from + (g.to - g.from) * k);
+    if (t >= 1) this._glide = null;
+  }
+
+  // A beat that plays in time rather than with the scroll. The first time the story reaches `at`
+  // going down, the page holds there until the beat has played; returns the seconds elapsed.
+  // Arriving from below, or by a jump, shows it finished. Scrolling back above `reset` rewinds it.
+  beat(key, u, at, reset, dur) {
+    var all = this._beats || (this._beats = {});
+    var s = all[key] || (all[key] = { t0: null });
+    var now = performance.now();
+    if (u < reset) { s.t0 = null; return 0; }
+    if (s.t0 == null) {
+      if (u < at) return 0;
+      var down = this._lastU == null || u >= this._lastU;
+      if (!down || u > at + 60 || now < (this._jumpUntil || 0)) { s.t0 = now - dur * 1000; return dur; }
+      s.t0 = now;
+      this._lock = { top: this.unitTop(at), until: now + dur * 1000 + 150 };
+      this.holdScroll();
+    }
+    return Math.min(dur, (now - s.t0) / 1000);
+  }
+
+  // Scroll position of a story unit
+  unitTop(unit) {
+    var track = this.q('track');
+    if (!track) return 0;
+    var vh = window.innerHeight || 800;
+    var se = document.scrollingElement || document.documentElement;
+    var span = track.offsetHeight - vh;
+    return track.getBoundingClientRect().top + (window.pageYOffset || se.scrollTop || 0) + span * (unit / this.timeline().U);
+  }
+
+  // While a beat plays, the page stays where it is
+  holdScroll() {
+    var L = this._lock;
+    if (!L) return false;
+    if (performance.now() > L.until) { this._lock = null; return false; }
+    var se = document.scrollingElement || document.documentElement;
+    var y = window.pageYOffset || se.scrollTop || 0;
+    if (Math.abs(y - L.top) > 1) window.scrollTo(0, L.top);
+    return true;
+  }
+
+  // Cinematic glide through the scroll-driven videos: one calm, continuous move that eases in and out.
+  // It is laid out as a time table over the distance, so it can slow down where there is text to read.
+  startCine(toY, dur) {
+    var se = document.scrollingElement || document.documentElement;
+    var y0 = window.pageYOffset || se.scrollTop || 0, d = toY - y0;
+    if (d < 6) return false;
+    // Speed profile: a soft start, a long even middle, a soft landing. No crawl at either end.
+    var n = 400, ys = [y0], ts = [0], acc = [0], sum = 0, i;
+    var sm = function (x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
+    for (i = 1; i <= n; i++) {
+      var tau = (i - 0.5) / n;
+      var v = Math.min(0.12 + 0.88 * sm(tau / 0.2), 0.1 + 0.9 * sm((1 - tau) / 0.24));
+      sum += v; acc.push(sum);
+    }
+    for (i = 1; i <= n; i++) { ys.push(y0 + d * acc[i] / sum); ts.push(dur * i / n); }
+    this._glide = null;
+    this._cine = { ys: ys, ts: ts, t0: performance.now(), i: 0 };
+    this._snapUntil = performance.now() + dur * 1000 + 400;
+    return true;
+  }
+
+  cineStep(now) {
+    var c = this._cine;
+    if (!c) return;
+    var t = Math.max(0, (now - c.t0) / 1000), ts = c.ts, i = c.i;
+    while (i < ts.length - 1 && ts[i + 1] <= t) i++;
+    c.i = i;
+    if (i >= ts.length - 1) { window.scrollTo(0, c.ys[c.ys.length - 1]); this._cine = null; return; }
+    var f = (t - ts[i]) / Math.max(1e-6, ts[i + 1] - ts[i]);
+    window.scrollTo(0, c.ys[i] + (c.ys[i + 1] - c.ys[i]) * f);
+  }
+
+  // "See why": one calm, even glide from the hero to the end of the second video
+  storyCine() {
+    var T = this.timeline(), track = this.q('track');
+    if (!track) return false;
+    var vh = window.innerHeight || 800;
+    var y = window.pageYOffset || (document.scrollingElement || document.documentElement).scrollTop || 0;
+    var tr = track.getBoundingClientRect(), span = Math.max(1, tr.height - vh), top = tr.top + y, ppu = span / T.U;
+    var u = (y - top) / ppu, end = T.v2[1];
+    if (u < -2 || u > end - 2) return false;
+    // An even, unhurried pace: about 6.5 s for the whole of the second video
+    return this.startCine(top + end * ppu, 6.5 * Math.max(0.6, (end - u) / end));
+  }
+
+  // Menu and CTA jumps glide straight through the held beats
+  jump() {
+    this._lock = null;
+    this._cine = null;
+    this._jumpUntil = performance.now() + 2200;
+  }
+
+  // Fade the mark in like the other graphics, and slide it from the screen centre to its column
+  markAt(el, op, move) {
+    if (!el) return;
+    this.setGfx(el, op);
+    var W = (el.offsetParent && el.offsetParent.clientWidth) || window.innerWidth;
+    var shift = W / 2 - (el.offsetLeft + el.offsetWidth / 2);
+    el.style.transform = 'translateX(' + (shift * (1 - move)).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * op).toFixed(4) + ')';
+  }
+
+  backOut(x) {
+    var c1 = 1.5, c3 = c1 + 1, t = x - 1;
+    return 1 + c3 * t * t * t + c1 * t * t;
+  }
+
+  // Graphic 1: one whole plan splits into three pieces, each travels to its own vendor
+  lines(s, c, vh) {
+    var stage = this.q('root'), frameEl = this.q('frame'), logo = this.qa('.atc-logo')[0], famText = this.q('famText');
+    if (!stage) return;
+    var W = (frameEl && frameEl.clientWidth) || window.innerWidth;
+    var H = (frameEl && frameEl.clientHeight) || vh;
+    var r = (logo && logo.offsetWidth) || 80;
+    var narrow = W <= 760;
+    var hy = (narrow ? 0.68 : 0.715) * H;
+    var hero = [r, r, narrow ? W + 12 : 0.856 * W, hy, r, hy];
+    // After the hero, the right line slides out past the right edge and the lower line
+    // past the bottom edge; only the rail and the top line stay.
+    var framed = [r, r, W + 24, H + 24, r, H + 24];
+    var tw = famText ? famText.offsetWidth : W * 0.5, th = famText ? famText.offsetHeight : H * 0.2;
+    var bw = Math.min(W - 24, tw + 2 * Math.max(36, W * 0.05));
+    var bh = th + 2 * Math.max(36, H * 0.085);
+    var focus = [(W - bw) / 2, (H - bh) / 2, (W + bw) / 2, (H + bh) / 2, 0, H];
+    var v = [];
+    for (var i = 0; i < 6; i++) {
+      var a = hero[i] + (framed[i] - hero[i]) * s;
+      v.push(a + (focus[i] - a) * c);
+    }
+    stage.style.setProperty('--lx', v[0].toFixed(1) + 'px');
+    stage.style.setProperty('--ty', v[1].toFixed(1) + 'px');
+    stage.style.setProperty('--rx', v[2].toFixed(1) + 'px');
+    stage.style.setProperty('--by', v[3].toFixed(1) + 'px');
+    stage.style.setProperty('--rt', v[4].toFixed(1) + 'px');
+    stage.style.setProperty('--rh', Math.max(0, v[5] - v[4]).toFixed(1) + 'px');
+  }
+
+  // Scrub to the nearest frame (24 fps). Seeking to a frame we are already on is skipped, and a new
+  // seek waits for the previous one, so the decoder never queues up work and the picture keeps pace.
+  seek(v, f) {
+    if (!v || !v.duration || isNaN(v.duration)) return;
+    var fps = 24;
+    var t = Math.min(v.duration - 0.05, Math.max(0, f * v.duration));
+    t = Math.round(t * fps) / fps + 0.001;
+    if (v.seeking) return;
+    if (Math.abs(v.currentTime - t) > 0.5 / fps) {
+      try { v.currentTime = t; } catch (e) {}
+    }
+  }
+}
+</script>
+</body>
+</html>

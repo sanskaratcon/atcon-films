@@ -1,0 +1,173 @@
+/* ATCON web design system: tokens + core components.
+   Every page links this file; page files only add layout. */
+
+:root{
+  /* Brand colors */
+  --atc-navy:#001025;
+  --atc-navy-700:#0B1E3A;
+  --atc-blue:#0065ED;
+  --atc-lime:#EBFF39;
+  --atc-slate:#3A4D55;
+  --atc-gray:#99A1AF;
+  --atc-white:#FFFFFF;
+  --atc-cloud:#E6ECF4;      /* primary button hover on dark */
+  --atc-ivory:#F5F3EE;      /* light scene haze */
+  --atc-mist:#3A4E78;       /* hero grey-blue wash */
+  --atc-tile:#F2F4F8;       /* graphic tiles on white */
+  --atc-alert:#C8372D;      /* broken links, crosses in graphics */
+  /* Brand gradient, "aurora": mint into a clear periwinkle blue, then a touch of lime.
+     --atc-grad is the readable strength for text, lines and edges;
+     --atc-aurora is the soft version for glows, fills and the second tone of icons. */
+  --atc-grad-1:#3FB27E; --atc-grad-2:#2D63E6; --atc-grad-3:#5A86EE; --atc-grad-4:#9BBA2A;
+  --atc-grad:linear-gradient(100deg,#3FB27E 0%,#2D63E6 40%,#5A86EE 64%,#9BBA2A 100%);
+  --atc-aurora:linear-gradient(100deg,#A9E6C4 0%,#8EA9F1 42%,#B5C9F5 62%,#E3F08B 100%);
+  /* Icons: one solid blue for the bold stroke, the aurora for the soft second tone */
+  --atc-icon:#1D55E6;
+  --atc-fill-base:#B9C1CC;  /* statement text before it fills */
+  --atc-mute:#8C95A6;       /* muted words inside large headings */
+  --atc-paper:#F4F5F9;      /* light section background */
+
+  /* Typeface: Geist only */
+  --atc-font:'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+
+  /* Type scale (fluid, 1440 reference) */
+  --fs-display:clamp(40px,3.6vw,76px);   --lh-display:1.04; --ls-display:-0.045em; --fw-display:400;
+  --fs-h1:clamp(30px,2.9vw,56px);         --lh-h1:1.08;      --ls-h1:-0.035em;      --fw-h1:300;
+  --fs-statement:clamp(32px,3.3vw,62px);  --lh-statement:1.14; --ls-statement:-0.035em;
+  --fs-h2:clamp(26px,2.3vw,44px);        --lh-h2:1.12;      --ls-h2:-0.025em;      --fw-h2:400;
+  --fs-h3:clamp(20px,1.5vw,28px);         --lh-h3:1.2;       --ls-h3:-0.015em;      --fw-h3:500;
+  --fs-lede:clamp(16px,1.15vw,21px);      --lh-lede:1.55;    --ls-lede:-0.005em;    --fw-lede:300;
+  --fs-body:clamp(15px,1vw,18px);         --lh-body:1.6;     --ls-body:0;           --fw-body:400;
+  --fs-small:14px;                        --lh-small:1.5;
+  --fs-label:12px;                        --ls-label:0.14em; --fw-label:500;
+  --fs-button:15px;                       --fw-button:500;   --ls-button:-0.005em;
+
+  /* Spacing (4px base) */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+
+  /* Radii */
+  --r-sm:4px; --r-md:8px; --r-pill:999px;
+
+  /* Layout frame (rail, header, guide lines) */
+  --rail:clamp(52px,5.35vw,108px);
+  --line-y:71.5%;
+  --right-x:85.6%;
+  --gutter:clamp(16px,2.15vw,44px);
+  /* Content inset from the viewport edge: every section's left (and right) margin */
+  --content-x:calc(var(--rail) + var(--gutter) + 1vw);
+
+  /* Motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --dur-fast:.2s; --dur-theme:.6s; --dur-reveal:1.1s;
+}
+
+/* Themes: dark sits on video, light on bright scenes and pages */
+[data-theme="dark"]{
+  --fg:var(--atc-white); --fg-soft:rgba(255,255,255,.72); --fg-muted:rgba(255,255,255,.6);
+  --line:rgba(255,255,255,.34); --prog:var(--atc-white); --head:var(--atc-white);
+  --pill-bg:rgba(255,255,255,.14); --pill-fg:rgba(255,255,255,.9);
+  --btn-bg:var(--atc-white); --btn-fg:var(--atc-navy); --btn-bg-hover:var(--atc-cloud); --btn-ic-line:rgba(0,16,37,.22);
+  --btn2-bg:rgba(255,255,255,.2); --btn2-fg:var(--atc-white); --btn2-line:rgba(255,255,255,.55); --btn2-bg-hover:rgba(255,255,255,.3); --btn2-ic-line:rgba(255,255,255,.45);
+}
+[data-theme="light"]{
+  --fg:var(--atc-navy); --fg-soft:var(--atc-slate); --fg-muted:#5B6B78;
+  --line:rgba(0,16,37,.2); --prog:var(--atc-navy); --head:var(--atc-navy);
+  --pill-bg:rgba(0,16,37,.07); --pill-fg:var(--atc-slate);
+  --btn-bg:var(--atc-navy); --btn-fg:var(--atc-white); --btn-bg-hover:var(--atc-navy-700); --btn-ic-line:rgba(255,255,255,.35);
+  --btn2-bg:rgba(0,16,37,.06); --btn2-fg:var(--atc-navy); --btn2-line:rgba(0,16,37,.28); --btn2-bg-hover:rgba(0,16,37,.12); --btn2-ic-line:rgba(0,16,37,.25);
+}
+
+/* Type */
+.ds-display,.ds-h1,.ds-h2,.ds-h3,.ds-lede,.ds-body,.ds-small,.ds-label{font-family:var(--atc-font);margin:0;color:var(--fg);transition:color var(--dur-theme) ease}
+.ds-display{font-size:var(--fs-display);line-height:var(--lh-display);letter-spacing:var(--ls-display);font-weight:var(--fw-display)}
+.ds-h1{font-size:var(--fs-h1);line-height:var(--lh-h1);letter-spacing:var(--ls-h1);font-weight:var(--fw-h1)}
+.ds-h2{font-size:var(--fs-h2);line-height:var(--lh-h2);letter-spacing:var(--ls-h2);font-weight:var(--fw-h2)}
+.ds-h3{font-size:var(--fs-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:var(--fw-h3)}
+.ds-lede{font-size:var(--fs-lede);line-height:var(--lh-lede);letter-spacing:var(--ls-lede);font-weight:var(--fw-lede)}
+.ds-body{font-size:var(--fs-body);line-height:var(--lh-body);font-weight:var(--fw-body)}
+.ds-small{font-size:var(--fs-small);line-height:var(--lh-small);color:var(--fg-muted)}
+.ds-label{font-size:var(--fs-label);letter-spacing:var(--ls-label);font-weight:var(--fw-label);text-transform:uppercase;line-height:1}
+.ds-soft{color:var(--fg-soft);font-weight:300}
+
+/* Pill label */
+.ds-pill{display:inline-flex;align-items:center;padding:8px 12px;border-radius:var(--r-sm);background:var(--pill-bg);color:var(--pill-fg);font-family:var(--atc-font);font-size:var(--fs-label);letter-spacing:var(--ls-label);font-weight:var(--fw-label);text-transform:uppercase;line-height:1;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+
+/* Buttons */
+.ds-btn{display:inline-flex;align-items:center;gap:var(--sp-4);min-height:52px;padding:0 10px 0 22px;border-radius:var(--r-sm);border:1px solid transparent;
+  font-family:var(--atc-font);font-size:var(--fs-button);font-weight:var(--fw-button);letter-spacing:var(--ls-button);line-height:1;text-decoration:none;white-space:nowrap;cursor:pointer;
+  background:var(--btn-bg);color:var(--btn-fg);
+  transition:background-color var(--dur-fast) ease,color var(--dur-theme) ease,border-color var(--dur-fast) ease}
+.ds-btn:hover{background:var(--btn-bg-hover);color:var(--btn-fg)}
+.ds-btn:focus-visible{outline:2px solid var(--atc-blue);outline-offset:3px}
+.ds-btn-ic{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:3px;border:1px solid var(--btn-ic-line);transition:transform var(--dur-fast) var(--ease-out)}
+.ds-btn-ic svg{width:12px;height:12px;display:block}
+.ds-btn:hover .ds-btn-ic{transform:translateX(2px)}
+.ds-btn-down:hover .ds-btn-ic{transform:translateY(2px)}
+.ds-btn--secondary{background:var(--btn2-bg);color:var(--btn2-fg);border-color:var(--btn2-line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.ds-btn--secondary:hover{background:var(--btn2-bg-hover);color:var(--btn2-fg)}
+.ds-btn--secondary .ds-btn-ic{border-color:var(--btn2-ic-line)}
+.ds-btn--sm{min-height:44px;padding:0 8px 0 18px;font-size:14px}
+.ds-btn--sm .ds-btn-ic{width:28px;height:28px}
+
+/* Statement: centered focus line (grey that fills to navy on scroll) */
+.ds-statement{font-family:var(--atc-font);margin:0;font-size:var(--fs-statement);line-height:var(--lh-statement);letter-spacing:var(--ls-statement);font-weight:400;color:var(--atc-fill-base)}
+.ds-statement .ds-w{transition:color .5s ease}
+.ds-statement .ds-w.is-on{color:var(--fg)}
+
+/* Scroll reveal: text rises out of an invisible mask and sinks back into it */
+.ds-mask{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+.ds-rise{display:block;transform:translateY(112%);will-change:transform}
+
+/* Graphics: minimal line icons on soft tiles, brand gradient for emphasis */
+.ds-graphic{display:block;width:100%;height:auto;overflow:visible}
+
+/* Gradient label text, muted words, section rule */
+.ds-grad-text{background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ds-label.ds-grad-text{display:inline-block}
+.ds-mute{color:var(--atc-mute)}
+.ds-rule{display:block;height:1px;border:0;margin:0;background:rgba(0,16,37,.12)}
+
+/* Outline button with a gradient edge (light pages) */
+/* Same size, padding, corners and icon box as .ds-btn; only the fill and edge differ */
+.ds-btn--grad{border:1.5px solid transparent;color:var(--atc-navy);
+  background:linear-gradient(var(--atc-paper),var(--atc-paper)) padding-box,var(--atc-grad) border-box}
+.ds-btn--grad:hover{background:linear-gradient(#F4F6FA,#F4F6FA) padding-box,var(--atc-grad) border-box;color:var(--atc-navy)}
+.ds-btn--grad .ds-btn-ic{border-color:rgba(0,16,37,.22)}
+
+/* Reveal on enter for normal-flow sections */
+.ds-rv{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease-out),transform 1.1s var(--ease-out)}
+.ds-rv.is-in{opacity:1;transform:none}
+
+/* Menu toggle (two lines, turns into a cross) */
+.ds-burger{display:flex;align-items:center;justify-content:center;background:none;border:0;padding:0;cursor:pointer;color:var(--fg);transition:color var(--dur-theme) ease}
+.ds-burger:focus-visible{outline:2px solid var(--atc-blue);outline-offset:-6px}
+.ds-burger-box{position:relative;display:block;width:22px;height:12px}
+.ds-burger-ln{position:absolute;left:0;width:22px;height:1.5px;border-radius:2px;background:currentColor;transition:transform .7s var(--ease-io),top .7s var(--ease-io)}
+.ds-burger-ln:first-child{top:2px}
+.ds-burger-ln:last-child{top:9px}
+[data-menu="open"] .ds-burger-ln:first-child{top:5.5px;transform:rotate(45deg)}
+[data-menu="open"] .ds-burger-ln:last-child{top:5.5px;transform:rotate(-45deg)}
+
+/* Menu overlay: grey-blue wash with deep blur, unhurried in and out */
+.ds-nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;
+  background:rgba(58,78,116,0);backdrop-filter:blur(0) saturate(1);-webkit-backdrop-filter:blur(0) saturate(1);
+  transition:opacity 1s var(--ease-io) .3s,background-color 1s var(--ease-io) .3s,backdrop-filter 1.1s var(--ease-io) .25s,-webkit-backdrop-filter 1.1s var(--ease-io) .25s,visibility 0s linear 1.4s}
+[data-menu="open"] .ds-nav{opacity:1;visibility:visible;pointer-events:auto;
+  background:rgba(58,78,116,.52);backdrop-filter:blur(38px) saturate(1.05);-webkit-backdrop-filter:blur(38px) saturate(1.05);
+  transition:opacity 1s var(--ease-out),background-color 1s var(--ease-out),backdrop-filter 1.1s var(--ease-out),-webkit-backdrop-filter 1.1s var(--ease-out),visibility 0s}
+.ds-nav-list{list-style:none;margin:0;padding:0;width:min(560px,78vw);display:flex;flex-direction:column}
+.ds-nav-item{display:flex;flex-direction:column;align-items:center;gap:10px;padding:clamp(14px,2.6vh,28px) 0;border-top:1px solid rgba(255,255,255,.2);
+  opacity:0;transform:translateY(26px);filter:blur(6px);transition:opacity .55s ease,transform .7s var(--ease-io),filter .55s ease}
+.ds-nav-item:first-child{border-top:0}
+.ds-nav-item:nth-child(2){--i:1}.ds-nav-item:nth-child(3){--i:2}.ds-nav-item:nth-child(4){--i:3}.ds-nav-item:nth-child(5){--i:4}.ds-nav-item:nth-child(6){--i:5}
+[data-menu="open"] .ds-nav-item{opacity:1;transform:none;filter:blur(0);
+  transition:opacity 1s var(--ease-out) calc(.35s + var(--i,0) * .09s),transform 1.1s var(--ease-out) calc(.35s + var(--i,0) * .09s),filter 1s var(--ease-out) calc(.35s + var(--i,0) * .09s)}
+.ds-nav-num{font-family:var(--atc-font);font-size:var(--fs-label);letter-spacing:var(--ls-label);font-weight:var(--fw-label);color:rgba(255,255,255,.5)}
+.ds-nav-link{font-family:var(--atc-font);font-size:clamp(38px,4.6vw,88px);line-height:1.02;letter-spacing:-.04em;font-weight:300;color:rgba(255,255,255,.66);text-decoration:none;transition:color .4s ease}
+.ds-nav-link:hover,.ds-nav-link:focus-visible{color:#FFFFFF;outline:none}
+
+@media (max-width:760px){
+  :root{--rail:52px;--line-y:68%;--right-x:100%;--content-x:calc(var(--rail) + 18px)}
+  .ds-btn{min-height:48px;padding:0 8px 0 18px}
+}
