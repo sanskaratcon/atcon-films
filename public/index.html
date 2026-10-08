@@ -691,7 +691,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2765,
+      U: 2590,
       heroOut: [0, 50],
       v2: [0, 288], v4: [288, 490], v3: [490, 690],
       indoor: 216,
@@ -721,8 +721,8 @@ class Component extends DCLogic {
         // "Not as another…": the page holds while the line and its icons play together (seconds)
         a: 2241, aOut: 2316, aPlay: 1.95,
         // The close: title to the centre, "As a partner.", then the logo and tagline
-        center: [2358, 2453], b: 2465, bOut: 2545, sign: 2589,
-        out: 2700
+        center: [2336, 2386], b: 2388, bOut: 2436, sign: 2476,
+        out: 2540
       }
     };
   }
@@ -1098,7 +1098,16 @@ class Component extends DCLogic {
         var wt = whoEl.getBoundingClientRect().top, ct = cols.getBoundingClientRect().top;
         var narrow = (window.innerWidth || 1200) <= 760;
         var play = cols.classList.contains('is-play');
-        if (!play && ct < vh * 0.88 && (narrow || wt < vh * 0.12)) cols.classList.add('is-play');
+        if (!play && ct < vh * 0.88 && (narrow || wt < vh * 0.12)) {
+          cols.classList.add('is-play');
+          // Going down, the page settles and holds until all three columns have played in
+          var nowW = performance.now();
+          if ((this._dir || 1) > 0 && nowW >= (this._jumpUntil || 0)) {
+            var yW = window.pageYOffset || (document.scrollingElement || document.documentElement).scrollTop || 0;
+            this._glide = null;
+            this._lock = { top: yW + (narrow ? 0 : wt), until: nowW + 2300 };
+          }
+        }
         else if (play && wt > vh * 0.8) cols.classList.remove('is-play');
       }
       // Proven results: cards arrive in turn once the section has settled, and the numbers count up
