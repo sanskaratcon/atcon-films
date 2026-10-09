@@ -44,7 +44,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-ov-1{background:
    linear-gradient(90deg,rgba(245,243,238,.97) 0%,rgba(245,243,238,.87) 30%,rgba(245,243,238,.24) 58%,rgba(245,243,238,0) 74%),
    linear-gradient(0deg,rgba(242,240,235,.6) 0%,rgba(242,240,235,0) 40%),
-   linear-gradient(180deg,rgba(245,243,238,.5) 0%,rgba(245,243,238,0) 20%)}
+   linear-gradient(180deg,rgba(245,243,238,.5) 0%,rgba(245,243,238,0) 20%);
+  /* Lighter at the top, full strength from the middle down where the title sits */
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.5) 0%,#000 50%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.5) 0%,#000 50%)}
 
 /* Frame lines: positions are driven per frame (hero, framed, focus) */
 .atc-frame{position:fixed;inset:0;z-index:4;pointer-events:none}
