@@ -42,7 +42,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
    radial-gradient(ellipse 130% 100% at 58% 46%,rgba(22,34,62,0) 58%,rgba(22,34,62,.2) 100%),
    rgba(68,86,124,.2)}
 .atc-ov-1{background:
-   linear-gradient(90deg,rgba(245,243,238,.92) 0%,rgba(245,243,238,.72) 30%,rgba(245,243,238,.16) 58%,rgba(245,243,238,0) 74%),
+   linear-gradient(90deg,rgba(245,243,238,.97) 0%,rgba(245,243,238,.87) 30%,rgba(245,243,238,.24) 58%,rgba(245,243,238,0) 74%),
    linear-gradient(0deg,rgba(242,240,235,.6) 0%,rgba(242,240,235,0) 40%),
    linear-gradient(180deg,rgba(245,243,238,.5) 0%,rgba(245,243,238,0) 20%)}
 
@@ -87,6 +87,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-hero-lede{max-width:min(23vw,30em);opacity:.92}
 .atc-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-2)}
 .atc-title{white-space:pre-line}
+/* "Businesses often…": a soft glow behind the title, so it holds where it crosses the people */
+#problem .atc-title{position:relative;z-index:0}
+#problem .atc-title::before{content:"";position:absolute;z-index:-1;inset:-45% -14% -45% -12%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(245,243,238,.82) 0%,rgba(245,243,238,.62) 55%,rgba(245,243,238,0) 100%)}
 
 /* Problem sections: copy on the left (top, bottom, top), graphic on the right */
 /* Problem list: an editorial column of hairline-divided rows, number on the right.
@@ -837,6 +841,24 @@ class Component extends DCLogic {
     window.addEventListener('touchmove', this._onHold, { passive: false });
     window.addEventListener('keydown', this._onHold);
 
+    // Smooth wheel: each notch sets a target and the page eases towards it every frame (see smoothStep)
+    this._sw = { y: null, last: null };
+    this._onWheel = function (e) {
+      if (e.defaultPrevented || e.ctrlKey || !e.cancelable) return;
+      var root = self.q('root');
+      if (root && root.getAttribute('data-menu') === 'open') return;
+      var dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? (window.innerHeight || 800) : 1);
+      if (!dy) return;
+      e.preventDefault();
+      var se = document.scrollingElement || document.documentElement;
+      var y = window.pageYOffset || se.scrollTop || 0;
+      var max = Math.max(0, se.scrollHeight - (window.innerHeight || 800));
+      var base = self._sw.y == null ? y : self._sw.y;
+      self._sw.y = Math.max(0, Math.min(max, base + dy));
+      self._glide = null; self._cine = null;
+    };
+    window.addEventListener('wheel', this._onWheel, { passive: false });
+
     // Folded points open and close from their plus / minus
     this._onTog = function (e) {
       var b = e.target && e.target.closest ? e.target.closest('.atc-card-tog') : null;
@@ -904,6 +926,7 @@ class Component extends DCLogic {
       window.removeEventListener('touchmove', this._onHold, { passive: false });
       window.removeEventListener('keydown', this._onHold);
     }
+    if (this._onWheel) window.removeEventListener('wheel', this._onWheel, { passive: false });
     this._lock = null;
     clearTimeout(this._settleT);
     if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
@@ -1026,6 +1049,7 @@ class Component extends DCLogic {
     var track = this.q('track');
     if (!track) return;
     this.holdScroll();
+    this.smoothStep(dt);
     if (this._cine) { if (this._lock) this._cine = null; else this.cineStep(now); }
     if (this._glide && !this._lock && !this._cine) this.glideStep(now); else this._glide = null;
     var clamp = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
@@ -1397,7 +1421,7 @@ class Component extends DCLogic {
   }
 
   settle() {
-    if (this._lock || this._touching || this._cine) return;
+    if (this._lock || this._touching || this._cine || (this._sw && this._sw.y != null)) return;
     var now = performance.now();
     if (now < (this._jumpUntil || 0)) return;
     var root = this.q('root');
@@ -1490,6 +1514,21 @@ class Component extends DCLogic {
     var y = window.pageYOffset || se.scrollTop || 0;
     if (Math.abs(y - L.top) > 1) window.scrollTo(0, L.top);
     return true;
+  }
+
+  // Eases the page towards the wheel target. A hold, a glide, or the user moving the page some other
+  // way (scrollbar, keys, touch) drops the target, so nothing fights over the scroll position.
+  smoothStep(dt) {
+    var s = this._sw;
+    if (!s || s.y == null) return;
+    var se = document.scrollingElement || document.documentElement;
+    var y = window.pageYOffset || se.scrollTop || 0;
+    if (this._lock || this._touching || (s.last != null && Math.abs(y - s.last) > 2)) { s.y = null; s.last = null; return; }
+    var k = 1 - Math.pow(1 - 0.12, dt / 16.67);
+    var ny = y + (s.y - y) * k;
+    if (Math.abs(s.y - ny) < 0.5) { ny = s.y; s.y = null; }
+    window.scrollTo(0, ny);
+    s.last = s.y == null ? null : (window.pageYOffset || se.scrollTop || 0);
   }
 
   // Cinematic glide through the scroll-driven videos: one calm, continuous move that eases in and out.
