@@ -131,6 +131,22 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
 /* "What actually happens" heads the list */
 .atc-wah{margin:0 0 clamp(12px,2.4vh,32px);will-change:transform}
+/* The points: one at a time in large type, in the same place; progress bars above fill while its scene plays */
+.atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start}
+.atc-steps{display:flex;align-items:center;gap:8px;margin:clamp(40px,13vh,150px) 0 clamp(22px,3.6vh,44px);opacity:0;will-change:opacity}
+.atc-steps i{position:relative;flex:0 1 64px;height:2px;border-radius:2px;background:rgba(0,16,37,.12);overflow:hidden}
+.atc-steps b{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--atc-navy)}
+.atc-steps span{margin-left:14px;font-size:14px;letter-spacing:.02em;color:var(--atc-mute);font-variant-numeric:tabular-nums;white-space:nowrap}
+.atc-steps strong{font-weight:500;color:var(--atc-navy)}
+.atc .atc-stack .atc-card{grid-row:3;grid-column:1;display:block;padding:0;border:0}
+.atc .atc-stack .atc-card-side{display:none}
+.atc .atc-stack .atc-card-title{font-size:clamp(32px,3.1vw,56px);line-height:1.08;letter-spacing:-.035em;font-weight:400}
+.atc .atc-stack .atc-card-acc{grid-template-rows:1fr;opacity:1}
+.atc .atc-stack .atc-card-acc-in{padding-top:clamp(16px,2.6vh,28px)}
+.atc .atc-stack .atc-card-body{font-size:clamp(17px,1.3vw,22px);line-height:1.5;max-width:24em;color:var(--atc-slate)}
+.atc .atc-stack .atc-card .ds-rise,.atc .atc-stack .atc-card.is-past .ds-rise{color:var(--atc-navy)}
+.atc .atc-stack .atc-card .atc-card-body .ds-rise,.atc .atc-stack .atc-card.is-past .atc-card-body .ds-rise{color:var(--atc-slate)}
+.atc .atc-stack .atc-card .atc-card-lead,.atc .atc-stack .atc-card.is-past .atc-card-lead{color:var(--atc-mute)}
 /* The desktop beside the list */
 .atc-iso{position:absolute;z-index:4;left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw));right:var(--content-x);top:calc(var(--rail) + 2vh);bottom:2vh;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 /* "the right partner." fills into the brand gradient instead of navy */
@@ -497,7 +513,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   .atc-hero-lede{max-width:none}
   .atc-contact{top:4px;right:12px}
   .atc-stack{left:calc(var(--rail) + 18px);right:16px;width:auto;top:46%;bottom:20px;padding-top:0;justify-content:flex-end}
-  .atc-card.is-past{display:none}
+  .atc-stack{align-content:end}
+  .atc-steps{margin:16px 0 14px}
+  .atc .atc-stack .atc-card-title{font-size:26px}
+  .atc .atc-stack .atc-card-body{font-size:15px}
   .atc-gfx.atc-gfx--side{left:calc(var(--rail) + 12px)}
   .atc-gfx{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
   .atc-iso{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
@@ -563,6 +582,7 @@ with the same challenge.</h2>
       <!-- The three problems: stroked cards stacked on the left, revealed one by one, all staying readable -->
       <section class="atc-stack" data-atc="stack" aria-label="What actually happens">
         <h2 class="ds-h1 atc-wah" data-atc="wah"><span class="ds-mask"><span class="ds-rise" data-atc="wahText">What actually happens</span></span></h2>
+        <div class="atc-steps" data-atc="steps" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><span><strong data-atc="stepN">01</strong> / 04</span></div>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">You have the tools.</span></span></h2>
@@ -1557,10 +1577,13 @@ class Component extends DCLogic {
     var gone = ease(map(u, S.out, S.out + 50));
     for (var c = 0; c < cards.length; c++) {
       var card = cards[c], t0 = S.ins[c];
+      // One point at a time: it rises in, then leaves upwards as the next one (or the end of the section) arrives
+      var next = c + 1 < cards.length ? S.ins[c + 1] : S.out;
       var kin = ease(map(u, t0, t0 + 50));
-      var kout = ease(map(u, S.out + c * 10, S.out + c * 10 + 50));
+      var kout = ease(map(u, next - 10, next + 30));
       card.style.opacity = (kin * (1 - kout)).toFixed(3);
-      card.style.transform = 'translateY(' + ((1 - kin) * 24).toFixed(1) + 'px)';
+      card.style.visibility = kin > 0.001 && kout < 0.999 ? 'visible' : 'hidden';
+      card.style.transform = 'translateY(' + ((1 - kin) * 24 - kout * 24).toFixed(1) + 'px)';
       card.classList.toggle('is-active', c === active && kout < 0.5);
       var past = c < active;
       if (card.classList.contains('is-past') !== past) card.classList.toggle('is-past', past);
@@ -1580,10 +1603,14 @@ class Component extends DCLogic {
         var rises = card.querySelectorAll('.ds-rise');
         for (var j = 0; j < rises.length; j++) {
           var rin = ease(map(u, t0 + 6 + j * 8, t0 + 6 + j * 8 + 44));
-          rises[j].style.transform = 'translateY(' + ((1 - rin) * 112 + kout * 112).toFixed(2) + '%)';
+          var rout = ease(map(u, next - 10 + j * 4, next + 26 + j * 4));
+          rises[j].style.transform = 'translateY(' + ((1 - rin) * 112 - rout * 112).toFixed(2) + '%)';
         }
       }
     }
+
+    var steps = this.q('steps');
+    if (steps) steps.style.opacity = (ease(map(u, S.ins[0] - 20, S.ins[0] + 30)) * (1 - gone)).toFixed(3);
 
     // "What actually happens": rises in the middle of the page, then glides to its place above the list,
     // at the same pace as the frame lines closing in around the statement later on.
@@ -1638,7 +1665,17 @@ class Component extends DCLogic {
     var docks = mac.querySelectorAll('.dk-x');
     for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run');
     var run = this._mRun = {};
-    if (i < 0) return;
+    var bars = document.querySelectorAll('[data-atc="steps"] b'), stepN = this.q('stepN');
+    var fillSteps = function (ms) {
+      for (var b = 0; b < bars.length; b++) {
+        var bar = bars[b];
+        bar.style.transition = 'none';
+        bar.style.width = b < i ? '100%' : '0';
+        if (b === i) { void bar.offsetWidth; bar.style.transition = 'width ' + Math.round(ms) + 'ms linear'; bar.style.width = '100%'; }
+      }
+      if (stepN && i >= 0) stepN.textContent = '0' + (i + 1);
+    };
+    if (i < 0) { fillSteps(0); return; }
 
     var self = this, sc = scs[i];
     // The typing and arrivals are the story, so they play for everyone; reduced motion only drops the travel (CSS)
@@ -1749,6 +1786,7 @@ class Component extends DCLogic {
       at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
       var total = 700 + slots.length * 480 + 900;
     }
+    fillSteps(total * PACE);
     if (holdAt != null && total) {
       this._lock = { top: this.unitTop(holdAt), until: performance.now() + total * PACE + 150, ease: true };
       this.holdScroll();
