@@ -308,16 +308,9 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-splash.is-out .atc-splash-logo{opacity:0;transform:scale(1.04);filter:blur(8px);transition-duration:.5s}
 .atc-splash.is-gone{display:none}
 
-/* Inside the laptop: a quiet desktop on the white screen. The menu bar sits under the header line,
-   the scenes play beside the list; every size inside the screen scales with it (cqw). */
-.atc-menubar{position:absolute;z-index:3;top:calc(var(--rail) + 1px);left:calc(var(--rail) + 1px);right:0;height:28px;display:flex;align-items:center;gap:20px;padding:0 18px 0 16px;
+/* Inside the laptop: a quiet desktop on the white screen, beside the list; every size inside it scales with it (cqw). */
   background:rgba(250,251,253,.82);border-bottom:1px solid rgba(0,16,37,.07);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
   font-family:var(--atc-font);font-size:12.5px;color:#3A4D55;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap}
-.atc-menubar strong{font-weight:600;color:var(--atc-navy)}
-.atc-menubar .mb-dot{width:12px;height:12px;border-radius:50%;background:var(--atc-grad)}
-.atc-menubar .mb-r{margin-left:auto;display:flex;align-items:center;gap:14px;font-style:normal;font-variant-numeric:tabular-nums}
-.atc-menubar svg{height:12px;width:auto;fill:none;stroke:#3A4D55;stroke-width:1.5;stroke-linecap:round}
-.atc-menubar .mb-fill{fill:#3A4D55;stroke:none}
 
 .atc-mac{align-items:center;right:max(24px,4vw)}
 .mac{position:relative;width:min(100%,calc((100vh - var(--rail) - 4vh) * 10 / 11));aspect-ratio:10/11;container-type:inline-size;font-family:var(--atc-font);color:var(--atc-navy);line-height:1.3}
@@ -491,8 +484,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 @media (max-width:760px){
   .atc-mac{right:12px}
   .mac{width:min(100%,calc((46vh - var(--rail) - 12px) * 10 / 11))}
-  .atc-menubar{gap:12px}
-  .atc-menubar>span{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   .mac .st,.mac .mw-open{transform:none !important}
@@ -608,11 +599,6 @@ with the same challenge.</h2>
 
       <!-- One project, four layers: shown as a single block, then opened up beside the list -->
       <!-- Inside the laptop: the white screen we flew into becomes its desktop -->
-      <div class="atc-menubar" data-atc="menubar" aria-hidden="true">
-        <b class="mb-dot"></b><strong>Workspace</strong><span>File</span><span>Edit</span><span>View</span><span>Window</span><span>Help</span>
-        <em class="mb-r"><svg viewBox="0 0 16 12"><path d="M1 4.2 C5 0.6 11 0.6 15 4.2 M3.4 6.6 C6 4.4 10 4.4 12.6 6.6 M5.8 9 C7.1 8 8.9 8 10.2 9"/></svg><svg viewBox="0 0 24 12"><rect x="0.75" y="0.75" width="19.5" height="10.5" rx="2.6"/><rect x="2.6" y="2.6" width="12" height="6.8" rx="1.2" class="mb-fill"/><path d="M22.4 4.2 V7.8"/></svg><time>Mon 9:41</time></em>
-      </div>
-
       <!-- What actually happens, played live on that screen: one short moment per point, driven by macScene() -->
       <div class="atc-iso atc-mac" data-atc="iso" aria-hidden="true">
         <div class="mac" data-atc="mac" data-scene="-1">
@@ -1041,7 +1027,6 @@ class Component extends DCLogic {
         // "What actually happens" rises centred, then moves to the top left as the 3D stack appears in the middle;
         // the stack then moves right and opens up while the four points come in one below the other
         title: 700, titleMove: [770, 865],
-        desk: [688, 730],
         isoIn: [790, 850], isoMove: [885, 980],
         ins: [895, 1000, 1105, 1210],
         out: 1330
@@ -1621,14 +1606,8 @@ class Component extends DCLogic {
       wah.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
     }
 
-    // Inside the laptop: the menu bar settles in once the white screen fills the page; the desktop appears in
-    // the middle, moves beside the list, and plays one short moment per point (the point open in the list).
-    var mb = this.q('menubar');
-    if (mb) {
-      var mv = Math.min(ease(map(u, S.desk[0], S.desk[1])), 1 - gone);
-      mb.style.opacity = mv.toFixed(3);
-      mb.style.visibility = mv > 0.003 ? 'visible' : 'hidden';
-    }
+    // Inside the laptop: the desktop appears in the middle, moves beside the list, and plays one short
+    // moment per point (the point open in the list).
     var iso = this.q('iso');
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
