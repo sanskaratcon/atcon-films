@@ -124,29 +124,26 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc .atc-card-body{margin:0;color:var(--atc-slate);max-width:30em;transition:color .6s ease}
 .atc-card-num{font-family:var(--atc-font);font-size:clamp(14px,1vw,17px);font-weight:500;letter-spacing:.02em;line-height:1.4;color:var(--atc-navy);font-variant-numeric:tabular-nums;transition:color .6s ease}
 .atc .atc-card-title .ds-rise{transition:color .6s ease}
-.atc .atc-card-lead{color:var(--fg-soft)}
 .atc-card.is-active:not(:first-child){border-top-color:rgba(0,16,37,.2)}
 .atc .atc-card.is-past .atc-card-title .ds-rise,.atc .atc-card.is-past .atc-card-body,.atc-card.is-past .atc-card-num{color:#B3BAC5}
 /* Side graphics start clear of the list */
 .atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
 /* "What actually happens" heads the list */
 .atc-wah{margin:0 0 clamp(12px,2.4vh,32px);will-change:transform}
-/* The points: one at a time in large type, in the same place; progress bars above fill while its scene plays */
+/* The points: one at a time, a short statement and one quiet line; the line above fills while its scene plays */
 .atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start}
-.atc-steps{display:flex;align-items:center;gap:8px;margin:clamp(40px,13vh,150px) 0 clamp(22px,3.6vh,44px);opacity:0;will-change:opacity}
-.atc-steps i{position:relative;flex:0 1 64px;height:2px;border-radius:2px;background:rgba(0,16,37,.12);overflow:hidden}
+.atc-steps{display:flex;align-items:center;gap:16px;margin:clamp(40px,13vh,150px) 0 clamp(18px,3vh,36px);opacity:0;will-change:opacity}
+.atc-steps strong{font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
+.atc-steps i{position:relative;width:min(160px,30%);height:1px;background:rgba(0,16,37,.14);overflow:hidden}
 .atc-steps b{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--atc-navy)}
-.atc-steps span{margin-left:14px;font-size:14px;letter-spacing:.02em;color:var(--atc-mute);font-variant-numeric:tabular-nums;white-space:nowrap}
-.atc-steps strong{font-weight:500;color:var(--atc-navy)}
 .atc .atc-stack .atc-card{grid-row:3;grid-column:1;display:block;padding:0;border:0}
 .atc .atc-stack .atc-card-side{display:none}
-.atc .atc-stack .atc-card-title{font-size:clamp(32px,3.1vw,56px);line-height:1.08;letter-spacing:-.035em;font-weight:400}
+.atc .atc-stack .atc-card-title{font-size:clamp(32px,3vw,54px);line-height:1.1;letter-spacing:-.035em;font-weight:400;max-width:12em}
 .atc .atc-stack .atc-card-acc{grid-template-rows:1fr;opacity:1}
 .atc .atc-stack .atc-card-acc-in{padding-top:clamp(16px,2.6vh,28px)}
-.atc .atc-stack .atc-card-body{font-size:clamp(17px,1.3vw,22px);line-height:1.5;max-width:24em;color:var(--atc-slate)}
+.atc .atc-stack .atc-card-body{font-size:clamp(17px,1.25vw,21px);line-height:1.5;max-width:24em;color:var(--atc-slate)}
 .atc .atc-stack .atc-card .ds-rise,.atc .atc-stack .atc-card.is-past .ds-rise{color:var(--atc-navy)}
 .atc .atc-stack .atc-card .atc-card-body .ds-rise,.atc .atc-stack .atc-card.is-past .atc-card-body .ds-rise{color:var(--atc-slate)}
-.atc .atc-stack .atc-card .atc-card-lead,.atc .atc-stack .atc-card.is-past .atc-card-lead{color:var(--atc-mute)}
 /* The desktop beside the list */
 .atc-iso{position:absolute;z-index:4;left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw));right:var(--content-x);top:calc(var(--rail) + 2vh);bottom:2vh;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 /* "the right partner." fills into the brand gradient instead of navy */
@@ -582,26 +579,26 @@ with the same challenge.</h2>
       <!-- The three problems: stroked cards stacked on the left, revealed one by one, all staying readable -->
       <section class="atc-stack" data-atc="stack" aria-label="What actually happens">
         <h2 class="ds-h1 atc-wah" data-atc="wah"><span class="ds-mask"><span class="ds-rise" data-atc="wahText">What actually happens</span></span></h2>
-        <div class="atc-steps" data-atc="steps" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><span><strong data-atc="stepN">01</strong> / 04</span></div>
+        <div class="atc-steps" data-atc="steps" aria-hidden="true"><strong data-atc="stepN">01</strong><i><b></b></i></div>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">You have the tools.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Software for every team, paid for every month.</span></span></p></div></div>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">A subscription for every team.</span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">02</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">You have the vendors.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each one delivering their own piece of the project.</span></span></p></div></div>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each one owns only their piece.</span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">03</span></span></div>
-          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise atc-card-lead">Everyone is involved.</span></span><span class="ds-mask"><span class="ds-rise">No one is accountable.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Every side has a say, but nobody owns the outcome.</span></span></p></div></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">No one is accountable.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Everyone is involved. Nobody owns the outcome.</span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">04</span></span></div>
-          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">And so the idea is still on the whiteboard.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Months of meetings. Nothing you can actually use.</span></span></p></div></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">The idea is still on the whiteboard.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Months of meetings. Nothing shipped.</span></span></p></div></div>
         </article>
       </section>
       <!-- Shared icon paint: one solid blue for strokes, one soft aurora fill for the second tone -->
@@ -1665,13 +1662,12 @@ class Component extends DCLogic {
     var docks = mac.querySelectorAll('.dk-x');
     for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run');
     var run = this._mRun = {};
-    var bars = document.querySelectorAll('[data-atc="steps"] b'), stepN = this.q('stepN');
+    var bar = document.querySelector('[data-atc="steps"] b'), stepN = this.q('stepN');
     var fillSteps = function (ms) {
-      for (var b = 0; b < bars.length; b++) {
-        var bar = bars[b];
+      if (bar) {
         bar.style.transition = 'none';
-        bar.style.width = b < i ? '100%' : '0';
-        if (b === i) { void bar.offsetWidth; bar.style.transition = 'width ' + Math.round(ms) + 'ms linear'; bar.style.width = '100%'; }
+        bar.style.width = '0';
+        if (i >= 0) { void bar.offsetWidth; bar.style.transition = 'width ' + Math.round(ms) + 'ms linear'; bar.style.width = '100%'; }
       }
       if (stepN && i >= 0) stepN.textContent = '0' + (i + 1);
     };
