@@ -1613,7 +1613,7 @@ class Component extends DCLogic {
       }
       if (live) {
         // Lines rise out of their masks in order, and sink back together when the column leaves.
-        var rises = card.querySelectorAll('.ds-rise');
+        var rises = card.querySelectorAll('.atc-card-title .ds-rise, .atc-card-body .ds-rise');
         for (var j = 0; j < rises.length; j++) {
           var rin = ease(map(u, t0 + 6 + j * 8, t0 + 6 + j * 8 + 44));
           var rout = ease(map(u, next - 10 + j * 4, next + 26 + j * 4));
@@ -1654,12 +1654,12 @@ class Component extends DCLogic {
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
-      // A scene starts once its point has begun to rise; a point reopened by hand brings its scene back.
+      // A scene starts only once its point's text has fully risen (title and line); until then the last one stays.
       var shown = -1;
-      for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 8) shown = si;
+      for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 57.5) shown = si;
       var scene = this._openIdx >= 0 && this._openIdx !== active ? this._openIdx : shown;
       var down = this._lastU == null || u >= this._lastU;
-      this.macScene(gv > 0.5 ? scene : -1, scene === shown && down && performance.now() > (this._jumpUntil || 0) ? S.ins[scene] + 56 : null);
+      this.macScene(gv > 0.5 ? scene : -1, scene === shown && down && performance.now() > (this._jumpUntil || 0) ? S.ins[scene] + 58 : null);
     }
   }
 
@@ -1695,7 +1695,9 @@ class Component extends DCLogic {
     // The typing and arrivals are the story, so they play for everyone; reduced motion only drops the travel (CSS)
     // PACE scales the whole scene: every delay, typing speed and count below is written at 1x
     var PACE = 0.65;
-    var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, ms * PACE); };
+    // START: a short beat after the point's words have landed before anything moves
+    var START = 350;
+    var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, (ms + START) * PACE); };
     var $ = function (key) { return sc.querySelector('[data-k="' + key + '"]'); };
     var show = function (key, on) { var el = typeof key === 'string' ? $(key) : key; if (el) el.classList.toggle('is-shown', on !== false); return el; };
     var flag = function (el, c) { if (!el) return; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); };
@@ -1804,6 +1806,7 @@ class Component extends DCLogic {
       at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
       var total = 700 + slots.length * 480 + 900;
     }
+    total += START;
     fillSteps(total * PACE);
     if (holdAt != null && total) {
       this._lock = { top: this.unitTop(holdAt), until: performance.now() + total * PACE + 150, ease: true };
@@ -1914,7 +1917,7 @@ class Component extends DCLogic {
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
     r.push(T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
     r.push([S.title, S.title + 46], S.titleMove, S.isoIn, S.isoMove);
-    for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 56]);
+    for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 58]);
     r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
