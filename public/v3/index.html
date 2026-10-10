@@ -129,14 +129,14 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* Side graphics start clear of the list */
 .atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
 /* "What actually happens" heads the list */
-.atc-wah{margin:0 0 clamp(12px,2.4vh,32px);will-change:transform}
+.atc-wah{position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
 /* The points: one at a time, a short statement and one quiet line; the line above fills while its scene plays */
-.atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start}
-.atc-steps{display:flex;align-items:center;gap:16px;margin:clamp(40px,13vh,150px) 0 clamp(18px,3vh,36px);opacity:0;will-change:opacity}
+.atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:center}
+.atc-steps{grid-row:1;display:flex;align-items:center;gap:16px;margin:0 0 clamp(18px,3vh,36px);opacity:0;will-change:opacity}
 .atc-steps strong{font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
 .atc-steps i{position:relative;width:min(160px,30%);height:1px;background:rgba(0,16,37,.14);overflow:hidden}
 .atc-steps b{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--atc-navy)}
-.atc .atc-stack .atc-card{grid-row:3;grid-column:1;display:block;padding:0;border:0}
+.atc .atc-stack .atc-card{grid-row:2;grid-column:1;display:block;padding:0;border:0}
 .atc .atc-stack .atc-card-side{display:none}
 .atc .atc-stack .atc-card-title{font-size:clamp(32px,3vw,54px);line-height:1.1;letter-spacing:-.035em;font-weight:400;max-width:12em}
 .atc .atc-stack .atc-card-acc{grid-template-rows:1fr;opacity:1}
@@ -1613,12 +1613,14 @@ class Component extends DCLogic {
     var steps = this.q('steps');
     if (steps) steps.style.opacity = (ease(map(u, S.ins[0] - 20, S.ins[0] + 30)) * (1 - gone)).toFixed(3);
 
-    // "What actually happens": rises in the middle of the page, then glides to its place above the list,
-    // at the same pace as the frame lines closing in around the statement later on.
+    // "What actually happens": rises in the middle of the page, holds a moment, then fades away before the points.
     var wah = this.q('wah'), wr = this.q('wahText');
     if (wah && wr && live) {
       wr.style.transform = 'translateY(' + ((1 - ease(map(u, S.title, S.title + 46))) * 112 + gone * 112).toFixed(2) + '%)';
-      var k = 1 - ease(map(u, S.titleMove[0], S.titleMove[1]));
+      var fade = ease(map(u, S.titleMove[0] - 10, S.titleMove[0] + 35));
+      wah.style.opacity = (1 - fade).toFixed(3);
+      wah.style.filter = fade > 0.001 ? 'blur(' + (fade * 8).toFixed(2) + 'px)' : 'none';
+      var k = 1;
       var tx = 0, ty = 0;
       if (k > 0) {
         var vh = window.innerHeight || 800, vw = window.innerWidth || 1200;
