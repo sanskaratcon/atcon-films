@@ -176,6 +176,22 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-sign{display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
 .atc-sign-logo{display:block;width:clamp(140px,11vw,210px);height:auto}
 .atc .atc-sign-tag{color:var(--fg-soft);max-width:24em}
+/* The solution: tagline on top, the map of business, ATCON and the technology ecosystem below */
+.atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--rail) 4vw 2vh;visibility:hidden;pointer-events:none;text-align:center}
+.atc-sol-head{display:flex;flex-direction:column;align-items:center}
+.atc-sol-map{width:min(1100px,90vw);height:auto;max-height:56vh;margin-top:5vh;overflow:visible;font-family:var(--atc-font)}
+.atc-sol-map .sol-cap{font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;fill:#8C95A6;text-anchor:middle}
+.atc-sol-map .sol-lbl{font-size:17px;font-weight:500;fill:var(--atc-navy)}
+.atc-sol-map .sol-pill{fill:#fff;stroke:rgba(0,16,37,.14)}
+.atc-sol-map .sol-tile{fill:#F3F6FD;stroke:rgba(45,99,230,.18)}
+.atc-sol-map .sol-link{fill:none;stroke:url(#sol-line);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.atc-sol-map .sol-gap{fill:none;stroke:#B4C1DF;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:4 9;transition:stroke .4s ease}
+.atc-sol-map [data-atc="solGap"].is-broken .sol-gap{stroke:#D9483C}
+.atc-sol-map .sol-x{fill:none;stroke:#D9483C;stroke-width:3;stroke-linecap:round;opacity:0;transition:opacity .3s ease}
+.atc-sol-map [data-atc="solGap"].is-broken .sol-x{opacity:1}
+.atc-sol-map .sol-dot{fill:#2D63E6}
+.atc-sol-map .sol-hubcap{font-size:16px;fill:var(--atc-slate);text-anchor:middle}
+.atc-sol-map [data-atc="solHub"]{transform-box:fill-box;transform-origin:center}
 .atc-line-grad{background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* White band behind the header, so content scrolling up passes under it */
@@ -810,6 +826,13 @@ with the same challenge.</h2>
         </svg>
       </div>
 
+      <!-- The solution: more than a supplier. Business on the left, the technology ecosystem on the right; they don't
+           reach each other directly, ATCON sits between them and connects every side -->
+      <section class="atc-sol" data-atc="sol" aria-label="More than a supplier, a true technology partner">
+        <h2 class="ds-h1 atc-sol-head"><span class="ds-mask"><span class="ds-rise ds-soft">More than a supplier.</span></span><span class="ds-mask"><span class="ds-rise"><span class="atc-line-grad">A true technology partner.</span></span></span></h2>
+        <svg class="atc-sol-map" viewBox="0 0 1100 440" aria-hidden="true"><defs><linearGradient id="sol-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3FB27E"></stop><stop offset=".5" stop-color="#2D63E6"></stop><stop offset="1" stop-color="#5A86EE"></stop></linearGradient><radialGradient id="sol-glow"><stop offset="0" stop-color="#2D63E6" stop-opacity=".22"></stop><stop offset="1" stop-color="#2D63E6" stop-opacity="0"></stop></radialGradient><linearGradient id="sol-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3FB27E"></stop><stop offset=".45" stop-color="#2D63E6"></stop><stop offset="1" stop-color="#9BBA2A"></stop></linearGradient></defs><g data-atc="solLinks"><path id="sol-b0" class="sol-link" d="M280 125 C390 125 394 230 484 230" pathLength="1"></path><path id="sol-b1" class="sol-link" d="M280 195 C390 195 394 230 484 230" pathLength="1"></path><path id="sol-b2" class="sol-link" d="M280 265 C390 265 394 230 484 230" pathLength="1"></path><path id="sol-b3" class="sol-link" d="M280 335 C390 335 394 230 484 230" pathLength="1"></path><path id="sol-t0" class="sol-link" d="M616 230 C706 230 710 90 820 90" pathLength="1"></path><path id="sol-t1" class="sol-link" d="M616 230 C706 230 710 160 820 160" pathLength="1"></path><path id="sol-t2" class="sol-link" d="M616 230 C706 230 710 230 820 230" pathLength="1"></path><path id="sol-t3" class="sol-link" d="M616 230 C706 230 710 300 820 300" pathLength="1"></path><path id="sol-t4" class="sol-link" d="M616 230 C706 230 710 370 820 370" pathLength="1"></path></g><g class="sol-side" data-atc="solL"><text class="sol-cap" x="175.0" y="79">Your business</text><g transform="translate(70 102.0)"><rect class="sol-pill" width="210" height="46" rx="23.0"></rect><circle cx="26" cy="23.0" r="5" fill="#2D63E6"></circle><text class="sol-lbl" x="44" y="29.0">Goals</text></g><g transform="translate(70 172.0)"><rect class="sol-pill" width="210" height="46" rx="23.0"></rect><circle cx="26" cy="23.0" r="5" fill="#2D63E6"></circle><text class="sol-lbl" x="44" y="29.0">Teams</text></g><g transform="translate(70 242.0)"><rect class="sol-pill" width="210" height="46" rx="23.0"></rect><circle cx="26" cy="23.0" r="5" fill="#2D63E6"></circle><text class="sol-lbl" x="44" y="29.0">Customers</text></g><g transform="translate(70 312.0)"><rect class="sol-pill" width="210" height="46" rx="23.0"></rect><circle cx="26" cy="23.0" r="5" fill="#2D63E6"></circle><text class="sol-lbl" x="44" y="29.0">Growth</text></g></g><g class="sol-side" data-atc="solR"><text class="sol-cap" x="925.0" y="50">Technology ecosystem</text><g transform="translate(820 69.0)"><rect class="sol-tile" width="210" height="42" rx="12"></rect><rect x="14" y="14.0" width="14" height="14" rx="4" fill="#5A86EE"></rect><text class="sol-lbl" x="40" y="27.0">Cloud</text></g><g transform="translate(820 139.0)"><rect class="sol-tile" width="210" height="42" rx="12"></rect><rect x="14" y="14.0" width="14" height="14" rx="4" fill="#5A86EE"></rect><text class="sol-lbl" x="40" y="27.0">Data</text></g><g transform="translate(820 209.0)"><rect class="sol-tile" width="210" height="42" rx="12"></rect><rect x="14" y="14.0" width="14" height="14" rx="4" fill="#5A86EE"></rect><text class="sol-lbl" x="40" y="27.0">AI</text></g><g transform="translate(820 279.0)"><rect class="sol-tile" width="210" height="42" rx="12"></rect><rect x="14" y="14.0" width="14" height="14" rx="4" fill="#5A86EE"></rect><text class="sol-lbl" x="40" y="27.0">Security</text></g><g transform="translate(820 349.0)"><rect class="sol-tile" width="210" height="42" rx="12"></rect><rect x="14" y="14.0" width="14" height="14" rx="4" fill="#5A86EE"></rect><text class="sol-lbl" x="40" y="27.0">Integrations</text></g></g><g data-atc="solGap"><path class="sol-gap" d="M300 230 H520"></path><path class="sol-gap" d="M580 230 H800"></path><path class="sol-x" d="M538 218 L562 242 M562 218 L538 242"></path></g><g class="sol-pulses" data-atc="solPulse"><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="0.00s" repeatCount="indefinite"><mpath href="#sol-b0"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="0.45s" repeatCount="indefinite"><mpath href="#sol-b1"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="0.90s" repeatCount="indefinite"><mpath href="#sol-b2"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="1.35s" repeatCount="indefinite"><mpath href="#sol-b3"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="1.30s" repeatCount="indefinite"><mpath href="#sol-t0"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="1.70s" repeatCount="indefinite"><mpath href="#sol-t1"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="2.10s" repeatCount="indefinite"><mpath href="#sol-t2"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="2.50s" repeatCount="indefinite"><mpath href="#sol-t3"></mpath></animateMotion></circle><circle r="4.5" class="sol-dot"><animateMotion dur="2.6s" begin="2.90s" repeatCount="indefinite"><mpath href="#sol-t4"></mpath></animateMotion></circle></g><g data-atc="solHub"><circle cx="550" cy="230" r="125.39999999999999" fill="url(#sol-glow)"></circle><circle cx="550" cy="230" r="66" fill="#fff" stroke="url(#sol-ring)" stroke-width="3"></circle><image href="../assets/798217b522466503844e74dfe6407be1.svg" x="498" y="220" width="104" height="20"></image><text class="sol-hubcap" x="550" y="336">One partner between your business</text><text class="sol-hubcap" x="550" y="360">and its technology</text></g></svg>
+      </section>
+
 
 
     </div>
@@ -1031,7 +1054,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2650,
+      U: 3095,
       heroOut: [0, 50],
       v2: [0, 288], v4: [288, 490], v3: [490, 690],
       indoor: 216,
@@ -1063,7 +1086,9 @@ class Component extends DCLogic {
         // The close: title to the centre, "As a partner.", then the logo and tagline
         center: [2243, 2338], b: 2350, bOut: 2430, sign: 2474,
         out: 2585
-      }
+      },
+      // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
+      sol: { title: 2635, sides: [2685, 2735], gap: [2735, 2775], hub: [2805, 2855], links: [2850, 2940], out: 3025 }
     };
   }
 
@@ -1550,6 +1575,7 @@ class Component extends DCLogic {
       fam.style.transform = 'translateY(' + ((1 - sl) * vh * 0.55 + so * 30).toFixed(1) + 'px)';
     }
     this.gap(T.gap, u);
+    this.sol(T.sol, u);
     this._lastU = u;
     var words = this.qa('[data-atc="famText"] .ds-w');
     var wp = map(u, T.fill[0], T.fill[1]) * words.length;
@@ -1891,6 +1917,44 @@ class Component extends DCLogic {
 
   // Rest points: every reveal runs between a start and an end unit. If the scroll stops part-way through
   // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
+  // The solution, played on scroll: tagline, both sides, the direct line that breaks, ATCON arriving in the middle,
+  // then every side connected through it, with data flowing from business to technology.
+  sol(S, u) {
+    var map = this._fx.map, ease = this._fx.ease;
+    var box = this.q('sol');
+    if (!box) return;
+    var live = u > S.title - 6 && u < S.out + 60;
+    box.style.visibility = live ? 'visible' : 'hidden';
+    if (!live) return;
+    var sink = ease(map(u, S.out, S.out + 44));
+    var rises = this.qa('[data-atc="sol"] .atc-sol-head .ds-rise');
+    for (var j = 0; j < rises.length; j++) {
+      var k = ease(map(u, S.title + j * 10, S.title + j * 10 + 46));
+      rises[j].style.transform = 'translateY(' + ((1 - k) * 112 + sink * 112).toFixed(2) + '%)';
+    }
+    var side = ease(map(u, S.sides[0], S.sides[1])) * (1 - sink);
+    var L = this.q('solL'), R = this.q('solR');
+    if (L) { L.style.opacity = side.toFixed(3); L.style.transform = 'translateX(' + (-(1 - side) * 30).toFixed(1) + 'px)'; }
+    if (R) { R.style.opacity = side.toFixed(3); R.style.transform = 'translateX(' + ((1 - side) * 30).toFixed(1) + 'px)'; }
+    // The direct line reaches across, breaks, and gives way when ATCON arrives
+    var hub = ease(map(u, S.hub[0], S.hub[1]));
+    var gap = this.q('solGap');
+    if (gap) {
+      gap.style.opacity = (ease(map(u, S.gap[0], S.gap[0] + 20)) * (1 - hub) * (1 - sink)).toFixed(3);
+      gap.classList.toggle('is-broken', u > S.gap[1]);
+    }
+    var H = this.q('solHub');
+    if (H) { H.style.opacity = (hub * (1 - sink)).toFixed(3); H.style.transform = 'scale(' + (0.8 + 0.2 * hub).toFixed(4) + ')'; }
+    var links = this.qa('[data-atc="solLinks"] .sol-link');
+    for (var i = 0; i < links.length; i++) {
+      var lp = ease(map(u, S.links[0] + i * 7, S.links[0] + i * 7 + 30));
+      links[i].style.strokeDashoffset = (1 - lp).toFixed(3);
+      links[i].style.opacity = (1 - sink).toFixed(3);
+    }
+    var P = this.q('solPulse');
+    if (P) P.style.opacity = (ease(map(u, S.links[1] - 10, S.links[1] + 10)) * (1 - sink)).toFixed(3);
+  }
+
   motionRanges() {
     if (this._ranges) return this._ranges;
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
@@ -1900,6 +1964,8 @@ class Component extends DCLogic {
     r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
+    var O = T.sol;
+    r.push([O.title, O.title + 46], O.sides, O.gap, O.hub, O.links, [O.out, O.out + 44]);
     this._ranges = r;
     return r;
   }
