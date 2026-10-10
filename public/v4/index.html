@@ -516,6 +516,20 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mac .mxs-items .st{transform:scale(.4)}
 .mac .mxs-items .st.is-shown{transform:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.5,.5,1)}
 
+/* Point 3, kept simple: a track from Idea to Launch that stalls, then the outcomes in a list */
+.mxr-b{padding:7cqw 3.2cqw 1.4cqw}
+.mxr-track{display:flex;align-items:center;gap:2cqw;padding-bottom:3.4cqw;font-size:2cqw;font-weight:500;color:#8C95A6}
+.mxr-line{position:relative;flex:1;height:.9cqw;border-radius:1cqw;background:#E6EAF2;--p:0%}
+.mxr-fill{position:absolute;left:0;top:0;bottom:0;width:var(--p);border-radius:1cqw;background:var(--atc-navy);transition:width 1.3s cubic-bezier(.25,.8,.3,1)}
+.mxr-dot{position:absolute;top:50%;left:var(--p);width:3cqw;height:3cqw;margin:-1.5cqw 0 0 -1.5cqw;border-radius:50%;background:#fff;box-shadow:0 0 0 .6cqw var(--atc-navy),0 .6cqw 1.4cqw -.2cqw rgba(0,16,37,.35);transition:left 1.3s cubic-bezier(.25,.8,.3,1),box-shadow .3s ease}
+.mxr-dot.is-stuck{box-shadow:0 0 0 .6cqw #D9483C,0 .6cqw 1.4cqw -.2cqw rgba(0,16,37,.35);animation:mac-shake .5s ease}
+.mxr-stuck{position:absolute;left:var(--p);top:-5.4cqw;margin-left:-5cqw;width:10cqw;padding:.5cqw 0;border-radius:3cqw;background:#D9483C;color:#fff;text-align:center;font-style:normal;font-size:1.7cqw;font-weight:600}
+.mxr-list{margin:0;padding:0;list-style:none}
+.mxr-list li{display:grid;grid-template-columns:4cqw 1fr auto;align-items:center;gap:1.8cqw;padding:2.1cqw 0;border-top:1px solid rgba(0,16,37,.07);font-size:2.4cqw;color:var(--atc-navy)}
+.mxr-list svg{width:3.4cqw;height:3.4cqw;fill:none;stroke:#5B6B78;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mxr-list svg .fill{fill:#D9483C;stroke:none}
+.mxr-list strong{font-weight:600;color:#C8382D;font-variant-numeric:tabular-nums}
+
 /* Dock */
 .mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
   background:rgba(246,248,252,.86);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -798,6 +812,23 @@ with the same challenge.</h2>
                 <div class="mxs-row" data-k="r0"><span class="mxs-l"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19 C3.5 15.6 6 13.6 9 13.6 C12 13.6 14.5 15.6 14.5 19 M16 6.5 A3 3 0 0 1 16 12.5 M17.5 14.2 C19.4 15 20.5 16.7 20.5 19"/></svg>Vendors</span><span class="mxs-items"><b class="mxs-av st" data-k="v0" style="--c:#2D63E6">NS</b><b class="mxs-av st" data-k="v1" style="--c:#3FB27E">BF</b><b class="mxs-av st" data-k="v2" style="--c:#9BBA2A">CL</b></span><strong data-k="c0">0</strong></div>
                 <div class="mxs-row" data-k="r1"><span class="mxs-l"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>Tools</span><span class="mxs-items"><i class="mxs-app st" data-k="t0" style="--c:#2D63E6"></i><i class="mxs-app st" data-k="t1" style="--c:#3FB27E"></i><i class="mxs-app st" data-k="t2" style="--c:#9BBA2A"></i><i class="mxs-app st" data-k="t3" style="--c:#5A86EE"></i><i class="mxs-app st" data-k="t4" style="--c:#1E8E5A"></i><i class="mxs-app st" data-k="t5" style="--c:#7F8FB0"></i><i class="mxs-app st" data-k="t6" style="--c:#4D8CF5"></i><i class="mxs-app st" data-k="t7" style="--c:#8CC08A"></i><i class="mxs-app st" data-k="t8" style="--c:#2D4FA8"></i><i class="mxs-app st" data-k="t9" style="--c:#A2B3D8"></i></span><strong data-k="c1">0</strong></div>
                 <div class="mxs-row" data-k="r2"><span class="mxs-l"><svg viewBox="0 0 24 24"><path d="M4 5.5 H20 V15.5 H11 L6.5 19 V15.5 H4 Z"/></svg>Opinions</span><span class="mxs-items"><em class="mxs-op st" data-k="o0">Build</em><em class="mxs-op st" data-k="o1">Buy</em><em class="mxs-op st" data-k="o2">Wait</em><em class="mxs-op st" data-k="o3">Redo</em><em class="mxs-op st" data-k="o4">Pause</em></span><strong data-k="c2">0</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Point 3, kept simple: the project starts towards launch, gets stuck, and the costs of that land one by one -->
+          <div class="mac-sc">
+            <div class="mw st" data-k="road" style="--x:4%;--y:12%;--w:92%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal</span></div>
+              <div class="mxr-b">
+                <div class="mxr-track"><span>Idea</span><div class="mxr-line" data-k="line"><i class="mxr-fill"></i><b class="mxr-dot" data-k="dot"></b><em class="mxr-stuck st" data-k="stuck">Stuck</em></div><span>Launch</span></div>
+                <ul class="mxr-list">
+                  <li class="st" data-k="i0"><svg viewBox="0 0 24 24"><path d="M4 17 L10 11 L14 15 L20 9 M15 9 H20 V14"/></svg><span>Higher costs</span><strong>+€48k</strong></li>
+                  <li class="st" data-k="i1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8 V12 L15 14"/></svg><span>Delayed delivery</span><strong>+5 months</strong></li>
+                  <li class="st" data-k="i2"><svg viewBox="0 0 24 24"><rect x="2.5" y="9" width="8" height="6" rx="3"/><rect x="13.5" y="9" width="8" height="6" rx="3"/><path d="M12 4.5 V6.5 M12 17.5 V19.5"/></svg><span>Disconnected systems</span><strong>0 links</strong></li>
+                  <li class="st" data-k="i3"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="7" height="7" rx="1.4"/><rect x="13" y="12" width="7" height="7" rx="1.4"/><rect x="14" y="4" width="5" height="5" rx="1.2"/></svg><span>Fragmented data</span><strong>4 versions</strong></li>
+                  <li class="st" data-k="i4"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 11 V13"/><rect x="5" y="10" width="3.5" height="4" rx=".6" class="fill"/></svg><span>Underused technology</span><strong>30% used</strong></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -1714,7 +1745,7 @@ class Component extends DCLogic {
     var mac = this.q('mac');
     if (!mac || this._mScene === i) return;
     this._mScene = i;
-    var PLAY = [[5], [2], [3]];
+    var PLAY = [[5], [2], [6]];
     var list = i >= 0 ? PLAY[i] : [];
     var scs = mac.querySelectorAll('.mac-sc');
     if (!this._mHTML) this._mHTML = Array.prototype.map.call(scs, function (s) { return s.innerHTML; });
@@ -1846,7 +1877,16 @@ class Component extends DCLogic {
         t = from + 150 + g[1] * g[2] + 450;
       });
       var tEnd = t;
-      at(tEnd, function () { lightSub('all'); });      return tEnd + 400;
+      at(tEnd, function () { lightSub('all'); });
+      return tEnd + 400;
+      },
+      6: function (sc, at, $, show, flag, type, count) {
+      // Point 3, kept simple: progress sets off towards launch, stalls a fifth of the way, then the outcomes land
+      at(100, function () { show('road'); });
+      at(450, function () { $('line').style.setProperty('--p', '22%'); });
+      at(2000, function () { flag($('dot'), 'is-stuck'); show('stuck'); });
+      for (var n = 0; n < 5; n++) (function (n) { at(2500 + n * 380, function () { show('i' + n); }); })(n);
+      return 2500 + 5 * 380 + 400;
       }
     };
     // Runs one scene's script from base (timeline ms), with helpers bound to that scene
