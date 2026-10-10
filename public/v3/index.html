@@ -370,9 +370,11 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mboard p{height:4.4cqw;margin-top:.9cqw;border-radius:.8cqw;background:#F0F3F8;box-shadow:inset 0 0 0 1px rgba(0,16,37,.05)}
 .mboard p.is-b{background:#E3ECFD}
 .mboard p.is-g{background:#E1F2E8}
-.mchat{display:flex;flex-direction:column;gap:1.1cqw;min-height:19cqw}
-.mchat p{max-width:86%;padding:1.1cqw 1.6cqw;border-radius:1.8cqw;font-size:2.1cqw;background:#F0F3F8;color:#3A4D55;min-height:1em}
-.mchat .out{align-self:flex-end;background:#2D63E6;color:#fff}
+.minv{display:flex;flex-direction:column}
+.minv p{display:flex;align-items:center;gap:1.2cqw;padding:1cqw 0;border-top:1px solid rgba(0,16,37,.06);font-size:2cqw;color:#3A4D55}
+.minv p:first-child{border-top:0;padding-top:0}
+.minv small{padding:.2cqw .9cqw;border-radius:3cqw;background:#E4F4EB;color:#1F7A50;font-size:1.5cqw;font-weight:500}
+.minv em{margin-left:auto;font-style:normal;font-weight:600;color:var(--atc-navy);font-variant-numeric:tabular-nums}
 .msheet{display:grid;grid-template-columns:repeat(3,1fr);padding:0;font-size:1.9cqw;font-variant-numeric:tabular-nums}
 .msheet span{padding:.9cqw 1.4cqw;border-right:1px solid rgba(0,16,37,.07);border-bottom:1px solid rgba(0,16,37,.07);color:#3A4D55}
 .msheet span:nth-child(-n+3){background:#F5F6F9;color:#8C95A6;font-weight:500}
@@ -638,12 +640,14 @@ with the same challenge.</h2>
                 <div><small>Done</small><p class="is-g"></p></div>
               </div>
             </div>
-            <div class="mw st mw-open" data-k="w3" style="--x:4%;--y:40%;--w:50%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Team chat</span></div>
-              <div class="mw-b mchat">
-                <p class="in st" data-k="c1"><span data-type="Which tool has the latest numbers?"></span></p>
-                <p class="out st" data-k="c2"><span data-type="The sheet. Or was it the CRM?"></span></p>
-                <p class="in st" data-k="c3"><span data-type="I’ll export it again."></span></p>
+            <div class="mw st mw-open" data-k="w3" style="--x:3%;--y:40%;--w:47%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Billing · Renewals</span></div>
+              <div class="mw-b minv">
+                <p class="st" data-k="r0"><span>Other tools ×3</span><small>Renewed</small><em>€1,240</em></p>
+                <p class="st" data-k="r1"><span>CRM Pro</span><small>Renewed</small><em>€890</em></p>
+                <p class="st" data-k="r2"><span>Project boards</span><small>Renewed</small><em>€420</em></p>
+                <p class="st" data-k="r3"><span>Team chat</span><small>Renewed</small><em>€610</em></p>
+                <p class="st" data-k="r4"><span>Budget sheets</span><small>Renewed</small><em>€820</em></p>
               </div>
             </div>
             <div class="mw st mw-open" data-k="w4" style="--x:52%;--y:46%;--w:46%">
@@ -1728,12 +1732,9 @@ class Component extends DCLogic {
           flag(plus, 'is-go');
         });
       });
-      at(3000, function () { show('c1'); });
-      var t1 = type(3050, 'c1', 30);
-      at(t1 + 300, function () { show('c2'); });
-      var t2 = type(t1 + 350, 'c2', 30);
-      at(t2 + 300, function () { show('c3'); });
-      var total = type(t2 + 350, 'c3', 30) + 300;
+      // The month's renewals land one row at a time; together they make up the bill
+      for (var r = 0; r < 5; r++) (function (r) { at(2900 + r * 280, function () { show('r' + r); }); })(r);
+      var total = 2900 + 4 * 280 + 600;
     } else if (i === 1) {
       // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
       var unread = $('unread');
