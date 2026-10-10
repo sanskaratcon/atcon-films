@@ -430,16 +430,24 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .avs em{margin-left:2.2cqw;font-style:normal;color:#8C95A6}
 .mac .avs .st{transform:scale(.4)}
 .mac .avs .st.is-shown{transform:none}
-.mcomments{display:flex;flex-direction:column;gap:1.3cqw;margin-top:2.4cqw;padding-top:2.4cqw;border-top:1px solid rgba(0,16,37,.07)}
-.mcomments>div{display:flex;align-items:center;gap:1.6cqw}
-.mcomments p{padding:1.2cqw 1.8cqw;border-radius:1.6cqw;background:#F5F6F9;font-size:2.15cqw;color:#3A4D55}
-.mcomments strong{margin-right:1cqw;font-weight:600;color:var(--atc-navy)}
-.mcomments small{padding-left:6.6cqw;font-size:1.9cqw;color:#C8382D}
-.mcomments .mlog{display:flex;align-items:center;gap:.8cqw;padding-left:6.6cqw;font-size:1.75cqw;color:#8C95A6}
-.mcomments .mlog b{font-weight:600;color:#3A4D55}
-.mcomments .mlog svg{width:2cqw;height:2cqw;fill:none;stroke:#8C95A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.mcomments .st:not(.is-shown){display:none}
-.mcomments .st.is-shown{animation:mac-pop .4s cubic-bezier(.3,1.3,.5,1)}
+.mtabs{position:relative;display:flex;gap:.4cqw;margin-top:2.6cqw;border-bottom:1px solid rgba(0,16,37,.09)}
+.mtab{display:flex;align-items:center;gap:1cqw;padding:1.3cqw 1.9cqw;font-size:2.05cqw;font-weight:500;color:#8C95A6;white-space:nowrap;transition:color .3s ease}
+.mtab i{width:1.2cqw;height:1.2cqw;border-radius:50%;background:var(--c);opacity:.45;transition:opacity .3s ease}
+.mtab.is-active{color:var(--atc-navy)}
+.mtab.is-active i{opacity:1}
+.mtab-line{position:absolute;left:0;bottom:-1px;width:0;height:.4cqw;border-radius:.4cqw;background:var(--atc-navy);transition:transform .45s cubic-bezier(.2,.85,.25,1),width .45s cubic-bezier(.2,.85,.25,1)}
+.mpanels{display:grid;min-height:21cqw;padding-top:2.6cqw}
+.mpanel{grid-area:1/1;display:flex;flex-direction:column;align-items:flex-start;gap:1.5cqw;opacity:0;transform:translateX(3cqw);transition:opacity .3s ease,transform .45s cubic-bezier(.2,.85,.25,1)}
+.mpanel.is-active{opacity:1;transform:none}
+.mpanel .mtyping,.mpanel .mline{display:flex;align-items:center;gap:1.6cqw}
+.mpanel .mline p{padding:1.3cqw 1.9cqw;border-radius:1.6cqw;background:#F5F6F9;font-size:2.3cqw;color:#3A4D55}
+.mpanel .mline strong{margin-right:1cqw;font-weight:600;color:var(--atc-navy)}
+.mpanel .st:not(.is-shown){display:none}
+.mpanel .st.is-shown{animation:mac-pop .4s cubic-bezier(.3,1.3,.5,1)}
+.mpass{display:flex;align-items:center;gap:.9cqw;margin-left:6.6cqw;padding:.6cqw 1.4cqw;border-radius:3cqw;background:#FDE6E4;color:#C8382D;font-size:1.9cqw;font-weight:500}
+.mpass b{font-weight:600}
+.mpass svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mfoot{display:block;margin-top:2.4cqw;padding-top:2cqw;border-top:1px solid rgba(0,16,37,.07);font-size:1.95cqw;font-weight:500;color:#C8382D}
 .mtyping span{font-size:1.9cqw;color:#8C95A6}
 .mtyping i{width:.9cqw;height:.9cqw;border-radius:50%;background:#A6B0C2;animation:mac-dots 1s ease-in-out infinite}
 .mtyping i:nth-of-type(2){animation-delay:.15s}
@@ -683,7 +691,7 @@ with the same challenge.</h2>
             <div class="mtally st" data-k="tally" style="top:68%"><span><b>3</b> vendors</span><span><b>3</b> promises</span><span class="is-zero"><b>0</b> owning the whole</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
+          <!-- 03 Everyone is involved, no one is accountable: one tab per team, each blames the next and passes the task on -->
           <div class="mac-sc">
             <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
@@ -693,18 +701,25 @@ with the same challenge.</h2>
                   <dt>Owner</dt><dd><span class="pill owner" data-k="owner">Marketing</span></dd>
                   <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#7F8FB0">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
                 </dl>
-                <div class="mcomments">
-                  <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span data-type="Not our fault. IT never set up the integration."></span></p></div>
-                  <small class="mlog st" data-k="l1"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Marketing</b> reassigned this to <b>IT</b></small>
-                  <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
-                  <small class="mlog st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>IT</b> reassigned this to <b>Bitforge Labs</b></small>
-                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#7F8FB0">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
-                  <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> removed the owner</small>
-                  <small class="st" data-k="more">3 teams · 0 owners · still delayed</small>
+                <div class="mtabs"><span class="mtab" data-k="tab1" style="--c:#2D63E6"><i></i>Marketing</span><span class="mtab" data-k="tab2" style="--c:#3FB27E"><i></i>IT</span><span class="mtab" data-k="tab3" style="--c:#7F8FB0"><i></i>Bitforge Labs</span><b class="mtab-line" data-k="tabline"></b></div>
+                <div class="mpanels">
+                  <div class="mpanel" data-k="p1">
+                    <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
+                    <div class="mline st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span data-type="Not our fault. IT never set up the integration."></span></p></div>
+                    <small class="mpass st" data-k="l1"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg>Passed to <b>IT</b></small>
+                  </div>
+                  <div class="mpanel" data-k="p2">
+                    <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
+                    <div class="mline st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
+                    <small class="mpass st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg>Passed to <b>Bitforge Labs</b></small>
+                  </div>
+                  <div class="mpanel" data-k="p3">
+                    <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#7F8FB0">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
+                    <div class="mline st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
+                    <small class="mpass st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg>Owner removed</small>
+                  </div>
                 </div>
+                <small class="mfoot st" data-k="more">3 teams · 0 owners · still delayed</small>
               </div>
             </div>
           </div>
@@ -1745,23 +1760,30 @@ class Component extends DCLogic {
       at(600 + 3 * 750 + 400, function () { show('tally'); });
       var total = 600 + 3 * 750 + 900;
     } else if (i === 2) {
-      // 03 Every team blames the next and passes the task on; in the end nobody owns it
-      var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
-      at(100, function () { show('task'); });
+      // 03 One tab per team: each one types why it isn't their fault, passes the task to the next tab; nobody keeps it
+      var owner = $('owner'), line = $('tabline'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 400;
+      var openTab = function (n) {
+        for (var k = 1; k <= 3; k++) { $('tab' + k).classList.toggle('is-active', k === n); $('p' + k).classList.toggle('is-active', k === n); }
+        var tab = $('tab' + n);
+        line.style.width = tab.offsetWidth + 'px';
+        line.style.transform = 'translateX(' + tab.offsetLeft + 'px)';
+      };
+      at(100, function () { show('task'); openTab(1); });
       [1, 2, 3].forEach(function (n) {
         var from = tt;
-        at(from, function () { show('t' + n); });
-        at(from + 700, function () { show('t' + n, false); show('k' + n); });
-        var end = type(from + 750, 'k' + n, 26);
+        if (n > 1) at(from, function () { openTab(n); });
+        at(from + 250, function () { show('t' + n); });
+        at(from + 900, function () { show('t' + n, false); show('k' + n); });
+        var end = type(from + 950, 'k' + n, 26);
         at(end + 200, function () {
           show('l' + n);
           owner.textContent = owners[n - 1];
           flag(owner, n === 3 ? 'is-none' : 'is-flip');
         });
-        tt = end + 650;
+        tt = end + 1000;
       });
-      at(tt, function () { show('more'); });
-      var total = tt + 400;
+      at(tt - 500, function () { show('more'); });
+      var total = tt;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
