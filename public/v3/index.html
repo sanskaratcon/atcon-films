@@ -348,21 +348,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .muted{color:#8C95A6}
 .chip{display:inline-flex;align-items:center;padding:.5cqw 1.3cqw;border-radius:4cqw;font-size:1.8cqw;font-weight:500;color:var(--c);
   background:color-mix(in srgb,var(--c) 10%,#fff);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 30%,transparent)}
-.mbtn{display:inline-flex;align-items:center;padding:.8cqw 1.8cqw;border-radius:1cqw;font-size:1.9cqw;font-weight:500;color:#3A4D55;background:#fff;
-  box-shadow:inset 0 0 0 1px rgba(0,16,37,.18);transition:background-color .25s ease,color .25s ease,box-shadow .25s ease,transform .15s ease}
-.mbtn-blue{color:#fff;background:#2D63E6;box-shadow:none}
-.mbtn.is-hover{background:#E9EFFC;color:#2D63E6;box-shadow:inset 0 0 0 1px #9DB6F2}
-.mbtn-blue.is-hover{background:#1F4FC4;color:#fff}
-.mbtn.is-press{transform:scale(.94)}
-
-/* Cursors: the viewer's own, and named collaborators */
-.mcur{position:absolute;z-index:20;left:var(--x);top:var(--y);width:2.8cqw;pointer-events:none}
-.mac .mcur.st{transform:none;transition:opacity .4s ease}
-.mac .mcur.is-shown{transition:opacity .3s ease,translate .65s cubic-bezier(.45,.05,.2,1)}
-.mcur svg{display:block;width:100%;fill:#0B1E3A;stroke:#fff;stroke-width:1.3;stroke-linejoin:round;filter:drop-shadow(0 .3cqw .5cqw rgba(0,16,37,.3));transition:transform .15s ease}
-.mcur.is-click svg{transform:scale(.82)}
-.mcur-n svg{fill:var(--c)}
-.mcur-n em{position:absolute;left:2.2cqw;top:3cqw;padding:.35cqw 1cqw;border-radius:.8cqw;background:var(--c);color:#fff;font-style:normal;font-size:1.6cqw;font-weight:500;white-space:nowrap}
 
 /* Floating "+" tags */
 .mplus{position:absolute;right:3cqw;top:2cqw;padding:.4cqw 1.2cqw;border-radius:3cqw;background:#FDE6E4;color:#C8382D;font-size:2cqw;font-weight:600;opacity:0;pointer-events:none}
@@ -392,24 +377,25 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mwidget strong em{font-style:normal;font-size:2.2cqw;font-weight:400;letter-spacing:0;color:#8C95A6}
 
 /* 02 vendors */
-.mcompose .mw-b{display:flex;flex-direction:column;gap:1.4cqw;padding:2.2cqw 2.6cqw}
-.mf{display:flex;align-items:center;flex-wrap:wrap;gap:1cqw;padding-bottom:1.3cqw;border-bottom:1px solid rgba(0,16,37,.07);font-size:2.2cqw}
-.mf>span{width:9cqw;color:#8C95A6}
-.mf strong{font-weight:600;min-height:1.3em}
-.mbody{min-height:9cqw;font-size:2.4cqw;line-height:1.45;color:#26374f}
-.mf-send{display:flex;justify-content:flex-end}
-.mac .mcompose.is-sent{opacity:0;transform:translate(10cqw,-14cqw) scale(.55);transition:opacity .5s ease .1s,transform .7s cubic-bezier(.5,0,.3,1)}
-.mtoast{position:absolute;left:50%;top:2%;margin-left:-14cqw;width:28cqw;padding:1.2cqw 0;border-radius:4cqw;text-align:center;background:#0B1E3A;color:#fff;font-size:2cqw;font-weight:500}
-.mnotes{position:absolute;left:6%;right:6%;top:16%;display:flex;flex-direction:column;gap:1.8cqw}
-.mnote{display:flex;gap:1.8cqw;padding:2cqw 2.2cqw;border-radius:2.2cqw;background:rgba(255,255,255,.96);
-  box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.8cqw 4.4cqw -1.4cqw rgba(0,16,37,.3)}
-.mac .mnote.st{transform:translateX(12cqw) scale(.96)}
-.mac .mnote.st.is-shown{transform:none}
-.mnote>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:.6cqw}
-.mnote p:first-child{display:flex;align-items:center;gap:1cqw;font-size:2.2cqw}
-.mnote p:first-child em{font-style:normal;font-size:1.6cqw;padding:.25cqw .9cqw;border-radius:2cqw;background:#F0F3F8;color:#5B6B78}
-.mnote time{margin-left:auto;font-size:1.7cqw;color:#8C95A6}
-.mnote .nt{font-size:2.2cqw;line-height:1.4;color:#3A4D55;min-height:1.4em}
+.minbox{display:grid;grid-template-columns:22% 1fr;padding:0;min-height:52cqw}
+.mside{display:flex;flex-direction:column;gap:.5cqw;padding:2cqw 1.4cqw;background:#FAFBFC;border-right:1px solid rgba(0,16,37,.06);font-size:2cqw;color:#5B6B78}
+.mside span{display:flex;justify-content:space-between;padding:.8cqw 1.1cqw;border-radius:.9cqw}
+.mside .is-on{background:#E9EFFC;color:var(--atc-navy);font-weight:500}
+.mside b{font-weight:600;color:#2D63E6;font-variant-numeric:tabular-nums}
+.mlist{display:flex;flex-direction:column}
+.mmsg{display:flex;gap:1.8cqw;padding:2.2cqw 2.4cqw;border-bottom:1px solid rgba(0,16,37,.06);background:#F7F9FE}
+.mmsg.is-read{background:#fff;transition:background-color .8s ease}
+.mlist .st:not(.is-shown){display:none}
+.mlist .st.is-shown{animation:mac-drop .5s cubic-bezier(.3,1.25,.5,1)}
+@keyframes mac-drop{0%{opacity:0;transform:translateY(-2.4cqw)}100%{opacity:1;transform:none}}
+.mmsg>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:.6cqw}
+.mmsg p:first-child{display:flex;align-items:center;gap:1cqw;font-size:2.1cqw;color:var(--atc-navy)}
+.mmsg p:first-child em{font-style:normal;font-size:1.6cqw;padding:.25cqw .9cqw;border-radius:2cqw;background:#EDF0F5;color:#5B6B78}
+.mmsg time{margin-left:auto;font-size:1.7cqw;color:#8C95A6}
+.mmsg .dot{width:1.1cqw;height:1.1cqw;border-radius:50%;background:#2D63E6}
+.mmsg.is-read .dot{background:transparent}
+.mmsg h4{font-size:2.2cqw;font-weight:600;letter-spacing:-.01em}
+.mmsg .nt{font-size:2.25cqw;line-height:1.45;color:#3A4D55;min-height:1.45em}
 .mtally{position:absolute;left:2%;right:2%;top:60%;display:flex;justify-content:center;flex-wrap:wrap;gap:1.4cqw}
 .mtally span{padding:1.2cqw 2.2cqw;border-radius:6cqw;background:#fff;box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1cqw 3cqw -1cqw rgba(0,16,37,.2);font-size:2.1cqw;color:#3A4D55;white-space:nowrap}
 .mtally b{font-weight:600;color:var(--atc-navy)}
@@ -421,7 +407,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mt-head h4{font-size:3.6cqw;font-weight:500;letter-spacing:-.025em}
 .pill{display:inline-flex;align-items:center;padding:.6cqw 1.5cqw;border-radius:4cqw;font-size:1.9cqw;font-weight:500;white-space:nowrap;background:#E9EFFC;color:#2D63E6}
 .pill-amber{background:#FDF1DA;color:#A86A00}
-.owner{background:#F0F3F8;color:#5B6B78;transition:background-color .3s ease,color .3s ease}
+.pill-red{background:#FDE6E4;color:#C8382D}
+.owner{background:#E9EFFC;color:#2D63E6;transition:background-color .3s ease,color .3s ease}
+.owner.is-flip{animation:mac-pass .5s cubic-bezier(.3,1.3,.5,1)}
+@keyframes mac-pass{0%{opacity:0;transform:translateX(3cqw)}100%{opacity:1;transform:none}}
 .owner.is-none{background:#FDE6E4;color:#C8382D;animation:mac-shake .5s ease}
 @keyframes mac-shake{20%{transform:translateX(-.8cqw)}40%{transform:translateX(.8cqw)}60%{transform:translateX(-.5cqw)}80%{transform:translateX(.4cqw)}}
 .mtask dl,.mstatus dl{display:grid;grid-template-columns:auto 1fr;column-gap:3cqw;row-gap:1.6cqw;align-items:center;font-size:2.1cqw}
@@ -436,6 +425,9 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mcomments p{padding:1.2cqw 1.8cqw;border-radius:1.6cqw;background:#F5F6F9;font-size:2.15cqw;color:#3A4D55}
 .mcomments strong{margin-right:1cqw;font-weight:600;color:var(--atc-navy)}
 .mcomments small{padding-left:6.6cqw;font-size:1.9cqw;color:#C8382D}
+.mcomments .mlog{display:flex;align-items:center;gap:.8cqw;padding-left:6.6cqw;font-size:1.75cqw;color:#8C95A6}
+.mcomments .mlog b{font-weight:600;color:#3A4D55}
+.mcomments .mlog svg{width:2cqw;height:2cqw;fill:none;stroke:#8C95A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .mcomments .st:not(.is-shown){display:none}
 .mcomments .st.is-shown{animation:mac-pop .4s cubic-bezier(.3,1.3,.5,1)}
 .mtyping span{font-size:1.9cqw;color:#8C95A6}
@@ -501,9 +493,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   .atc-menubar>span{display:none}
 }
 @media (prefers-reduced-motion:reduce){
-  .mac .st,.mac .mw-open,.mac .mcompose.is-sent{transform:none !important}
-  .mac .mcur{transition-duration:.01s !important}
-  .dk.is-bounce,.owner.is-none,.minvite.is-pop{animation:none}
+  .mac .st,.mac .mw-open{transform:none !important}
+  .dk.is-bounce,.owner.is-none,.owner.is-flip,.minvite.is-pop,.mlist .st.is-shown{animation:none}
 }
 
 @media (max-width:760px){
@@ -666,50 +657,46 @@ with the same challenge.</h2>
             </div>
           </div>
 
-          <!-- 02 You have the vendors: you ask for the full picture, each one answers for their own piece -->
+          <!-- 02 You have the vendors: three replies land in the inbox, each promising only its own piece -->
           <div class="mac-sc">
-            <span class="mcur st" data-k="cur" style="--x:62%;--y:30%"><svg viewBox="0 0 16 22"><path d="M1.5 1.5 L1.5 17.5 L5.6 13.6 L8.4 20.3 L11.1 19.1 L8.3 12.5 L14 12.5 Z"/></svg></span>
-            <div class="mw st mcompose" data-k="mail" style="--x:6%;--y:6%;--w:88%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>New message</span></div>
-              <div class="mw-b">
-                <p class="mf"><span>To</span><b class="chip" style="--c:#2D63E6">Northfield Studio</b><b class="chip" style="--c:#3FB27E">Bitforge Labs</b><b class="chip" style="--c:#9BBA2A">Cloudline</b></p>
-                <p class="mf"><span>Subject</span><strong data-type="Customer portal: where are we?"></strong></p>
-                <p class="mbody" data-type="Hi all, can someone give me the full picture of where the project stands?"></p>
-                <p class="mf-send"><b class="mbtn mbtn-blue" data-k="send">Send</b></p>
+            <div class="mw st" data-k="inbox" style="--x:3%;--y:5%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Mail · Inbox</span></div>
+              <div class="mw-b minbox">
+                <div class="mside"><span class="is-on">Inbox <b data-k="unread">0</b></span><span>Vendors</span><span>Projects</span><span>Archive</span></div>
+                <div class="mlist">
+                  <div class="mmsg st" data-k="e1"><b class="av av-t" style="--c:#2D63E6">NS</b><div><p><strong>Northfield Studio</strong><em>Design</em><time>09:12</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt" data-type="We’ll deliver the design. The rest is up to the other teams."></p></div></div>
+                  <div class="mmsg st" data-k="e2"><b class="av av-t" style="--c:#3FB27E">BF</b><div><p><strong>Bitforge Labs</strong><em>Development</em><time>10:47</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt" data-type="We’ll build our part. Integration is someone else’s job."></p></div></div>
+                  <div class="mmsg st" data-k="e3"><b class="av av-t" style="--c:#9BBA2A">CL</b><div><p><strong>Cloudline</strong><em>Infrastructure</em><time>14:05</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt" data-type="We’ll set up the servers, once everyone else is done."></p></div></div>
+                </div>
               </div>
             </div>
-            <div class="mtoast st" data-k="sent">Sent to 3 vendors</div>
-            <div class="mnotes">
-              <div class="mnote st" data-k="n1"><b class="av av-t" style="--c:#2D63E6">NS</b><div><p><strong>Northfield Studio</strong><em>Design</em><time>now</time></p><p class="nt" data-type="Design is done on our side. Dev hasn’t picked it up."></p></div></div>
-              <div class="mnote st" data-k="n2"><b class="av av-t" style="--c:#3FB27E">BF</b><div><p><strong>Bitforge Labs</strong><em>Development</em><time>now</time></p><p class="nt" data-type="The API is ready. Integration isn’t in our scope."></p></div></div>
-              <div class="mnote st" data-k="n3"><b class="av av-t" style="--c:#9BBA2A">CL</b><div><p><strong>Cloudline</strong><em>Infrastructure</em><time>now</time></p><p class="nt" data-type="Still waiting on the architecture from the other team."></p></div></div>
-            </div>
-            <div class="mtally st" data-k="tally"><span><b>3</b> replies</span><span><b>3</b> separate pieces</span><span class="is-zero"><b>0</b> with the full picture</span></div>
+            <div class="mtally st" data-k="tally" style="top:68%"><span><b>3</b> vendors</span><span><b>3</b> promises</span><span class="is-zero"><b>0</b> owning the whole</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: everyone comments, everyone hovers, nobody takes it -->
+          <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
           <div class="mac-sc">
-            <span class="mcur mcur-n st" data-k="cA" style="--x:8%;--y:88%;--c:#2D63E6"><svg viewBox="0 0 16 22"><path d="M1.5 1.5 L1.5 17.5 L5.6 13.6 L8.4 20.3 L11.1 19.1 L8.3 12.5 L14 12.5 Z"/></svg><em>Marketing</em></span>
-            <span class="mcur mcur-n st" data-k="cB" style="--x:90%;--y:70%;--c:#3FB27E"><svg viewBox="0 0 16 22"><path d="M1.5 1.5 L1.5 17.5 L5.6 13.6 L8.4 20.3 L11.1 19.1 L8.3 12.5 L14 12.5 Z"/></svg><em>IT</em></span>
-            <span class="mcur mcur-n st" data-k="cC" style="--x:60%;--y:94%;--c:#9BBA2A"><svg viewBox="0 0 16 22"><path d="M1.5 1.5 L1.5 17.5 L5.6 13.6 L8.4 20.3 L11.1 19.1 L8.3 12.5 L14 12.5 Z"/></svg><em>Finance</em></span>
             <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
               <div class="mw-b mtask">
-                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber">In discussion</span></div>
+                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-red">Delayed 3 weeks</span></div>
                 <dl>
-                  <dt>Owner</dt><dd><span class="pill owner" data-k="owner">Unassigned</span><b class="mbtn" data-k="assign">Assign to me</b></dd>
-                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b class="st" data-k="a3" style="--c:#7F8FB0">BF</b><b class="st" data-k="a4" style="--c:#9BBA2A">FN</b><b class="st" data-k="a5" style="--c:#5A86EE">OP</b><b class="st" data-k="a6" style="--c:#A2B3D8">NS</b><em class="st" data-k="a7">+4</em></dd>
+                  <dt>Owner</dt><dd><span class="pill owner" data-k="owner">Marketing</span></dd>
+                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#7F8FB0">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
                 </dl>
                 <div class="mcomments">
                   <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span data-type="Let’s align on scope first."></span></p></div>
+                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span data-type="Not our fault. IT never set up the integration."></span></p></div>
+                  <small class="mlog st" data-k="l1"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Marketing</b> reassigned this to <b>IT</b></small>
                   <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Is this ours or the vendor’s?"></span></p></div>
+                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
+                  <small class="mlog st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>IT</b> reassigned this to <b>Bitforge Labs</b></small>
                   <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#7F8FB0">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="Not in our contract."></span></p></div>
+                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Ask Marketing."></span></p></div>
+                  <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> reassigned this to <b>Marketing</b></small>
                   <div class="mtyping st" data-k="t4"><b class="av av-t" style="--c:#9BBA2A">FN</b><span>Finance is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k4"><b class="av av-t" style="--c:#9BBA2A">FN</b><p><strong>Finance</strong><span data-type="Who signed off the budget?"></span></p></div>
-                  <small class="st" data-k="more">+ 23 more comments · unassigned for 12 days</small>
+                  <div class="st" data-k="k4"><b class="av av-t" style="--c:#9BBA2A">FN</b><p><strong>Finance</strong><span data-type="Don’t look at us. Nobody told us the scope changed."></span></p></div>
+                  <small class="mlog st" data-k="l4"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Marketing</b> removed the owner</small>
+                  <small class="st" data-k="more">4 teams · 0 owners · still delayed</small>
                 </div>
               </div>
             </div>
@@ -1651,8 +1638,8 @@ class Component extends DCLogic {
     }
   }
 
-  // One scene of the desktop at a time, played live: windows open, text types itself, cursors move,
-  // notifications arrive. Each scene starts fresh from its original markup whenever it comes back.
+  // One scene of the desktop at a time, played live: windows open, text types itself, messages and
+  // invitations arrive. Each scene starts fresh from its original markup whenever it comes back.
   macScene(i) {
     var mac = this.q('mac');
     if (!mac || this._mScene === i) return;
@@ -1693,12 +1680,6 @@ class Component extends DCLogic {
       });
       return ms + text.length * speed;
     };
-    // Moves a cursor so its tip lands on part of a target element
-    var moveTo = function (cur, target, fx, fy) {
-      var s = sc.getBoundingClientRect(), r = target.getBoundingClientRect();
-      var x = r.left - s.left + r.width * (fx == null ? 0.4 : fx), y = r.top - s.top + r.height * (fy == null ? 0.55 : fy);
-      cur.style.translate = (x - cur.offsetLeft).toFixed(1) + 'px ' + (y - cur.offsetTop).toFixed(1) + 'px';
-    };
     var count = function (el, from, to, dur, fmt) {
       var t0 = performance.now();
       (function step(now) {
@@ -1737,47 +1718,33 @@ class Component extends DCLogic {
       at(t2 + 300, function () { show('c3'); });
       type(t2 + 350, 'c3', 30);
     } else if (i === 1) {
-      // 02 Vendors: you ask for the whole picture, three replies each cover their own piece
-      var cur = $('cur'), mail = $('mail'), send = $('send');
-      at(100, function () { show(mail); });
-      at(300, function () { show(cur); });
-      var ts = type(600, mail.querySelector('strong[data-type]'), 28);
-      var tb = type(ts + 100, mail.querySelector('.mbody'), 20);
-      at(tb + 80, function () { moveTo(cur, send, 0.5, 0.6); });
-      at(tb + 950, function () { send.classList.add('is-hover'); });
-      at(tb + 1150, function () { cur.classList.add('is-click'); send.classList.add('is-press'); });
-      at(tb + 1300, function () { cur.classList.remove('is-click'); mail.classList.add('is-sent'); show(cur, false); });
-      at(tb + 1400, function () { show('sent'); });
-      at(tb + 2500, function () { show('sent', false); });
-      var tn = tb + 1900;
-      ['n1', 'n2', 'n3'].forEach(function (key) {
-        var from = tn;
-        at(from, function () { show(key); });
-        tn = type(from + 250, key, 20) + 250;
+      // 02 Vendors: three replies land one after another, each types out the same promise in its own words
+      var unread = $('unread'), te = 500;
+      at(100, function () { show('inbox'); });
+      ['e1', 'e2', 'e3'].forEach(function (key, n) {
+        var from = te;
+        at(from, function () { show(key); unread.textContent = String(n + 1); });
+        te = type(from + 300, key, 24) + 350;
+        at(te - 100, function () { $(key).classList.add('is-read'); });
       });
-      at(tn + 200, function () { show('tally'); });
+      at(te + 100, function () { show('tally'); });
     } else if (i === 2) {
-      // 03 Everyone comments, everyone hovers over "Assign to me", nobody takes it
-      var assign = $('assign');
+      // 03 Every team blames the next and passes the task on; in the end nobody owns it
+      var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Marketing', 'Unassigned'], tt = 500;
       at(100, function () { show('task'); });
-      at(300, function () { show('cA'); show('cB'); show('cC'); });
-      var talk = [['t1', 'k1', 'a3', 'cA', 700], ['t2', 'k2', 'a4', 'cB', 2400], ['t3', 'k3', 'a5', null, 4100], ['t4', 'k4', 'a6', 'cC', 5400]];
-      talk.forEach(function (c) {
-        at(c[4], function () { show(c[0]); });
-        at(c[4] + 800, function () { show(c[0], false); show(c[1]); show(c[2]); });
-        type(c[4] + 850, c[1], 26);
-        if (c[3]) {
-          var who = $(c[3]), go = c[4] + 400;
-          at(go, function () { moveTo(who, assign, 0.55, 0.7); });
-          at(go + 1000, function () { assign.classList.add('is-hover'); });
-          at(go + 1700, function () {
-            assign.classList.remove('is-hover');
-            who.style.translate = ((Math.random() - 0.5) * 60).toFixed(0) + 'px ' + (30 + Math.random() * 40).toFixed(0) + 'px';
-          });
-        }
+      [1, 2, 3, 4].forEach(function (n) {
+        var from = tt;
+        at(from, function () { show('t' + n); });
+        at(from + 700, function () { show('t' + n, false); show('k' + n); });
+        var end = type(from + 750, 'k' + n, 26);
+        at(end + 200, function () {
+          show('l' + n);
+          owner.textContent = owners[n - 1];
+          flag(owner, n === 4 ? 'is-none' : 'is-flip');
+        });
+        tt = end + 650;
       });
-      at(6300, function () { show('a7'); });
-      at(7200, function () { flag($('owner'), 'is-none'); show('more'); });
+      at(tt, function () { show('more'); });
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
