@@ -358,7 +358,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* Cursors: the viewer's own, and named collaborators */
 .mcur{position:absolute;z-index:20;left:var(--x);top:var(--y);width:2.8cqw;pointer-events:none}
 .mac .mcur.st{transform:none;transition:opacity .4s ease}
-.mac .mcur.is-shown{transition:opacity .4s ease,translate 1s cubic-bezier(.45,.05,.2,1)}
+.mac .mcur.is-shown{transition:opacity .3s ease,translate .65s cubic-bezier(.45,.05,.2,1)}
 .mcur svg{display:block;width:100%;fill:#0B1E3A;stroke:#fff;stroke-width:1.3;stroke-linejoin:round;filter:drop-shadow(0 .3cqw .5cqw rgba(0,16,37,.3));transition:transform .15s ease}
 .mcur.is-click svg{transform:scale(.82)}
 .mcur-n svg{fill:var(--c)}
@@ -1671,7 +1671,9 @@ class Component extends DCLogic {
 
     var self = this, sc = scs[i];
     // The typing and arrivals are the story, so they play for everyone; reduced motion only drops the travel (CSS)
-    var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, ms); };
+    // PACE scales the whole scene: every delay, typing speed and count below is written at 1x
+    var PACE = 0.65;
+    var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, ms * PACE); };
     var $ = function (key) { return sc.querySelector('[data-k="' + key + '"]'); };
     var show = function (key, on) { var el = typeof key === 'string' ? $(key) : key; if (el) el.classList.toggle('is-shown', on !== false); return el; };
     var flag = function (el, c) { if (!el) return; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); };
@@ -1685,7 +1687,7 @@ class Component extends DCLogic {
         (function step() {
           if (run !== self._mRun) return;
           el.textContent = text.slice(0, ++n);
-          if (n < text.length) setTimeout(step, speed * (text.charAt(n - 1) === ' ' ? 0.6 : 1) * (0.7 + Math.random() * 0.6));
+          if (n < text.length) setTimeout(step, PACE * speed * (text.charAt(n - 1) === ' ' ? 0.6 : 1) * (0.7 + Math.random() * 0.6));
           else setTimeout(function () { el.classList.remove('is-typing'); }, 350);
         })();
       });
@@ -1701,7 +1703,7 @@ class Component extends DCLogic {
       var t0 = performance.now();
       (function step(now) {
         if (run !== self._mRun) return;
-        var p = Math.min(1, ((now || t0) - t0) / dur);
+        var p = Math.min(1, ((now || t0) - t0) / (dur * PACE));
         el.textContent = fmt(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))));
         if (p < 1) requestAnimationFrame(step);
       })();
