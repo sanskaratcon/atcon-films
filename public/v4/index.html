@@ -501,6 +501,32 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mouts{position:absolute;left:2%;right:2%;bottom:0;display:flex;flex-wrap:wrap;justify-content:center;gap:1.1cqw}
 .mouts span{padding:1cqw 1.8cqw;border-radius:4cqw;background:#fff;box-shadow:0 0 0 1px rgba(217,72,60,.25),0 1cqw 2.6cqw -1cqw rgba(0,16,37,.2);color:#C8382D;font-size:1.95cqw;font-weight:500;white-space:nowrap}
 
+/* Point 1, one screen: vendors (top), tools (behind and in the dock), opinions (around the project) */
+.mxproj{z-index:3}
+.mxproj .mw-b{padding:2.2cqw 2.6cqw 2.6cqw}
+.mxproj h4{font-size:3.2cqw;font-weight:500;letter-spacing:-.02em;margin-bottom:1.6cqw}
+.mxproj dl{display:grid;grid-template-columns:auto 1fr;column-gap:3cqw;row-gap:1.4cqw;align-items:center;font-size:2cqw}
+.mxproj dt{color:#8C95A6}
+.mxproj dd{display:flex;align-items:center;gap:1.4cqw}
+.mxproj dd strong{font-size:2.4cqw;font-weight:500}
+.mxtool{z-index:1}
+.mxtool-b{height:10cqw;background:repeating-linear-gradient(180deg,#fff 0 3cqw,#F3F5F9 3cqw 3.2cqw)}
+.mxnote{position:absolute;left:var(--x);top:var(--y);width:58%;z-index:4;display:flex;align-items:center;gap:1.6cqw;padding:1.5cqw 2cqw;border-radius:2cqw;background:rgba(255,255,255,.97);
+  box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.4cqw rgba(0,16,37,.3)}
+.mac .mxnote.st{transform:translateY(-2.4cqw) scale(.97)}
+.mac .mxnote.st.is-shown{transform:none}
+.mxnote>div{flex:1;min-width:0}
+.mxnote p{font-size:1.95cqw;color:#3A4D55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mxnote p:first-child{display:flex;gap:1cqw;font-size:2cqw;color:var(--atc-navy)}
+.mxnote time{margin-left:auto;color:#8C95A6;font-size:1.6cqw}
+.mxop{position:absolute;left:var(--x);top:var(--y);width:var(--w);z-index:5}
+.mac .mxop.st{transform:scale(.6);transform-origin:50% 100%}
+.mac .mxop.st.is-shown{transform:none;transition:opacity .3s ease,transform .5s cubic-bezier(.3,1.5,.5,1)}
+.mxbill{position:absolute;left:50%;bottom:1.5cqw;width:52%;margin-left:-26%;z-index:4;display:flex;align-items:baseline;justify-content:center;gap:1.2cqw;padding:1.3cqw 2cqw;border-radius:4cqw;background:#fff;
+  box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.4cqw 3.6cqw -1.2cqw rgba(0,16,37,.28);font-size:1.9cqw;color:#5B6B78}
+.mxbill strong{font-size:3.2cqw;font-weight:600;letter-spacing:-.02em;color:#C8382D;font-variant-numeric:tabular-nums}
+.mxbill b{font-weight:600;color:var(--atc-navy)}
+
 /* Dock */
 .mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
   background:rgba(246,248,252,.86);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -773,6 +799,28 @@ with the same challenge.</h2>
               <div class="mop st" data-k="c5"><b class="av av-t" style="--c:#5A86EE">OP</b><p><strong>Operations</strong>Start with mobile first.</p></div>
             </div>
             <div class="mtally st" data-k="otally" style="top:72%"><span><b>5</b> opinions</span><span class="is-zero"><b>0</b> decisions</span></div>
+          </div>
+
+          <!-- Point 1, one screen: one project, and the vendors, tools and opinions all pile up around it -->
+          <div class="mac-sc">
+            <div class="mw st mxtool" data-k="w1" style="--x:9%;--y:30%;--w:50%"><div class="mw-bar"><i></i><i></i><i></i><span>CRM · Pipeline</span></div><div class="mxtool-b"></div></div>
+            <div class="mw st mxtool" data-k="w2" style="--x:27%;--y:34%;--w:52%"><div class="mw-bar"><i></i><i></i><i></i><span>Projects · Board</span></div><div class="mxtool-b"></div></div>
+            <div class="mw st mxtool" data-k="w3" style="--x:15%;--y:38%;--w:56%"><div class="mw-bar"><i></i><i></i><i></i><span>Budget_v7_final.xlsx</span></div><div class="mxtool-b"></div></div>
+            <div class="mw st mxproj" data-k="proj" style="--x:20%;--y:43%;--w:60%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal</span></div>
+              <div class="mw-b">
+                <h4>Customer portal</h4>
+                <dl><dt>Decision</dt><dd><b class="pill pill-amber" data-k="dec">Pending</b></dd><dt>Progress</dt><dd><span class="ms-bar"><i></i></span><strong>0%</strong></dd></dl>
+              </div>
+            </div>
+            <div class="mxnote st" data-k="n1" style="--x:3%;--y:1%"><b class="av av-t" style="--c:#2D63E6">NS</b><div><p><strong>Northfield Studio</strong><time>now</time></p><p>We’ll deliver the design. The rest is up to others.</p></div></div>
+            <div class="mxnote st" data-k="n2" style="--x:21%;--y:9%"><b class="av av-t" style="--c:#3FB27E">BF</b><div><p><strong>Bitforge Labs</strong><time>now</time></p><p>We’ll build our part. Integration isn’t ours.</p></div></div>
+            <div class="mxnote st" data-k="n3" style="--x:39%;--y:17%"><b class="av av-t" style="--c:#9BBA2A">CL</b><div><p><strong>Cloudline</strong><time>now</time></p><p>We’ll set up the servers, once everyone’s done.</p></div></div>
+            <div class="mop mxop st" data-k="b1" style="--x:0%;--y:56%;--w:27%"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong>Build it in-house.</p></div>
+            <div class="mop mxop st" data-k="b2" style="--x:73%;--y:47%;--w:26%"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong>Buy a platform.</p></div>
+            <div class="mop mxop st" data-k="b3" style="--x:4%;--y:71%;--w:26%"><b class="av av-t" style="--c:#9BBA2A">FN</b><p><strong>Finance</strong>Wait a quarter.</p></div>
+            <div class="mop mxop st" data-k="b4" style="--x:66%;--y:68%;--w:30%"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong>Use our framework.</p></div>
+            <div class="mxbill st" data-k="bill"><span>Software</span><strong data-mac="eur">€1,240</strong><em>/ month · <b data-mac="tools">3</b> tools</em></div>
           </div>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
@@ -1673,6 +1721,7 @@ class Component extends DCLogic {
       for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 57.5) shown = si;
       var scene = this._openIdx >= 0 && this._openIdx !== active ? this._openIdx : shown;
       var down = this._lastU == null || u >= this._lastU;
+      this.macKeep();
       this.macScene(gv > 0.5 ? scene : -1, scene === shown && down && performance.now() > (this._jumpUntil || 0) ? S.ins[scene] + 58 : null);
     }
   }
@@ -1686,7 +1735,7 @@ class Component extends DCLogic {
     var mac = this.q('mac');
     if (!mac || this._mScene === i) return;
     this._mScene = i;
-    var PLAY = [[1, 0, 4], [2], [3]];
+    var PLAY = [[5], [2], [3]];
     var list = i >= 0 ? PLAY[i] : [];
     var scs = mac.querySelectorAll('.mac-sc');
     if (!this._mHTML) this._mHTML = Array.prototype.map.call(scs, function (s) { return s.innerHTML; });
@@ -1697,6 +1746,8 @@ class Component extends DCLogic {
     var docks = mac.querySelectorAll('.dk-x');
     for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run');
     var run = this._mRun = {};
+    // What the desktop should show right now; macKeep() puts it back if a re-render resets the classes
+    var view = this._mView = { scene: -1, point: i, lit: -1, dock: {} };
     var marks = document.querySelectorAll('[data-atc="steps"] i');
     var fillSteps = function (ms) {
       for (var m = 0; m < marks.length; m++) {
@@ -1709,7 +1760,7 @@ class Component extends DCLogic {
       }
     };
     var subs = document.querySelectorAll('[data-atc="stack"] .atc-sub');
-    var lightSub = function (n) { for (var q = 0; q < subs.length; q++) subs[q].classList.toggle('is-lit', q === n); };
+    var lightSub = function (n) { view.lit = n; for (var q = 0; q < subs.length; q++) subs[q].classList.toggle('is-lit', q === n || n === 'all'); };
     if (i < 0) { mac.setAttribute('data-scene', '-1'); fillSteps(0); lightSub(-1); return; }
 
     var self = this;
@@ -1729,7 +1780,7 @@ class Component extends DCLogic {
         var t = 500 + j * 900;
         at(t, function () {
           var icon = mac.querySelector('.dk-x[data-dock="' + j + '"]');
-          if (icon) { icon.classList.add('is-in', 'is-run'); flag(icon, 'is-bounce'); }
+          if (icon) { icon.classList.add('is-in', 'is-run'); flag(icon, 'is-bounce'); view.dock[j] = true; }
         });
         at(t + 380, function () { show(a[0]); });
         at(t + 560, function () {
@@ -1802,6 +1853,31 @@ class Component extends DCLogic {
       for (var c = 1; c <= 5; c++) (function (c) { at(500 + (c - 1) * 520, function () { show('c' + c); }); })(c);
       at(500 + 5 * 520 + 100, function () { show('otally'); flag($('dec'), 'is-flip'); });
       return 500 + 5 * 520 + 700;
+      },
+      5: function (sc, at, $, show, flag, type, count) {
+      // Point 1 on one screen: vendor promises arrive, tools pile up and the bill climbs, opinions crowd the project
+      var eurEl = sc.querySelector('[data-mac="eur"]'), toolsEl = sc.querySelector('[data-mac="tools"]');
+      at(100, function () { show('proj'); });
+      at(300, function () { lightSub(0); });
+      for (var n = 1; n <= 3; n++) (function (n) { at(400 + (n - 1) * 450, function () { show('n' + n); }); })(n);
+      var tT = 1900, bill = 1240, adds = [890, 420, 610, 820], tools = [6, 9, 11, 14];
+      at(tT, function () { lightSub(1); show('bill'); });
+      adds.forEach(function (add, j) {
+        at(tT + 100 + j * 300, function () {
+          var icon = mac.querySelector('.dk-x[data-dock="' + j + '"]');
+          if (icon) { icon.classList.add('is-in', 'is-run'); flag(icon, 'is-bounce'); view.dock[j] = true; }
+          if (j < 3) show('w' + (j + 1));
+          count(eurEl, bill, bill + add, 280, eur);
+          bill += add;
+          toolsEl.textContent = String(tools[j]);
+        });
+      });
+      var tO = tT + 100 + 4 * 300 + 300;
+      at(tO, function () { lightSub(2); });
+      for (var o = 1; o <= 4; o++) (function (o) { at(tO + 100 + (o - 1) * 420, function () { show('b' + o); }); })(o);
+      var tEnd = tO + 100 + 4 * 420;
+      at(tEnd, function () { flag($('dec'), 'is-flip'); lightSub('all'); });
+      return tEnd + 500;
       }
     };
     // Runs one scene's script from base (timeline ms), with helpers bound to that scene
@@ -1840,6 +1916,7 @@ class Component extends DCLogic {
       at(-START, function () {
         for (var q = 0; q < scs.length; q++) scs[q].classList.toggle('is-on', q === k);
         mac.setAttribute('data-scene', String(k));
+        view.scene = k;
         lightSub(list.length > 1 ? n : -1);
       });
       return scenes[k](sc, at, $, show, flag, type, count);
@@ -1851,6 +1928,32 @@ class Component extends DCLogic {
     if (holdAt != null && total) {
       this._lock = { top: this.unitTop(holdAt), until: performance.now() + total * PACE + 150, ease: true };
       this.holdScroll();
+    }
+  }
+
+  // The page framework can re-render the section and reset class names to the template; this puts the
+  // desktop's state (scene on screen, dock icons, progress marks, lit line) back where it was.
+  macKeep() {
+    var v = this._mView, mac = this.q('mac');
+    if (!v || !mac) return;
+    var attr = String(v.scene);
+    if (mac.getAttribute('data-scene') !== attr) mac.setAttribute('data-scene', attr);
+    var scs = mac.querySelectorAll('.mac-sc');
+    for (var k = 0; k < scs.length; k++) if (scs[k].classList.contains('is-on') !== (k === v.scene)) scs[k].classList.toggle('is-on', k === v.scene);
+    var docks = mac.querySelectorAll('.dk-x');
+    for (var d = 0; d < docks.length; d++) {
+      var want = !!v.dock[docks[d].getAttribute('data-dock')];
+      if (docks[d].classList.contains('is-in') !== want) { docks[d].classList.toggle('is-in', want); docks[d].classList.toggle('is-run', want); }
+    }
+    var marks = document.querySelectorAll('[data-atc="steps"] i');
+    for (var m = 0; m < marks.length; m++) {
+      if (marks[m].classList.contains('is-done') !== (m < v.point)) marks[m].classList.toggle('is-done', m < v.point);
+      if (marks[m].classList.contains('is-on') !== (m === v.point)) marks[m].classList.toggle('is-on', m === v.point);
+    }
+    var subs = document.querySelectorAll('[data-atc="stack"] .atc-sub');
+    for (var q = 0; q < subs.length; q++) {
+      var lit = q === v.lit || v.lit === 'all';
+      if (subs[q].classList.contains('is-lit') !== lit) subs[q].classList.toggle('is-lit', lit);
     }
   }
 
