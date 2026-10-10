@@ -701,12 +701,9 @@ with the same challenge.</h2>
                   <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
                   <small class="mlog st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>IT</b> reassigned this to <b>Bitforge Labs</b></small>
                   <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#7F8FB0">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Ask Marketing."></span></p></div>
-                  <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> reassigned this to <b>Marketing</b></small>
-                  <div class="mtyping st" data-k="t4"><b class="av av-t" style="--c:#9BBA2A">FN</b><span>Finance is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k4"><b class="av av-t" style="--c:#9BBA2A">FN</b><p><strong>Finance</strong><span data-type="Don’t look at us. Nobody told us the scope changed."></span></p></div>
-                  <small class="mlog st" data-k="l4"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Marketing</b> removed the owner</small>
-                  <small class="st" data-k="more">4 teams · 0 owners · still delayed</small>
+                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
+                  <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> removed the owner</small>
+                  <small class="st" data-k="more">3 teams · 0 owners · still delayed</small>
                 </div>
               </div>
             </div>
@@ -1749,9 +1746,9 @@ class Component extends DCLogic {
       var total = 600 + 3 * 750 + 900;
     } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
-      var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Marketing', 'Unassigned'], tt = 500;
+      var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
       at(100, function () { show('task'); });
-      [1, 2, 3, 4].forEach(function (n) {
+      [1, 2, 3].forEach(function (n) {
         var from = tt;
         at(from, function () { show('t' + n); });
         at(from + 700, function () { show('t' + n, false); show('k' + n); });
@@ -1759,7 +1756,7 @@ class Component extends DCLogic {
         at(end + 200, function () {
           show('l' + n);
           owner.textContent = owners[n - 1];
-          flag(owner, n === 4 ? 'is-none' : 'is-flip');
+          flag(owner, n === 3 ? 'is-none' : 'is-flip');
         });
         tt = end + 650;
       });
