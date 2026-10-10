@@ -384,11 +384,13 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mside b{font-weight:600;color:#2D63E6;font-variant-numeric:tabular-nums}
 .mlist{display:flex;flex-direction:column}
 .mmsg{display:flex;gap:1.8cqw;padding:2.2cqw 2.4cqw;border-bottom:1px solid rgba(0,16,37,.06);background:#F7F9FE}
-.mmsg.is-read{background:#fff;transition:background-color .8s ease}
-.mlist .st:not(.is-shown){display:none}
-.mlist .st.is-shown{animation:mac-drop .5s cubic-bezier(.3,1.25,.5,1)}
-@keyframes mac-drop{0%{opacity:0;transform:translateY(-2.4cqw)}100%{opacity:1;transform:none}}
-.mmsg>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:.6cqw}
+.mmsg.is-read{background:#fff}
+.mac .mlist .mmsg.st{display:grid;grid-template-rows:0fr;padding-top:0;padding-bottom:0;border-bottom-width:0;opacity:0;transform:translateX(4cqw);
+  transition:grid-template-rows .45s cubic-bezier(.2,.85,.25,1),padding .45s cubic-bezier(.2,.85,.25,1),opacity .4s ease .1s,transform .5s cubic-bezier(.2,.85,.25,1) .1s,background-color .8s ease}
+.mac .mlist .mmsg.st.is-shown{grid-template-rows:1fr;padding-top:2.2cqw;padding-bottom:2.2cqw;border-bottom-width:1px;opacity:1;transform:none}
+.mac .mlist .mmsg.st>*{min-height:0;overflow:hidden}
+.mmsg-in{display:flex;gap:1.8cqw;min-height:0;overflow:hidden}
+.mmsg-in>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:.6cqw}
 .mmsg p:first-child{display:flex;align-items:center;gap:1cqw;font-size:2.1cqw;color:var(--atc-navy)}
 .mmsg p:first-child em{font-style:normal;font-size:1.6cqw;padding:.25cqw .9cqw;border-radius:2cqw;background:#EDF0F5;color:#5B6B78}
 .mmsg time{margin-left:auto;font-size:1.7cqw;color:#8C95A6}
@@ -494,7 +496,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 }
 @media (prefers-reduced-motion:reduce){
   .mac .st,.mac .mw-open{transform:none !important}
-  .dk.is-bounce,.owner.is-none,.owner.is-flip,.minvite.is-pop,.mlist .st.is-shown{animation:none}
+  .dk.is-bounce,.owner.is-none,.owner.is-flip,.minvite.is-pop{animation:none}
+  .mac .mlist .mmsg.st{transform:none}
 }
 
 @media (max-width:760px){
@@ -664,9 +667,9 @@ with the same challenge.</h2>
               <div class="mw-b minbox">
                 <div class="mside"><span class="is-on">Inbox <b data-k="unread">0</b></span><span>Vendors</span><span>Projects</span><span>Archive</span></div>
                 <div class="mlist">
-                  <div class="mmsg st" data-k="e1"><b class="av av-t" style="--c:#2D63E6">NS</b><div><p><strong>Northfield Studio</strong><em>Design</em><time>09:12</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt" data-type="We’ll deliver the design. The rest is up to the other teams."></p></div></div>
-                  <div class="mmsg st" data-k="e2"><b class="av av-t" style="--c:#3FB27E">BF</b><div><p><strong>Bitforge Labs</strong><em>Development</em><time>10:47</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt" data-type="We’ll build our part. Integration is someone else’s job."></p></div></div>
-                  <div class="mmsg st" data-k="e3"><b class="av av-t" style="--c:#9BBA2A">CL</b><div><p><strong>Cloudline</strong><em>Infrastructure</em><time>14:05</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt" data-type="We’ll set up the servers, once everyone else is done."></p></div></div>
+                  <div class="mmsg st" data-k="e1"><div class="mmsg-in"><b class="av av-t" style="--c:#2D63E6">NS</b><div><p><strong>Northfield Studio</strong><em>Design</em><time>09:12</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll deliver the design. The rest is up to the other teams.</p></div></div></div>
+                  <div class="mmsg st" data-k="e2"><div class="mmsg-in"><b class="av av-t" style="--c:#3FB27E">BF</b><div><p><strong>Bitforge Labs</strong><em>Development</em><time>10:47</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll build our part. Integration is someone else’s job.</p></div></div></div>
+                  <div class="mmsg st" data-k="e3"><div class="mmsg-in"><b class="av av-t" style="--c:#9BBA2A">CL</b><div><p><strong>Cloudline</strong><em>Infrastructure</em><time>14:05</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll set up the servers, once everyone else is done.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -1718,16 +1721,14 @@ class Component extends DCLogic {
       at(t2 + 300, function () { show('c3'); });
       type(t2 + 350, 'c3', 30);
     } else if (i === 1) {
-      // 02 Vendors: three replies land one after another, each types out the same promise in its own words
-      var unread = $('unread'), te = 500;
+      // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
+      var unread = $('unread');
       at(100, function () { show('inbox'); });
       ['e1', 'e2', 'e3'].forEach(function (key, n) {
-        var from = te;
-        at(from, function () { show(key); unread.textContent = String(n + 1); });
-        te = type(from + 300, key, 24) + 350;
-        at(te - 100, function () { $(key).classList.add('is-read'); });
+        at(600 + n * 750, function () { show(key); unread.textContent = String(n + 1); });
+        at(600 + n * 750 + 1400, function () { $(key).classList.add('is-read'); });
       });
-      at(te + 100, function () { show('tally'); });
+      at(600 + 3 * 750 + 400, function () { show('tally'); });
     } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
       var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Marketing', 'Unassigned'], tt = 500;
