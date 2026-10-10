@@ -484,15 +484,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .ms-bar{flex:1;height:1.3cqw;border-radius:1cqw;background:#EDF0F5}
 .mplus-0{right:0;top:-1.5cqw;background:#F0F3F8;color:#5B6B78}
 
-/* Takeaway: once a scene has played, it steps back and its point appears in a few words */
-.mac-sc>*{transition:opacity .5s ease,filter .5s ease}
-.mac-sc.is-taken>:not(.mtake){opacity:.28;filter:blur(.25cqw) saturate(.6)}
-.mtake{position:absolute;left:0;right:0;top:0;bottom:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;padding:0 6cqw;text-align:center;opacity:0;pointer-events:none}
-.mac-sc.is-taken .mtake{opacity:1}
-.mtake strong{font-size:7cqw;font-weight:500;line-height:1.05;letter-spacing:-.035em;color:var(--atc-navy);transform:translateY(2cqw);transition:transform .7s cubic-bezier(.2,.85,.25,1)}
-.mtake span{font-size:2.6cqw;color:var(--atc-slate);transform:translateY(2cqw);transition:transform .7s cubic-bezier(.2,.85,.25,1) .08s}
-.mac-sc.is-taken .mtake strong,.mac-sc.is-taken .mtake span{transform:none}
-
 /* Dock */
 .mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
   background:rgba(246,248,252,.86);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -674,7 +665,6 @@ with the same challenge.</h2>
               <small><span data-mac="tools">3</span> tools · 6 teams · 0 talking to each other</small>
               <b class="mplus" data-k="plus">+€890</b>
             </div>
-            <div class="mtake" data-k="take"><strong>Too many tools.</strong><span>€3,980 a month, and none of them talk.</span></div>
           </div>
 
           <!-- 02 You have the vendors: three replies land in the inbox, each promising only its own piece -->
@@ -691,7 +681,6 @@ with the same challenge.</h2>
               </div>
             </div>
             <div class="mtally st" data-k="tally" style="top:68%"><span><b>3</b> vendors</span><span><b>3</b> promises</span><span class="is-zero"><b>0</b> owning the whole</span></div>
-            <div class="mtake" data-k="take"><strong>Everyone owns a piece.</strong><span>No one owns the whole.</span></div>
           </div>
 
           <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
@@ -718,7 +707,6 @@ with the same challenge.</h2>
                 </div>
               </div>
             </div>
-            <div class="mtake" data-k="take"><strong>Not my job.</strong><span>Every team passes it on.</span></div>
           </div>
 
           <!-- 04 Still on the whiteboard: invitation after invitation, and the project never moves -->
@@ -756,7 +744,6 @@ with the same challenge.</h2>
                 </dl>
               </div>
             </div>
-            <div class="mtake" data-k="take"><strong>48 meetings. 0% progress.</strong><span>Still just an idea.</span></div>
           </div>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
@@ -1674,7 +1661,6 @@ class Component extends DCLogic {
     for (var k = 0; k < scs.length; k++) {
       if (k === i) scs[k].innerHTML = this._mHTML[k];
       scs[k].classList.toggle('is-on', k === i);
-      scs[k].classList.remove('is-taken');
     }
     var docks = mac.querySelectorAll('.dk-x');
     for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run');
@@ -1796,9 +1782,6 @@ class Component extends DCLogic {
       at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
       var total = 700 + slots.length * 480 + 900;
     }
-    // End on the takeaway, and give it a moment to be read before the page moves on
-    at(total, function () { sc.classList.add('is-taken'); });
-    total += 1700;
     fillSteps(total * PACE);
     if (holdAt != null && total) {
       this._lock = { top: this.unitTop(holdAt), until: performance.now() + total * PACE + 150, ease: true };
