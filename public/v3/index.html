@@ -1637,13 +1637,15 @@ class Component extends DCLogic {
       var shown = -1;
       for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 8) shown = si;
       var scene = this._openIdx >= 0 && this._openIdx !== active ? this._openIdx : shown;
-      this.macScene(gv > 0.5 ? scene : -1);
+      var down = this._lastU == null || u >= this._lastU;
+      this.macScene(gv > 0.5 ? scene : -1, scene === shown && down && performance.now() > (this._jumpUntil || 0) ? S.ins[scene] + 56 : null);
     }
   }
 
   // One scene of the desktop at a time, played live: windows open, text types itself, messages and
   // invitations arrive. Each scene starts fresh from its original markup whenever it comes back.
-  macScene(i) {
+  // holdAt: when given, the page settles on that unit and holds there until the scene has finished.
+  macScene(i, holdAt) {
     var mac = this.q('mac');
     if (!mac || this._mScene === i) return;
     this._mScene = i;
@@ -1719,7 +1721,7 @@ class Component extends DCLogic {
       at(t1 + 300, function () { show('c2'); });
       var t2 = type(t1 + 350, 'c2', 30);
       at(t2 + 300, function () { show('c3'); });
-      type(t2 + 350, 'c3', 30);
+      var total = type(t2 + 350, 'c3', 30) + 300;
     } else if (i === 1) {
       // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
       var unread = $('unread');
@@ -1729,6 +1731,7 @@ class Component extends DCLogic {
         at(600 + n * 750 + 1400, function () { $(key).classList.add('is-read'); });
       });
       at(600 + 3 * 750 + 400, function () { show('tally'); });
+      var total = 600 + 3 * 750 + 900;
     } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
       var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Marketing', 'Unassigned'], tt = 500;
@@ -1746,6 +1749,7 @@ class Component extends DCLogic {
         tt = end + 650;
       });
       at(tt, function () { show('more'); });
+      var total = tt + 400;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
@@ -1764,6 +1768,11 @@ class Component extends DCLogic {
         at(t + 260, function () { show('m' + m); meet.textContent = String((m + 1) * 4); flag(zero, 'is-go'); });
       });
       at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
+      var total = 700 + slots.length * 480 + 900;
+    }
+    if (holdAt != null && total) {
+      this._lock = { top: this.unitTop(holdAt), until: performance.now() + total * PACE + 150, ease: true };
+      this.holdScroll();
     }
   }
 
@@ -1970,7 +1979,7 @@ class Component extends DCLogic {
     if (performance.now() > L.until) { this._lock = null; return false; }
     var se = document.scrollingElement || document.documentElement;
     var y = window.pageYOffset || se.scrollTop || 0;
-    if (Math.abs(y - L.top) > 1) window.scrollTo(0, L.top);
+    if (Math.abs(y - L.top) > 1) window.scrollTo(0, L.ease && Math.abs(y - L.top) > 3 ? y + (L.top - y) * 0.2 : L.top);
     return true;
   }
 
