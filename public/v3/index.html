@@ -1295,7 +1295,7 @@ class Component extends DCLogic {
     }
 
     // The 3D stack: appears in the middle as one block, moves to the right and opens up into its four layers;
-    // the layer for the point being read lights up.
+    // the layer for the point being read lights up and grows large while the others shrink back.
     var iso = this.q('iso');
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
@@ -1304,9 +1304,25 @@ class Component extends DCLogic {
         var e = ease(map(u, S.explode[0], S.explode[1]));
         var gap = 22 + (210 - 22) * e;
         var layers = this.qa('[data-atc="iso"] .isoL');
+        // As each point arrives its layer grows to the centre of attention and the others step back small;
+        // w[i] hands over from one layer to the next over the same span the point's text rises in.
+        var n = S.ins.length, w = [], wsum = 0;
+        for (var wi = 0; wi < n; wi++) {
+          w[wi] = ease(map(u, S.ins[wi], S.ins[wi] + 50)) * (wi + 1 < n ? 1 - ease(map(u, S.ins[wi + 1], S.ins[wi + 1] + 50)) : 1);
+          wsum += w[wi];
+        }
+        var fz = Math.min(1, wsum) * e, BIG = 1.8, SMALL = 0.5, sc = [], slot = [], total = 0;
+        for (var si = 0; si < n; si++) {
+          sc[si] = 1 + fz * (SMALL + (BIG - SMALL) * (wsum > 0 ? w[si] / wsum : 0) - 1);
+          slot[si] = 214 * sc[si] + 18;
+          total += slot[si];
+        }
+        var yTop = 440 - total / 2, ys = [];
+        for (var yi = 0; yi < n; yi++) { ys[yi] = yTop + slot[yi] / 2 - 7 * sc[yi]; yTop += slot[yi]; }
         for (var l = 0; l < layers.length; l++) {
           var li = parseInt(layers[l].getAttribute('data-i'), 10) || 0;
-          layers[l].setAttribute('transform', 'translate(300 ' + (440 + (li - 1.5) * gap).toFixed(1) + ')');
+          var y0 = 440 + (li - 1.5) * gap, yl = y0 + (ys[li] - y0) * fz;
+          layers[l].setAttribute('transform', 'translate(300 ' + yl.toFixed(1) + ') scale(' + sc[li].toFixed(4) + ')');
           var on = e > 0.85 && li === focus;
           if (layers[l].classList.contains('is-on') !== on) layers[l].classList.toggle('is-on', on);
           var dim = e > 0.02 && li !== Math.max(focus, 0);
