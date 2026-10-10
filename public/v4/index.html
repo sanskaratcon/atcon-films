@@ -516,19 +516,19 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mac .mxs-items .st{transform:scale(.4)}
 .mac .mxs-items .st.is-shown{transform:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.5,.5,1)}
 
-/* Point 3, kept simple: a track from Idea to Launch that stalls, then the outcomes in a list */
-.mxr-b{padding:7cqw 3.2cqw 1.4cqw}
-.mxr-track{display:flex;align-items:center;gap:2cqw;padding-bottom:3.4cqw;font-size:2cqw;font-weight:500;color:#8C95A6}
-.mxr-line{position:relative;flex:1;height:.9cqw;border-radius:1cqw;background:#E6EAF2;--p:0%}
-.mxr-fill{position:absolute;left:0;top:0;bottom:0;width:var(--p);border-radius:1cqw;background:var(--atc-navy);transition:width 1.3s cubic-bezier(.25,.8,.3,1)}
-.mxr-dot{position:absolute;top:50%;left:var(--p);width:3cqw;height:3cqw;margin:-1.5cqw 0 0 -1.5cqw;border-radius:50%;background:#fff;box-shadow:0 0 0 .6cqw var(--atc-navy),0 .6cqw 1.4cqw -.2cqw rgba(0,16,37,.35);transition:left 1.3s cubic-bezier(.25,.8,.3,1),box-shadow .3s ease}
-.mxr-dot.is-stuck{box-shadow:0 0 0 .6cqw #D9483C,0 .6cqw 1.4cqw -.2cqw rgba(0,16,37,.35);animation:mac-shake .5s ease}
-.mxr-stuck{position:absolute;left:var(--p);top:-5.4cqw;margin-left:-5cqw;width:10cqw;padding:.5cqw 0;border-radius:3cqw;background:#D9483C;color:#fff;text-align:center;font-style:normal;font-size:1.7cqw;font-weight:600}
-.mxr-list{margin:0;padding:0;list-style:none}
-.mxr-list li{display:grid;grid-template-columns:4cqw 1fr auto;align-items:center;gap:1.8cqw;padding:2.1cqw 0;border-top:1px solid rgba(0,16,37,.07);font-size:2.4cqw;color:var(--atc-navy)}
-.mxr-list svg{width:3.4cqw;height:3.4cqw;fill:none;stroke:#5B6B78;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.mxr-list svg .fill{fill:#D9483C;stroke:none}
-.mxr-list strong{font-weight:600;color:#C8382D;font-variant-numeric:tabular-nums}
+/* Point 3: a launch screen that keeps slipping back; warnings collect underneath */
+.mxl-b{padding:6cqw 4cqw 2cqw}
+.mxl-head{display:flex;align-items:center;justify-content:center;gap:1.6cqw;font-size:2.9cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
+.mxl-spin{width:3.4cqw;height:3.4cqw;border-radius:50%;border:.5cqw solid #E6EAF2;border-top-color:var(--atc-navy);animation:mac-spin .9s linear infinite}
+@keyframes mac-spin{to{transform:rotate(360deg)}}
+.mxl-bar{display:flex;align-items:center;gap:2cqw;margin:3.2cqw 0 3.6cqw}
+.mxl-track{position:relative;flex:1;height:1.4cqw;border-radius:1cqw;background:#E6EAF2;overflow:hidden}
+.mxl-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:1cqw;background:linear-gradient(90deg,#2D63E6,#5A86EE)}
+.mxl-bar strong{width:7cqw;text-align:right;font-size:2.5cqw;font-weight:600;color:var(--atc-navy);font-variant-numeric:tabular-nums}
+.mxl-list{margin:0;padding:0;list-style:none}
+.mxl-list li{display:flex;align-items:center;gap:1.6cqw;padding:1.8cqw 0;border-top:1px solid rgba(0,16,37,.07);font-size:2.4cqw;color:var(--atc-navy)}
+.mxl-list svg{width:3cqw;height:3cqw;fill:none;stroke:#D9483C;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){.mxl-spin{animation-duration:2.4s}}
 
 /* Dock */
 .mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
@@ -816,18 +816,19 @@ with the same challenge.</h2>
             </div>
           </div>
 
-          <!-- Point 3, kept simple: the project starts towards launch, gets stuck, and the costs of that land one by one -->
+          <!-- Point 3: the launch that never finishes; each time it slips back, another cost of being stuck appears -->
           <div class="mac-sc">
-            <div class="mw st" data-k="road" style="--x:4%;--y:12%;--w:92%">
+            <div class="mw st" data-k="load" style="--x:4%;--y:12%;--w:92%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal</span></div>
-              <div class="mxr-b">
-                <div class="mxr-track"><span>Idea</span><div class="mxr-line" data-k="line"><i class="mxr-fill"></i><b class="mxr-dot" data-k="dot"></b><em class="mxr-stuck st" data-k="stuck">Stuck</em></div><span>Launch</span></div>
-                <ul class="mxr-list">
-                  <li class="st" data-k="i0"><svg viewBox="0 0 24 24"><path d="M4 17 L10 11 L14 15 L20 9 M15 9 H20 V14"/></svg><span>Higher costs</span><strong>+€48k</strong></li>
-                  <li class="st" data-k="i1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8 V12 L15 14"/></svg><span>Delayed delivery</span><strong>+5 months</strong></li>
-                  <li class="st" data-k="i2"><svg viewBox="0 0 24 24"><rect x="2.5" y="9" width="8" height="6" rx="3"/><rect x="13.5" y="9" width="8" height="6" rx="3"/><path d="M12 4.5 V6.5 M12 17.5 V19.5"/></svg><span>Disconnected systems</span><strong>0 links</strong></li>
-                  <li class="st" data-k="i3"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="7" height="7" rx="1.4"/><rect x="13" y="12" width="7" height="7" rx="1.4"/><rect x="14" y="4" width="5" height="5" rx="1.2"/></svg><span>Fragmented data</span><strong>4 versions</strong></li>
-                  <li class="st" data-k="i4"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 11 V13"/><rect x="5" y="10" width="3.5" height="4" rx=".6" class="fill"/></svg><span>Underused technology</span><strong>30% used</strong></li>
+              <div class="mxl-b">
+                <div class="mxl-head"><i class="mxl-spin"></i><span data-k="txt">Launching…</span></div>
+                <div class="mxl-bar"><span class="mxl-track"><i class="mxl-fill" data-k="fill"></i></span><strong data-k="pct">0%</strong></div>
+                <ul class="mxl-list">
+                  <li class="st" data-k="w0"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Higher costs</span></li>
+                  <li class="st" data-k="w1"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Delayed delivery</span></li>
+                  <li class="st" data-k="w2"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Disconnected systems</span></li>
+                  <li class="st" data-k="w3"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Fragmented data</span></li>
+                  <li class="st" data-k="w4"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Underused technology</span></li>
                 </ul>
               </div>
             </div>
@@ -1881,12 +1882,28 @@ class Component extends DCLogic {
       return tEnd + 400;
       },
       6: function (sc, at, $, show, flag, type, count) {
-      // Point 3, kept simple: progress sets off towards launch, stalls a fifth of the way, then the outcomes land
-      at(100, function () { show('road'); });
-      at(450, function () { $('line').style.setProperty('--p', '22%'); });
-      at(2000, function () { flag($('dot'), 'is-stuck'); show('stuck'); });
-      for (var n = 0; n < 5; n++) (function (n) { at(2500 + n * 380, function () { show('i' + n); }); })(n);
-      return 2500 + 5 * 380 + 400;
+      // Point 3: the launch fills towards 89%, slips back and tries again; every slip adds a warning, then it freezes
+      var fill = $('fill'), pct = $('pct'), txt = $('txt'), now = 0;
+      var go = function (t, to, dur, ease) {
+        at(t, function () {
+          fill.style.transition = 'width ' + Math.round(dur * PACE) + 'ms ' + ease;
+          fill.style.width = to + '%';
+          count(pct, now, to, dur, function (v) { return v + '%'; });
+          now = to;
+        });
+      };
+      var up = 'cubic-bezier(.25,.8,.3,1)', back = 'cubic-bezier(.5,0,.3,1)';
+      at(100, function () { show('load'); });
+      go(400, 89, 1400, up);
+      // each slip: back down, a new label, and one or two warnings
+      [[1950, 31, 'Retrying\u2026', [0, 1]], [3650, 34, 'Retrying\u2026', [2, 3]], [5200, 36, 'Still launching\u2026', [4]]].forEach(function (slip, n) {
+        go(slip[0], slip[1], 600, back);
+        at(slip[0], function () { txt.textContent = slip[2]; });
+        slip[3].forEach(function (w, j) { at(slip[0] + 150 + j * 300, function () { show('w' + w); }); });
+        if (n < 2) go(slip[0] + 750, 88, 900, up);
+      });
+      go(5950, 89, 1200, up);
+      return 5950 + 1200 + 300;
       }
     };
     // Runs one scene's script from base (timeline ms), with helpers bound to that scene
