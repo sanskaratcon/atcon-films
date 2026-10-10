@@ -360,8 +360,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 @keyframes mac-float{0%{opacity:0;transform:translateY(1.5cqw)}20%{opacity:1;transform:none}75%{opacity:1}100%{opacity:0;transform:translateY(-3.5cqw)}}
 
 /* 01 tools: Mac-style apps land in the dock (bottom) and each pops its window open onto the desktop */
-.mxd{position:absolute;left:4%;right:4%;bottom:-12.6cqw;--s:7.6cqw;z-index:6;display:flex;justify-content:center;align-items:flex-end;gap:.9cqw;padding:1.2cqw 1.6cqw;border-radius:3cqw;
-  background:rgba(246,248,252,.9);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .mxd-app{position:relative;flex:none;display:grid;place-items:center;width:var(--s);aspect-ratio:1;border-radius:22.5%;
   background:linear-gradient(180deg,var(--c1),var(--c2));
   box-shadow:inset 0 .25cqw 0 rgba(255,255,255,.45),inset 0 -.4cqw .8cqw rgba(0,0,0,.12),0 .8cqw 1.6cqw -.5cqw rgba(0,16,37,.4);
@@ -374,8 +372,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mac .mxd-app.st{display:none}
 .mac .mxd-app.st.is-shown{display:grid;animation:mac-drop-in .6s cubic-bezier(.3,1.5,.5,1)}
 @keyframes mac-drop-in{0%{opacity:0;transform:translateY(-6cqw) scale(.6)}60%{opacity:1}100%{transform:none}}
-.mac-dock{transition:opacity .4s ease}
-.mac[data-scene="0"] .mac-dock{opacity:0}
 /* The windows the apps open: small but real-looking content */
 .mxw .mw-b{padding:1.8cqw 2cqw;font-size:1.9cqw;color:#3A4D55}
 .mxw.mxw-flush .mw-b{padding:0}
@@ -506,17 +502,16 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mplus-0{right:0;top:-1.5cqw;background:#F0F3F8;color:#5B6B78}
 
 /* Dock */
-.mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
-  background:rgba(246,248,252,.86);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-.dk{position:relative;flex:none;display:grid;place-items:center;width:7.4cqw;height:7.4cqw;margin:0 .6cqw;border-radius:22.5%;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 70%,#fff),var(--c));box-shadow:inset 0 0 0 1px rgba(0,16,37,.06),0 .4cqw 1cqw -.3cqw rgba(0,16,37,.25)}
-.dk svg{width:58%;height:58%;fill:none;stroke:var(--g,#fff);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.dk::after{content:"";position:absolute;bottom:-.9cqw;left:50%;width:.7cqw;height:.7cqw;margin-left:-.35cqw;border-radius:50%;background:#3A4D55;opacity:0;transition:opacity .3s ease}
-.dk-x{width:0;margin:0;opacity:0;transform:scale(.3);transition:width .3s ease,margin .3s ease,opacity .2s ease,transform .3s ease}
-.dk-x.is-in,.mac[data-scene="1"] .dk-x,.mac[data-scene="2"] .dk-x,.mac[data-scene="3"] .dk-x{width:7.4cqw;margin:0 .6cqw;opacity:1;transform:none;
-  transition:width .45s cubic-bezier(.2,.85,.25,1),margin .45s cubic-bezier(.2,.85,.25,1),opacity .35s ease,transform .5s cubic-bezier(.2,.9,.3,1.35)}
-.dk.is-bounce{animation:mac-bounce .7s ease}
-@keyframes mac-bounce{25%{translate:0 -2.6cqw}50%{translate:0 0}70%{translate:0 -1cqw}100%{translate:0 0}}
-.dk.is-run::after,.mac[data-scene="1"] .dk[data-app="1"]::after,.mac[data-scene="2"] .dk[data-app="2"]::after,.mac[data-scene="3"] .dk[data-app="3"]::after{opacity:1}
+.mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);--s:6.1cqw;display:flex;align-items:flex-end;gap:.9cqw;padding:1.1cqw 1.3cqw;border-radius:2.8cqw;
+  background:rgba(246,248,252,.88);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+/* Apps are in the dock once scene 01 has put them there, and stay for every scene after it */
+.mac-dock .dk-x{display:none}
+.mac-dock .dk-x.is-in{display:grid;animation:mac-drop-in .6s cubic-bezier(.3,1.5,.5,1)}
+.mac[data-scene="1"] .mac-dock .dk-x,.mac[data-scene="2"] .mac-dock .dk-x,.mac[data-scene="3"] .mac-dock .dk-x{display:grid}
+/* The running dot marks the app in use: Finder always, each app as it opens, then Mail, Tasks and Calendar */
+.mac-dock .mxd-app::after{opacity:0;transition:opacity .3s ease}
+.mac-dock .dk-base::after,.mac-dock .dk-x.is-run::after,
+.mac[data-scene="1"] .mac-dock [data-app="mail"]::after,.mac[data-scene="2"] .mac-dock [data-app="tasks"]::after,.mac[data-scene="3"] .mac-dock [data-app="calendar"]::after{opacity:1}
 @media (max-width:760px){
   .atc-mac{right:12px}
   .mac{width:min(100%,calc((46vh - var(--rail) - 12px) * 10 / 11))}
@@ -651,7 +646,6 @@ with the same challenge.</h2>
             <div class="mw st mw-open mxw mxw-flush" data-k="w3" style="--x:49%;--y:37%;--w:46%"><div class="mw-bar"><i></i><i></i><i></i><span>Budget_v7_final.xlsx</span></div><div class="mw-b"><div class="mxw-sheet"><span>Q1</span><span>Q2</span><span>Q3</span><span>12.4</span><span>14.0</span><span>9.8</span><span>3.1</span><span>3.6</span><span class="is-err">#REF!</span></div></div></div>
             <div class="mw st mw-open mxw " data-k="w4" style="--x:13%;--y:61%;--w:40%"><div class="mw-bar"><i></i><i></i><i></i><span>Docs</span></div><div class="mw-b"><h5>Requirements_v3_FINAL</h5><p class="mxw-l" style="--l:92%"></p><p class="mxw-l" style="--l:84%"></p><p class="mxw-l" style="--l:66%"></p></div></div>
             <div class="mw st mw-open mxw " data-k="w5" style="--x:55%;--y:64%;--w:38%"><div class="mw-bar"><i></i><i></i><i></i><span>Analytics</span></div><div class="mw-b"><div class="mxw-chart"><i style="--h:42%"></i><i style="--h:68%"></i><i style="--h:35%"></i><i style="--h:80%"></i><i style="--h:54%"></i><i style="--h:62%"></i></div></div></div>
-            <div class="mxd" data-k="shelf"><span class="mxd-app st" data-k="a0" style="--c1:#5B8DFF;--c2:#2448C9"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.2" r="3.4"/><path d="M5.6 19.4 C5.6 15.6 8.5 13.7 12 13.7 C15.5 13.7 18.4 15.6 18.4 19.4"/></svg><em>CRM</em></span><span class="mxd-app st" data-k="a1" style="--c1:#FFB15C;--c2:#F2602F"><svg viewBox="0 0 24 24"><path d="M5 7.5 L7 9.5 L10.5 5.8 M13.5 8 H19 M5 15.5 L7 17.5 L10.5 13.8 M13.5 16 H19"/></svg><em>Tasks</em></span><span class="mxd-app st" data-k="a2" style="--c1:#B98CFF;--c2:#6E3FE0"><svg viewBox="0 0 24 24"><path d="M4.5 6 H17 V14 H10 L6.5 17 V14 H4.5 Z"/><path d="M19.5 9 V16.5 H17.5 V19 L15 16.5 H11"/></svg><em>Chat</em></span><span class="mxd-app st" data-k="a3" style="--c1:#4FD08A;--c2:#14874A"><svg viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="2"/><path d="M4.5 9.5 H19.5 M4.5 14.5 H19.5 M10 4.5 V19.5"/></svg><em>Sheets</em></span><span class="mxd-app st" data-k="a4" style="--c1:#6FB6FF;--c2:#2C6BE0"><svg viewBox="0 0 24 24"><path d="M7 3.5 H14 L17.5 7 V20.5 H7 Z M14 3.5 V7 H17.5 M9.5 11.5 H15 M9.5 14.5 H15 M9.5 17.5 H13"/></svg><em>Docs</em></span><span class="mxd-app st" data-k="a5" style="--c1:#FFD25E;--c2:#F08A1C"><svg viewBox="0 0 24 24"><path d="M5.5 19 V12.5 M10 19 V7 M14.5 19 V10 M19 19 V5"/></svg><em>Analytics</em></span><span class="mxd-app st" data-k="a6" style="--c1:#3FD3C6;--c2:#0E8C9C"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.2"/><path d="M3.5 10 H20.5 M7 14.5 H10.5"/></svg><em>Billing</em></span><span class="mxd-app st" data-k="a7" style="--c1:#8FD9FF;--c2:#3A8EE6"><svg viewBox="0 0 24 24"><path d="M7.5 17.5 H17 A3.6 3.6 0 0 0 16.2 10.4 A5 5 0 0 0 6.6 11.6 A3 3 0 0 0 7.5 17.5 Z"/></svg><em>Drive</em></span><span class="mxd-app st" data-k="a8" style="--c1:#66C7FF;--c2:#1D7FE8"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.2"/><path d="M4.5 7.5 L12 13 L19.5 7.5"/></svg><em>Mail</em></span><span class="mxd-app st" data-k="a9" style="--c1:#5EE08A;--c2:#1FA154"><svg viewBox="0 0 24 24"><rect x="3.5" y="7" width="11.5" height="10" rx="2.2"/><path d="M15 10.5 L20.5 7.5 V16.5 L15 13.5"/></svg><em>Meet</em></span></div>
           </div>
 
           <!-- 02 You have the vendors: three replies land in the inbox, each promising only its own piece -->
@@ -733,15 +727,20 @@ with the same challenge.</h2>
             </div>
           </div>
 
-          <!-- The dock: tools join it as they pile up; the app in use is marked -->
-          <div class="mac-dock">
-            <span class="dk" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 7 H10 L12 9 H20.5 V18 H3.5 Z"/></svg></span>
-            <span class="dk" data-app="1" style="--c:#4D8CF5"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4.5 7.5 L12 13 L19.5 7.5"/></svg></span>
-            <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#E5483F"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></span>
-            <span class="dk dk-x" data-dock="0" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19 M16 7 H21 M16 11 H21 M17.5 15 H21"/></svg></span>
-            <span class="dk dk-x" data-dock="1" data-app="2" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="5" height="15" rx="1.2"/><rect x="9.5" y="4.5" width="5" height="10" rx="1.2"/><rect x="15.5" y="4.5" width="5" height="7" rx="1.2"/></svg></span>
-            <span class="dk dk-x" data-dock="2" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M4 5.5 H20 V15.5 H11 L6.5 19 V15.5 H4 Z"/></svg></span>
-            <span class="dk dk-x" data-dock="3" style="--c:#1E8E5A"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5 H20 M4 14.5 H20 M10 4 V20"/></svg></span>
+          <!-- The dock: one for the whole section. Scene 01 fills it app by app; it stays full after, and the app in use is marked -->
+          <div class="mac-dock" data-atc="dock">
+            <span class="mxd-app dk-base" style="--c1:#7AB8FF;--c2:#2F6FE0"><svg viewBox="0 0 24 24"><path d="M3.5 7 H10 L12 9 H20.5 V18 H3.5 Z"/></svg><em>Finder</em></span>
+            <span class="mxd-app dk-x" data-dock="0" data-app="crm" style="--c1:#5B8DFF;--c2:#2448C9"><svg viewBox="0 0 24 24"><circle cx="12" cy="9.2" r="3.4"/><path d="M5.6 19.4 C5.6 15.6 8.5 13.7 12 13.7 C15.5 13.7 18.4 15.6 18.4 19.4"/></svg><em>CRM</em></span>
+            <span class="mxd-app dk-x" data-dock="1" data-app="tasks" style="--c1:#FFB15C;--c2:#F2602F"><svg viewBox="0 0 24 24"><path d="M5 7.5 L7 9.5 L10.5 5.8 M13.5 8 H19 M5 15.5 L7 17.5 L10.5 13.8 M13.5 16 H19"/></svg><em>Tasks</em></span>
+            <span class="mxd-app dk-x" data-dock="2" data-app="chat" style="--c1:#B98CFF;--c2:#6E3FE0"><svg viewBox="0 0 24 24"><path d="M4.5 6 H17 V14 H10 L6.5 17 V14 H4.5 Z"/><path d="M19.5 9 V16.5 H17.5 V19 L15 16.5 H11"/></svg><em>Chat</em></span>
+            <span class="mxd-app dk-x" data-dock="3" data-app="sheets" style="--c1:#4FD08A;--c2:#14874A"><svg viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="2"/><path d="M4.5 9.5 H19.5 M4.5 14.5 H19.5 M10 4.5 V19.5"/></svg><em>Sheets</em></span>
+            <span class="mxd-app dk-x" data-dock="4" data-app="docs" style="--c1:#6FB6FF;--c2:#2C6BE0"><svg viewBox="0 0 24 24"><path d="M7 3.5 H14 L17.5 7 V20.5 H7 Z M14 3.5 V7 H17.5 M9.5 11.5 H15 M9.5 14.5 H15 M9.5 17.5 H13"/></svg><em>Docs</em></span>
+            <span class="mxd-app dk-x" data-dock="5" data-app="analytics" style="--c1:#FFD25E;--c2:#F08A1C"><svg viewBox="0 0 24 24"><path d="M5.5 19 V12.5 M10 19 V7 M14.5 19 V10 M19 19 V5"/></svg><em>Analytics</em></span>
+            <span class="mxd-app dk-x" data-dock="6" data-app="billing" style="--c1:#3FD3C6;--c2:#0E8C9C"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.2"/><path d="M3.5 10 H20.5 M7 14.5 H10.5"/></svg><em>Billing</em></span>
+            <span class="mxd-app dk-x" data-dock="7" data-app="drive" style="--c1:#8FD9FF;--c2:#3A8EE6"><svg viewBox="0 0 24 24"><path d="M7.5 17.5 H17 A3.6 3.6 0 0 0 16.2 10.4 A5 5 0 0 0 6.6 11.6 A3 3 0 0 0 7.5 17.5 Z"/></svg><em>Drive</em></span>
+            <span class="mxd-app dk-x" data-dock="8" data-app="mail" style="--c1:#66C7FF;--c2:#1D7FE8"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2.2"/><path d="M4.5 7.5 L12 13 L19.5 7.5"/></svg><em>Mail</em></span>
+            <span class="mxd-app dk-x" data-dock="9" data-app="calendar" style="--c1:#FFFFFF;--c2:#EEF1F6"><svg viewBox="0 0 24 24"><rect x="4.5" y="5.5" width="15" height="14" rx="2.4" stroke="#E5483F"/><path d="M4.5 10 H19.5 M8.5 3.5 V7 M15.5 3.5 V7" stroke="#E5483F"/></svg><em>Calendar</em></span>
+            <span class="mxd-app dk-x" data-dock="10" data-app="meet" style="--c1:#5EE08A;--c2:#1FA154"><svg viewBox="0 0 24 24"><rect x="3.5" y="7" width="11.5" height="10" rx="2.2"/><path d="M15 10.5 L20.5 7.5 V16.5 L15 13.5"/></svg><em>Meet</em></span>
           </div>
         </div>
       </div>
@@ -1650,7 +1649,9 @@ class Component extends DCLogic {
       scs[k].classList.toggle('is-on', k === i);
     }
     var docks = mac.querySelectorAll('.dk-x');
-    for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run');
+    for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run', 'is-new');
+    var dockEl = this.q('dock');
+    if (dockEl) dockEl.style.removeProperty('--s');
     var run = this._mRun = {};
     var marks = document.querySelectorAll('[data-atc="steps"] i');
     var fillSteps = function (ms) {
@@ -1704,22 +1705,24 @@ class Component extends DCLogic {
 
     if (i === 0) {
       // 01 Too many tools: each app lands in the dock and pops its window open; then more apps pile in and the dock shrinks
-      var shelf = $('shelf'), n = 0;
+      var dock = self.q('dock');
       var land = function (k) {
-        var prev = $('a' + (k - 1));
+        var prev = mac.querySelector('.mac-dock [data-dock="' + (k - 1) + '"]');
         if (prev) prev.classList.remove('is-new');
-        shelf.style.setProperty('--s', Math.min(7.6, 80 / (k + 1) - 0.9) + 'cqw');
-        show('a' + k);
-        $('a' + k).classList.add('is-new');
+        // Finder plus every app so far: the dock shrinks its icons to keep them on one row
+        dock.style.setProperty('--s', Math.min(7.4, 84 / (k + 2) - 0.9) + 'cqw');
+        var icon = mac.querySelector('.mac-dock [data-dock="' + k + '"]');
+        if (icon) icon.classList.add('is-in', 'is-run', 'is-new');
       };
+      at(0, function () { dock.style.setProperty('--s', '7.4cqw'); });
       for (var k = 0; k < 6; k++) (function (k) {
         at(300 + k * 620, function () { land(k); });
         at(300 + k * 620 + 260, function () { show('w' + k); });
       })(k);
       var tMore = 300 + 6 * 620 + 200;
-      for (var m = 6; m < 10; m++) (function (m) { at(tMore + (m - 6) * 180, function () { land(m); }); })(m);
-      var tEnd = tMore + 4 * 180 + 500;
-      at(tEnd, function () { var last = $('a9'); if (last) last.classList.remove('is-new'); });
+      for (var m = 6; m < 11; m++) (function (m) { at(tMore + (m - 6) * 180, function () { land(m); }); })(m);
+      var tEnd = tMore + 5 * 180 + 500;
+      at(tEnd, function () { var last = mac.querySelector('.mac-dock [data-dock="10"]'); if (last) last.classList.remove('is-new'); });
       var total = tEnd + 200;
     } else if (i === 1) {
       // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
