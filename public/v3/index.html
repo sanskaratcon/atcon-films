@@ -130,16 +130,13 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
 /* "What actually happens" heads the list */
 .atc-wah{position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
-/* The points: one at a time at the top of the column, a short statement and one quiet line; the ring above fills while its scene plays */
+/* The points: one at a time at the top of the column, a short statement and one quiet line; the active mark above fills while its scene plays */
 .atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:start}
-.atc-steps{grid-row:1;display:flex;align-items:center;gap:14px;margin:0 0 clamp(20px,3.4vh,40px);opacity:0;will-change:opacity}
-.atc-ring{position:relative;display:grid;place-items:center;width:56px;height:56px;flex:none}
-.atc-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
-.atc-ring circle{fill:none;stroke-width:2.6}
-.atc-ring .r-bg{stroke:rgba(0,16,37,.1)}
-.atc-ring .r-fg{stroke:url(#atc-ring-grad);stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100}
-.atc-ring strong{position:relative;font-size:16px;font-weight:600;letter-spacing:.02em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
-.atc-steps-of{font-size:15px;letter-spacing:.02em;color:var(--atc-mute);font-variant-numeric:tabular-nums}
+.atc-steps{grid-row:1;display:flex;align-items:center;gap:8px;margin:0 0 clamp(22px,3.6vh,40px);opacity:0;will-change:opacity}
+.atc-steps i{position:relative;width:7px;height:7px;border-radius:4px;background:rgba(0,16,37,.16);overflow:hidden;transition:width .5s cubic-bezier(.2,.85,.25,1),background-color .4s ease}
+.atc-steps i.is-done{background:var(--atc-navy)}
+.atc-steps i.is-on{width:44px}
+.atc-steps b{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:4px;background:var(--atc-navy)}
 .atc .atc-stack .atc-card{grid-row:2;grid-column:1;display:block;padding:0;border:0}
 .atc .atc-stack .atc-card-side{display:none}
 .atc .atc-stack .atc-card-title{font-size:clamp(32px,3vw,54px);line-height:1.1;letter-spacing:-.035em;font-weight:400;max-width:12em}
@@ -516,8 +513,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   .atc-stack{left:calc(var(--rail) + 18px);right:16px;width:auto;top:46%;bottom:20px;padding-top:0;justify-content:flex-end}
   .atc-stack{align-content:end}
   .atc-steps{margin:16px 0 14px}
-  .atc-ring{width:44px;height:44px}
-  .atc-ring strong{font-size:14px}
   .atc .atc-stack .atc-card-title{font-size:26px}
   .atc .atc-stack .atc-card-body{font-size:15px}
   .atc-gfx.atc-gfx--side{left:calc(var(--rail) + 12px)}
@@ -585,7 +580,7 @@ with the same challenge.</h2>
       <!-- The three problems: stroked cards stacked on the left, revealed one by one, all staying readable -->
       <section class="atc-stack" data-atc="stack" aria-label="What actually happens">
         <h2 class="ds-h1 atc-wah" data-atc="wah"><span class="ds-mask"><span class="ds-rise" data-atc="wahText">What actually happens</span></span></h2>
-        <div class="atc-steps" data-atc="steps" aria-hidden="true"><span class="atc-ring"><svg viewBox="0 0 48 48"><defs><linearGradient id="atc-ring-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3FB27E"></stop><stop offset="1" stop-color="#2D63E6"></stop></linearGradient></defs><circle class="r-bg" cx="24" cy="24" r="21"></circle><circle class="r-fg" cx="24" cy="24" r="21" pathLength="100"></circle></svg><strong data-atc="stepN">01</strong></span><span class="atc-steps-of">of 04</span></div>
+        <div class="atc-steps" data-atc="steps" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">You have the tools.</span></span></h2>
@@ -1669,18 +1664,16 @@ class Component extends DCLogic {
     var docks = mac.querySelectorAll('.dk-x');
     for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run');
     var run = this._mRun = {};
-    var ring = document.querySelector('[data-atc="steps"] .r-fg'), stepN = this.q('stepN');
+    var marks = document.querySelectorAll('[data-atc="steps"] i');
     var fillSteps = function (ms) {
-      if (ring) {
-        ring.style.transition = 'none';
-        ring.style.strokeDashoffset = '100';
-        if (i >= 0) {
-          ring.getBoundingClientRect();
-          ring.style.transition = 'stroke-dashoffset ' + Math.round(ms) + 'ms linear';
-          ring.style.strokeDashoffset = '0';
-        }
+      for (var m = 0; m < marks.length; m++) {
+        var mk = marks[m], fill = mk.firstChild;
+        mk.classList.toggle('is-done', m < i);
+        mk.classList.toggle('is-on', m === i);
+        fill.style.transition = 'none';
+        fill.style.width = '0';
+        if (m === i) { void fill.offsetWidth; fill.style.transition = 'width ' + Math.round(ms) + 'ms linear'; fill.style.width = '100%'; }
       }
-      if (stepN && i >= 0) stepN.textContent = '0' + (i + 1);
     };
     if (i < 0) { fillSteps(0); return; }
 
