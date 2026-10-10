@@ -145,8 +145,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc .atc-stack .atc-card-body{font-size:clamp(17px,1.25vw,21px);line-height:1.5;max-width:24em;color:var(--atc-slate)}
 .atc .atc-stack .atc-card .ds-rise,.atc .atc-stack .atc-card.is-past .ds-rise{color:var(--atc-navy)}
 .atc .atc-stack .atc-card .atc-card-body .ds-rise,.atc .atc-stack .atc-card.is-past .atc-card-body .ds-rise{color:var(--atc-slate)}
-.atc .atc-stack .atc-card-body .atc-pl{display:block;color:var(--atc-mute);transition:color .45s ease}
-.atc .atc-stack .atc-card-body .atc-pl.is-lit{color:var(--atc-navy)}
+.atc .atc-stack .atc-card-body .atc-ln{display:block}
 /* The desktop beside the list */
 .atc-iso{position:absolute;z-index:4;left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw));right:var(--content-x);top:calc(var(--rail) + 2vh);bottom:2vh;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 /* "the right partner." fills into the brand gradient instead of navy */
@@ -485,21 +484,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .ms-bar{flex:1;height:1.3cqw;border-radius:1cqw;background:#EDF0F5}
 .mplus-0{right:0;top:-1.5cqw;background:#F0F3F8;color:#5B6B78}
 
-/* Point 1, kept simple: three rows on one card; the active row is in full colour, its items pop in, its count climbs */
-.mxs-b{padding:.6cqw 3.2cqw 1.6cqw}
-.mxs-row{display:grid;grid-template-columns:21cqw 1fr 7cqw;align-items:center;gap:2cqw;min-height:13cqw;border-top:1px solid rgba(0,16,37,.07);opacity:.32;transition:opacity .45s ease}
-.mxs-row:first-child{border-top:0}
-.mxs-row.is-on{opacity:1}
-.mxs-l{display:flex;align-items:center;gap:1.4cqw;font-size:2.7cqw;font-weight:500;color:var(--atc-navy)}
-.mxs-l svg{width:3.6cqw;height:3.6cqw;fill:none;stroke:#5B6B78;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.mxs-items{display:flex;flex-wrap:wrap;align-items:center;gap:1cqw}
-.mxs-row strong{justify-self:end;font-size:4.6cqw;font-weight:500;letter-spacing:-.02em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
-.mxs-av{display:grid;place-items:center;width:5.6cqw;height:5.6cqw;border-radius:50%;background:var(--c);color:#fff;font-size:1.75cqw;font-weight:600}
-.mxs-app{width:4.4cqw;height:4.4cqw;border-radius:1.2cqw;background:var(--c)}
-.mxs-op{padding:.9cqw 1.5cqw;border-radius:2cqw 2cqw 2cqw .5cqw;background:#F0F3F8;color:#3A4D55;font-style:normal;font-size:1.9cqw;font-weight:500}
-.mac .mxs-items .st{transform:scale(.4)}
-.mac .mxs-items .st.is-shown{transform:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.5,.5,1)}
-
 /* Dock */
 .mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
   background:rgba(246,248,252,.86);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -601,7 +585,7 @@ with the same challenge.</h2>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">But technology gets complicated.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise"><span class="atc-pl">Too many vendors.</span><span class="atc-pl">Too many tools.</span><span class="atc-pl">Too many opinions.</span></span></span></p></div></div>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise"><span class="atc-ln">Too many vendors.</span><span class="atc-ln">Too many tools.</span><span class="atc-ln">Too many opinions.</span></span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">02</span></span></div>
@@ -638,15 +622,48 @@ with the same challenge.</h2>
       <div class="atc-iso atc-mac" data-atc="iso" aria-hidden="true">
         <div class="mac" data-atc="mac" data-scene="-1">
 
-          <!-- Point 1, kept simple: one project, and three rows that fill up with too many vendors, tools and opinions -->
+          <!-- 01 You have the tools: apps keep arriving, each one adds to the monthly bill -->
           <div class="mac-sc">
-            <div class="mw st" data-k="proj" style="--x:4%;--y:20%;--w:92%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal</span></div>
-              <div class="mxs-b">
-                <div class="mxs-row" data-k="r0"><span class="mxs-l"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19 C3.5 15.6 6 13.6 9 13.6 C12 13.6 14.5 15.6 14.5 19 M16 6.5 A3 3 0 0 1 16 12.5 M17.5 14.2 C19.4 15 20.5 16.7 20.5 19"/></svg>Vendors</span><span class="mxs-items"><b class="mxs-av st" data-k="v0" style="--c:#2D63E6">NS</b><b class="mxs-av st" data-k="v1" style="--c:#3FB27E">BF</b><b class="mxs-av st" data-k="v2" style="--c:#9BBA2A">CL</b></span><strong data-k="c0">0</strong></div>
-                <div class="mxs-row" data-k="r1"><span class="mxs-l"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>Tools</span><span class="mxs-items"><i class="mxs-app st" data-k="t0" style="--c:#2D63E6"></i><i class="mxs-app st" data-k="t1" style="--c:#3FB27E"></i><i class="mxs-app st" data-k="t2" style="--c:#9BBA2A"></i><i class="mxs-app st" data-k="t3" style="--c:#5A86EE"></i><i class="mxs-app st" data-k="t4" style="--c:#1E8E5A"></i><i class="mxs-app st" data-k="t5" style="--c:#7F8FB0"></i><i class="mxs-app st" data-k="t6" style="--c:#4D8CF5"></i><i class="mxs-app st" data-k="t7" style="--c:#8CC08A"></i><i class="mxs-app st" data-k="t8" style="--c:#2D4FA8"></i><i class="mxs-app st" data-k="t9" style="--c:#A2B3D8"></i></span><strong data-k="c1">0</strong></div>
-                <div class="mxs-row" data-k="r2"><span class="mxs-l"><svg viewBox="0 0 24 24"><path d="M4 5.5 H20 V15.5 H11 L6.5 19 V15.5 H4 Z"/></svg>Opinions</span><span class="mxs-items"><em class="mxs-op st" data-k="o0">Build</em><em class="mxs-op st" data-k="o1">Buy</em><em class="mxs-op st" data-k="o2">Wait</em><em class="mxs-op st" data-k="o3">Redo</em><em class="mxs-op st" data-k="o4">Pause</em></span><strong data-k="c2">0</strong></div>
+            <div class="mw st mw-open" data-k="w1" style="--x:2%;--y:3%;--w:47%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>CRM · Pipeline</span></div>
+              <div class="mw-b">
+                <div class="mrow"><b class="av" style="--c:#5A86EE"></b><span class="ln" style="--l:58%"></span><em class="amt">€12.4k</em></div>
+                <div class="mrow"><b class="av" style="--c:#3FB27E"></b><span class="ln" style="--l:44%"></span><em class="amt">€8.1k</em></div>
+                <div class="mrow"><b class="av" style="--c:#9BBA2A"></b><span class="ln" style="--l:64%"></span><em class="amt">€21k</em></div>
               </div>
+            </div>
+            <div class="mw st mw-open" data-k="w2" style="--x:51%;--y:7%;--w:47%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Board</span></div>
+              <div class="mw-b mboard">
+                <div><small>To do</small><p></p><p></p><p></p></div>
+                <div><small>Doing</small><p></p><p class="is-b"></p></div>
+                <div><small>Done</small><p class="is-g"></p></div>
+              </div>
+            </div>
+            <div class="mw st mw-open" data-k="w3" style="--x:3%;--y:40%;--w:47%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Billing · Renewals</span></div>
+              <div class="mw-b minv">
+                <p class="st" data-k="r0"><span>Other tools ×3</span><small>Renewed</small><em>€1,240</em></p>
+                <p class="st" data-k="r1"><span>CRM Pro</span><small>Renewed</small><em>€890</em></p>
+                <p class="st" data-k="r2"><span>Project boards</span><small>Renewed</small><em>€420</em></p>
+                <p class="st" data-k="r3"><span>Team chat</span><small>Renewed</small><em>€610</em></p>
+                <p class="st" data-k="r4"><span>Budget sheets</span><small>Renewed</small><em>€820</em></p>
+              </div>
+            </div>
+            <div class="mw st mw-open" data-k="w4" style="--x:52%;--y:46%;--w:46%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Budget_v7_final.xlsx</span></div>
+              <div class="mw-b msheet">
+                <span>Q1</span><span>Q2</span><span>Q3</span>
+                <span>12.4</span><span>14.0</span><span>9.8</span>
+                <span>3.1</span><span>3.6</span><span>4.2</span>
+                <span>#REF!</span><span>7.7</span><span>—</span>
+              </div>
+            </div>
+            <div class="mw mwidget st" data-k="wid" style="--x:20%;--y:77%;--w:60%">
+              <small>Software subscriptions</small>
+              <strong><span data-mac="eur">€1,240</span><em>/ month</em></strong>
+              <small><span data-mac="tools">3</span> tools · 6 teams · 0 talking to each other</small>
+              <b class="mplus" data-k="plus">+€890</b>
             </div>
           </div>
 
@@ -1699,22 +1716,28 @@ class Component extends DCLogic {
     var eur = function (n) { return '€' + n.toLocaleString('en-US'); };
 
     if (i === 0) {
-      // 01 Technology gets complicated: each row lights up in turn (with its line on the left), fills and counts
-      var lns = document.querySelectorAll('[data-atc="stack"] .atc-pl');
-      var light = function (n) { for (var q = 0; q < lns.length; q++) lns[q].classList.toggle('is-lit', q === n || n === 'all'); };
-      light(-1);
-      at(100, function () { show('proj'); });
-      var groups = [['v', 3, 320], ['t', 10, 120], ['o', 5, 260]], t = 400;
-      groups.forEach(function (g, r) {
-        var from = t;
-        at(from, function () { light(r); $('r' + r).classList.add('is-on'); });
-        for (var n = 0; n < g[1]; n++) (function (n) {
-          at(from + 150 + n * g[2], function () { show(g[0] + n); $('c' + r).textContent = String(n + 1); });
-        })(n);
-        t = from + 150 + g[1] * g[2] + 450;
+      // 01 Tools: four apps arrive in the dock one after another, each opens and adds to the bill
+      var eurEl = sc.querySelector('[data-mac="eur"]'), toolsEl = sc.querySelector('[data-mac="tools"]'), plus = $('plus');
+      var bill = 1240, apps = [['w1', 890, 6], ['w2', 420, 9], ['w3', 610, 11], ['w4', 820, 14]];
+      at(100, function () { show('wid'); });
+      apps.forEach(function (a, j) {
+        var t = 500 + j * 900;
+        at(t, function () {
+          var icon = mac.querySelector('.dk-x[data-dock="' + j + '"]');
+          if (icon) { icon.classList.add('is-in', 'is-run'); flag(icon, 'is-bounce'); }
+        });
+        at(t + 380, function () { show(a[0]); });
+        at(t + 560, function () {
+          count(eurEl, bill, bill + a[1], 600, eur);
+          bill += a[1];
+          toolsEl.textContent = String(a[2]);
+          plus.textContent = '+' + eur(a[1]);
+          flag(plus, 'is-go');
+        });
       });
-      at(t, function () { light('all'); });
-      var total = t + 400;
+      // The month's renewals land one row at a time; together they make up the bill
+      for (var r = 0; r < 5; r++) (function (r) { at(2900 + r * 280, function () { show('r' + r); }); })(r);
+      var total = 2900 + 4 * 280 + 600;
     } else if (i === 1) {
       // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
       var unread = $('unread');
