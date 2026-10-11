@@ -76,6 +76,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
 .atc-burger{position:absolute;left:0;top:var(--rail);width:var(--rail);height:var(--rail)}
 .atc-contact{position:absolute;top:calc((var(--rail) - 44px) / 2);right:var(--gutter)}
+.atc .atc-contact{box-shadow:0 6px 18px -10px rgba(0,16,37,.35)}
 .atc[data-menu="open"] .atc-chrome{--fg:#FFFFFF;--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
 .atc .atc-nav{position:fixed;z-index:19}
 
@@ -913,7 +914,7 @@ with the same challenge.</h2>
           <svg viewBox="0 8 506 490" fill="currentColor" aria-hidden="true"><path d="M215 11H304L92 494H0Z"></path><path d="M365 173L506 493H417L320 272Z"></path></svg>
         </a>
         <button class="ds-burger atc-burger" data-atc="burger" type="button" aria-label="Open menu" aria-expanded="false" onClick="{{ toggleMenu }}"><span class="ds-burger-box"><span class="ds-burger-ln"></span><span class="ds-burger-ln"></span></span></button>
-        <a class="ds-btn ds-btn--sm atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+        <a class="ds-btn ds-btn--sm ds-btn--grad atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
       </div>
 
       <!-- Splash: blurred hero with the mark, 1s, then it clears into the hero -->
