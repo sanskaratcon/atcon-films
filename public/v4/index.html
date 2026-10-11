@@ -1308,7 +1308,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2724,
+      U: 2454,
       heroGrow: [0, 78], heroOut: [1, 10],
       v2: [0, 173], v4: [173, 294], v3: [294, 414],
       indoor: 130,
@@ -1325,23 +1325,23 @@ class Component extends DCLogic {
         ins: [539, 724, 909, 1094],
         out: 1314
       },
-      famIn: [1374, 1464],
-      famOut: [1734, 1784],
-      focus: [1399, 1494],
-      unfocus: [1754, 1834],
-      fill: [1494, 1694],
+      famIn: [1344, 1389],
+      famOut: [1524, 1549],
+      focus: [1356, 1404],
+      unfocus: [1534, 1574],
+      fill: [1404, 1504],
       gap: {
         // The A mark, the title, "Not as another…" and "As a partner." are no longer shown: their slots
         // are kept tiny so the ATCON logo and tagline follow the familiar-statement straight away
-        mark: [1824, 1827, 1830, 1833], markMove: [1827, 1830],
-        title: 1830,
-        lift: [1830, 1834],
-        a: 1836, aOut: 1837, aPlay: 0,
-        center: [1830, 1840], b: 1840, bOut: 1841, sign: 1844,
-        out: 1842
+        mark: [1569, 1570, 1572, 1574], markMove: [1570, 1572],
+        title: 1572,
+        lift: [1572, 1574],
+        a: 1575, aOut: 1576, aPlay: 0,
+        center: [1572, 1577], b: 1577, bOut: 1578, sign: 1579,
+        out: 1578
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { mark: [1854, 1894], word: [1900, 1974], title: 1978, hub: [2024, 2069], sides: [2064, 2114], links: [2109, 2219], pop: [2265, 2295], swap: [2298, 2340], plug: [2344, 2386], glow: [2380, 2390], tiles: [2390, 2710], out: 2722 }
+      sol: { mark: [1584, 1624], word: [1630, 1704], title: 1708, hub: [1754, 1799], sides: [1794, 1844], links: [1839, 1949], pop: [1995, 2025], swap: [2028, 2070], plug: [2074, 2116], glow: [2110, 2120], tiles: [2120, 2440], out: 2452 }
     };
   }
 
