@@ -1777,7 +1777,7 @@ class Component extends DCLogic {
     var self = this, sc = scs[i];
     // The typing and arrivals are the story, so they play for everyone; reduced motion only drops the travel (CSS)
     // PACE scales the whole scene: every delay, typing speed and count below is written at 1x
-    var PACE = 0.42;
+    var PACE = 0.6;
     // START: a short beat after the point's words have landed before anything moves
     var START = 200;
     var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, (ms + START) * PACE); };
@@ -1891,7 +1891,7 @@ class Component extends DCLogic {
     fillSteps(total * PACE);
     if (holdAt != null && total) {
       // The page holds only briefly; the scene keeps playing if the reader scrolls on
-      this._lock = { top: this.unitTop(holdAt), until: performance.now() + Math.min(total * PACE, 1800) + 1120, ease: true };
+      this._lock = { top: this.unitTop(holdAt), until: performance.now() + Math.min(total * PACE, 3200) + 1100, ease: true };
       this.holdScroll();
     }
   }
