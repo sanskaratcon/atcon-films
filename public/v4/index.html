@@ -1269,7 +1269,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2510,
+      U: 2384,
       heroGrow: [0, 78], heroOut: [1, 10],
       v2: [0, 173], v4: [173, 294], v3: [294, 414],
       indoor: 130,
@@ -1302,7 +1302,7 @@ class Component extends DCLogic {
         out: 1502
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { mark: [1514, 1554], word: [1560, 1634], title: 1638, hub: [1684, 1729], sides: [1724, 1774], links: [1769, 1879], pop: [1925, 1955], swap: [1958, 2000], plug: [2004, 2046], glow: [2040, 2050], tiles: [2050, 2370], out: 2440 }
+      sol: { mark: [1514, 1554], word: [1560, 1634], title: 1638, hub: [1684, 1729], sides: [1724, 1774], links: [1769, 1879], pop: [1925, 1955], swap: [1958, 2000], plug: [2004, 2046], glow: [2040, 2050], tiles: [2050, 2370], out: 2382 }
     };
   }
 
@@ -2189,12 +2189,12 @@ class Component extends DCLogic {
         this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
       }
     }
-    var live = u > S.mark[0] - 6 && u < S.out + 58;
+    var live = u > S.mark[0] - 6;
     box.style.visibility = live ? 'visible' : 'hidden';
     if (!live) return;
     // On the way out the whole section scrolls up as one piece instead of fading
-    var up = map(u, S.out, S.out + 56);
-    box.style.transform = up > 0 ? 'translateY(' + (-up * 105).toFixed(2) + 'vh)' : '';
+    // No separate exit: when the story ends the whole stage scrolls up with the page and the next section follows
+    box.style.transform = '';
     var sink = 0;
     var rises = this.qa('[data-atc="sol"] .atc-sol-head .ds-rise');
     for (var j = 0; j < rises.length; j++) {
@@ -2353,7 +2353,7 @@ class Component extends DCLogic {
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
     var O = T.sol;
-    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0], O.tiles[0] + 68], [O.tiles[0] + 80, O.tiles[0] + 148], [O.tiles[0] + 160, O.tiles[0] + 228], [O.tiles[0] + 240, O.tiles[0] + 308], [O.out, O.out + 44]);
+    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0], O.tiles[0] + 68], [O.tiles[0] + 80, O.tiles[0] + 148], [O.tiles[0] + 160, O.tiles[0] + 228], [O.tiles[0] + 240, O.tiles[0] + 308]);
     this._ranges = r;
     return r;
   }
