@@ -1847,8 +1847,13 @@ class Component extends DCLogic {
       [1, 2, 3].forEach(function (n) {
         var from = tt;
         at(from, function () { show('t' + n); });
-        at(from + 700, function () { show('t' + n, false); show('k' + n); });
-        var end = type(from + 750, 'k' + n, 26);
+        // Each reply lands whole, like a chat message, after its typing indicator
+        at(from + 700, function () {
+          var msg = $('k' + n), sp = msg && msg.querySelector('[data-type]');
+          if (sp) sp.textContent = sp.getAttribute('data-type');
+          show('t' + n, false); show(msg);
+        });
+        var end = from + 700 + 900;
         at(end + 200, function () {
           show('l' + n);
           owner.textContent = owners[n - 1];
