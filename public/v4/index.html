@@ -2219,6 +2219,17 @@ class Component extends DCLogic {
       this._solHeld = true;
       this._lock = { top: this.unitTop(holdU), until: performance.now() + 1300, ease: true };
     }
+    // What we offer: a short pause on each finished point (only when scrolling down into it)
+    if (u < S.tiles[0]) this._offHeld = [];
+    this._offHeld = this._offHeld || [];
+    var stepLen = (S.tiles[1] - S.tiles[0]) / 4;
+    for (var hs = 0; hs < 4; hs++) {
+      var hu = S.tiles[0] + hs * stepLen + stepLen * 0.85;
+      if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
+        this._offHeld[hs] = true;
+        this._lock = { top: this.unitTop(hu), until: performance.now() + 1500, ease: true };
+      }
+    }
     var live = u > S.mark[0] - 6 && u < S.out + 58;
     box.style.visibility = live ? 'visible' : 'hidden';
     if (!live) return;
