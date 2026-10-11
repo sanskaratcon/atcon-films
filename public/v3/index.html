@@ -161,7 +161,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* "That gap…" intro: the line starts centred on the left with the A mark on the right */
 .atc-gapmark{position:absolute;z-index:4;left:50%;right:var(--content-x);top:var(--rail);bottom:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 .atc-gapmark svg{display:block;width:min(22vw,40vh);height:auto}
-.atc-gap-head{will-change:transform}
+/* "That gap is where we come in." is no longer shown; the element stays (hidden, no size) so the close still centres */
+.atc-gap-head{display:none}
 
 /* "That gap is where we come in": fixed title, then two lines in turn */
 .atc-gap{position:absolute;z-index:5;left:var(--content-x);right:44%;top:calc(var(--rail) + var(--gutter) + 5vh);display:flex;flex-direction:column;gap:var(--sp-5);visibility:hidden}
