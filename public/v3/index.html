@@ -1937,10 +1937,13 @@ class Component extends DCLogic {
     var map = this._fx.map, ease = this._fx.ease;
     var box = this.q('sol');
     if (!box) return;
-    var live = u > S.title - 6 && u < S.out + 60;
+    var live = u > S.title - 6 && u < S.out + 58;
     box.style.visibility = live ? 'visible' : 'hidden';
     if (!live) return;
-    var sink = ease(map(u, S.out, S.out + 44));
+    // On the way out the whole section scrolls up as one piece instead of fading
+    var up = map(u, S.out, S.out + 56);
+    box.style.transform = up > 0 ? 'translateY(' + (-up * 105).toFixed(2) + 'vh)' : '';
+    var sink = 0;
     var rises = this.qa('[data-atc="sol"] .atc-sol-head .ds-rise');
     for (var j = 0; j < rises.length; j++) {
       var k = ease(map(u, S.title + j * 10, S.title + j * 10 + 46));
