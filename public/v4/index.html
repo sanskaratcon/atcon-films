@@ -1305,7 +1305,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2384,
+      U: 2724,
       heroGrow: [0, 78], heroOut: [1, 10],
       v2: [0, 173], v4: [173, 294], v3: [294, 414],
       indoor: 130,
@@ -1319,26 +1319,26 @@ class Component extends DCLogic {
         // the stack then moves right and opens up while the four points come in one below the other
         title: 424, titleMove: [414, 509],
         isoIn: [434, 494], isoMove: [529, 624],
-        ins: [539, 644, 749, 854],
-        out: 974
+        ins: [539, 724, 909, 1094],
+        out: 1314
       },
-      famIn: [1034, 1124],
-      famOut: [1394, 1444],
-      focus: [1059, 1154],
-      unfocus: [1414, 1494],
-      fill: [1154, 1354],
+      famIn: [1374, 1464],
+      famOut: [1734, 1784],
+      focus: [1399, 1494],
+      unfocus: [1754, 1834],
+      fill: [1494, 1694],
       gap: {
         // The A mark, the title, "Not as another…" and "As a partner." are no longer shown: their slots
         // are kept tiny so the ATCON logo and tagline follow the familiar-statement straight away
-        mark: [1484, 1487, 1490, 1493], markMove: [1487, 1490],
-        title: 1490,
-        lift: [1490, 1494],
-        a: 1496, aOut: 1497, aPlay: 0,
-        center: [1490, 1500], b: 1500, bOut: 1501, sign: 1504,
-        out: 1502
+        mark: [1824, 1827, 1830, 1833], markMove: [1827, 1830],
+        title: 1830,
+        lift: [1830, 1834],
+        a: 1836, aOut: 1837, aPlay: 0,
+        center: [1830, 1840], b: 1840, bOut: 1841, sign: 1844,
+        out: 1842
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { mark: [1514, 1554], word: [1560, 1634], title: 1638, hub: [1684, 1729], sides: [1724, 1774], links: [1769, 1879], pop: [1925, 1955], swap: [1958, 2000], plug: [2004, 2046], glow: [2040, 2050], tiles: [2050, 2370], out: 2382 }
+      sol: { mark: [1854, 1894], word: [1900, 1974], title: 1978, hub: [2024, 2069], sides: [2064, 2114], links: [2109, 2219], pop: [2265, 2295], swap: [2298, 2340], plug: [2344, 2386], glow: [2380, 2390], tiles: [2390, 2710], out: 2722 }
     };
   }
 
@@ -2413,7 +2413,8 @@ class Component extends DCLogic {
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
     r.push(T.heroGrow, T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
     r.push([S.title, S.title + 46], S.titleMove, S.isoIn, S.isoMove);
-    for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 58], [S.ins[i] + 58, i < S.ins.length - 1 ? S.ins[i + 1] - 2 : S.out - 30]);
+    // the scenes themselves follow the scroll exactly (no glide inside them); only the point's text settles
+    for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 58]);
     r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
