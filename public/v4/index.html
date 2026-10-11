@@ -1102,40 +1102,40 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2350,
-      heroGrow: [0, 130], heroOut: [2, 16],
-      v2: [0, 288], v4: [288, 490], v3: [490, 690],
-      indoor: 216,
-      ch0: [-1, -1, 0, 36],
-      ch1: [223, 248, 352, 382],
-      frame: [335, 382],
-      white: [668, 694],
+      U: 2074,
+      heroGrow: [0, 78], heroOut: [1, 10],
+      v2: [0, 173], v4: [173, 294], v3: [294, 414],
+      indoor: 130,
+      ch0: [-1, -1, 0, 22],
+      ch1: [134, 149, 211, 229],
+      frame: [201, 229],
+      white: [401, 418],
       // Problem cards: each arrives in turn and stays; the graphic on the right follows the newest card
       stack: {
         // "What actually happens" rises centred, then moves to the top left as the 3D stack appears in the middle;
         // the stack then moves right and opens up while the four points come in one below the other
-        title: 700, titleMove: [690, 785],
-        isoIn: [710, 770], isoMove: [805, 900],
-        ins: [815, 920, 1025, 1130],
-        out: 1250
+        title: 424, titleMove: [414, 509],
+        isoIn: [434, 494], isoMove: [529, 624],
+        ins: [539, 644, 749, 854],
+        out: 974
       },
-      famIn: [1310, 1400],
-      famOut: [1670, 1720],
-      focus: [1335, 1430],
-      unfocus: [1690, 1770],
-      fill: [1430, 1630],
+      famIn: [1034, 1124],
+      famOut: [1394, 1444],
+      focus: [1059, 1154],
+      unfocus: [1414, 1494],
+      fill: [1154, 1354],
       gap: {
         // The A mark, the title, "Not as another…" and "As a partner." are no longer shown: their slots
         // are kept tiny so the ATCON logo and tagline follow the familiar-statement straight away
-        mark: [1760, 1763, 1766, 1769], markMove: [1763, 1766],
-        title: 1766,
-        lift: [1766, 1770],
-        a: 1772, aOut: 1773, aPlay: 0,
-        center: [1766, 1776], b: 1776, bOut: 1777, sign: 1780,
-        out: 1778
+        mark: [1484, 1487, 1490, 1493], markMove: [1487, 1490],
+        title: 1490,
+        lift: [1490, 1494],
+        a: 1496, aOut: 1497, aPlay: 0,
+        center: [1490, 1500], b: 1500, bOut: 1501, sign: 1504,
+        out: 1502
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { mark: [1790, 1830], word: [1836, 1910], title: 1914, hub: [1960, 2005], sides: [2000, 2050], links: [2045, 2155], out: 2280 }
+      sol: { mark: [1514, 1554], word: [1560, 1634], title: 1638, hub: [1684, 1729], sides: [1724, 1774], links: [1769, 1879], out: 2004 }
     };
   }
 
