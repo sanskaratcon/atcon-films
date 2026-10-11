@@ -62,6 +62,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-star svg{display:block;width:100%;height:100%}
 .atc-star-l{left:calc(var(--lx) + .5px);top:var(--by)}
 .atc-star-r{left:calc(var(--rx) + .5px);top:var(--by)}
+/* The hero has no cross lines; they only show when they close in around the statement */
+.atc-ln-mid,.atc-ln-right,.atc-star{opacity:var(--lo,0)}
 
 .atc-prog{position:absolute;left:var(--lx);top:var(--ty);bottom:0;width:1px;pointer-events:none;transition:opacity .7s var(--ease-io)}
 .atc-prog-fill{position:absolute;left:-.5px;top:0;width:2px;height:100%;background:var(--prog);transform-origin:top;transform:scaleY(0);transition:background-color var(--dur-theme) ease}
@@ -74,6 +76,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
 .atc-burger{position:absolute;left:0;top:var(--rail);width:var(--rail);height:var(--rail)}
 .atc-contact{position:absolute;top:calc((var(--rail) - 44px) / 2);right:var(--gutter)}
+.atc .atc-contact{box-shadow:0 6px 18px -10px rgba(0,16,37,.35)}
 .atc[data-menu="open"] .atc-chrome{--fg:#FFFFFF;--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
 .atc .atc-nav{position:fixed;z-index:19}
 
@@ -88,6 +91,27 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-hero-block{gap:var(--sp-6)}
 .atc-line{display:block;white-space:nowrap}
 .atc-hero-lede{max-width:min(23vw,30em);opacity:.92}
+/* Hero: white page, copy left, the film in a rounded card right; the card grows to full screen on scroll */
+.atc-herobg{position:absolute;inset:0;background:#FFFFFF;will-change:opacity}
+.atc-l1,.atc-l2{will-change:opacity,transform;overflow:hidden}
+.atc-ov-0{display:none}
+.atc-hero2{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,.74fr) minmax(0,1.6fr);column-gap:4vw;align-items:center;
+  padding:calc(var(--rail) + 3.5vh) 14px 5vh calc(var(--rail) + 4vw)}
+.atc-hero2-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-5);color:var(--atc-navy)}
+.atc-hero2-eyebrow{display:flex;align-items:center;gap:12px;margin:0;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--atc-mute)}
+.atc-hero2-eyebrow i{display:block;width:28px;height:1px;background:currentColor}
+.atc .atc-hero2-title{margin:0;max-width:11em;color:var(--atc-navy)}
+.atc .atc-hero2-lede{margin:0;max-width:26em;color:var(--atc-slate)}
+.atc-hero2-scroll{display:flex;align-items:center;gap:10px;margin:var(--sp-4) 0 0;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--atc-mute)}
+.atc-hero2-scroll svg{width:12px;height:12px;animation:atc-nudge 1.8s ease-in-out infinite}
+@keyframes atc-nudge{50%{transform:translateY(3px)}}
+.atc-hero2-card{position:relative;align-self:stretch;border-radius:24px;pointer-events:none}
+.atc-hero2-tag{position:absolute;left:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);
+  color:var(--atc-navy);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 18px -8px rgba(0,16,37,.35)}
+.atc-hero2-tag i{width:6px;height:6px;border-radius:50%;background:#3FB27E}
+@media (max-width:760px){
+  .atc-hero2{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);row-gap:4vh;padding:calc(var(--rail) + 3vh) 16px 4vh calc(var(--rail) + 18px)}
+}
 .atc-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-2)}
 .atc-title{white-space:pre-line}
 /* "Businesses often…": a soft glow behind the title, so it holds where it crosses the people */
@@ -129,7 +153,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* Side graphics start clear of the list */
 .atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
 /* "What actually happens" heads the list */
-.atc-wah{position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
+.atc-wah{display:none;position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
 /* The points: one at a time at the top of the column, a short statement and one quiet line; the active mark above fills while its scene plays */
 .atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:start}
 .atc-steps{grid-row:1;display:flex;align-items:center;gap:8px;margin:0 0 clamp(22px,3.6vh,40px);opacity:0;will-change:opacity}
@@ -145,8 +169,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc .atc-stack .atc-card-body{font-size:clamp(17px,1.25vw,21px);line-height:1.5;max-width:24em;color:var(--atc-slate)}
 .atc .atc-stack .atc-card .ds-rise,.atc .atc-stack .atc-card.is-past .ds-rise{color:var(--atc-navy)}
 .atc .atc-stack .atc-card .atc-card-body .ds-rise,.atc .atc-stack .atc-card.is-past .atc-card-body .ds-rise{color:var(--atc-slate)}
-.atc .atc-stack .atc-card-body .atc-sub{display:block;color:var(--atc-mute);transition:color .45s ease}
-.atc .atc-stack .atc-card-body .atc-sub.is-lit{color:var(--atc-navy)}
 /* The desktop beside the list */
 .atc-iso{position:absolute;z-index:4;left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw));right:var(--content-x);top:calc(var(--rail) + 2vh);bottom:2vh;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 /* "the right partner." fills into the brand gradient instead of navy */
@@ -163,7 +185,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* "That gap…" intro: the line starts centred on the left with the A mark on the right */
 .atc-gapmark{position:absolute;z-index:4;left:50%;right:var(--content-x);top:var(--rail);bottom:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 .atc-gapmark svg{display:block;width:min(22vw,40vh);height:auto}
-.atc-gap-head{will-change:transform}
+/* "That gap is where we come in." is no longer shown; the element stays (hidden, no size) so the close still centres */
+.atc-gap-head{display:none}
+/* "Not as another agency, dev shop, advisory firm." (with its graphic) and "As a partner." are no longer shown */
+.atc-gap-body,.atc-gfx4row,.atc-gapend-line,.atc-gapmark{display:none !important}
 
 /* "That gap is where we come in": fixed title, then two lines in turn */
 .atc-gap{position:absolute;z-index:5;left:var(--content-x);right:44%;top:calc(var(--rail) + var(--gutter) + 5vh);display:flex;flex-direction:column;gap:var(--sp-5);visibility:hidden}
@@ -175,9 +200,36 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* ATCON logo and tagline, bottom left, with "As a partner." */
 .atc-gapend{position:absolute;z-index:5;left:0;right:0;top:50%;display:grid;justify-items:center;text-align:center;visibility:hidden;pointer-events:none;padding:0 16px}
 .atc-gapend > *{grid-area:1 / 1}
-.atc-sign{display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
+.atc-sign{display:none !important;flex-direction:column;align-items:center;gap:var(--sp-4)}
 .atc-sign-logo{display:block;width:clamp(140px,11vw,210px);height:auto}
 .atc .atc-sign-tag{color:var(--fg-soft);max-width:24em}
+/* The solution: tagline on top, the map of business, ATCON and the technology ecosystem below */
+.atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--rail) 3vw 2vh calc(var(--rail) + 3vw);visibility:hidden;pointer-events:none;text-align:center}
+.atc-sol-head{display:flex;flex-direction:column;align-items:center}
+.atc-sol-map{width:100%;height:auto;max-height:64vh;margin-top:3vh;overflow:visible;font-family:var(--atc-font)}
+.atc-sol-map .sol-link{fill:none;stroke:#D2D6DC;stroke-width:1.5;stroke-linejoin:miter;stroke-dasharray:1;stroke-dashoffset:1}
+.atc-sol-map .sol-stub{stroke:#DCE0E5}
+.atc-sol-map .sol-card{fill:#fff;stroke:rgba(0,16,37,.08);stroke-width:1.2;filter:url(#sol-sh)}
+.atc-sol-map .sol-tile{stroke:rgba(0,16,37,.06);stroke-width:1}
+.atc-sol-map .sol-glyph{fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.atc-sol-map .sol-lbl{font-size:20px;font-weight:500;fill:var(--atc-navy)}
+.atc-sol-map .sol-key{fill:var(--atc-navy);stroke:none}
+.atc-sol-map .sol-lbl-m{font-size:21px;font-weight:600;letter-spacing:-.01em;fill:#fff}
+.atc-sol-map .sol-hub{fill:#fff;stroke:rgba(0,16,37,.08);stroke-width:1.2;filter:url(#sol-sh)}
+.atc-sol-map .sol-term rect,.atc-sol-map .sol-term circle{fill:#fff;stroke:#D2D6DC;stroke-width:1.3}
+.atc-sol-map .sol-term path{fill:none;stroke:#C2C8D0;stroke-width:1.4;stroke-linecap:round}
+.atc-sol-map .sol-term .f{fill:#C2C8D0;stroke:none}
+.atc-sol-map .sol-ticks{fill:none;stroke:#C9CED5;stroke-width:1.4;stroke-linecap:round}
+.atc-sol-map .sol-hub-glow{fill:url(#sol-ring);opacity:.6;filter:url(#sol-glowf)}
+.atc-sol-map .sol-dot{fill:#2D63E6}
+.atc-sol-map [data-atc="solA"],.atc-sol-map .sol-ltr{will-change:transform,opacity}
+.atc-sol-map .sol-flow{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:.09 3;stroke-dashoffset:.09;animation:3s linear infinite}
+.atc-sol-map .sol-fl{stroke:#3FB27E;animation-name:solFlowL}
+.atc-sol-map .sol-fc{stroke:#2D63E6;stroke-dasharray:.3 3;stroke-dashoffset:.3;animation-name:solFlowC}
+.atc-sol-map .sol-fr{stroke:#4D8CF5;animation-name:solFlowR}
+@keyframes solFlowL{0%{stroke-dashoffset:.09}100%{stroke-dashoffset:-1}}
+@keyframes solFlowC{0%{stroke-dashoffset:.3}100%{stroke-dashoffset:-1}}
+@keyframes solFlowR{0%{stroke-dashoffset:.09}100%{stroke-dashoffset:-1}}
 .atc-line-grad{background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* White band behind the header, so content scrolling up passes under it */
@@ -470,7 +522,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .minvite.is-pop{animation:mac-pop .4s cubic-bezier(.3,1.4,.5,1)}
 @keyframes mac-pop{0%{transform:translateY(-1.5cqw) scale(.97);opacity:.4}100%{transform:none;opacity:1}}
 .minvite .ni{flex:none;display:grid;place-items:center;width:5cqw;height:5cqw;border-radius:1.2cqw;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,16,37,.1)}
-.minvite .ni svg{width:60%;fill:none;stroke:#E5483F;stroke-width:1.8;stroke-linecap:round}
+.minvite .ni svg{width:60%;fill:none;stroke:#2D63E6;stroke-width:1.8;stroke-linecap:round}
 .minvite>div{flex:1;min-width:0}
 .minvite p{font-size:1.95cqw;color:#3A4D55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .minvite p:first-child{display:flex;gap:1cqw;font-size:2cqw;color:var(--atc-navy)}
@@ -485,51 +537,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .ms-bar{flex:1;height:1.3cqw;border-radius:1cqw;background:#EDF0F5}
 .mplus-0{right:0;top:-1.5cqw;background:#F0F3F8;color:#5B6B78}
 
-/* Too many opinions */
-.mdoc{padding:2.4cqw 2.8cqw 2.8cqw}
-.mdoc h4{font-size:3cqw;font-weight:500;letter-spacing:-.02em;margin-bottom:.6cqw}
-.mdoc-l{height:1.2cqw;width:var(--l);margin-top:1.3cqw !important;border-radius:1cqw;background:#E6EAF2}
-.mdoc-d{display:flex;align-items:center;gap:1.4cqw;margin:.4cqw 0 1.6cqw !important;padding-bottom:1.8cqw;border-bottom:1px solid rgba(0,16,37,.07);font-size:2cqw;color:#8C95A6}
-.mops{position:absolute;left:42%;right:3%;top:12%;display:flex;flex-direction:column;gap:1.4cqw}
-.mop{display:flex;align-items:center;gap:1.4cqw;padding:1.3cqw 1.8cqw;border-radius:1.8cqw;background:#fff;
-  box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.4cqw 3.6cqw -1.2cqw rgba(0,16,37,.28)}
-.mop p{font-size:2.15cqw;color:#26374f}
-.mop strong{display:block;font-size:1.65cqw;font-weight:500;color:#8C95A6}
-.mac .mop.st{transform:translateX(5cqw) scale(.96)}
-.mac .mop.st.is-shown{transform:none}
-/* Where it ends up: the outcomes, one tag at a time */
-.mouts{position:absolute;left:2%;right:2%;bottom:0;display:flex;flex-wrap:wrap;justify-content:center;gap:1.1cqw}
-.mouts span{padding:1cqw 1.8cqw;border-radius:4cqw;background:#fff;box-shadow:0 0 0 1px rgba(217,72,60,.25),0 1cqw 2.6cqw -1cqw rgba(0,16,37,.2);color:#C8382D;font-size:1.95cqw;font-weight:500;white-space:nowrap}
-
-/* Point 1, kept simple: three rows on one card; the active row is in full colour, its items pop in, its count climbs */
-.mxs-b{padding:.6cqw 3.2cqw 1.6cqw}
-.mxs-row{display:grid;grid-template-columns:21cqw 1fr 7cqw;align-items:center;gap:2cqw;min-height:13cqw;border-top:1px solid rgba(0,16,37,.07);opacity:.32;transition:opacity .45s ease}
-.mxs-row:first-child{border-top:0}
-.mxs-row.is-on{opacity:1}
-.mxs-l{display:flex;align-items:center;gap:1.4cqw;font-size:2.7cqw;font-weight:500;color:var(--atc-navy)}
-.mxs-l svg{width:3.6cqw;height:3.6cqw;fill:none;stroke:#5B6B78;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.mxs-items{display:flex;flex-wrap:wrap;align-items:center;gap:1cqw}
-.mxs-row strong{justify-self:end;font-size:4.6cqw;font-weight:500;letter-spacing:-.02em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
-.mxs-av{display:grid;place-items:center;width:5.6cqw;height:5.6cqw;border-radius:50%;background:var(--c);color:#fff;font-size:1.75cqw;font-weight:600}
-.mxs-app{width:4.4cqw;height:4.4cqw;border-radius:1.2cqw;background:var(--c)}
-.mxs-op{padding:.9cqw 1.5cqw;border-radius:2cqw 2cqw 2cqw .5cqw;background:#F0F3F8;color:#3A4D55;font-style:normal;font-size:1.9cqw;font-weight:500}
-.mac .mxs-items .st{transform:scale(.4)}
-.mac .mxs-items .st.is-shown{transform:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.5,.5,1)}
-
-/* Point 3: a launch screen that keeps slipping back; warnings collect underneath */
-.mxl-b{padding:6cqw 4cqw 2cqw}
-.mxl-head{display:flex;align-items:center;justify-content:center;gap:1.6cqw;font-size:2.9cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
-.mxl-spin{width:3.4cqw;height:3.4cqw;border-radius:50%;border:.5cqw solid #E6EAF2;border-top-color:var(--atc-navy);animation:mac-spin .9s linear infinite}
-@keyframes mac-spin{to{transform:rotate(360deg)}}
-.mxl-bar{display:flex;align-items:center;gap:2cqw;margin:3.2cqw 0 3.6cqw}
-.mxl-track{position:relative;flex:1;height:1.4cqw;border-radius:1cqw;background:#E6EAF2;overflow:hidden}
-.mxl-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:1cqw;background:linear-gradient(90deg,#2D63E6,#5A86EE)}
-.mxl-bar strong{width:7cqw;text-align:right;font-size:2.5cqw;font-weight:600;color:var(--atc-navy);font-variant-numeric:tabular-nums}
-.mxl-list{margin:0;padding:0;list-style:none}
-.mxl-list li{display:flex;align-items:center;gap:1.6cqw;padding:1.8cqw 0;border-top:1px solid rgba(0,16,37,.07);font-size:2.4cqw;color:var(--atc-navy)}
-.mxl-list svg{width:3cqw;height:3cqw;fill:none;stroke:#D9483C;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-@media (prefers-reduced-motion:reduce){.mxl-spin{animation-duration:2.4s}}
-
 /* Dock */
 .mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
   background:rgba(246,248,252,.86);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -537,7 +544,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .dk svg{width:58%;height:58%;fill:none;stroke:var(--g,#fff);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .dk::after{content:"";position:absolute;bottom:-.9cqw;left:50%;width:.7cqw;height:.7cqw;margin-left:-.35cqw;border-radius:50%;background:#3A4D55;opacity:0;transition:opacity .3s ease}
 .dk-x{width:0;margin:0;opacity:0;transform:scale(.3);transition:width .3s ease,margin .3s ease,opacity .2s ease,transform .3s ease}
-.dk-x.is-in,.mac[data-scene="1"] .dk-x,.mac[data-scene="2"] .dk-x,.mac[data-scene="3"] .dk-x,.mac[data-scene="4"] .dk-x{width:7.4cqw;margin:0 .6cqw;opacity:1;transform:none;
+.dk-x.is-in,.mac[data-scene="1"] .dk-x,.mac[data-scene="2"] .dk-x,.mac[data-scene="3"] .dk-x{width:7.4cqw;margin:0 .6cqw;opacity:1;transform:none;
   transition:width .45s cubic-bezier(.2,.85,.25,1),margin .45s cubic-bezier(.2,.85,.25,1),opacity .35s ease,transform .5s cubic-bezier(.2,.9,.3,1.35)}
 .dk.is-bounce{animation:mac-bounce .7s ease}
 @keyframes mac-bounce{25%{translate:0 -2.6cqw}50%{translate:0 0}70%{translate:0 -1cqw}100%{translate:0 0}}
@@ -580,7 +587,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   <div class="atc-track" data-atc="track" style="height: {{trackHeight}}">
     <div class="atc-stage" data-atc="stage">
 
-      <div class="atc-layer atc-l2">
+      <div class="atc-herobg" data-atc="herobg" aria-hidden="true"></div>
+      <div class="atc-layer atc-l2" data-atc="l2">
         <video class="atc-video" data-atc="v2" src="../assets/af651f03cb8685835898c13376ca6a89.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
       </div>
       <div class="atc-layer atc-l4" data-atc="l4">
@@ -603,13 +611,13 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
       <section class="atc-ch atc-ch-0" data-atc="ch0" aria-label="Introduction">
         <div class="atc-in" data-atc="in0">
           <div class="atc-in atc-hero-in">
-            <div class="atc-block atc-hero-block">
-              <h1 class="ds-display"><span class="atc-line">A trusted tech partner </span><span class="atc-line">for business-led </span><span class="atc-line ds-soft">innovation.</span></h1>
-              <p class="ds-lede atc-hero-lede">We sit between strategy and execution, and solve what slows growth down.</p>
-              <div class="atc-ctas">
-                <a class="ds-btn" href="mailto:ankit.tanna@atconglobal.com">Start a conversation<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
-                <a class="ds-btn ds-btn--secondary ds-btn-down" href="#problem" onClick="{{ seeProblem }}">See why<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2.5 6.5L6 10l3.5-3.5"></path></svg></span></a>
+            <div class="atc-hero2">
+              <div class="atc-hero2-text">
+                <p class="atc-hero2-eyebrow"><i></i>Brussels, Belgium</p>
+                <h1 class="ds-display atc-hero2-title">Technology should move your business <span class="atc-line-grad">forward.</span></h1>
+                <p class="ds-lede atc-hero2-lede">From Belgium to the world: strategy, execution, ownership and scalable technology solutions.</p>
               </div>
+              <div class="atc-hero2-card" data-atc="heroCard"><span class="atc-hero2-tag"><i></i>Brussels</span></div>
             </div>
           </div>
         </div>
@@ -627,21 +635,26 @@ with the same challenge.</h2>
       <!-- The three problems: stroked cards stacked on the left, revealed one by one, all staying readable -->
       <section class="atc-stack" data-atc="stack" aria-label="What actually happens">
         <h2 class="ds-h1 atc-wah" data-atc="wah"><span class="ds-mask"><span class="ds-rise" data-atc="wahText">What actually happens</span></span></h2>
-        <div class="atc-steps" data-atc="steps" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></div>
+        <div class="atc-steps" data-atc="steps" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
-          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">But technology gets complicated.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise"><span class="atc-sub" data-sub="0">Too many vendors.</span><span class="atc-sub" data-sub="1">Too many tools.</span><span class="atc-sub" data-sub="2">Too many opinions.</span></span></span></p></div></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">Too many tools.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Which one is right for your software?</span></span></p></div></div>
         </article>
         <article class="atc-card">
-          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
+          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">02</span></span></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">Too many vendors.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each one offers a different way to build it.</span></span></p></div></div>
+        </article>
+        <article class="atc-card">
+          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">03</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">Many people. Different perspectives. No clear ownership.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Business teams, IT, vendors and stakeholders all contribute. Decisions take longer, accountability is unclear and the result often drifts from the original vision.</span></span></p></div></div>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each team passes the task on until no one owns it.</span></span></p></div></div>
         </article>
         <article class="atc-card">
-          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
+          <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">04</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">Instead of moving forward, your business gets stuck.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Higher costs. Slower delivery. Disconnected systems. Lost focus.</span></span></p></div></div>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Meeting after meeting, and the result is still zero.</span></span></p></div></div>
         </article>
       </section>
       <!-- Shared icon paint: one solid blue for strokes, one soft aurora fill for the second tone -->
@@ -732,7 +745,7 @@ with the same challenge.</h2>
                 <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-red">Delayed 3 weeks</span></div>
                 <dl>
                   <dt>Owner</dt><dd><span class="pill owner" data-k="owner">Marketing</span></dd>
-                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#7F8FB0">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
+                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#5A86EE">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
                 </dl>
                 <div class="mcomments">
                   <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
@@ -741,8 +754,8 @@ with the same challenge.</h2>
                   <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
                   <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
                   <small class="mlog st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>IT</b> reassigned this to <b>Bitforge Labs</b></small>
-                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#7F8FB0">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
+                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#5A86EE">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
                   <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> removed the owner</small>
                   <small class="st" data-k="more">3 teams · 0 owners · still delayed</small>
                 </div>
@@ -785,71 +798,24 @@ with the same challenge.</h2>
                 </dl>
               </div>
             </div>
-            <div class="mouts"><span class="st" data-k="o0">Higher costs</span><span class="st" data-k="o1">Disconnected systems</span><span class="st" data-k="o2">Fragmented data</span><span class="st" data-k="o3">Underused technology</span><span class="st" data-k="o4">Delayed delivery</span></div>
-          </div>
-
-          <!-- Too many opinions: one plan, a comment from every side, no decision -->
-          <div class="mac-sc">
-            <div class="mw st" data-k="doc" style="--x:3%;--y:6%;--w:52%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Docs · Customer portal plan</span></div>
-              <div class="mw-b mdoc"><h4>Customer portal</h4><p class="mdoc-d"><span>Decision</span><b class="pill pill-amber" data-k="dec">Pending</b></p><p class="mdoc-l" style="--l:94%"></p><p class="mdoc-l" style="--l:88%"></p><p class="mdoc-l" style="--l:96%"></p><p class="mdoc-l" style="--l:72%"></p><p class="mdoc-l" style="--l:90%"></p><p class="mdoc-l" style="--l:60%"></p></div>
-            </div>
-            <div class="mops">
-              <div class="mop st" data-k="c1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong>Build it in-house.</p></div>
-              <div class="mop st" data-k="c2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong>Buy a platform instead.</p></div>
-              <div class="mop st" data-k="c3"><b class="av av-t" style="--c:#9BBA2A">FN</b><p><strong>Finance</strong>Wait for next quarter.</p></div>
-              <div class="mop st" data-k="c4"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong>Use our framework.</p></div>
-              <div class="mop st" data-k="c5"><b class="av av-t" style="--c:#5A86EE">OP</b><p><strong>Operations</strong>Start with mobile first.</p></div>
-            </div>
-            <div class="mtally st" data-k="otally" style="top:72%"><span><b>5</b> opinions</span><span class="is-zero"><b>0</b> decisions</span></div>
-          </div>
-
-          <!-- Point 1, kept simple: one project, and three rows that fill up with too many vendors, tools and opinions -->
-          <div class="mac-sc">
-            <div class="mw st" data-k="proj" style="--x:4%;--y:20%;--w:92%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal</span></div>
-              <div class="mxs-b">
-                <div class="mxs-row" data-k="r0"><span class="mxs-l"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19 C3.5 15.6 6 13.6 9 13.6 C12 13.6 14.5 15.6 14.5 19 M16 6.5 A3 3 0 0 1 16 12.5 M17.5 14.2 C19.4 15 20.5 16.7 20.5 19"/></svg>Vendors</span><span class="mxs-items"><b class="mxs-av st" data-k="v0" style="--c:#2D63E6">NS</b><b class="mxs-av st" data-k="v1" style="--c:#3FB27E">BF</b><b class="mxs-av st" data-k="v2" style="--c:#9BBA2A">CL</b></span><strong data-k="c0">0</strong></div>
-                <div class="mxs-row" data-k="r1"><span class="mxs-l"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>Tools</span><span class="mxs-items"><i class="mxs-app st" data-k="t0" style="--c:#2D63E6"></i><i class="mxs-app st" data-k="t1" style="--c:#3FB27E"></i><i class="mxs-app st" data-k="t2" style="--c:#9BBA2A"></i><i class="mxs-app st" data-k="t3" style="--c:#5A86EE"></i><i class="mxs-app st" data-k="t4" style="--c:#1E8E5A"></i><i class="mxs-app st" data-k="t5" style="--c:#7F8FB0"></i><i class="mxs-app st" data-k="t6" style="--c:#4D8CF5"></i><i class="mxs-app st" data-k="t7" style="--c:#8CC08A"></i><i class="mxs-app st" data-k="t8" style="--c:#2D4FA8"></i><i class="mxs-app st" data-k="t9" style="--c:#A2B3D8"></i></span><strong data-k="c1">0</strong></div>
-                <div class="mxs-row" data-k="r2"><span class="mxs-l"><svg viewBox="0 0 24 24"><path d="M4 5.5 H20 V15.5 H11 L6.5 19 V15.5 H4 Z"/></svg>Opinions</span><span class="mxs-items"><em class="mxs-op st" data-k="o0">Build</em><em class="mxs-op st" data-k="o1">Buy</em><em class="mxs-op st" data-k="o2">Wait</em><em class="mxs-op st" data-k="o3">Redo</em><em class="mxs-op st" data-k="o4">Pause</em></span><strong data-k="c2">0</strong></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Point 3: the launch that never finishes; each time it slips back, another cost of being stuck appears -->
-          <div class="mac-sc">
-            <div class="mw st" data-k="load" style="--x:4%;--y:12%;--w:92%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal</span></div>
-              <div class="mxl-b">
-                <div class="mxl-head"><i class="mxl-spin"></i><span data-k="txt">Launching…</span></div>
-                <div class="mxl-bar"><span class="mxl-track"><i class="mxl-fill" data-k="fill"></i></span><strong data-k="pct">0%</strong></div>
-                <ul class="mxl-list">
-                  <li class="st" data-k="w0"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Higher costs</span></li>
-                  <li class="st" data-k="w1"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Delayed delivery</span></li>
-                  <li class="st" data-k="w2"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Disconnected systems</span></li>
-                  <li class="st" data-k="w3"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Fragmented data</span></li>
-                  <li class="st" data-k="w4"><svg viewBox="0 0 24 24"><path d="M12 4 L21 19.5 H3 Z"/><path d="M12 10 V14 M12 16.8 V17"/></svg><span>Underused technology</span></li>
-                </ul>
-              </div>
-            </div>
           </div>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
           <div class="mac-dock">
             <span class="dk" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 7 H10 L12 9 H20.5 V18 H3.5 Z"/></svg></span>
-            <span class="dk" data-app="1" style="--c:#4D8CF5"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4.5 7.5 L12 13 L19.5 7.5"/></svg></span>
-            <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#E5483F"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></span>
+            <span class="dk" data-app="1" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4.5 7.5 L12 13 L19.5 7.5"/></svg></span>
+            <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#2D63E6"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></span>
             <span class="dk dk-x" data-dock="0" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19 M16 7 H21 M16 11 H21 M17.5 15 H21"/></svg></span>
             <span class="dk dk-x" data-dock="1" data-app="2" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="5" height="15" rx="1.2"/><rect x="9.5" y="4.5" width="5" height="10" rx="1.2"/><rect x="15.5" y="4.5" width="5" height="7" rx="1.2"/></svg></span>
             <span class="dk dk-x" data-dock="2" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M4 5.5 H20 V15.5 H11 L6.5 19 V15.5 H4 Z"/></svg></span>
-            <span class="dk dk-x" data-dock="3" style="--c:#1E8E5A"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5 H20 M4 14.5 H20 M10 4 V20"/></svg></span>
+            <span class="dk dk-x" data-dock="3" style="--c:#0B1E3A"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5 H20 M4 14.5 H20 M10 4 V20"/></svg></span>
           </div>
         </div>
       </div>
 
       <!-- Focus statement: locked, lines close in, text fills -->
-      <section class="atc-fam" data-atc="fam" aria-label="You are not alone">
-        <h2 class="ds-statement atc-fam-text" data-atc="famText"><span class="atc-fam-line"><span class="ds-w">If</span> <span class="ds-w">this</span> <span class="ds-w">feels</span> <span class="ds-w">familiar,</span> <span class="ds-w">you’re</span> <span class="ds-w">not</span> <span class="ds-w">alone.</span></span><span class="atc-fam-line"><span class="ds-w">You</span> <span class="ds-w">just</span> <span class="ds-w">haven’t</span> <span class="ds-w">met</span> <span class="atc-gphrase"><span class="ds-w">the</span> <span class="ds-w">right</span> <span class="ds-w">partner.</span></span></span></h2>
+      <section class="atc-fam" data-atc="fam" aria-label="Where we come in">
+        <h2 class="ds-statement atc-fam-text" data-atc="famText"><span class="atc-fam-line"><span class="ds-w">If</span> <span class="ds-w">this</span> <span class="ds-w">feels</span> <span class="ds-w">like</span> <span class="ds-w">your</span> <span class="ds-w">problem,</span></span><span class="atc-fam-line"><span class="ds-w">that’s</span> <span class="ds-w">why</span> <span class="ds-w">we’re</span> <span class="atc-gphrase"><span class="ds-w">here</span> <span class="ds-w">for</span> <span class="ds-w">you.</span></span></span></h2>
       </section>
 
       <!-- Where we come in: title holds, then two lines, each with its graphic playing on its own -->
@@ -899,6 +865,18 @@ with the same challenge.</h2>
         </svg>
       </div>
 
+      <!-- The solution: more than a supplier. Business on the left, the technology ecosystem on the right; they don't
+           reach each other directly, ATCON sits between them and connects every side -->
+      <section class="atc-sol" data-atc="sol" aria-label="More than a supplier, a true technology partner">
+        <h2 class="ds-h1 atc-sol-head"><span class="ds-mask"><span class="ds-rise"><span class="ds-mute">More than</span> a supplier.</span></span><span class="ds-mask"><span class="ds-rise"><span class="atc-line-grad">A true technology partner.</span></span></span></h2>
+        <svg class="atc-sol-map" viewBox="0 40 1920 790" aria-hidden="true"><defs><linearGradient id="sol-amark" x1="84.5321" y1="37.5117" x2="117.043" y2="111.535" gradientUnits="userSpaceOnUse">
+<stop offset="0.00480769" stop-color="#D3FFE4"></stop>
+<stop offset="0.3" stop-color="#EBFF39"></stop>
+<stop offset="0.7" stop-color="#0065ED"></stop>
+<stop offset="1" stop-color="#00112A"></stop>
+</linearGradient><filter id="sol-sh" x="-30%" y="-60%" width="160%" height="240%"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#001025" flood-opacity=".16"></feDropShadow><feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#001025" flood-opacity=".06"></feDropShadow></filter><linearGradient id="sol-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3FB27E"></stop><stop offset=".5" stop-color="#2D63E6"></stop><stop offset="1" stop-color="#9BBA2A"></stop></linearGradient><filter id="sol-glowf" x="-60%" y="-120%" width="220%" height="340%"><feGaussianBlur stdDeviation="12"></feGaussianBlur></filter></defs><g data-atc="solLinks"><path class="sol-link" d="M374 257 L470 257 L503 290 L625 290 L645 310 L645 338 L705 338 L705 446.0" pathLength="1"></path><path class="sol-link" d="M464 371 L540 371 L556 377 L653 377 L653 422 L705 422" pathLength="1"></path><path class="sol-link" d="M366 485 L378 485 L388 495 L468 495 L468 565 L705 565 L705 512.0" pathLength="1"></path><path class="sol-link" d="M416 574.0 L416 558 L428 546 L468 546" pathLength="1"></path><path class="sol-link" d="M378 713 L513 713 L513 647 L527 633 L596 633 L596 565" pathLength="1"></path><path class="sol-link" d="M825 479 L869.0 479" pathLength="1"></path><path class="sol-link" d="M1061.0 479 L1096 479" pathLength="1"></path><path class="sol-link" d="M1258 446.0 L1258 354 L1272 340 L1336 340 L1336 256 L1348 244 L1348 212 L1360 199 L1430 199" pathLength="1"></path><path class="sol-link" d="M1336 256 L1587 256 L1587 299 L1600 299" pathLength="1"></path><path class="sol-link" d="M1336 296 L1496 296 L1496 334 L1540 334 L1550 344 L1550 374.0" pathLength="1"></path><path class="sol-link" d="M1414 479 L1414 479 L1414 508 L1428 518 L1470 518 L1480 510 L1545 510 L1545 499 L1665 499" pathLength="1"></path><path class="sol-link" d="M1258 512.0 L1258 559 L1360 559 L1368 567 L1368 599 L1420 599" pathLength="1"></path><path class="sol-link" d="M1258 559 L1258 628 L1274 640 L1274 722 L1454 722 L1454 790 L1602 790 L1602 699 L1612 699" pathLength="1"></path><path class="sol-link sol-stub" d="M238 257 L198 257 L198 190 L70 190 L55 175 L55 103 L113 103" pathLength="1"></path><path class="sol-link sol-stub" d="M60 314 L60 296 L165 296 L165 228 L198 228" pathLength="1"></path><path class="sol-link sol-stub" d="M330 371 L261 371 L261 312 L161 312 L161 538 L85 538 L70 524 L70 466" pathLength="1"></path><path class="sol-link sol-stub" d="M186 485 L89 485 L89 418" pathLength="1"></path><path class="sol-link sol-stub" d="M416 624.0 L416 657 L378 657 L372 652 L236 652 L236 608 L193 608 L193 566" pathLength="1"></path><path class="sol-link sol-stub" d="M232 713 L130 713 L130 583 L38 583 L38 548" pathLength="1"></path><path class="sol-link sol-stub" d="M1694 199 L1712 199 L1723 210 L1753 210 L1753 116 L1836 116 L1836 64" pathLength="1"></path><path class="sol-link sol-stub" d="M1661 399 L1692 399 L1692 434 L1795 434 L1795 362 L1860 362" pathLength="1"></path><path class="sol-link sol-stub" d="M1839 499 L1862 499 L1862 546 L1898 546 L1898 520" pathLength="1"></path><path class="sol-link sol-stub" d="M1554 599 L1718 599 L1718 641 L1800 641 L1800 600 L1873 600 L1873 618" pathLength="1"></path><path class="sol-link sol-stub" d="M1866 699 L1900 699 L1900 728" pathLength="1"></path><g class="sol-acc sol-term"><rect x="114" y="97" width="24" height="12" rx="6"></rect><path d="M121 103 H131"></path></g><g class="sol-acc sol-term"><circle cx="60" cy="324" r="6"></circle><circle cx="60" cy="324" r="1.6" class="f"></circle></g><g class="sol-acc sol-term"><rect x="65" y="453" width="10" height="10" rx="2"></rect><rect x="68.5" y="456.5" width="3" height="3" class="f"></rect></g><g class="sol-acc sol-term"><rect x="76" y="402" width="24" height="12" rx="6"></rect><circle cx="84" cy="408" r="1.4" class="f"></circle><circle cx="92" cy="408" r="1.4" class="f"></circle></g><g class="sol-acc sol-term"><rect x="181" y="552" width="24" height="12" rx="6"></rect><circle cx="189" cy="558" r="1.4" class="f"></circle><circle cx="197" cy="558" r="1.4" class="f"></circle></g><g class="sol-acc sol-term"><rect x="33" y="535" width="10" height="10" rx="2"></rect><rect x="36.5" y="538.5" width="3" height="3" class="f"></rect></g><g class="sol-acc sol-term"><rect x="1824" y="49" width="24" height="12" rx="6"></rect><path d="M1831 55 H1841"></path></g><g class="sol-acc sol-term"><rect x="1860" y="356" width="24" height="12" rx="6"></rect><path d="M1867 362 H1877"></path></g><g class="sol-acc sol-term"><circle cx="1898" cy="512" r="6"></circle><circle cx="1898" cy="512" r="1.6" class="f"></circle></g><g class="sol-acc sol-term"><rect x="1868" y="621" width="10" height="10" rx="2"></rect><rect x="1871.5" y="624.5" width="3" height="3" class="f"></rect></g><g class="sol-acc sol-term"><circle cx="1900" cy="736" r="6"></circle><circle cx="1900" cy="736" r="1.6" class="f"></circle></g><path class="sol-acc sol-ticks" d="M170 318 V326 M180 318 V326 M190 318 V326"></path><path class="sol-acc sol-ticks" d="M422 499 V507 M432 499 V507 M442 499 V507"></path><path class="sol-acc sol-ticks" d="M1556 262 V270 M1566 262 V270 M1576 262 V270"></path><path class="sol-acc sol-ticks" d="M1692 607 V615 M1702 607 V615 M1712 607 V615"></path></g><g class="sol-pulses" data-atc="solPulse"><path class="sol-flow sol-fl" d="M374 257 L470 257 L503 290 L625 290 L645 310 L645 338 L705 338 L705 446.0" pathLength="1"></path><path class="sol-flow sol-fl" d="M464 371 L540 371 L556 377 L653 377 L653 422 L705 422" pathLength="1"></path><path class="sol-flow sol-fl" d="M366 485 L378 485 L388 495 L468 495 L468 565 L705 565 L705 512.0" pathLength="1"></path><path class="sol-flow sol-fl" d="M416 574.0 L416 558 L428 546 L468 546" pathLength="1"></path><path class="sol-flow sol-fl" d="M378 713 L513 713 L513 647 L527 633 L596 633 L596 565" pathLength="1"></path><path class="sol-flow sol-fc" d="M825 479 L869.0 479" pathLength="1"></path><path class="sol-flow sol-fc" d="M1061.0 479 L1096 479" pathLength="1"></path><path class="sol-flow sol-fr" d="M1258 446.0 L1258 354 L1272 340 L1336 340 L1336 256 L1348 244 L1348 212 L1360 199 L1430 199" pathLength="1"></path><path class="sol-flow sol-fr" d="M1336 256 L1587 256 L1587 299 L1600 299" pathLength="1"></path><path class="sol-flow sol-fr" d="M1336 296 L1496 296 L1496 334 L1540 334 L1550 344 L1550 374.0" pathLength="1"></path><path class="sol-flow sol-fr" d="M1414 479 L1414 479 L1414 508 L1428 518 L1470 518 L1480 510 L1545 510 L1545 499 L1665 499" pathLength="1"></path><path class="sol-flow sol-fr" d="M1258 512.0 L1258 559 L1360 559 L1368 567 L1368 599 L1420 599" pathLength="1"></path><path class="sol-flow sol-fr" d="M1258 559 L1258 628 L1274 640 L1274 722 L1454 722 L1454 790 L1602 790 L1602 699 L1612 699" pathLength="1"></path></g><g class="sol-side" data-atc="solL"><g transform="translate(238 232)"><rect class="sol-card" width="135" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#2D63E6" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2"/></g><text class="sol-lbl" x="53" y="32">Goals</text></g><g transform="translate(330 346)"><rect class="sol-card" width="135" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#3FB27E" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19"/><circle cx="16.5" cy="8.5" r="2.4"/><path d="M16 13.2 C18.6 13.2 20.5 15 20.5 18"/></g><text class="sol-lbl" x="53" y="32">Teams</text></g><g transform="translate(186 460)"><rect class="sol-card" width="181" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#5A86EE" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5 C5 15.5 8 13.5 12 13.5 C16 13.5 19 15.5 19 19.5"/></g><text class="sol-lbl" x="53" y="32">Customers</text></g><g transform="translate(320 574)"><rect class="sol-card" width="192" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#9BBA2A" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M5 7 H19 M5 12 H19 M5 17 H19"/><circle cx="9" cy="7" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="10" cy="17" r="1.8"/></g><text class="sol-lbl" x="53" y="32">Operations</text></g><g transform="translate(232 688)"><rect class="sol-card" width="146" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#3FB27E" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M4 17 L9.5 11.5 L13 15 L20 8"/><path d="M15.5 8 H20 V12.5"/></g><text class="sol-lbl" x="53" y="32">Growth</text></g><g transform="translate(585 446)"><rect class="sol-card sol-key" width="240" height="66" rx="16"></rect><rect x="19" y="15" width="36" height="36" rx="10" fill="#3FB27E"></rect><g class="sol-glyph" transform="translate(25 21)"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5 V5.5 H15 V7.5 M3.5 12.5 H20.5"/></g><text class="sol-lbl sol-lbl-m" x="69" y="41">Your business</text></g></g><g class="sol-side" data-atc="solR"><g transform="translate(1430 174)"><rect class="sol-card" width="264" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#2D63E6" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5 L13.4 13.4 L8.5 15.5 L10.6 10.6 Z"/></g><text class="sol-lbl" x="53" y="32">Strategy & Advisory</text></g><g transform="translate(1600 274)"><rect class="sol-card" width="284" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#3FB27E" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M8.5 7.5 L4 12 L8.5 16.5 M15.5 7.5 L20 12 L15.5 16.5 M13.2 5.5 L10.8 18.5"/></g><text class="sol-lbl" x="53" y="32">Product & Engineering</text></g><g transform="translate(1497 374)"><rect class="sol-card" width="164" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#5A86EE" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M12 3.5 L13.8 10.2 L20.5 12 L13.8 13.8 L12 20.5 L10.2 13.8 L3.5 12 L10.2 10.2 Z"/></g><text class="sol-lbl" x="53" y="32">Data & AI</text></g><g transform="translate(1665 474)"><rect class="sol-card" width="174" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#9BBA2A" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M19.5 12 A7.5 7.5 0 0 1 6.2 16.8 M4.5 12 A7.5 7.5 0 0 1 17.8 7.2"/><path d="M18.2 3.8 V7.6 H14.4 M5.8 20.2 V16.4 H9.6"/></g><text class="sol-lbl" x="53" y="32">Automation</text></g><g transform="translate(1420 574)"><rect class="sol-card" width="134" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#2D63E6" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19"/><circle cx="16.5" cy="8.5" r="2.4"/><path d="M16 13.2 C18.6 13.2 20.5 15 20.5 18"/></g><text class="sol-lbl" x="53" y="32">Talent</text></g><g transform="translate(1612 674)"><rect class="sol-card" width="254" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="#3FB27E" class="sol-tile"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M5 19.5 V14 M10 19.5 V10.5 M15 19.5 V7.5 M20 19.5 V4.5"/></g><text class="sol-lbl" x="53" y="32">Operations & Scale</text></g><g transform="translate(1096 446)"><rect class="sol-card sol-key" width="319" height="66" rx="16"></rect><rect x="19" y="15" width="36" height="36" rx="10" fill="#2D63E6"></rect><g class="sol-glyph" transform="translate(25 21)"><path d="M12 3.5 L20 7.8 L12 12 L4 7.8 Z"/><path d="M4 12 L12 16.2 L20 12 M4 16.2 L12 20.5 L20 16.2"/></g><text class="sol-lbl sol-lbl-m" x="69" y="41">Technology ecosystem</text></g></g><g data-atc="solHub"><g data-atc="solFrame"><rect class="sol-hub-glow" x="875.0" y="442.0" width="180" height="74" rx="22"></rect><rect class="sol-hub" x="875.0" y="442.0" width="180" height="74" rx="24"></rect><rect x="875.0" y="442.0" width="180" height="74" rx="24" fill="none" stroke="url(#sol-ring)" stroke-width="3"></rect></g><g transform="translate(903.0 468.5) scale(0.18425)"><g data-atc="solA"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></g><g data-atc="solT"><g class="sol-ltr"><path d="M180.834 111.953V25.1359C180.834 25.0933 180.799 25.0588 180.756 25.0588L145.011 25.0588C144.968 25.0588 144.934 25.0243 144.934 24.9817V8.17755C144.934 8.13499 144.968 8.10049 145.011 8.10049L237.888 8.10049C237.93 8.10049 237.965 8.13499 237.965 8.17755V24.9817C237.965 25.0243 237.93 25.0588 237.888 25.0588H201.716C201.673 25.0588 201.639 25.0933 201.639 25.1359V111.89C201.639 111.932 201.604 111.967 201.562 111.967H180.847C180.84 111.967 180.834 111.961 180.834 111.953Z" fill="#001025"></path></g><g class="sol-ltr"><path d="M323.934 113.231C323.937 113.237 323.933 113.245 323.926 113.245C311.966 113.243 301.668 111.06 293.033 106.696C284.394 102.236 277.738 96.0068 273.093 88.0335C268.434 80.0602 266.118 70.7025 266.118 59.9738C266.118 49.245 268.447 40.0338 273.093 32.0471C277.738 24.0605 284.394 17.8974 293.033 13.5314C301.671 9.0722 311.974 6.83594 323.941 6.83594C334.004 6.83594 342.843 8.3534 350.443 11.3883C358.137 14.4233 364.313 18.6961 368.959 24.2069C373.599 29.6956 376.443 36.0689 377.492 43.3533C377.499 43.3997 377.463 43.4414 377.416 43.4414H356.481C356.445 43.4414 356.414 43.4167 356.406 43.382C354.971 37.4197 351.275 32.6475 345.305 29.0521C339.422 25.4448 332.3 23.6345 323.941 23.6345C312.733 23.6345 303.801 26.8159 297.159 33.1786C290.61 39.4481 287.335 48.3798 287.335 59.9604C287.335 71.5411 290.61 80.6592 297.159 87.0219C303.801 93.2914 312.733 96.4195 323.941 96.4195C332.487 96.4195 339.701 94.6092 345.598 91.0019C351.568 87.3137 355.211 82.4356 356.553 76.3938C356.561 76.3584 356.592 76.3331 356.628 76.3331L377.417 76.3331C377.464 76.3331 377.499 76.374 377.494 76.42C376.537 83.8907 373.639 90.3576 368.812 95.8471C363.967 101.358 357.698 105.631 350.004 108.666C342.314 111.699 333.627 113.216 323.942 113.218C323.936 113.218 323.931 113.225 323.934 113.231Z" fill="#001025"></path></g><g class="sol-ltr"><path d="M470.789 113.245C458.729 113.245 448.373 111.062 439.734 106.696C431.095 102.236 424.439 96.0068 419.794 88.0335C415.242 80.0602 412.952 70.7025 412.952 59.9738C412.952 49.245 415.281 40.0338 419.927 32.0471C424.586 24.0738 431.188 17.8974 439.734 13.5314C448.373 9.0722 458.729 6.83594 470.789 6.83594C482.848 6.83594 493.018 9.0722 501.564 13.5314C510.203 17.8974 516.805 24.0738 521.371 32.0471C526.03 40.0204 528.346 49.3382 528.346 59.9738C528.346 70.6093 526.016 80.0602 521.371 88.0335C516.712 96.0068 510.07 102.236 501.431 106.696C492.885 111.062 482.675 113.245 470.802 113.245H470.789ZM470.789 96.4328C481.903 96.4328 490.729 93.3047 497.291 87.0352C503.84 80.6725 507.115 71.6476 507.115 59.9738C507.115 48.2999 503.787 39.4614 497.144 33.1919C490.595 26.8292 481.81 23.6478 470.789 23.6478C459.767 23.6478 450.649 26.8292 444.007 33.1919C437.458 39.4614 434.183 48.3931 434.183 59.9738C434.183 71.5544 437.458 80.6725 444.007 87.0352C450.649 93.3047 459.581 96.4328 470.789 96.4328Z" fill="#001025"></path></g><g class="sol-ltr"><path d="M568.359 111.953C568.373 111.953 568.385 111.942 568.385 111.927V8.17754C568.385 8.13499 568.42 8.10049 568.462 8.10049L593.984 8.10049C594.008 8.10049 594.031 8.11188 594.046 8.13124L651.836 84.9945C651.851 85.0138 651.873 85.0252 651.898 85.0252H652.632C652.675 85.0252 652.71 84.9897 652.709 84.9464L651.992 52.3997V8.17755C651.992 8.13499 652.027 8.10049 652.069 8.10049L672.72 8.10049C672.763 8.10049 672.797 8.13499 672.797 8.17755V111.876C672.797 111.919 672.763 111.953 672.72 111.953L647.625 111.953C647.6 111.953 647.578 111.942 647.563 111.923L589.906 35.6185C589.891 35.5992 589.869 35.5879 589.844 35.5879H588.817C588.774 35.5879 588.739 35.6236 588.74 35.667L589.59 66.9354V111.876C589.59 111.919 589.555 111.953 589.513 111.953H568.359Z" fill="#001025"></path></g></g></g></g></svg>
+      </section>
+
 
 
     </div>
@@ -935,7 +913,7 @@ with the same challenge.</h2>
           <svg viewBox="0 8 506 490" fill="currentColor" aria-hidden="true"><path d="M215 11H304L92 494H0Z"></path><path d="M365 173L506 493H417L320 272Z"></path></svg>
         </a>
         <button class="ds-burger atc-burger" data-atc="burger" type="button" aria-label="Open menu" aria-expanded="false" onClick="{{ toggleMenu }}"><span class="ds-burger-box"><span class="ds-burger-ln"></span><span class="ds-burger-ln"></span></span></button>
-        <a class="ds-btn ds-btn--sm atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+        <a class="ds-btn ds-btn--sm ds-btn--grad atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
       </div>
 
       <!-- Splash: blurred hero with the mark, 1s, then it clears into the hero -->
@@ -1120,11 +1098,11 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2650,
-      heroOut: [0, 50],
+      U: 2350,
+      heroGrow: [0, 130], heroOut: [2, 16],
       v2: [0, 288], v4: [288, 490], v3: [490, 690],
       indoor: 216,
-      ch0: [-1, -1, 0, 32],
+      ch0: [-1, -1, 0, 36],
       ch1: [223, 248, 352, 382],
       frame: [335, 382],
       white: [668, 694],
@@ -1132,27 +1110,28 @@ class Component extends DCLogic {
       stack: {
         // "What actually happens" rises centred, then moves to the top left as the 3D stack appears in the middle;
         // the stack then moves right and opens up while the four points come in one below the other
-        title: 700, titleMove: [770, 865],
-        isoIn: [790, 850], isoMove: [885, 980],
-        ins: [895, 1020, 1145],
-        out: 1330
+        title: 700, titleMove: [690, 785],
+        isoIn: [710, 770], isoMove: [805, 900],
+        ins: [815, 920, 1025, 1130],
+        out: 1250
       },
-      famIn: [1390, 1480],
-      famOut: [1750, 1800],
-      focus: [1415, 1510],
-      unfocus: [1770, 1850],
-      fill: [1510, 1710],
+      famIn: [1310, 1400],
+      famOut: [1670, 1720],
+      focus: [1335, 1430],
+      unfocus: [1690, 1770],
+      fill: [1430, 1630],
       gap: {
-        // A mark arrives centred, slides to the right, then the line rises in on the left
-        mark: [1835, 1885, 2046, 2096], markMove: [1890, 1985],
-        title: 1991,
-        lift: [2051, 2111],
-        // "Not as another…": the page holds while the line and its icons play together (seconds)
-        a: 2126, aOut: 2201, aPlay: 1.95,
-        // The close: title to the centre, "As a partner.", then the logo and tagline
-        center: [2243, 2338], b: 2350, bOut: 2430, sign: 2474,
-        out: 2585
-      }
+        // The A mark, the title, "Not as another…" and "As a partner." are no longer shown: their slots
+        // are kept tiny so the ATCON logo and tagline follow the familiar-statement straight away
+        mark: [1760, 1763, 1766, 1769], markMove: [1763, 1766],
+        title: 1766,
+        lift: [1766, 1770],
+        a: 1772, aOut: 1773, aPlay: 0,
+        center: [1766, 1776], b: 1776, bOut: 1777, sign: 1780,
+        out: 1778
+      },
+      // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
+      sol: { mark: [1790, 1830], word: [1836, 1910], title: 1914, hub: [1960, 2005], sides: [2000, 2050], links: [2045, 2155], out: 2280 }
     };
   }
 
@@ -1495,10 +1474,34 @@ class Component extends DCLogic {
     // Hero loop dissolves into video 2
     var heroOut = ease(map(u, T.heroOut[0], T.heroOut[1]));
     var l1 = this.q('l1'), v1 = this.q('v1');
+    // The film sits in the hero's card, then grows from that card to the whole screen
+    var grow = ease(map(u, T.heroGrow[0], T.heroGrow[1]));
+    var card = this.q('heroCard'), hbg = this.q('herobg');
+    // One scroll does both: the card grows to the full screen while the film already travels into the building
+    var l2 = this.q('l2');
+    if (card) {
+      var boxes = [l1, l2], ins = '', rad = '';
+      if (grow < 0.999) {
+        var cr = card.getBoundingClientRect(), vw0 = window.innerWidth || 1200, kk = 1 - grow;
+        var ct = Math.max(0, cr.top) * kk, cl = Math.max(0, cr.left) * kk, crt = Math.max(0, vw0 - cr.right) * kk, cb = Math.max(0, vh - cr.bottom) * kk;
+        ins = ct.toFixed(1) + 'px ' + crt.toFixed(1) + 'px ' + cb.toFixed(1) + 'px ' + cl.toFixed(1) + 'px';
+        rad = (24 * kk).toFixed(1) + 'px';
+      }
+      for (var bi = 0; bi < boxes.length; bi++) if (boxes[bi]) { boxes[bi].style.inset = ins; boxes[bi].style.borderRadius = rad; }
+    }
+    if (hbg) { hbg.style.opacity = grow >= 0.999 ? '0' : '1'; }
+    // The Contact button belongs to the hero: it fades out as soon as the page starts to scroll
+    var cbtn = this._cbtn || (this._cbtn = document.querySelector('.atc-contact'));
+    if (cbtn) {
+      var co = 1 - ease(map(u, 2, 24));
+      cbtn.style.opacity = co.toFixed(3);
+      cbtn.style.visibility = co > 0.01 ? 'visible' : 'hidden';
+      cbtn.style.pointerEvents = co > 0.5 ? '' : 'none';
+    }
     if (l1) {
       l1.style.opacity = String(1 - heroOut);
       // Opacity and scale only: both stay on the GPU, so the hand-off to the scrubbed video stays fluid
-      l1.style.transform = 'scale(' + (1 + heroOut * 0.03).toFixed(4) + ')';
+      l1.style.transform = '';
     }
     if (v1 && this._splash >= 1) {
       if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
@@ -1595,7 +1598,7 @@ class Component extends DCLogic {
 
     var root = this.q('root');
     if (root) {
-      var want = u >= T.indoor ? 'light' : 'dark';
+      var want = (u >= T.indoor || grow < 0.6) ? 'light' : 'dark';
       if (root.getAttribute('data-theme') !== want) root.setAttribute('data-theme', want);
     }
 
@@ -1639,6 +1642,7 @@ class Component extends DCLogic {
       fam.style.transform = 'translateY(' + ((1 - sl) * vh * 0.55 + so * 30).toFixed(1) + 'px)';
     }
     this.gap(T.gap, u);
+    this.sol(T.sol, u);
     this._lastU = u;
     var words = this.qa('[data-atc="famText"] .ds-w');
     var wp = map(u, T.fill[0], T.fill[1]) * words.length;
@@ -1732,7 +1736,6 @@ class Component extends DCLogic {
       for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 57.5) shown = si;
       var scene = this._openIdx >= 0 && this._openIdx !== active ? this._openIdx : shown;
       var down = this._lastU == null || u >= this._lastU;
-      this.macKeep();
       this.macScene(gv > 0.5 ? scene : -1, scene === shown && down && performance.now() > (this._jumpUntil || 0) ? S.ins[scene] + 58 : null);
     }
   }
@@ -1740,25 +1743,20 @@ class Component extends DCLogic {
   // One scene of the desktop at a time, played live: windows open, text types itself, messages and
   // invitations arrive. Each scene starts fresh from its original markup whenever it comes back.
   // holdAt: when given, the page settles on that unit and holds there until the scene has finished.
-  // i is the point being read. A point plays one or more desktop scenes in turn (PLAY);
-  // holdAt: when given, the page settles there and holds until all of them have played.
   macScene(i, holdAt) {
     var mac = this.q('mac');
     if (!mac || this._mScene === i) return;
     this._mScene = i;
-    var PLAY = [[5], [2], [6]];
-    var list = i >= 0 ? PLAY[i] : [];
+    mac.setAttribute('data-scene', String(i));
     var scs = mac.querySelectorAll('.mac-sc');
     if (!this._mHTML) this._mHTML = Array.prototype.map.call(scs, function (s) { return s.innerHTML; });
     for (var k = 0; k < scs.length; k++) {
-      if (list.indexOf(k) >= 0) scs[k].innerHTML = this._mHTML[k];
-      scs[k].classList.remove('is-on');
+      if (k === i) scs[k].innerHTML = this._mHTML[k];
+      scs[k].classList.toggle('is-on', k === i);
     }
     var docks = mac.querySelectorAll('.dk-x');
     for (var d = 0; d < docks.length; d++) docks[d].classList.remove('is-in', 'is-bounce', 'is-run');
     var run = this._mRun = {};
-    // What the desktop should show right now; macKeep() puts it back if a re-render resets the classes
-    var view = this._mView = { scene: -1, point: i, lit: -1, dock: {} };
     var marks = document.querySelectorAll('[data-atc="steps"] i');
     var fillSteps = function (ms) {
       for (var m = 0; m < marks.length; m++) {
@@ -1770,19 +1768,46 @@ class Component extends DCLogic {
         if (m === i) { void fill.offsetWidth; fill.style.transition = 'width ' + Math.round(ms) + 'ms linear'; fill.style.width = '100%'; }
       }
     };
-    var subs = document.querySelectorAll('[data-atc="stack"] .atc-sub');
-    var lightSub = function (n) { view.lit = n; for (var q = 0; q < subs.length; q++) subs[q].classList.toggle('is-lit', q === n || n === 'all'); };
-    if (i < 0) { mac.setAttribute('data-scene', '-1'); fillSteps(0); lightSub(-1); return; }
+    if (i < 0) { fillSteps(0); return; }
 
-    var self = this;
+    var self = this, sc = scs[i];
     // The typing and arrivals are the story, so they play for everyone; reduced motion only drops the travel (CSS)
-    // PACE scales every delay, typing speed and count below, which are written at 1x
-    var PACE = 0.65;
-    // START: a short beat after the point's words have landed before anything moves; GAP: between scenes
-    var START = 350, GAP = 450;
-    var eur = function (n) { return '\u20AC' + n.toLocaleString('en-US'); };
-    var scenes = {
-      0: function (sc, at, $, show, flag, type, count) {
+    // PACE scales the whole scene: every delay, typing speed and count below is written at 1x
+    var PACE = 0.42;
+    // START: a short beat after the point's words have landed before anything moves
+    var START = 200;
+    var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, (ms + START) * PACE); };
+    var $ = function (key) { return sc.querySelector('[data-k="' + key + '"]'); };
+    var show = function (key, on) { var el = typeof key === 'string' ? $(key) : key; if (el) el.classList.toggle('is-shown', on !== false); return el; };
+    var flag = function (el, c) { if (!el) return; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); };
+    // Types an element's data-type text one character at a time, with a caret while it types
+    var type = function (ms, el, speed) {
+      if (typeof el === 'string') el = $(el).querySelector('[data-type]') || $(el);
+      var text = el.getAttribute('data-type') || '';
+      at(ms, function () {
+        el.classList.add('is-typing');
+        var n = 0;
+        (function step() {
+          if (run !== self._mRun) return;
+          el.textContent = text.slice(0, ++n);
+          if (n < text.length) setTimeout(step, PACE * speed * (text.charAt(n - 1) === ' ' ? 0.6 : 1) * (0.7 + Math.random() * 0.6));
+          else setTimeout(function () { el.classList.remove('is-typing'); }, 350);
+        })();
+      });
+      return ms + text.length * speed;
+    };
+    var count = function (el, from, to, dur, fmt) {
+      var t0 = performance.now();
+      (function step(now) {
+        if (run !== self._mRun) return;
+        var p = Math.min(1, ((now || t0) - t0) / (dur * PACE));
+        el.textContent = fmt(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(step);
+      })();
+    };
+    var eur = function (n) { return '€' + n.toLocaleString('en-US'); };
+
+    if (i === 0) {
       // 01 Tools: four apps arrive in the dock one after another, each opens and adds to the bill
       var eurEl = sc.querySelector('[data-mac="eur"]'), toolsEl = sc.querySelector('[data-mac="tools"]'), plus = $('plus');
       var bill = 1240, apps = [['w1', 890, 6], ['w2', 420, 9], ['w3', 610, 11], ['w4', 820, 14]];
@@ -1791,7 +1816,7 @@ class Component extends DCLogic {
         var t = 500 + j * 900;
         at(t, function () {
           var icon = mac.querySelector('.dk-x[data-dock="' + j + '"]');
-          if (icon) { icon.classList.add('is-in', 'is-run'); flag(icon, 'is-bounce'); view.dock[j] = true; }
+          if (icon) { icon.classList.add('is-in', 'is-run'); flag(icon, 'is-bounce'); }
         });
         at(t + 380, function () { show(a[0]); });
         at(t + 560, function () {
@@ -1804,9 +1829,8 @@ class Component extends DCLogic {
       });
       // The month's renewals land one row at a time; together they make up the bill
       for (var r = 0; r < 5; r++) (function (r) { at(2900 + r * 280, function () { show('r' + r); }); })(r);
-      return 2900 + 4 * 280 + 600;
-      },
-      1: function (sc, at, $, show, flag, type, count) {
+      var total = 2900 + 4 * 280 + 600;
+    } else if (i === 1) {
       // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
       var unread = $('unread');
       at(100, function () { show('inbox'); });
@@ -1815,9 +1839,8 @@ class Component extends DCLogic {
         at(600 + n * 750 + 1400, function () { $(key).classList.add('is-read'); });
       });
       at(600 + 3 * 750 + 400, function () { show('tally'); });
-      return 600 + 3 * 750 + 900;
-      },
-      2: function (sc, at, $, show, flag, type, count) {
+      var total = 600 + 3 * 750 + 900;
+    } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
       var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
       at(100, function () { show('task'); });
@@ -1834,9 +1857,8 @@ class Component extends DCLogic {
         tt = end + 650;
       });
       at(tt, function () { show('more'); });
-      return tt + 400;
-      },
-      3: function (sc, at, $, show, flag, type, count) {
+      var total = tt + 400;
+    } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
       var slots = ['Kickoff · Mon 09:00', 'Sync · Wed 10:30', 'Alignment · Fri 14:00', 'Review · Tue 11:00',
@@ -1854,134 +1876,17 @@ class Component extends DCLogic {
         at(t + 260, function () { show('m' + m); meet.textContent = String((m + 1) * 4); flag(zero, 'is-go'); });
       });
       at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
-      var tOut = 700 + slots.length * 480 + 700;
-      for (var o = 0; o < 5; o++) (function (o) { at(tOut + o * 260, function () { show('o' + o); }); })(o);
-      return tOut + 5 * 260 + 500;
-      },
-      4: function (sc, at, $, show, flag, type, count) {
-      // Too many opinions: one plan, a comment from every side, and the decision stays pending
-      at(100, function () { show('doc'); });
-      for (var c = 1; c <= 5; c++) (function (c) { at(500 + (c - 1) * 520, function () { show('c' + c); }); })(c);
-      at(500 + 5 * 520 + 100, function () { show('otally'); flag($('dec'), 'is-flip'); });
-      return 500 + 5 * 520 + 700;
-      },
-      5: function (sc, at, $, show, flag, type, count) {
-      // Point 1, kept simple: each row lights up in turn, fills with its items and counts them
-      at(100, function () { show('proj'); });
-      var groups = [['v', 3, 320], ['t', 10, 120], ['o', 5, 260]], t = 400;
-      groups.forEach(function (g, r) {
-        var from = t;
-        at(from, function () { lightSub(r); $('r' + r).classList.add('is-on'); });
-        for (var n = 0; n < g[1]; n++) (function (n) {
-          at(from + 150 + n * g[2], function () { show(g[0] + n); $('c' + r).textContent = String(n + 1); });
-        })(n);
-        t = from + 150 + g[1] * g[2] + 450;
-      });
-      var tEnd = t;
-      at(tEnd, function () { lightSub('all'); });
-      return tEnd + 400;
-      },
-      6: function (sc, at, $, show, flag, type, count) {
-      // Point 3: the launch fills towards 89%, slips back and tries again; every slip adds a warning, then it freezes
-      var fill = $('fill'), pct = $('pct'), txt = $('txt'), now = 0;
-      var go = function (t, to, dur, ease) {
-        at(t, function () {
-          fill.style.transition = 'width ' + Math.round(dur * PACE) + 'ms ' + ease;
-          fill.style.width = to + '%';
-          count(pct, now, to, dur, function (v) { return v + '%'; });
-          now = to;
-        });
-      };
-      var up = 'cubic-bezier(.25,.8,.3,1)', back = 'cubic-bezier(.5,0,.3,1)';
-      at(100, function () { show('load'); });
-      go(400, 89, 1400, up);
-      // each slip: back down, a new label, and one or two warnings
-      [[1950, 31, 'Retrying\u2026', [0, 1]], [3650, 34, 'Retrying\u2026', [2, 3]], [5200, 36, 'Still launching\u2026', [4]]].forEach(function (slip, n) {
-        go(slip[0], slip[1], 600, back);
-        at(slip[0], function () { txt.textContent = slip[2]; });
-        slip[3].forEach(function (w, j) { at(slip[0] + 150 + j * 300, function () { show('w' + w); }); });
-        if (n < 2) go(slip[0] + 750, 88, 900, up);
-      });
-      go(5950, 89, 1200, up);
-      return 5950 + 1200 + 300;
-      }
-    };
-    // Runs one scene's script from base (timeline ms), with helpers bound to that scene
-    var play = function (k, n, base) {
-      var sc = scs[k];
-      var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, (ms + base + START) * PACE); };
-      var $ = function (key) { return sc.querySelector('[data-k="' + key + '"]'); };
-      var show = function (key, on) { var el = typeof key === 'string' ? $(key) : key; if (el) el.classList.toggle('is-shown', on !== false); return el; };
-      var flag = function (el, c) { if (!el) return; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); };
-      // Types an element's data-type text one character at a time, with a caret while it types
-      var type = function (ms, el, speed) {
-        if (typeof el === 'string') el = $(el).querySelector('[data-type]') || $(el);
-        var text = el.getAttribute('data-type') || '';
-        at(ms, function () {
-          el.classList.add('is-typing');
-          var c = 0;
-          (function step() {
-            if (run !== self._mRun) return;
-            el.textContent = text.slice(0, ++c);
-            if (c < text.length) setTimeout(step, PACE * speed * (text.charAt(c - 1) === ' ' ? 0.6 : 1) * (0.7 + Math.random() * 0.6));
-            else setTimeout(function () { el.classList.remove('is-typing'); }, 350);
-          })();
-        });
-        return ms + text.length * speed;
-      };
-      var count = function (el, from, to, dur, fmt) {
-        var t0 = performance.now();
-        (function step(now) {
-          if (run !== self._mRun) return;
-          var p = Math.min(1, ((now || t0) - t0) / (dur * PACE));
-          el.textContent = fmt(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(step);
-        })();
-      };
-      // This scene takes the screen, and point 1's matching line lights up
-      at(-START, function () {
-        for (var q = 0; q < scs.length; q++) scs[q].classList.toggle('is-on', q === k);
-        mac.setAttribute('data-scene', String(k));
-        view.scene = k;
-        lightSub(list.length > 1 ? n : -1);
-      });
-      return scenes[k](sc, at, $, show, flag, type, count);
-    };
-    var total = 0;
-    list.forEach(function (k, n) { total += play(k, n, total) + (n < list.length - 1 ? GAP : 0); });
+      var total = 700 + slots.length * 480 + 900;
+    }
     total += START;
     fillSteps(total * PACE);
     if (holdAt != null && total) {
-      this._lock = { top: this.unitTop(holdAt), until: performance.now() + total * PACE + 150, ease: true };
+      // The page holds only briefly; the scene keeps playing if the reader scrolls on
+      this._lock = { top: this.unitTop(holdAt), until: performance.now() + Math.min(total * PACE, 1800) + 120, ease: true };
       this.holdScroll();
     }
   }
 
-  // The page framework can re-render the section and reset class names to the template; this puts the
-  // desktop's state (scene on screen, dock icons, progress marks, lit line) back where it was.
-  macKeep() {
-    var v = this._mView, mac = this.q('mac');
-    if (!v || !mac) return;
-    var attr = String(v.scene);
-    if (mac.getAttribute('data-scene') !== attr) mac.setAttribute('data-scene', attr);
-    var scs = mac.querySelectorAll('.mac-sc');
-    for (var k = 0; k < scs.length; k++) if (scs[k].classList.contains('is-on') !== (k === v.scene)) scs[k].classList.toggle('is-on', k === v.scene);
-    var docks = mac.querySelectorAll('.dk-x');
-    for (var d = 0; d < docks.length; d++) {
-      var want = !!v.dock[docks[d].getAttribute('data-dock')];
-      if (docks[d].classList.contains('is-in') !== want) { docks[d].classList.toggle('is-in', want); docks[d].classList.toggle('is-run', want); }
-    }
-    var marks = document.querySelectorAll('[data-atc="steps"] i');
-    for (var m = 0; m < marks.length; m++) {
-      if (marks[m].classList.contains('is-done') !== (m < v.point)) marks[m].classList.toggle('is-done', m < v.point);
-      if (marks[m].classList.contains('is-on') !== (m === v.point)) marks[m].classList.toggle('is-on', m === v.point);
-    }
-    var subs = document.querySelectorAll('[data-atc="stack"] .atc-sub');
-    for (var q = 0; q < subs.length; q++) {
-      var lit = q === v.lit || v.lit === 'all';
-      if (subs[q].classList.contains('is-lit') !== lit) subs[q].classList.toggle('is-lit', lit);
-    }
-  }
 
   setGfx(el, gv) {
     if (!el) return;
@@ -1997,7 +1902,8 @@ class Component extends DCLogic {
     var live = u > G.title - 6 && u < G.out + 70;
     var sink = ease(map(u, G.out, G.out + 44));
     // The first line plays in time: the page holds as it arrives, the line and its graphic together
-    var tA = this.beat('a', u, G.a, G.a - 10, G.aPlay);
+    // "Not as another…" is no longer shown, so the page no longer holds for it
+    var tA = 0;
     var outA = ease(map(u, G.aOut, G.aOut + 40));
     if (box) box.style.visibility = live ? 'visible' : 'hidden';
     var endLive = u > G.b - 6 && u < G.out + 60;
@@ -2080,15 +1986,91 @@ class Component extends DCLogic {
 
   // Rest points: every reveal runs between a start and an end unit. If the scroll stops part-way through
   // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
+  // The solution, played on scroll: tagline, both sides, the direct line that breaks, ATCON arriving in the middle,
+  // then every side connected through it, with data flowing from business to technology.
+  sol(S, u) {
+    var map = this._fx.map, ease = this._fx.ease;
+    var box = this.q('sol');
+    if (!box) return;
+    // A short pause once the ATCON wordmark has formed (only when scrolling down into it)
+    var lastU = this._solLastU == null ? u : this._solLastU;
+    this._solLastU = u;
+    if (u < S.mark[0]) this._solHeld = false;
+    var holdU = S.word[1] + 2;
+    if (!this._solHeld && lastU < holdU && u >= holdU && performance.now() > (this._jumpUntil || 0)) {
+      this._solHeld = true;
+      this._lock = { top: this.unitTop(holdU), until: performance.now() + 1300, ease: true };
+    }
+    var live = u > S.mark[0] - 6 && u < S.out + 58;
+    box.style.visibility = live ? 'visible' : 'hidden';
+    if (!live) return;
+    // On the way out the whole section scrolls up as one piece instead of fading
+    var up = map(u, S.out, S.out + 56);
+    box.style.transform = up > 0 ? 'translateY(' + (-up * 105).toFixed(2) + 'vh)' : '';
+    var sink = 0;
+    var rises = this.qa('[data-atc="sol"] .atc-sol-head .ds-rise');
+    for (var j = 0; j < rises.length; j++) {
+      var k = ease(map(u, S.title + j * 10, S.title + j * 10 + 46));
+      rises[j].style.transform = 'translateY(' + ((1 - k) * 112 + sink * 112).toFixed(2) + '%)';
+    }
+    var side = ease(map(u, S.sides[0], S.sides[1])) * (1 - sink);
+    var cap = this.q('solCap');
+    if (cap) { cap.style.opacity = side.toFixed(3); cap.style.transform = 'translateY(' + ((1 - side) * 16).toFixed(1) + 'px)'; }
+    var L = this.q('solL'), R = this.q('solR');
+    if (L) { L.style.opacity = side.toFixed(3); L.style.transform = 'translateX(' + (-(1 - side) * 30).toFixed(1) + 'px)'; }
+    if (R) { R.style.opacity = side.toFixed(3); R.style.transform = 'translateX(' + ((1 - side) * 30).toFixed(1) + 'px)'; }
+    // ATCON first: the A mark alone and large in the middle of the screen, then it slides left as TCON appears;
+    // the tagline comes in on top, and the frame settles around the wordmark as the circuit arrives on both sides
+    var mk = ease(map(u, S.mark[0], S.mark[1])), wd = ease(map(u, S.word[0], S.word[1]));
+    var hub = ease(map(u, S.hub[0], S.hub[1])), tin = ease(map(u, S.title, S.title + 46));
+    var H = this.q('solHub'), A = this.q('solA'), Tw = this.q('solT'), F = this.q('solFrame');
+    if (H) {
+      var base = 5.6 - 2.2 * wd, sc = base + (1 - base) * hub;
+      H.setAttribute('transform', 'translate(965 479) scale(' + sc.toFixed(4) + ') translate(-965 -479)');
+      H.style.opacity = mk.toFixed(3);
+    }
+    // The whole wordmark is held centred on what has appeared so far: A alone, then A+T, A+TC, ...
+    var shift = (1 - wd) * 266;
+    if (A) A.style.transform = 'translateX(' + shift.toFixed(1) + 'px)';
+    // T, C, O, N come in one after another as the A makes room for them
+    var ltr = Tw ? Tw.querySelectorAll('.sol-ltr') : [];
+    for (var n = 0; n < ltr.length; n++) {
+      var lp = ease(map(wd, n * 0.17, n * 0.17 + 0.49));
+      ltr[n].style.opacity = lp.toFixed(3);
+      ltr[n].style.transform = 'translateX(' + (shift - (1 - lp) * 34).toFixed(1) + 'px)';
+    }
+    if (F) F.style.opacity = hub.toFixed(3);
+    // Until the tagline is in, hold the wordmark in the middle of the screen
+    var map2 = box.querySelector('.atc-sol-map'), head = box.querySelector('.atc-sol-head');
+    if (map2 && head && H) {
+      var cur = this._solLift || 0, hb = H.getBoundingClientRect();
+      var lift = (hb.top + hb.height / 2 - cur) - (window.innerHeight || 800) / 2;
+      this._solLift = tin < 1 ? -lift * (1 - tin) : 0;
+      map2.style.transform = tin < 1 ? 'translateY(' + this._solLift.toFixed(1) + 'px)' : '';
+    }
+    var acc = this.qa('[data-atc="solLinks"] .sol-acc');
+    for (var c = 0; c < acc.length; c++) acc[c].style.opacity = (ease(map(u, S.links[1] - 30, S.links[1])) * (1 - sink)).toFixed(3);
+    var links = this.qa('[data-atc="solLinks"] .sol-link');
+    for (var i = 0; i < links.length; i++) {
+      var lp = ease(map(u, S.links[0] + i * 2.5, S.links[0] + i * 2.5 + 30));
+      links[i].style.strokeDashoffset = (1 - lp).toFixed(3);
+      links[i].style.opacity = (1 - sink).toFixed(3);
+    }
+    var P = this.q('solPulse');
+    if (P) P.style.opacity = (ease(map(u, S.links[1] - 10, S.links[1] + 10)) * (1 - sink)).toFixed(3);
+  }
+
   motionRanges() {
     if (this._ranges) return this._ranges;
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
-    r.push(T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
+    r.push(T.heroGrow, T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
     r.push([S.title, S.title + 46], S.titleMove, S.isoIn, S.isoMove);
     for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 58]);
     r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
+    var O = T.sol;
+    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, [O.out, O.out + 44]);
     this._ranges = r;
     return r;
   }
@@ -2298,6 +2280,7 @@ class Component extends DCLogic {
     stage.style.setProperty('--by', v[3].toFixed(1) + 'px');
     stage.style.setProperty('--rt', v[4].toFixed(1) + 'px');
     stage.style.setProperty('--rh', Math.max(0, v[5] - v[4]).toFixed(1) + 'px');
+    stage.style.setProperty('--lo', Math.min(1, c * 4).toFixed(3));
   }
 
   // Scrub to the nearest frame (24 fps). Seeking to a frame we are already on is skipped, and a new
