@@ -90,7 +90,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-hero-lede{max-width:min(23vw,30em);opacity:.92}
 /* Hero: white page, copy left, the film in a rounded card right; the card grows to full screen on scroll */
 .atc-herobg{position:absolute;inset:0;background:#FFFFFF;will-change:opacity}
-.atc-l1{will-change:opacity,transform;overflow:hidden}
+.atc-l1,.atc-l2{will-change:opacity,transform;overflow:hidden}
 .atc-ov-0{display:none}
 .atc-hero2{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.38fr);column-gap:3.5vw;align-items:center;
   padding:calc(var(--rail) + 3.5vh) calc(2vw + 12px) 5vh calc(var(--rail) + 4vw)}
@@ -584,7 +584,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   <div class="atc-track" data-atc="track" style="height: {{trackHeight}}">
     <div class="atc-stage" data-atc="stage">
 
-      <div class="atc-layer atc-l2">
+      <div class="atc-herobg" data-atc="herobg" aria-hidden="true"></div>
+      <div class="atc-layer atc-l2" data-atc="l2">
         <video class="atc-video" data-atc="v2" src="../assets/af651f03cb8685835898c13376ca6a89.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
       </div>
       <div class="atc-layer atc-l4" data-atc="l4">
@@ -593,7 +594,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
       <div class="atc-layer atc-l3" data-atc="l3">
         <video class="atc-video" data-atc="v3" src="../assets/81730f22d6e0dec38f8d575fefeb4ba3.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
       </div>
-      <div class="atc-herobg" data-atc="herobg" aria-hidden="true"></div>
       <div class="atc-layer atc-l1" data-atc="l1">
         <video class="atc-video" data-atc="v1" src="../assets/e322ff24ab50b14ec5d76a67fbcf9fe4.mp4" poster="../assets/4fd01bfb6adcae317f57f79d1011dd57.jpg" muted="" loop="" autoplay="" playsinline="" preload="auto" aria-hidden="true"></video>
       </div>
@@ -1097,8 +1097,8 @@ class Component extends DCLogic {
   timeline() {
     return {
       U: 2350,
-      heroGrow: [0, 85], heroOut: [88, 118],
-      v2: [96, 288], v4: [288, 490], v3: [490, 690],
+      heroGrow: [0, 130], heroOut: [2, 16],
+      v2: [0, 288], v4: [288, 490], v3: [490, 690],
       indoor: 216,
       ch0: [-1, -1, 0, 36],
       ch1: [223, 248, 352, 382],
@@ -1475,20 +1475,23 @@ class Component extends DCLogic {
     // The film sits in the hero's card, then grows from that card to the whole screen
     var grow = ease(map(u, T.heroGrow[0], T.heroGrow[1]));
     var card = this.q('heroCard'), hbg = this.q('herobg');
-    if (l1 && card) {
-      if (grow >= 0.999) { l1.style.inset = ''; l1.style.borderRadius = ''; }
-      else {
+    // One scroll does both: the card grows to the full screen while the film already travels into the building
+    var l2 = this.q('l2');
+    if (card) {
+      var boxes = [l1, l2], ins = '', rad = '';
+      if (grow < 0.999) {
         var cr = card.getBoundingClientRect(), vw0 = window.innerWidth || 1200, kk = 1 - grow;
         var ct = Math.max(0, cr.top) * kk, cl = Math.max(0, cr.left) * kk, crt = Math.max(0, vw0 - cr.right) * kk, cb = Math.max(0, vh - cr.bottom) * kk;
-        l1.style.inset = ct.toFixed(1) + 'px ' + crt.toFixed(1) + 'px ' + cb.toFixed(1) + 'px ' + cl.toFixed(1) + 'px';
-        l1.style.borderRadius = (24 * kk).toFixed(1) + 'px';
+        ins = ct.toFixed(1) + 'px ' + crt.toFixed(1) + 'px ' + cb.toFixed(1) + 'px ' + cl.toFixed(1) + 'px';
+        rad = (24 * kk).toFixed(1) + 'px';
       }
+      for (var bi = 0; bi < boxes.length; bi++) if (boxes[bi]) { boxes[bi].style.inset = ins; boxes[bi].style.borderRadius = rad; }
     }
     if (hbg) { hbg.style.opacity = grow >= 0.999 ? '0' : '1'; }
     if (l1) {
       l1.style.opacity = String(1 - heroOut);
       // Opacity and scale only: both stay on the GPU, so the hand-off to the scrubbed video stays fluid
-      l1.style.transform = 'scale(' + (1 + heroOut * 0.03).toFixed(4) + ')';
+      l1.style.transform = '';
     }
     if (v1 && this._splash >= 1) {
       if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
