@@ -2275,9 +2275,11 @@ class Component extends DCLogic {
     for (var li2 = 0; li2 < 4; li2++) {
       var li = this.q('offerL' + li2);
       if (!li) continue;
-      var le = ease(map(u, S.swap[0] + 10 + li2 * 6, S.swap[1] + li2 * 6));
+      // each point appears with its own layer on the right, and stays
+      var ls0 = S.tiles[0] + li2 * span4;
+      var le = ease(map(u, ls0 - 2, ls0 + span4 * 0.3));
       var on2 = li2 === active;
-      li.style.opacity = (le * (active < 0 ? 0.55 : on2 ? 1 : 0.4)).toFixed(3);
+      li.style.opacity = (le * (on2 ? 1 : 0.5)).toFixed(3);
       li.style.transform = 'translateX(' + (-(1 - le) * 14 + (on2 ? 6 : 0)).toFixed(1) + 'px)';
       var ic = li.querySelector('.atc-offer-ic');
       if (ic) ic.style.filter = on2 ? 'none' : 'grayscale(1) opacity(.6)';
