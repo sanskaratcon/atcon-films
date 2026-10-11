@@ -271,6 +271,12 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   box-shadow:0 0 0 1px rgba(0,16,37,.07),0 12px 28px -18px rgba(0,16,37,.32);display:flex;flex-direction:column;gap:8px;overflow:hidden}
 .cv-w0,.cv-w1,.cv-w2,.cv-w3{left:12%;top:9%;width:76%;height:82%;padding:22px 26px;gap:14px}
 .cv-links,.cv-hub{display:none}
+/* No window inside the window and no coloured backdrop: each service sits on the page as a quiet panel */
+.atc-offer .atc-canvas{background:transparent;box-shadow:none !important;overflow:visible;border-radius:0}
+.atc-offer .atc-canvas .cv-body{background:none !important}
+.atc-offer .cvm-bar{display:none}
+.atc-offer .cvm{background:#F8F9FB;border-radius:20px;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.08)}
+.atc-offer .cvm-body{padding:24px 26px;gap:14px}
 /* The canvas is the Mac's desktop: a soft wallpaper with one app window at a time */
 .atc-canvas .cv-bar{display:none}
 .atc-canvas .cv-body{background:radial-gradient(120% 90% at 0% 0%,#E6F6EE 0,rgba(230,246,238,0) 55%),radial-gradient(110% 90% at 100% 100%,#E3ECFD 0,rgba(227,236,253,0) 60%),#F7F8FA}
