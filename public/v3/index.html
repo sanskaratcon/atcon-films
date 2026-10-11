@@ -520,6 +520,53 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .dk.is-bounce{animation:mac-bounce .7s ease}
 @keyframes mac-bounce{25%{translate:0 -2.6cqw}50%{translate:0 0}70%{translate:0 -1cqw}100%{translate:0 0}}
 .dk.is-run::after,.mac[data-scene="1"] .dk[data-app="1"]::after,.mac[data-scene="2"] .dk[data-app="2"]::after,.mac[data-scene="3"] .dk[data-app="3"]::after{opacity:1}
+/* Circuit skin: the scenes share the solution circuit's look (white, thin grey outlines, outlined pills, teal/blue accents) */
+.mac{--ln:#D6DAE0;--ln2:#E6E9ED;--teal:#3FBF8C;--vio:#6F7FF0}
+.mac-trace{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.mac-trace .tr{fill:none;stroke:#E1E4E9;stroke-width:1.5;stroke-linejoin:miter}
+.mac-trace .tf{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:.06 .94;animation:solFlow 9s linear infinite}
+.mac-trace .tf.l{stroke:var(--teal)}
+.mac-trace .tf.r{stroke:var(--vio)}
+.mac-trace .tm rect,.mac-trace .tm circle{fill:#fff;stroke:#D6DAE0;stroke-width:1.3}
+.mac-trace .tm .f{fill:#C2C8D0;stroke:none}
+.mac .mw{border-radius:1.4cqw;box-shadow:0 0 0 1.5px var(--ln),0 1.4cqw 3.4cqw -2cqw rgba(0,16,37,.12)}
+.mac .mw-bar{background:#fff;border-bottom:1px solid var(--ln2);color:#6B7684}
+.mac .mw-bar i,.mac .mw-bar i:nth-child(2),.mac .mw-bar i:nth-child(3){background:#fff;box-shadow:inset 0 0 0 1.5px #CDD2D9}
+.mac .av-t{background:#fff;color:var(--c);box-shadow:inset 0 0 0 1.5px var(--c)}
+.mac .avs b{background:#fff;color:var(--c);border-color:#fff;box-shadow:inset 0 0 0 1.5px var(--c)}
+.mac .chip,.mac .pill,.mac .owner{background:#fff;color:#1E232B;box-shadow:inset 0 0 0 1.5px var(--ln)}
+.mac .pill-amber{color:#A86A00;box-shadow:inset 0 0 0 1.5px #EBD9AE}
+.mac .pill-red,.mac .owner.is-none{background:#fff;color:#C8382D;box-shadow:inset 0 0 0 1.5px #F0C4BF}
+.mac .mplus{background:#fff;color:#C8382D;box-shadow:inset 0 0 0 1.5px #F0C4BF}
+.mac .mplus-0{color:#6B7684;box-shadow:inset 0 0 0 1.5px var(--ln)}
+.mac .mrow .ln{background:#EEF0F3}
+.mac .mboard p{background:#fff;box-shadow:inset 0 0 0 1.5px var(--ln2)}
+.mac .mboard p.is-b{background:#F1F3FE;box-shadow:inset 0 0 0 1.5px #D3D8FB}
+.mac .mboard p.is-g{background:#EDF9F3;box-shadow:inset 0 0 0 1.5px #C6EBD9}
+.mac .minv small{background:#fff;color:#1F8A5E;box-shadow:inset 0 0 0 1.3px #C6EBD9}
+.mac .msheet span:nth-child(-n+3){background:#FAFBFC}
+.mac .mside{background:#fff}
+.mac .mside .is-on{background:#F3F4F7}
+.mac .mside b{color:var(--vio)}
+.mac .mmsg{background:#FAFBFC}
+.mac .mmsg.is-read{background:#fff}
+.mac .mmsg .dot{background:var(--vio)}
+.mac .mmsg p:first-child em{background:#fff;box-shadow:inset 0 0 0 1px var(--ln)}
+.mac .mtally span{border-radius:6cqw;box-shadow:0 0 0 1.5px var(--ln)}
+.mac .mcomments p{background:#fff;box-shadow:inset 0 0 0 1.5px var(--ln2)}
+.mac .mc-grid i{border-left-color:#A8B3C2;background:#F5F6F8;color:#3A4D55}
+.mac .mc-grid i.b{border-left-color:var(--vio);background:#F1F3FE;color:#3F4BB8}
+.mac .mc-grid i.g{border-left-color:var(--teal);background:#EDF9F3;color:#1F7A50}
+.mac .minvite{border-radius:6cqw;box-shadow:0 0 0 1.5px var(--ln),0 1.4cqw 3.4cqw -2cqw rgba(0,16,37,.14)}
+.mac .minvite .ni{border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--ln)}
+.mac .minvite .ok{background:#fff;color:#1F8A5E;box-shadow:inset 0 0 0 1.3px #C6EBD9}
+.mac .ms-note{transform:none;background:#fff;color:#8A6A00;border-radius:6cqw;box-shadow:inset 0 0 0 1.5px #EBD9AE}
+.mac .ms-bar{background:#EEF0F3}
+.mac .mac-dock{border-radius:6cqw;background:#fff;box-shadow:0 0 0 1.5px var(--ln),0 1.4cqw 3.4cqw -2cqw rgba(0,16,37,.14);-webkit-backdrop-filter:none;backdrop-filter:none}
+.mac .dk{background:#fff;box-shadow:inset 0 0 0 1.5px var(--ln);border-radius:50%}
+.mac .dk svg{stroke:var(--c)}
+.mac .dk[data-app="3"] svg{stroke:#E5483F}
+.mac .dk::after{background:var(--vio)}
 @media (max-width:760px){
   .atc-mac{right:12px}
   .mac{width:min(100%,calc((46vh - var(--rail) - 12px) * 10 / 11))}
@@ -645,6 +692,7 @@ with the same challenge.</h2>
       <!-- What actually happens, played live on that screen: one short moment per point, driven by macScene() -->
       <div class="atc-iso atc-mac" data-atc="iso" aria-hidden="true">
         <div class="mac" data-atc="mac" data-scene="-1">
+          <svg class="mac-trace" viewBox="0 0 1000 1100" preserveAspectRatio="none" aria-hidden="true"><path class="tr" d="M-40 120 L40 120 L60 140 L60 420 L80 440 L130 440"></path><path class="tr" d="M-40 640 L30 640 L30 760 L50 780 L180 780 L200 800 L200 960"></path><path class="tr" d="M1040 90 L950 90 L930 110 L930 300 L910 320 L860 320"></path><path class="tr" d="M1040 560 L970 560 L970 700 L950 720 L820 720"></path><path class="tr" d="M-40 1010 L300 1010 L320 990 L680 990 L700 1010 L1040 1010"></path><path class="tr" d="M500 -30 L500 20 L520 40 L760 40 L780 20 L900 20"></path><path class="tr" d="M120 -30 L120 30 L140 50 L300 50"></path><path class="tr" d="M1040 880 L930 880 L910 900 L910 960"></path><path class="tf l" d="M-40 120 L40 120 L60 140 L60 420 L80 440 L130 440" pathLength="1" style="animation-delay:-0.0s"></path><path class="tf l" d="M-40 640 L30 640 L30 760 L50 780 L180 780 L200 800 L200 960" pathLength="1" style="animation-delay:-1.4s"></path><path class="tf r" d="M1040 90 L950 90 L930 110 L930 300 L910 320 L860 320" pathLength="1" style="animation-delay:-2.8s"></path><path class="tf r" d="M1040 560 L970 560 L970 700 L950 720 L820 720" pathLength="1" style="animation-delay:-4.2s"></path><path class="tf l" d="M-40 1010 L300 1010 L320 990 L680 990 L700 1010 L1040 1010" pathLength="1" style="animation-delay:-5.6s"></path><path class="tf r" d="M500 -30 L500 20 L520 40 L760 40 L780 20 L900 20" pathLength="1" style="animation-delay:-7.0s"></path><g class="tm"><rect x="130" y="433" width="28" height="14" rx="7"></rect><circle class="f" cx="139" cy="440" r="1.8"></circle><circle class="f" cx="149" cy="440" r="1.8"></circle></g><g class="tm"><circle cx="200" cy="970" r="7"></circle><circle class="f" cx="200" cy="970" r="2"></circle></g><g class="tm"><rect x="832" y="313" width="28" height="14" rx="7"></rect><circle class="f" cx="841" cy="320" r="1.8"></circle><circle class="f" cx="851" cy="320" r="1.8"></circle></g><g class="tm"><circle cx="808" cy="720" r="7"></circle><circle class="f" cx="808" cy="720" r="2"></circle></g><g class="tm"><rect x="300" y="43" width="28" height="14" rx="7"></rect><circle class="f" cx="309" cy="50" r="1.8"></circle><circle class="f" cx="319" cy="50" r="1.8"></circle></g><g class="tm"><circle cx="910" cy="970" r="7"></circle><circle class="f" cx="910" cy="970" r="2"></circle></g></svg>
 
           <!-- 01 You have the tools: apps keep arriving, each one adds to the monthly bill -->
           <div class="mac-sc">
