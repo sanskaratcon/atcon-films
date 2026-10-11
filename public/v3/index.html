@@ -176,7 +176,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* ATCON logo and tagline, bottom left, with "As a partner." */
 .atc-gapend{position:absolute;z-index:5;left:0;right:0;top:50%;display:grid;justify-items:center;text-align:center;visibility:hidden;pointer-events:none;padding:0 16px}
 .atc-gapend > *{grid-area:1 / 1}
-.atc-sign{display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
+.atc-sign{display:none !important;flex-direction:column;align-items:center;gap:var(--sp-4)}
 .atc-sign-logo{display:block;width:clamp(140px,11vw,210px);height:auto}
 .atc .atc-sign-tag{color:var(--fg-soft);max-width:24em}
 /* The solution: tagline on top, the map of business, ATCON and the technology ecosystem below */
@@ -1068,7 +1068,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2480,
+      U: 2330,
       heroOut: [0, 50],
       v2: [0, 288], v4: [288, 490], v3: [490, 690],
       indoor: 216,
@@ -1098,10 +1098,10 @@ class Component extends DCLogic {
         lift: [1846, 1850],
         a: 1852, aOut: 1853, aPlay: 0,
         center: [1846, 1856], b: 1856, bOut: 1857, sign: 1860,
-        out: 1970
+        out: 1858
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { title: 2020, sides: [2070, 2120], hub: [2130, 2180], links: [2175, 2285], out: 2410 }
+      sol: { title: 1870, sides: [1920, 1970], hub: [1980, 2030], links: [2025, 2135], out: 2260 }
     };
   }
 
