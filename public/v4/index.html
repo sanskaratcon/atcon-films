@@ -206,8 +206,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* The solution: tagline on top, the map of business, ATCON and the technology ecosystem below */
 .atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--rail) 3vw 2vh calc(var(--rail) + 3vw);visibility:hidden;pointer-events:none;text-align:center}
 .atc-sol-head{display:flex;flex-direction:column;align-items:center}
-.atc-sol-win{position:relative;isolation:isolate;width:min(100%,1480px);margin-top:2.6vh;--wo:1}
-.atc-sol-win::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px;background:#F4F5F8;box-shadow:0 0 0 1px rgba(0,16,37,.05),0 30px 60px -40px rgba(0,16,37,.35);opacity:var(--wo)}
+.atc-sol-win{position:relative;top:-5vh;isolation:isolate;width:min(100%,1480px);margin-top:2.6vh;--wo:1}
+.atc-sol-win::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px 22px 0 0;background:#F4F5F8;box-shadow:0 0 0 1px rgba(0,16,37,.05);opacity:var(--wo);
+  /* the panel dissolves into the white page towards the bottom, so it reads as part of the page, not a box */
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 35%,transparent 92%);mask-image:linear-gradient(to bottom,#000 0,#000 35%,transparent 92%)}
 .atc-sol-bar{display:flex;align-items:flex-end;gap:6px;height:46px;padding:0 18px;opacity:var(--wo)}
 .atc-sol-dots{display:flex;gap:7px;align-self:center;margin-right:14px}
 .atc-sol-dots i{width:11px;height:11px;border-radius:50%;background:#D5D9E0}
