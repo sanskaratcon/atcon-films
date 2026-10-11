@@ -269,7 +269,15 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .cv-hub svg{width:56%;height:auto}
 .cv-w{position:absolute;width:40%;height:42%;box-sizing:border-box;padding:12px 14px;border-radius:14px;background:#fff;opacity:0;
   box-shadow:0 0 0 1px rgba(0,16,37,.07),0 12px 28px -18px rgba(0,16,37,.32);display:flex;flex-direction:column;gap:8px;overflow:hidden}
-.cv-w0{left:3%;top:4%}.cv-w1{left:3%;bottom:4%}.cv-w2{right:3%;top:4%}.cv-w3{right:3%;bottom:4%}
+.cv-w0,.cv-w1,.cv-w2,.cv-w3{left:12%;top:9%;width:76%;height:82%;padding:22px 26px;gap:14px}
+.cv-links,.cv-hub{display:none}
+.cv-w .cv-h b{font-size:17px}.cv-w .cv-h em{font-size:13px;padding:3px 10px}
+.cv-w .cv-note{font-size:14px}
+.cv-w .cv-bars{gap:12px}
+.cv-w .cv-flow span{font-size:14px;padding:9px 12px;border-radius:10px}.cv-w .cv-flow span.auto svg{width:16px;height:16px}
+.cv-w .cv-team{gap:14px}.cv-w .cv-team .av{width:40px;height:40px;font-size:13px}.cv-w .cv-team span{font-size:15px}.cv-w .cv-team small{font-size:13px}
+.cv-w3{padding:14px}
+.cv-w .cv-app-bar{height:32px;font-size:13px}.cv-w .cv-app-main p{font-size:15px}.cv-w .cv-app-cards span{height:54px}.cv-w .cv-app-side b{height:8px}
 .cv-w [data-in]{opacity:0}
 .cv-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .cv-h b{font-size:13px;font-weight:600;color:var(--atc-navy)}
@@ -2262,8 +2270,10 @@ class Component extends DCLogic {
       var wv = this.q('cvW' + oi), lk = this.q('cvL' + oi);
       if (lk) lk.style.strokeDashoffset = (1 - ease(map(r, 0, 0.3))).toFixed(3);
       if (!wv) continue;
-      var wk = ease(map(r, 0.12, 0.34));
-      wv.style.opacity = wk.toFixed(3);
+      var wk = ease(map(r, 0.08, 0.3));
+      var wout = oi < 3 ? ease(map(u, s0 + span4 - 8, s0 + span4 + 2)) : 0;
+      wv.style.opacity = (wk * (1 - wout)).toFixed(3);
+      wv.style.visibility = wk * (1 - wout) > 0.01 ? 'visible' : 'hidden';
       wv.style.transform = 'translateY(' + ((1 - wk) * 10).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * wk).toFixed(4) + ')';
       var els = wv.querySelectorAll('[data-in]');
       for (var ei = 0; ei < els.length; ei++) {
