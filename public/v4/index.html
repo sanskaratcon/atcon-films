@@ -1940,13 +1940,13 @@ class Component extends DCLogic {
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
       // A scene starts only once its point's text has fully risen (title and line); until then the last one stays.
       var shown = -1;
-      for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 57.5) shown = si;
+      for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 4) shown = si;
       var scene = this._openIdx >= 0 && this._openIdx !== active ? this._openIdx : shown;
       var down = this._lastU == null || u >= this._lastU;
       this.macScene(gv > 0.5 ? scene : -1);
       if (gv > 0.5 && scene >= 0) {
         var sEnd = scene < S.ins.length - 1 ? S.ins[scene + 1] - 2 : S.out - 30;
-        this.macScrub(map(u, S.ins[scene] + 58, sEnd));
+        this.macScrub(map(u, S.ins[scene] + 14, sEnd));
       }
       // A short pause once each point's scene has finished, so the text and the visual can be taken in (scrolling down only)
       var pl = this._probLast == null ? u : this._probLast;
