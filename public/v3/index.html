@@ -1943,6 +1943,15 @@ class Component extends DCLogic {
     var map = this._fx.map, ease = this._fx.ease;
     var box = this.q('sol');
     if (!box) return;
+    // A short pause once the ATCON wordmark has formed (only when scrolling down into it)
+    var lastU = this._solLastU == null ? u : this._solLastU;
+    this._solLastU = u;
+    if (u < S.mark[0]) this._solHeld = false;
+    var holdU = S.word[1] + 2;
+    if (!this._solHeld && lastU < holdU && u >= holdU && performance.now() > (this._jumpUntil || 0)) {
+      this._solHeld = true;
+      this._lock = { top: this.unitTop(holdU), until: performance.now() + 1300, ease: true };
+    }
     var live = u > S.mark[0] - 6 && u < S.out + 58;
     box.style.visibility = live ? 'visible' : 'hidden';
     if (!live) return;
