@@ -77,7 +77,9 @@ html,body{overscroll-behavior-y:none}
 .atc-chrome a,.atc-chrome button{pointer-events:auto}
 .atc-logo{position:absolute;left:0;top:0;width:var(--rail);height:var(--rail);display:flex;align-items:center;justify-content:center;color:var(--fg);transition:color var(--dur-theme) ease}
 .atc-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
-.atc-burger{position:absolute;left:0;top:var(--rail);width:var(--rail);height:var(--rail)}
+.atc-burger{position:absolute;left:auto;right:0;top:0;width:var(--rail);height:var(--rail)}
+/* the menu sits in the top-right corner; Contact steps left to make room */
+.atc .atc-contact{right:calc(var(--rail) + 4px)}
 .atc-contact{position:absolute;top:calc((var(--rail) - 44px) / 2);right:var(--gutter)}
 .atc .atc-contact{box-shadow:0 6px 18px -10px rgba(0,16,37,.35)}
 .atc[data-menu="open"] .atc-chrome{--fg:#FFFFFF;--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
