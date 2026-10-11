@@ -23,6 +23,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   --lx:var(--rail);--ty:var(--rail);--rx:var(--right-x);--by:var(--line-y);--rt:var(--rail);--rh:calc(var(--line-y) - var(--rail))}
 .atc *{box-sizing:border-box}
 .atc-track{position:relative}
+html,body{overscroll-behavior-y:none}
 .atc-stage{position:sticky;top:0;z-index:2;height:100vh;height:100svh;width:100%;overflow:hidden}
 
 .atc-layer{position:absolute;inset:0;will-change:opacity,transform}
@@ -1457,6 +1458,7 @@ class Component extends DCLogic {
       var root = self.q('root');
       if (root && root.getAttribute('data-menu') === 'open') return;
       var dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? (window.innerHeight || 800) : 1);
+      dy = Math.max(-180, Math.min(180, dy));
       if (!dy) return;
       e.preventDefault();
       var se = document.scrollingElement || document.documentElement;
@@ -1488,7 +1490,7 @@ class Component extends DCLogic {
       self._lastY = y;
       clearTimeout(self._settleT);
       if (performance.now() < (self._snapUntil || 0)) return;
-      self._settleT = setTimeout(function () { self.settle(); }, 180);
+      self._settleT = setTimeout(function () { self.settle(); }, 320);
     };
     this._onTouch = function (e) {
       self._touching = e.type === 'touchstart';
@@ -2453,7 +2455,7 @@ class Component extends DCLogic {
         }
         if (!moved) break;
       }
-      if (t !== null && Math.abs(t - u) <= 150) target = y + (t - u) / U * span;
+      if (t !== null && Math.abs(t - u) <= 90) target = y + (t - u) / U * span;
     } else if (u >= U - 0.5 && dir > 0) {
       // Sections after the story: one that has started to come up finishes settling under the header
       var pins = document.querySelectorAll('.atc-pin');
@@ -2465,7 +2467,7 @@ class Component extends DCLogic {
     if (target === null || Math.abs(target - y) < 2) return;
     // A calm glide: longer for longer distances, eased in and out like an unhurried scroll
     var dist = Math.abs(target - y);
-    var dur = Math.max(1000, Math.min(2000, 900 + dist * 0.8));
+    var dur = Math.max(1100, Math.min(2200, 1000 + dist * 0.9));
     this._glide = { from: y, to: target, t0: now, dur: dur };
     this._snapUntil = now + dur + 250;
   }
@@ -2528,7 +2530,7 @@ class Component extends DCLogic {
     var se = document.scrollingElement || document.documentElement;
     var y = window.pageYOffset || se.scrollTop || 0;
     if (this._lock || this._touching || (s.last != null && Math.abs(y - s.last) > 2)) { s.y = null; s.last = null; return; }
-    var k = 1 - Math.pow(1 - 0.12, dt / 16.67);
+    var k = 1 - Math.pow(1 - 0.085, dt / 16.67);
     var ny = y + (s.y - y) * k;
     if (Math.abs(s.y - ny) < 0.5) { ny = s.y; s.y = null; }
     window.scrollTo(0, ny);
