@@ -238,13 +238,13 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-offer-ic{display:grid !important;place-items:center;width:40px;height:40px;border-radius:11px;background:var(--c);box-shadow:0 6px 14px -8px var(--c)}
 .atc-offer-ic svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .atc-offer-tray{width:100%;height:auto;max-height:100%;overflow:visible}
-.atc-offer-tray .tr-top{fill:#ECEFF3;stroke:#DDE2E8;stroke-width:1}
-.atc-offer-tray .tr-sl{fill:#DCE1E8}.atc-offer-tray .tr-sr{fill:#CDD3DC}
-.atc-offer-tray .tr-hole{fill:#DDE2E9}.atc-offer-tray .tr-wall{fill:#C9CFD8}.atc-offer-tray .tr-wall2{fill:#D3D8E0}
-.atc-offer-tray .tr-pad{fill:#F4F6F9;stroke:#E1E5EB;stroke-width:1}
+.atc-offer-tray .tr-top{fill:#F4F6F9}
+.atc-offer-tray .tr-sl{fill:#E8EBF0}.atc-offer-tray .tr-sr{fill:#DEE2E8}
+.atc-offer-tray .tr-hole{fill:#E7EAEF}.atc-offer-tray .tr-wall{fill:#D9DDE4}.atc-offer-tray .tr-wall2{fill:#E0E4EA}
+.atc-offer-tray .tr-pad{display:none}
 .atc-offer-tray .tr-glow{opacity:0}
-.atc-offer-tray .tb-top{fill:#FFFFFF;stroke:#E3E7ED;stroke-width:1}
-.atc-offer-tray .tb-sl{fill:#E9ECF1}.atc-offer-tray .tb-sr{fill:#D9DEE5}
+.atc-offer-tray .tb-top{fill:#FFFFFF}
+.atc-offer-tray .tb-sl{fill:#EEF0F4}.atc-offer-tray .tb-sr{fill:#E3E6EC}
 .atc-offer-tray .tr-block{filter:grayscale(1) opacity(.75)}
 .atc-offer-list .atc-offer-ic{filter:grayscale(1) opacity(.6)}
 .atc-float{position:absolute;left:0;top:0;z-index:20;display:grid;place-items:center;box-sizing:border-box;border:3px solid transparent;border-radius:999px;
@@ -2156,7 +2156,7 @@ class Component extends DCLogic {
       if (H) H.style.opacity = on ? '0' : H.style.opacity;
     }
     var gl = this.q('offerGlow');
-    if (gl) gl.style.opacity = (glow * 0.6).toFixed(3);
+    if (gl) gl.style.opacity = (glow * 0.35).toFixed(3);
     for (var oi = 0; oi < 4; oi++) {
       var cp = ease(map(u, S.tiles[0] + oi * 18, S.tiles[0] + oi * 18 + 26));
       var tb = this.q('offerT' + oi), li = this.q('offerL' + oi);
