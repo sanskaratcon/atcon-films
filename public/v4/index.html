@@ -217,10 +217,14 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-sol-tab.is-on::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:4px;background:#fff}
 .atc-sol-sep{width:1px;height:16px;align-self:center;margin:0 4px;background:#D5D9E0}
 .atc-sol-body{position:relative;isolation:isolate;margin:0 10px 10px;padding:1.6vh 1.4vw}
-.atc-sol-body::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:16px;border:2px solid transparent;
-  background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box;opacity:var(--wo)}
+.atc-sol-body::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:16px;border:2px solid transparent;border-bottom:0;
+  background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box;opacity:var(--wo);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 28%,transparent 82%);mask-image:linear-gradient(to bottom,#000 0,#000 28%,transparent 82%)}
+/* the white inside stays solid all the way down, only the coloured line fades */
+.atc-sol-body::after{content:"";position:absolute;inset:2px 2px 0;z-index:-1;border-radius:14px 14px 16px 16px;background:#fff;opacity:var(--wo)}
+.atc-sol-body .atc-sol-head{margin:1.2vh 0 1.6vh}
 @media (max-width:760px){.atc-sol-tab:not(.is-on),.atc-sol-sep{display:none}}
-.atc-sol-map{width:100%;height:auto;max-height:52vh;margin-top:0;overflow:visible;font-family:var(--atc-font)}
+.atc-sol-map{width:100%;height:auto;max-height:44vh;margin-top:0;overflow:visible;font-family:var(--atc-font)}
 .atc-sol-map .sol-link{fill:none;stroke:#D2D6DC;stroke-width:1.5;stroke-linejoin:miter;stroke-dasharray:1;stroke-dashoffset:1}
 .atc-sol-map .sol-stub{stroke:#DCE0E5}
 .atc-sol-map .sol-card{fill:#fff;stroke:rgba(0,16,37,.08);stroke-width:1.2;filter:url(#sol-sh)}
@@ -886,8 +890,7 @@ with a vision.</h2>
       <!-- The solution: more than a supplier. Business on the left, the technology ecosystem on the right; they don't
            reach each other directly, ATCON sits between them and connects every side -->
       <section class="atc-sol" data-atc="sol" aria-label="More than a supplier, a true technology partner">
-        <h2 class="ds-h1 atc-sol-head"><span class="ds-mask"><span class="ds-rise"><span class="ds-mute">More than</span> a supplier.</span></span><span class="ds-mask"><span class="ds-rise"><span class="atc-line-grad">A true technology partner.</span></span></span></h2>
-        <div class="atc-sol-win" data-atc="solWin"><div class="atc-sol-bar" aria-hidden="true"><span class="atc-sol-dots"><i></i><i></i><i></i></span><span class="atc-sol-tab is-on">Business-led technology</span><span class="atc-sol-tab">Strategy &amp; execution</span><span class="atc-sol-sep"></span><span class="atc-sol-tab">End-to-end ownership</span></div><div class="atc-sol-body"><svg class="atc-sol-map" viewBox="0 40 1920 790" aria-hidden="true"><defs><linearGradient id="sol-amark" x1="84.5321" y1="37.5117" x2="117.043" y2="111.535" gradientUnits="userSpaceOnUse">
+        <div class="atc-sol-win" data-atc="solWin"><div class="atc-sol-bar" aria-hidden="true"><span class="atc-sol-dots"><i></i><i></i><i></i></span><span class="atc-sol-tab is-on">Business-led technology</span><span class="atc-sol-tab">Strategy &amp; execution</span><span class="atc-sol-sep"></span><span class="atc-sol-tab">End-to-end ownership</span></div><div class="atc-sol-body"><h2 class="ds-h1 atc-sol-head"><span class="ds-mask"><span class="ds-rise"><span class="ds-mute">More than</span> a supplier.</span></span><span class="ds-mask"><span class="ds-rise"><span class="atc-line-grad">A true technology partner.</span></span></span></h2><svg class="atc-sol-map" viewBox="0 40 1920 790" aria-hidden="true"><defs><linearGradient id="sol-amark" x1="84.5321" y1="37.5117" x2="117.043" y2="111.535" gradientUnits="userSpaceOnUse">
 <stop offset="0.00480769" stop-color="#D3FFE4"></stop>
 <stop offset="0.3" stop-color="#EBFF39"></stop>
 <stop offset="0.7" stop-color="#0065ED"></stop>
