@@ -204,9 +204,9 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-sign-logo{display:block;width:clamp(140px,11vw,210px);height:auto}
 .atc .atc-sign-tag{color:var(--fg-soft);max-width:24em}
 /* The solution: tagline on top, the map of business, ATCON and the technology ecosystem below */
-.atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--rail) 1.4vw 1vh calc(var(--rail) + 1.4vw);visibility:hidden;pointer-events:none;text-align:center}
+.atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:calc(var(--rail) + 2.4vh) 1.4vw 1vh calc(var(--rail) + 1.4vw);visibility:hidden;pointer-events:none;text-align:center}
 .atc-sol-head{display:flex;flex-direction:column;align-items:center}
-.atc-sol-win{position:relative;top:-1vh;isolation:isolate;width:min(100%,1600px);margin-top:2.6vh;--wo:1}
+.atc-sol-win{position:relative;isolation:isolate;width:min(100%,1600px);margin-top:0;--wo:1}
 .atc-sol-win::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px 22px 0 0;background:#F4F5F8;box-shadow:0 0 0 1px rgba(0,16,37,.05);opacity:var(--wo);
   /* the panel dissolves into the white page towards the bottom, so it reads as part of the page, not a box */
   -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 35%,transparent 92%);mask-image:linear-gradient(to bottom,#000 0,#000 35%,transparent 92%)}
@@ -226,7 +226,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-sol-body::after{content:"";position:absolute;inset:2px 2px 0;z-index:-1;border-radius:14px 14px 16px 16px;background:#fff;opacity:var(--wo)}
 .atc-sol-body .atc-sol-head{margin:4vh 0 1.2vh}
 @media (max-width:760px){.atc-sol-tab:not(.is-on),.atc-sol-sep{display:none}}
-.atc-sol-map{width:100%;height:auto;max-height:66vh;margin-top:1vh;overflow:visible;font-family:var(--atc-font)}
+.atc-sol-map{width:100%;height:auto;max-height:min(66vh,calc(100vh - var(--rail) - 2.4vh - 46px - 5.2vh - 1vh - 9.5rem - 3vh));margin-top:1vh;overflow:visible;font-family:var(--atc-font)}
 .atc-sol-map .sol-link{fill:none;stroke:#D2D6DC;stroke-width:1.5;stroke-linejoin:miter;stroke-dasharray:1;stroke-dashoffset:1}
 .atc-sol-map .sol-stub{stroke:#DCE0E5}
 .atc-sol-map .sol-card{fill:#fff;stroke:rgba(0,16,37,.08);stroke-width:1.2;filter:url(#sol-sh)}
