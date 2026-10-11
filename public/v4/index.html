@@ -289,26 +289,14 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-kpi .atc-trust-side{padding-top:calc(var(--fs-label) + var(--sp-5) + .6em)}
 .atc-kpis{margin-top:clamp(32px,6vh,88px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto clamp(150px,23vh,250px);gap:0 clamp(16px,2.2vw,40px)}
 /* Each card shares the grid rows, so the number panels line up even when a label wraps */
-.atc-kpi-card{display:grid;grid-row:span 2;grid-template-rows:subgrid;box-sizing:border-box;border-radius:22px;border:0;background:#FFFFFF;
-  box-shadow:0 0 0 1px rgba(0,16,37,.07),0 22px 44px -26px rgba(0,16,37,.32),0 2px 4px rgba(0,16,37,.04);
+.atc-kpi-card{display:grid;grid-row:span 2;grid-template-rows:subgrid;box-sizing:border-box;border-radius:22px;border:1.5px solid #E7ECF5;background:#FFFFFF;
   opacity:0;filter:blur(8px);transform:translateY(18px) scale(.985);
   transition:opacity .9s var(--ease-out),filter .9s var(--ease-out),transform 1s var(--ease-out)}
-.atc-kpi-txt{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:center;padding:clamp(20px,min(2.4vw,3.8vh),36px) clamp(20px,2.4vw,36px) 0}
-.atc-kpi-txt .atc-kpi-cap{grid-column:2}
-.atc-kpi-ic{grid-row:span 2;display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,16,37,.06),0 6px 14px -8px var(--c)}
-.atc-kpi-ic svg{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.atc-kpi-txt{padding:clamp(20px,min(2.4vw,3.8vh),36px) clamp(20px,2.4vw,36px) 0}
 .atc-kpi-name{margin:0;font-family:var(--atc-font);font-size:clamp(18px,1.5vw,28px);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:500;color:var(--atc-navy)}
 .atc .atc-kpi-cap{margin:var(--sp-1) 0 0;font-family:var(--atc-font);font-size:var(--fs-small);line-height:var(--lh-small);color:var(--atc-slate)}
-.atc-kpi-stage{position:relative;min-height:0;margin:clamp(16px,3vh,32px) clamp(14px,1.6vw,22px) clamp(14px,1.6vw,22px);border-radius:16px;overflow:hidden;
-  background:#F7F9FC;box-shadow:inset 0 0 0 1px #EDF0F5;display:flex;align-items:center;justify-content:center}
-.atc-kpi-trace{position:absolute;inset:0;width:100%;height:100%}
-.atc-kpi-trace .tr{fill:none;stroke:#DDE2E9;stroke-width:1.5;stroke-linejoin:miter}
-.atc-kpi-trace .pl{fill:none;stroke:var(--c,#2D63E6);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:.14 3;stroke-dashoffset:.14;animation:solFlowL 3.2s linear infinite}
-.atc-kpi-trace .pl2{animation-delay:-1.6s}
-.atc-kpi-trace .tm{fill:#fff;stroke:#D6DAE0;stroke-width:1.3}
-.atc-kpi-trace .tmd{fill:#C2C8D0}
-.atc-kpi-num{position:relative}
-.atc-kpi-card:nth-child(1){--c:#2D63E6}.atc-kpi-card:nth-child(2){--c:#3FB27E}.atc-kpi-card:nth-child(3){--c:#9BBA2A}
+.atc-kpi-stage{min-height:0;margin:clamp(16px,3vh,36px) clamp(20px,2.4vw,36px) 0;border-top:1px solid #E7ECF5;
+  display:flex;align-items:center;justify-content:center}
 .atc-kpi-num{margin:0;font-family:var(--atc-font);font-size:clamp(52px,min(6vw,10.5vh),116px);line-height:1;letter-spacing:-0.05em;font-weight:400;color:var(--atc-navy);font-variant-numeric:tabular-nums}
 .atc-kpi-unit{margin-left:.02em;background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .atc .atc-kpi-base{display:flex;align-items:center;gap:var(--sp-3);margin-top:clamp(18px,3vh,32px);color:var(--atc-slate)}
@@ -1021,28 +1009,25 @@ with a vision.</h2>
       </div>
       <div class="atc-kpis" data-atc="bento">
         <article class="atc-kpi-card">
-          <div class="atc-kpi-txt" style="--c:#2D63E6">
-            <span class="atc-kpi-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2"/></svg></span>
+          <div class="atc-kpi-txt">
             <h3 class="atc-kpi-name">Real impact</h3>
             <p class="atc-kpi-cap">Business outcomes delivered</p>
           </div>
-          <div class="atc-kpi-stage"><svg class="atc-kpi-trace" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path class="tr" d="M-10 128 H60 L80 108 H116"/><path class="tr" d="M410 50 H340 L320 70 H284"/><path class="tr" d="M410 136 H304 L292 124 H256"/><path class="pl" d="M-10 128 H60 L80 108 H116" pathLength="1"/><path class="pl pl2" d="M410 50 H340 L320 70 H284" pathLength="1"/><circle class="tm" cx="123" cy="108" r="6"/><circle class="tmd" cx="123" cy="108" r="1.8"/><circle class="tm" cx="277" cy="70" r="6"/><circle class="tmd" cx="277" cy="70" r="1.8"/><rect class="tm" x="236" y="118" width="20" height="12" rx="6"/></svg><p class="atc-kpi-num"><span data-atc-count="100">100</span><span class="atc-kpi-unit">+</span></p></div>
+          <div class="atc-kpi-stage"><p class="atc-kpi-num"><span data-atc-count="100">100</span><span class="atc-kpi-unit">+</span></p></div>
         </article>
         <article class="atc-kpi-card">
-          <div class="atc-kpi-txt" style="--c:#3FB27E">
-            <span class="atc-kpi-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19"/><circle cx="16.5" cy="8.5" r="2.4"/><path d="M16 13.2 C18.6 13.2 20.5 15 20.5 18"/></svg></span>
+          <div class="atc-kpi-txt">
             <h3 class="atc-kpi-name">Long-term partnerships</h3>
             <p class="atc-kpi-cap">Of clients come back for their next project</p>
           </div>
-          <div class="atc-kpi-stage"><svg class="atc-kpi-trace" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path class="tr" d="M-10 128 H60 L80 108 H116"/><path class="tr" d="M410 50 H340 L320 70 H284"/><path class="tr" d="M410 136 H304 L292 124 H256"/><path class="pl" d="M-10 128 H60 L80 108 H116" pathLength="1"/><path class="pl pl2" d="M410 50 H340 L320 70 H284" pathLength="1"/><circle class="tm" cx="123" cy="108" r="6"/><circle class="tmd" cx="123" cy="108" r="1.8"/><circle class="tm" cx="277" cy="70" r="6"/><circle class="tmd" cx="277" cy="70" r="1.8"/><rect class="tm" x="236" y="118" width="20" height="12" rx="6"/></svg><p class="atc-kpi-num"><span data-atc-count="95">95</span><span class="atc-kpi-unit">%</span></p></div>
+          <div class="atc-kpi-stage"><p class="atc-kpi-num"><span data-atc-count="95">95</span><span class="atc-kpi-unit">%</span></p></div>
         </article>
         <article class="atc-kpi-card">
-          <div class="atc-kpi-txt" style="--c:#9BBA2A">
-            <span class="atc-kpi-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19.5 V14 M10 19.5 V10.5 M15 19.5 V7.5 M20 19.5 V4.5"/></svg></span>
+          <div class="atc-kpi-txt">
             <h3 class="atc-kpi-name">Proven experience</h3>
             <p class="atc-kpi-cap">Years in business technology</p>
           </div>
-          <div class="atc-kpi-stage"><svg class="atc-kpi-trace" viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path class="tr" d="M-10 128 H60 L80 108 H116"/><path class="tr" d="M410 50 H340 L320 70 H284"/><path class="tr" d="M410 136 H304 L292 124 H256"/><path class="pl" d="M-10 128 H60 L80 108 H116" pathLength="1"/><path class="pl pl2" d="M410 50 H340 L320 70 H284" pathLength="1"/><circle class="tm" cx="123" cy="108" r="6"/><circle class="tmd" cx="123" cy="108" r="1.8"/><circle class="tm" cx="277" cy="70" r="6"/><circle class="tmd" cx="277" cy="70" r="1.8"/><rect class="tm" x="236" y="118" width="20" height="12" rx="6"/></svg><p class="atc-kpi-num"><span data-atc-count="20">20</span><span class="atc-kpi-unit">+</span></p></div>
+          <div class="atc-kpi-stage"><p class="atc-kpi-num"><span data-atc-count="20">20</span><span class="atc-kpi-unit">+</span></p></div>
         </article>
       </div>
       <p class="ds-small atc-kpi-base ds-rv" data-rv="">
