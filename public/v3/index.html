@@ -62,8 +62,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-star svg{display:block;width:100%;height:100%}
 .atc-star-l{left:calc(var(--lx) + .5px);top:var(--by)}
 .atc-star-r{left:calc(var(--rx) + .5px);top:var(--by)}
-/* The hero has no cross lines; they only show when they close in around the statement */
-.atc-ln-mid,.atc-ln-right,.atc-star{opacity:var(--lo,0)}
 
 .atc-prog{position:absolute;left:var(--lx);top:var(--ty);bottom:0;width:1px;pointer-events:none;transition:opacity .7s var(--ease-io)}
 .atc-prog-fill{position:absolute;left:-.5px;top:0;width:2px;height:100%;background:var(--prog);transform-origin:top;transform:scaleY(0);transition:background-color var(--dur-theme) ease}
@@ -76,7 +74,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
 .atc-burger{position:absolute;left:0;top:var(--rail);width:var(--rail);height:var(--rail)}
 .atc-contact{position:absolute;top:calc((var(--rail) - 44px) / 2);right:var(--gutter)}
-.atc .atc-contact{box-shadow:0 6px 18px -10px rgba(0,16,37,.35)}
 .atc[data-menu="open"] .atc-chrome{--fg:#FFFFFF;--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
 .atc .atc-nav{position:fixed;z-index:19}
 
@@ -91,27 +88,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-hero-block{gap:var(--sp-6)}
 .atc-line{display:block;white-space:nowrap}
 .atc-hero-lede{max-width:min(23vw,30em);opacity:.92}
-/* Hero: white page, copy left, the film in a rounded card right; the card grows to full screen on scroll */
-.atc-herobg{position:absolute;inset:0;background:#FFFFFF;will-change:opacity}
-.atc-l1,.atc-l2{will-change:opacity,transform;overflow:hidden}
-.atc-ov-0{display:none}
-.atc-hero2{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,.74fr) minmax(0,1.6fr);column-gap:4vw;align-items:center;
-  padding:calc(var(--rail) + 3.5vh) 14px 5vh calc(var(--rail) + 4vw)}
-.atc-hero2-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-5);color:var(--atc-navy)}
-.atc-hero2-eyebrow{display:flex;align-items:center;gap:12px;margin:0;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--atc-mute)}
-.atc-hero2-eyebrow i{display:block;width:28px;height:1px;background:currentColor}
-.atc .atc-hero2-title{margin:0;max-width:11em;color:var(--atc-navy)}
-.atc .atc-hero2-lede{margin:0;max-width:26em;color:var(--atc-slate)}
-.atc-hero2-scroll{display:flex;align-items:center;gap:10px;margin:var(--sp-4) 0 0;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--atc-mute)}
-.atc-hero2-scroll svg{width:12px;height:12px;animation:atc-nudge 1.8s ease-in-out infinite}
-@keyframes atc-nudge{50%{transform:translateY(3px)}}
-.atc-hero2-card{position:relative;align-self:stretch;border-radius:24px;pointer-events:none}
-.atc-hero2-tag{position:absolute;left:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);
-  color:var(--atc-navy);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 18px -8px rgba(0,16,37,.35)}
-.atc-hero2-tag i{width:6px;height:6px;border-radius:50%;background:#3FB27E}
-@media (max-width:760px){
-  .atc-hero2{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);row-gap:4vh;padding:calc(var(--rail) + 3vh) 16px 4vh calc(var(--rail) + 18px)}
-}
 .atc-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-2)}
 .atc-title{white-space:pre-line}
 /* "Businesses often…": a soft glow behind the title, so it holds where it crosses the people */
@@ -587,8 +563,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   <div class="atc-track" data-atc="track" style="height: {{trackHeight}}">
     <div class="atc-stage" data-atc="stage">
 
-      <div class="atc-herobg" data-atc="herobg" aria-hidden="true"></div>
-      <div class="atc-layer atc-l2" data-atc="l2">
+      <div class="atc-layer atc-l2">
         <video class="atc-video" data-atc="v2" src="../assets/af651f03cb8685835898c13376ca6a89.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
       </div>
       <div class="atc-layer atc-l4" data-atc="l4">
@@ -611,13 +586,13 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
       <section class="atc-ch atc-ch-0" data-atc="ch0" aria-label="Introduction">
         <div class="atc-in" data-atc="in0">
           <div class="atc-in atc-hero-in">
-            <div class="atc-hero2">
-              <div class="atc-hero2-text">
-                <p class="atc-hero2-eyebrow"><i></i>Brussels, Belgium</p>
-                <h1 class="ds-display atc-hero2-title">Technology should move your business <span class="atc-line-grad">forward.</span></h1>
-                <p class="ds-lede atc-hero2-lede">From Belgium to the world: strategy, execution, ownership and scalable technology solutions.</p>
+            <div class="atc-block atc-hero-block">
+              <h1 class="ds-display"><span class="atc-line">A trusted tech partner </span><span class="atc-line">for business-led </span><span class="atc-line ds-soft">innovation.</span></h1>
+              <p class="ds-lede atc-hero-lede">We sit between strategy and execution, and solve what slows growth down.</p>
+              <div class="atc-ctas">
+                <a class="ds-btn" href="mailto:ankit.tanna@atconglobal.com">Start a conversation<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+                <a class="ds-btn ds-btn--secondary ds-btn-down" href="#problem" onClick="{{ seeProblem }}">See why<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2.5 6.5L6 10l3.5-3.5"></path></svg></span></a>
               </div>
-              <div class="atc-hero2-card" data-atc="heroCard"><span class="atc-hero2-tag"><i></i>Brussels</span></div>
             </div>
           </div>
         </div>
@@ -913,7 +888,7 @@ with the same challenge.</h2>
           <svg viewBox="0 8 506 490" fill="currentColor" aria-hidden="true"><path d="M215 11H304L92 494H0Z"></path><path d="M365 173L506 493H417L320 272Z"></path></svg>
         </a>
         <button class="ds-burger atc-burger" data-atc="burger" type="button" aria-label="Open menu" aria-expanded="false" onClick="{{ toggleMenu }}"><span class="ds-burger-box"><span class="ds-burger-ln"></span><span class="ds-burger-ln"></span></span></button>
-        <a class="ds-btn ds-btn--sm ds-btn--grad atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+        <a class="ds-btn ds-btn--sm atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
       </div>
 
       <!-- Splash: blurred hero with the mark, 1s, then it clears into the hero -->
@@ -1099,10 +1074,10 @@ class Component extends DCLogic {
   timeline() {
     return {
       U: 2350,
-      heroGrow: [0, 130], heroOut: [2, 16],
+      heroOut: [0, 50],
       v2: [0, 288], v4: [288, 490], v3: [490, 690],
       indoor: 216,
-      ch0: [-1, -1, 0, 36],
+      ch0: [-1, -1, 0, 32],
       ch1: [223, 248, 352, 382],
       frame: [335, 382],
       white: [668, 694],
@@ -1474,34 +1449,10 @@ class Component extends DCLogic {
     // Hero loop dissolves into video 2
     var heroOut = ease(map(u, T.heroOut[0], T.heroOut[1]));
     var l1 = this.q('l1'), v1 = this.q('v1');
-    // The film sits in the hero's card, then grows from that card to the whole screen
-    var grow = ease(map(u, T.heroGrow[0], T.heroGrow[1]));
-    var card = this.q('heroCard'), hbg = this.q('herobg');
-    // One scroll does both: the card grows to the full screen while the film already travels into the building
-    var l2 = this.q('l2');
-    if (card) {
-      var boxes = [l1, l2], ins = '', rad = '';
-      if (grow < 0.999) {
-        var cr = card.getBoundingClientRect(), vw0 = window.innerWidth || 1200, kk = 1 - grow;
-        var ct = Math.max(0, cr.top) * kk, cl = Math.max(0, cr.left) * kk, crt = Math.max(0, vw0 - cr.right) * kk, cb = Math.max(0, vh - cr.bottom) * kk;
-        ins = ct.toFixed(1) + 'px ' + crt.toFixed(1) + 'px ' + cb.toFixed(1) + 'px ' + cl.toFixed(1) + 'px';
-        rad = (24 * kk).toFixed(1) + 'px';
-      }
-      for (var bi = 0; bi < boxes.length; bi++) if (boxes[bi]) { boxes[bi].style.inset = ins; boxes[bi].style.borderRadius = rad; }
-    }
-    if (hbg) { hbg.style.opacity = grow >= 0.999 ? '0' : '1'; }
-    // The Contact button belongs to the hero: it fades out as soon as the page starts to scroll
-    var cbtn = this._cbtn || (this._cbtn = document.querySelector('.atc-contact'));
-    if (cbtn) {
-      var co = 1 - ease(map(u, 2, 24));
-      cbtn.style.opacity = co.toFixed(3);
-      cbtn.style.visibility = co > 0.01 ? 'visible' : 'hidden';
-      cbtn.style.pointerEvents = co > 0.5 ? '' : 'none';
-    }
     if (l1) {
       l1.style.opacity = String(1 - heroOut);
       // Opacity and scale only: both stay on the GPU, so the hand-off to the scrubbed video stays fluid
-      l1.style.transform = '';
+      l1.style.transform = 'scale(' + (1 + heroOut * 0.03).toFixed(4) + ')';
     }
     if (v1 && this._splash >= 1) {
       if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
@@ -1598,7 +1549,7 @@ class Component extends DCLogic {
 
     var root = this.q('root');
     if (root) {
-      var want = (u >= T.indoor || grow < 0.6) ? 'light' : 'dark';
+      var want = u >= T.indoor ? 'light' : 'dark';
       if (root.getAttribute('data-theme') !== want) root.setAttribute('data-theme', want);
     }
 
@@ -2063,7 +2014,7 @@ class Component extends DCLogic {
   motionRanges() {
     if (this._ranges) return this._ranges;
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
-    r.push(T.heroGrow, T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
+    r.push(T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
     r.push([S.title, S.title + 46], S.titleMove, S.isoIn, S.isoMove);
     for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 58]);
     r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
@@ -2280,7 +2231,6 @@ class Component extends DCLogic {
     stage.style.setProperty('--by', v[3].toFixed(1) + 'px');
     stage.style.setProperty('--rt', v[4].toFixed(1) + 'px');
     stage.style.setProperty('--rh', Math.max(0, v[5] - v[4]).toFixed(1) + 'px');
-    stage.style.setProperty('--lo', Math.min(1, c * 4).toFixed(3));
   }
 
   // Scrub to the nearest frame (24 fps). Seeking to a frame we are already on is skipped, and a new
