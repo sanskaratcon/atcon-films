@@ -129,7 +129,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* Side graphics start clear of the list */
 .atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
 /* "What actually happens" heads the list */
-.atc-wah{position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
+.atc-wah{display:none;position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
 /* The points: one at a time at the top of the column, a short statement and one quiet line; the active mark above fills while its scene plays */
 .atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:start}
 .atc-steps{grid-row:1;display:flex;align-items:center;gap:8px;margin:0 0 clamp(22px,3.6vh,40px);opacity:0;will-change:opacity}
@@ -1068,7 +1068,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2330,
+      U: 2250,
       heroOut: [0, 50],
       v2: [0, 288], v4: [288, 490], v3: [490, 690],
       indoor: 216,
@@ -1080,28 +1080,28 @@ class Component extends DCLogic {
       stack: {
         // "What actually happens" rises centred, then moves to the top left as the 3D stack appears in the middle;
         // the stack then moves right and opens up while the four points come in one below the other
-        title: 700, titleMove: [770, 865],
-        isoIn: [790, 850], isoMove: [885, 980],
-        ins: [895, 1000, 1105, 1210],
-        out: 1330
+        title: 700, titleMove: [690, 785],
+        isoIn: [710, 770], isoMove: [805, 900],
+        ins: [815, 920, 1025, 1130],
+        out: 1250
       },
-      famIn: [1390, 1480],
-      famOut: [1750, 1800],
-      focus: [1415, 1510],
-      unfocus: [1770, 1850],
-      fill: [1510, 1710],
+      famIn: [1310, 1400],
+      famOut: [1670, 1720],
+      focus: [1335, 1430],
+      unfocus: [1690, 1770],
+      fill: [1430, 1630],
       gap: {
         // The A mark, the title, "Not as another…" and "As a partner." are no longer shown: their slots
         // are kept tiny so the ATCON logo and tagline follow the familiar-statement straight away
-        mark: [1840, 1843, 1846, 1849], markMove: [1843, 1846],
-        title: 1846,
-        lift: [1846, 1850],
-        a: 1852, aOut: 1853, aPlay: 0,
-        center: [1846, 1856], b: 1856, bOut: 1857, sign: 1860,
-        out: 1858
+        mark: [1760, 1763, 1766, 1769], markMove: [1763, 1766],
+        title: 1766,
+        lift: [1766, 1770],
+        a: 1772, aOut: 1773, aPlay: 0,
+        center: [1766, 1776], b: 1776, bOut: 1777, sign: 1780,
+        out: 1778
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { title: 1870, sides: [1920, 1970], hub: [1980, 2030], links: [2025, 2135], out: 2260 }
+      sol: { title: 1790, sides: [1840, 1890], hub: [1900, 1950], links: [1945, 2055], out: 2180 }
     };
   }
 
