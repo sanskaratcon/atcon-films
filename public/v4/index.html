@@ -1891,7 +1891,7 @@ class Component extends DCLogic {
     fillSteps(total * PACE);
     if (holdAt != null && total) {
       // The page holds only briefly; the scene keeps playing if the reader scrolls on
-      this._lock = { top: this.unitTop(holdAt), until: performance.now() + Math.min(total * PACE, 1800) + 120, ease: true };
+      this._lock = { top: this.unitTop(holdAt), until: performance.now() + Math.min(total * PACE, 1800) + 1120, ease: true };
       this.holdScroll();
     }
   }
