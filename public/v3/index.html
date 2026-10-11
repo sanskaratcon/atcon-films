@@ -199,13 +199,13 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-sol-map .sol-hub-glow{fill:url(#sol-ring);opacity:.6;filter:url(#sol-glowf)}
 .atc-sol-map .sol-dot{fill:#2D63E6}
 .atc-sol-map [data-atc="solHub"]{transform-box:fill-box;transform-origin:center}
-.atc-sol-map .sol-flow{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:.09 3;stroke-dashoffset:.09;animation:7s linear infinite}
+.atc-sol-map .sol-flow{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:.09 3;stroke-dashoffset:.09;animation:3s linear infinite}
 .atc-sol-map .sol-fl{stroke:#3FB27E;animation-name:solFlowL}
 .atc-sol-map .sol-fc{stroke:#2D63E6;stroke-dasharray:.3 3;stroke-dashoffset:.3;animation-name:solFlowC}
 .atc-sol-map .sol-fr{stroke:#4D8CF5;animation-name:solFlowR}
-@keyframes solFlowL{0%{stroke-dashoffset:.09}40%,100%{stroke-dashoffset:-1}}
-@keyframes solFlowC{0%,40%{stroke-dashoffset:.3}58%,100%{stroke-dashoffset:-1}}
-@keyframes solFlowR{0%,58%{stroke-dashoffset:.09}100%{stroke-dashoffset:-1}}
+@keyframes solFlowL{0%{stroke-dashoffset:.09}100%{stroke-dashoffset:-1}}
+@keyframes solFlowC{0%{stroke-dashoffset:.3}100%{stroke-dashoffset:-1}}
+@keyframes solFlowR{0%{stroke-dashoffset:.09}100%{stroke-dashoffset:-1}}
 .atc-line-grad{background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* White band behind the header, so content scrolling up passes under it */
