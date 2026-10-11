@@ -529,14 +529,14 @@ html,body{overscroll-behavior-y:none}
 
 /* Proven results: laid out like the client section above it. Heading and lede on top,
    three quiet cards below, each with its label and an inset panel holding the number */
-.atc-brands{padding:clamp(28px,6vh,72px) 0 clamp(36px,8vh,96px);text-align:center}
-.atc-brands-k{margin:0 0 clamp(18px,3.4vh,34px);font-family:var(--atc-font);font-size:clamp(13px,1vw,15px);font-weight:500;color:var(--atc-slate)}
+.atc-brands{padding:clamp(40px,8vh,104px) 0 clamp(48px,10vh,120px);text-align:center}
+.atc .atc-brands-k{margin:0 0 clamp(28px,5vh,56px)}
 .atc-brands-row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
-.atc-brands-track{display:flex;align-items:center;gap:clamp(36px,5vw,84px);width:max-content;animation:atc-brands 38s linear infinite}
-.atc-brands-track img{flex:none;height:clamp(44px,4.6vw,64px);width:auto;filter:invert(1) grayscale(1) contrast(1.1) opacity(.6);transition:filter .3s ease}
-.atc-brands-track img:hover{filter:invert(1) grayscale(1) contrast(1.1) opacity(.9)}
+.atc-brands-track{display:flex;align-items:center;gap:clamp(48px,6vw,112px);width:max-content;animation:atc-brands 38s linear infinite}
+.atc-brands-track img{flex:none;height:calc(clamp(64px,6.4vw,104px) * var(--s,1));width:auto;filter:invert(1) grayscale(1) brightness(.62) sepia(.35) hue-rotate(178deg) saturate(1.6) opacity(.8);transition:filter .3s ease}
+.atc-brands-track img:hover{filter:invert(1) grayscale(1) brightness(.45) sepia(.45) hue-rotate(178deg) saturate(2) opacity(1)}
 .atc-brands-row:hover .atc-brands-track{animation-play-state:paused}
-@keyframes atc-brands{to{transform:translateX(calc(-50% - clamp(36px,5vw,84px) / 2))}}
+@keyframes atc-brands{to{transform:translateX(calc(-50% - clamp(48px,6vw,112px) / 2))}}
 .atc-kpi .ds-label{margin-bottom:var(--sp-5)}
 .atc-kpi .atc-trust-side{padding-top:calc(var(--fs-label) + var(--sp-5) + .6em)}
 .atc-kpis{margin-top:clamp(32px,6vh,88px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto clamp(150px,23vh,250px);gap:0 clamp(16px,2.2vw,40px)}
@@ -1239,8 +1239,8 @@ with a vision.</h2>
 
     <!-- Trusted by: the client logos drift by slowly in one quiet line -->
     <section class="atc-brands" id="clients" aria-label="Trusted by brands shaping the world">
-      <p class="atc-brands-k">Trusted by brands shaping the world</p>
-      <div class="atc-brands-row"><div class="atc-brands-track"><img src="../assets/clients/logo-1.svg" alt="Orange" loading="lazy"><img src="../assets/clients/logo-2.svg" alt="INAMI" loading="lazy"><img src="../assets/clients/logo-3.svg" alt="Elia" loading="lazy"><img src="../assets/clients/logo-4.svg" alt="District09" loading="lazy"><img src="../assets/clients/logo-5.svg" alt="Ypto" loading="lazy"><img src="../assets/clients/logo-6.svg" alt="Sciensano" loading="lazy"><img src="../assets/clients/logo-7.svg" alt="Belfius" loading="lazy"><img src="../assets/clients/logo-1.svg" alt="" aria-hidden="true" loading="lazy"><img src="../assets/clients/logo-2.svg" alt="" aria-hidden="true" loading="lazy"><img src="../assets/clients/logo-3.svg" alt="" aria-hidden="true" loading="lazy"><img src="../assets/clients/logo-4.svg" alt="" aria-hidden="true" loading="lazy"><img src="../assets/clients/logo-5.svg" alt="" aria-hidden="true" loading="lazy"><img src="../assets/clients/logo-6.svg" alt="" aria-hidden="true" loading="lazy"><img src="../assets/clients/logo-7.svg" alt="" aria-hidden="true" loading="lazy"></div></div>
+      <p class="ds-label ds-grad-text atc-brands-k">Trusted by brands shaping the world</p>
+      <div class="atc-brands-row"><div class="atc-brands-track"><img style="--s:1.55" src="../assets/clients/logo-1.svg" alt="Orange" loading="lazy"><img style="--s:1.05" src="../assets/clients/logo-2.svg" alt="INAMI" loading="lazy"><img style="--s:1.5" src="../assets/clients/logo-3.svg" alt="Elia" loading="lazy"><img style="--s:1.0" src="../assets/clients/logo-4.svg" alt="District09" loading="lazy"><img style="--s:0.9" src="../assets/clients/logo-5.svg" alt="Ypto" loading="lazy"><img style="--s:0.95" src="../assets/clients/logo-6.svg" alt="Sciensano" loading="lazy"><img style="--s:0.85" src="../assets/clients/logo-7.svg" alt="Belfius" loading="lazy"><img style="--s:1.55" src="../assets/clients/logo-1.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:1.05" src="../assets/clients/logo-2.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:1.5" src="../assets/clients/logo-3.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:1.0" src="../assets/clients/logo-4.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:0.9" src="../assets/clients/logo-5.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:0.95" src="../assets/clients/logo-6.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:0.85" src="../assets/clients/logo-7.svg" alt="" aria-hidden="true" loading="lazy"></div></div>
     </section>
 
     <section class="atc-vtrack" data-atc="vtrack" aria-label="Partnership" style="height: {{vtrackHeight}}">
