@@ -469,6 +469,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mcomments .mlog svg{width:2cqw;height:2cqw;fill:none;stroke:#8C95A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .mcomments .st:not(.is-shown){display:none}
 .mcomments .st.is-shown{animation:mac-pop .4s cubic-bezier(.3,1.3,.5,1)}
+/* Messages slide open smoothly: the list grows to make room while each one fades up into place */
+.mac .mcomments{gap:0}
+.mac .mcomments .st,.mac .mcomments .st:not(.is-shown){display:flex;max-height:0;margin-top:0;opacity:0;transform:translateY(1.4cqw);overflow:hidden;animation:none;transition:max-height .55s cubic-bezier(.22,.8,.3,1),margin-top .55s cubic-bezier(.22,.8,.3,1),opacity .4s ease .08s,transform .55s cubic-bezier(.22,.8,.3,1) .04s}
+.mac .mcomments .st.is-shown{max-height:16cqw;margin-top:1.3cqw;opacity:1;transform:none;animation:none}
 .mtyping span{font-size:1.9cqw;color:#8C95A6}
 .mtyping i{width:.9cqw;height:.9cqw;border-radius:50%;background:#A6B0C2;animation:mac-dots 1s ease-in-out infinite}
 .mtyping i:nth-of-type(2){animation-delay:.15s}
