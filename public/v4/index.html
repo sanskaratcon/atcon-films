@@ -2227,7 +2227,7 @@ class Component extends DCLogic {
       var hu = S.tiles[0] + hs * stepLen + stepLen * 0.85;
       if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
         this._offHeld[hs] = true;
-        this._lock = { top: this.unitTop(hu), until: performance.now() + 1500, ease: true };
+        this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
       }
     }
     var live = u > S.mark[0] - 6 && u < S.out + 58;
