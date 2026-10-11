@@ -1490,6 +1490,14 @@ class Component extends DCLogic {
       for (var bi = 0; bi < boxes.length; bi++) if (boxes[bi]) { boxes[bi].style.inset = ins; boxes[bi].style.borderRadius = rad; }
     }
     if (hbg) { hbg.style.opacity = grow >= 0.999 ? '0' : '1'; }
+    // The Contact button belongs to the hero: it fades out as soon as the page starts to scroll
+    var cbtn = this._cbtn || (this._cbtn = document.querySelector('.atc-contact'));
+    if (cbtn) {
+      var co = 1 - ease(map(u, 2, 24));
+      cbtn.style.opacity = co.toFixed(3);
+      cbtn.style.visibility = co > 0.01 ? 'visible' : 'hidden';
+      cbtn.style.pointerEvents = co > 0.5 ? '' : 'none';
+    }
     if (l1) {
       l1.style.opacity = String(1 - heroOut);
       // Opacity and scale only: both stay on the GPU, so the hand-off to the scrubbed video stays fluid
