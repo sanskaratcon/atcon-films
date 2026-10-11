@@ -23,6 +23,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   --lx:var(--rail);--ty:var(--rail);--rx:var(--right-x);--by:var(--line-y);--rt:var(--rail);--rh:calc(var(--line-y) - var(--rail))}
 .atc *{box-sizing:border-box}
 .atc-track{position:relative}
+html,body{overscroll-behavior-y:none}
 .atc-stage{position:sticky;top:0;z-index:2;height:100vh;height:100svh;width:100%;overflow:hidden}
 
 .atc-layer{position:absolute;inset:0;will-change:opacity,transform}
@@ -62,7 +63,11 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-star svg{display:block;width:100%;height:100%}
 .atc-star-l{left:calc(var(--lx) + .5px);top:var(--by)}
 .atc-star-r{left:calc(var(--rx) + .5px);top:var(--by)}
+/* The hero has no cross lines; they only show when they close in around the statement */
+.atc-ln-mid,.atc-ln-right,.atc-star{opacity:var(--lo,0)}
 
+/* v5: no frame lines (left rail, top line) and no progress line on the rail */
+.atc-lines,.atc-prog{display:none !important}
 .atc-prog{position:absolute;left:var(--lx);top:var(--ty);bottom:0;width:1px;pointer-events:none;transition:opacity .7s var(--ease-io)}
 .atc-prog-fill{position:absolute;left:-.5px;top:0;width:2px;height:100%;background:var(--prog);transform-origin:top;transform:scaleY(0);transition:background-color var(--dur-theme) ease}
 .atc-prog-head{position:absolute;left:-3.5px;top:0;width:8px;height:8px;border-radius:50%;background:var(--head);box-shadow:0 0 12px rgba(255,255,255,.55);transform:translateY(-4px);transition:background-color var(--dur-theme) ease}
@@ -74,6 +79,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
 .atc-burger{position:absolute;left:0;top:var(--rail);width:var(--rail);height:var(--rail)}
 .atc-contact{position:absolute;top:calc((var(--rail) - 44px) / 2);right:var(--gutter)}
+.atc .atc-contact{box-shadow:0 6px 18px -10px rgba(0,16,37,.35)}
 .atc[data-menu="open"] .atc-chrome{--fg:#FFFFFF;--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
 .atc .atc-nav{position:fixed;z-index:19}
 
@@ -88,6 +94,27 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc-hero-block{gap:var(--sp-6)}
 .atc-line{display:block;white-space:nowrap}
 .atc-hero-lede{max-width:min(23vw,30em);opacity:.92}
+/* Hero: white page, copy left, the film in a rounded card right; the card grows to full screen on scroll */
+.atc-herobg{position:absolute;inset:0;background:#FFFFFF;will-change:opacity}
+.atc-l1,.atc-l2{will-change:opacity,transform;overflow:hidden}
+.atc-ov-0{display:none}
+.atc-hero2{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,.74fr) minmax(0,1.6fr);column-gap:4vw;align-items:center;
+  padding:calc(var(--rail) + 3.5vh) 14px 5vh calc(var(--rail) + 4vw)}
+.atc-hero2-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-5);color:var(--atc-navy)}
+.atc-hero2-eyebrow{display:flex;align-items:center;gap:12px;margin:0;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--atc-mute)}
+.atc-hero2-eyebrow i{display:block;width:28px;height:1px;background:currentColor}
+.atc .atc-hero2-title{margin:0;max-width:11em;color:var(--atc-navy)}
+.atc .atc-hero2-lede{margin:0;max-width:26em;color:var(--atc-slate)}
+.atc-hero2-scroll{display:flex;align-items:center;gap:10px;margin:var(--sp-4) 0 0;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--atc-mute)}
+.atc-hero2-scroll svg{width:12px;height:12px;animation:atc-nudge 1.8s ease-in-out infinite}
+@keyframes atc-nudge{50%{transform:translateY(3px)}}
+.atc-hero2-card{position:relative;align-self:stretch;border-radius:24px;pointer-events:none}
+.atc-hero2-tag{position:absolute;left:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);
+  color:var(--atc-navy);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 18px -8px rgba(0,16,37,.35)}
+.atc-hero2-tag i{width:6px;height:6px;border-radius:50%;background:#3FB27E}
+@media (max-width:760px){
+  .atc-hero2{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);row-gap:4vh;padding:calc(var(--rail) + 3vh) 16px 4vh calc(var(--rail) + 18px)}
+}
 .atc-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-2)}
 .atc-title{white-space:pre-line}
 /* "Businesses often…": a soft glow behind the title, so it holds where it crosses the people */
@@ -129,7 +156,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* Side graphics start clear of the list */
 .atc-gfx.atc-gfx--side{left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw))}
 /* "What actually happens" heads the list */
-.atc-wah{position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
+.atc-wah{display:none;position:absolute;left:0;top:0;margin:0;white-space:nowrap;will-change:transform,opacity,filter}
 /* The points: one at a time at the top of the column, a short statement and one quiet line; the active mark above fills while its scene plays */
 .atc-stack{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;align-content:start}
 .atc-steps{grid-row:1;display:flex;align-items:center;gap:8px;margin:0 0 clamp(22px,3.6vh,40px);opacity:0;will-change:opacity}
@@ -145,7 +172,6 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .atc .atc-stack .atc-card-body{font-size:clamp(17px,1.25vw,21px);line-height:1.5;max-width:24em;color:var(--atc-slate)}
 .atc .atc-stack .atc-card .ds-rise,.atc .atc-stack .atc-card.is-past .ds-rise{color:var(--atc-navy)}
 .atc .atc-stack .atc-card .atc-card-body .ds-rise,.atc .atc-stack .atc-card.is-past .atc-card-body .ds-rise{color:var(--atc-slate)}
-.atc .atc-stack .atc-card-body .atc-pl{display:block}
 /* The desktop beside the list */
 .atc-iso{position:absolute;z-index:4;left:max(50%,calc(var(--content-x) + var(--stack-w) + 2vw));right:var(--content-x);top:calc(var(--rail) + 2vh);bottom:2vh;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 /* "the right partner." fills into the brand gradient instead of navy */
@@ -162,7 +188,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* "That gap…" intro: the line starts centred on the left with the A mark on the right */
 .atc-gapmark{position:absolute;z-index:4;left:50%;right:var(--content-x);top:var(--rail);bottom:0;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;will-change:opacity,transform,filter}
 .atc-gapmark svg{display:block;width:min(22vw,40vh);height:auto}
-.atc-gap-head{will-change:transform}
+/* "That gap is where we come in." is no longer shown; the element stays (hidden, no size) so the close still centres */
+.atc-gap-head{display:none}
+/* "Not as another agency, dev shop, advisory firm." (with its graphic) and "As a partner." are no longer shown */
+.atc-gap-body,.atc-gfx4row,.atc-gapend-line,.atc-gapmark{display:none !important}
 
 /* "That gap is where we come in": fixed title, then two lines in turn */
 .atc-gap{position:absolute;z-index:5;left:var(--content-x);right:44%;top:calc(var(--rail) + var(--gutter) + 5vh);display:flex;flex-direction:column;gap:var(--sp-5);visibility:hidden}
@@ -174,9 +203,280 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 /* ATCON logo and tagline, bottom left, with "As a partner." */
 .atc-gapend{position:absolute;z-index:5;left:0;right:0;top:50%;display:grid;justify-items:center;text-align:center;visibility:hidden;pointer-events:none;padding:0 16px}
 .atc-gapend > *{grid-area:1 / 1}
-.atc-sign{display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
+.atc-sign{display:none !important;flex-direction:column;align-items:center;gap:var(--sp-4)}
 .atc-sign-logo{display:block;width:clamp(140px,11vw,210px);height:auto}
 .atc .atc-sign-tag{color:var(--fg-soft);max-width:24em}
+/* The solution: tagline on top, the map of business, ATCON and the technology ecosystem below */
+.atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:calc(var(--rail) + 2.4vh) 1.4vw 1vh calc(var(--rail) + 1.4vw);visibility:hidden;pointer-events:none;text-align:center}
+.atc-sol-head{display:flex;flex-direction:column;align-items:center}
+.atc-sol-win{position:relative;isolation:isolate;width:min(100%,1600px);margin-top:0;--wo:1}
+.atc-sol-win::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px 22px 0 0;background:#F4F5F8;box-shadow:0 0 0 1px rgba(0,16,37,.05);opacity:var(--wo);
+  /* the panel dissolves into the white page towards the bottom, so it reads as part of the page, not a box */
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 35%,transparent 92%);mask-image:linear-gradient(to bottom,#000 0,#000 35%,transparent 92%)}
+.atc-sol-bar{display:flex;align-items:flex-end;gap:6px;height:46px;padding:0 18px;opacity:var(--wo)}
+.atc-sol-dots{display:flex;gap:7px;align-self:center;margin-right:14px}
+.atc-sol-dots i{width:11px;height:11px;border-radius:50%;background:#D5D9E0}
+.atc-sol-tab{position:relative;padding:11px 18px 12px;font-size:13px;font-weight:500;letter-spacing:-.005em;color:#A3ABB8;white-space:nowrap}
+.atc-sol-tab.is-on{z-index:2;color:var(--atc-navy);border:2px solid transparent;border-bottom:0;border-radius:14px 14px 0 0;margin-bottom:-2px;
+  background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box}
+.atc-sol-tab.is-on::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:4px;background:#fff}
+.atc-sol-sep{width:1px;height:16px;align-self:center;margin:0 4px;background:#D5D9E0}
+/* only the open tab shows its name; the others keep their place as quiet placeholders */
+.atc-sol-tab:not(.is-on){color:transparent}
+.atc-sol-tab:not(.is-on)::before{content:"";position:absolute;left:18px;right:18px;top:50%;height:6px;margin-top:-1px;border-radius:3px;background:#E2E6EC}
+/* Smooth tab switch: one outline slides between the tabs while the names cross-fade with their placeholders */
+.atc-sol-bar{position:relative}
+.atc-sol-ind{position:absolute;bottom:-2px;left:0;width:0;height:0;z-index:1;box-sizing:border-box;border:2px solid transparent;border-bottom:0;border-radius:14px 14px 0 0;
+  background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box;pointer-events:none;will-change:transform,width}
+.atc-sol-ind::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:4px;background:#fff}
+.atc-sol-bar .atc-sol-tab,.atc-sol-bar .atc-sol-tab.is-on{z-index:2;border:2px solid transparent;border-bottom:0;margin-bottom:-2px;background:none;
+  color:rgba(0,16,37,var(--on,0))}
+.atc-sol-bar .atc-sol-tab.is-on::after{display:none}
+.atc-sol-bar .atc-sol-tab::before{content:"";position:absolute;left:18px;right:18px;top:50%;height:6px;margin-top:-1px;border-radius:3px;background:#E2E6EC;opacity:calc(1 - var(--on,0))}
+.atc-sol-body{position:relative;isolation:isolate;margin:0 10px 10px;padding:1.4vh .6vw}
+.atc-sol-body::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:16px;border:2px solid transparent;border-bottom:0;
+  background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box;opacity:var(--wo);
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 28%,transparent 82%);mask-image:linear-gradient(to bottom,#000 0,#000 28%,transparent 82%)}
+/* the white inside stays solid all the way down, only the coloured line fades */
+.atc-sol-body::after{content:"";position:absolute;inset:2px 2px 0;z-index:-1;border-radius:14px 14px 16px 16px;background:#fff;opacity:var(--wo)}
+.atc-sol-body .atc-sol-head{margin:4vh 0 1.2vh}
+@media (max-width:760px){.atc-sol-tab:not(.is-on),.atc-sol-sep{display:none}}
+.atc-offer{position:absolute;inset:0;z-index:3;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.3fr);align-items:center;column-gap:2vw;
+  padding:3vh 4vw 4vh;text-align:left;opacity:0;visibility:hidden;pointer-events:none}
+.atc-offer-text{display:flex;flex-direction:column;align-items:flex-start}
+.atc-offer-text .ds-label{margin:0 0 var(--sp-4)}
+.atc-offer-title{margin:0 0 3.2vh;font-family:var(--atc-font);font-size:clamp(28px,2.7vw,48px);line-height:1.08;letter-spacing:-.03em;font-weight:500;color:var(--atc-navy)}
+.atc-offer-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2.2vh}
+.atc-offer-list li{display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:16px;align-items:center;opacity:0}
+.atc-offer-list strong{display:block;font-size:clamp(15px,1.15vw,19px);font-weight:600;letter-spacing:-.01em;color:var(--atc-navy)}
+.atc-offer-list span{display:block;font-size:clamp(13px,.95vw,15px);line-height:1.4;color:var(--atc-slate)}
+.atc-offer-ic{display:grid !important;place-items:center;width:40px;height:40px;border-radius:11px;background:var(--c);box-shadow:0 6px 14px -8px var(--c)}
+.atc-offer-ic svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.atc-offer-tray{width:100%;height:auto;max-height:100%;overflow:visible}
+.atc-offer-tray .tr-side{fill:#E6E9EE;stroke:#D5DAE1;stroke-width:1}
+.atc-offer-tray .tr-top{fill:#F7F8FA;stroke:#D9DEE5;stroke-width:1.2}
+.atc-offer-tray .tr-rim{fill:none;stroke:#E3E7EC;stroke-width:1.2}
+.atc-offer-tray .tr-cell{fill:#F1F3F6;stroke:#D7DCE3;stroke-width:1.1}
+.atc-offer-tray .tr-slot{fill:#EEF1F5}
+.atc-offer-tray .tr-drop{fill:#001025;opacity:.08}
+.atc-offer-tray .tr-glow{opacity:0}
+.atc-offer-tray .tb-side{fill:#EEF0F4;stroke:#D8DDE4;stroke-width:1}
+.atc-offer-tray .tb-top{fill:#FFFFFF;stroke:#DDE2E8;stroke-width:1.1}
+.atc-offer-tray .tb-shadow{fill:#001025;opacity:.1;filter:blur(7px)}
+.atc-offer-tray .tr-block{filter:grayscale(1) opacity(.75)}
+.atc-offer-list .atc-offer-ic{filter:grayscale(1) opacity(.6)}
+.atc-float{position:absolute;left:0;top:0;z-index:20;display:grid;place-items:center;box-sizing:border-box;border:3px solid transparent;border-radius:999px;
+  background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#3FB27E,#2D63E6 50%,#9BBA2A) border-box;
+  opacity:0;visibility:hidden;pointer-events:none;transform-origin:50% 50%;will-change:transform,opacity,box-shadow}
+.atc-float-word{position:absolute;left:16%;width:68%;height:auto;display:block}
+.atc-float-a{position:absolute;left:50%;top:50%;width:50%;height:auto;transform:translate(-50%,-50%);opacity:0}
+.atc-canvas{width:100%;max-width:700px;justify-self:center;border-radius:18px;background:#fff;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,16,37,.08),0 22px 48px -26px rgba(0,16,37,.35)}
+.cv-bar{display:flex;align-items:center;gap:6px;height:34px;padding:0 14px;background:#F6F7F9;border-bottom:1px solid #ECEFF3;font-size:12px;font-weight:500;color:#8C95A6}
+.cv-bar i{width:9px;height:9px;border-radius:50%;background:#D5D9E0}.cv-bar span{margin-left:8px}
+.cv-body{position:relative;height:clamp(290px,40vh,400px);background:radial-gradient(circle at 50% 50%,#F7F9FC 0,#fff 60%)}
+.cv-links{position:absolute;inset:0;width:100%;height:100%}
+.cv-link{fill:none;stroke:#C9D2DE;stroke-width:1.5;stroke-dasharray:1;stroke-dashoffset:1;vector-effect:non-scaling-stroke}
+.cv-hub{position:absolute;left:50%;top:50%;display:grid;place-items:center;box-sizing:border-box;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:15px;border:2.5px solid transparent;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#3FB27E,#2D63E6 50%,#9BBA2A) border-box;box-shadow:0 10px 24px -14px rgba(0,16,37,.35)}
+.cv-hub svg{width:56%;height:auto}
+.cv-w{position:absolute;width:40%;height:42%;box-sizing:border-box;padding:12px 14px;border-radius:14px;background:#fff;opacity:0;
+  box-shadow:0 0 0 1px rgba(0,16,37,.07),0 12px 28px -18px rgba(0,16,37,.32);display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.cv-w0,.cv-w1,.cv-w2,.cv-w3{left:12%;top:9%;width:76%;height:82%;padding:22px 26px;gap:14px}
+.cv-links,.cv-hub{display:none}
+/* No window inside the window and no coloured backdrop: each service sits on the page as a quiet panel */
+.atc-offer .atc-canvas{background:transparent;box-shadow:none !important;overflow:visible;border-radius:0}
+.atc-offer .atc-canvas .cv-body{background:none !important}
+.atc-offer .cvm-bar{display:none}
+.atc-offer .cvm{background:#F8F9FB;border-radius:20px;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.08)}
+.atc-offer .cvm-body{padding:24px 26px;gap:14px}
+/* The canvas is the Mac's desktop: a soft wallpaper with one app window at a time */
+.atc-canvas .cv-bar{display:none}
+.atc-canvas .cv-body{background:radial-gradient(120% 90% at 0% 0%,#E6F6EE 0,rgba(230,246,238,0) 55%),radial-gradient(110% 90% at 100% 100%,#E3ECFD 0,rgba(227,236,253,0) 60%),#F7F8FA}
+.cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:15%;top:9%;width:76%;height:86%;padding:0;background:transparent;box-shadow:none !important;overflow:visible;display:block}
+.cvm{position:absolute;inset:0;display:flex;flex-direction:column;border-radius:14px;background:#fff;overflow:hidden;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.16),0 26px 52px -24px rgba(0,16,37,.34),0 2px 6px rgba(0,16,37,.06)}
+.cvm-bar{flex:none;display:flex;align-items:center;gap:7px;height:30px;padding:0 12px;background:#F5F6F8;border-bottom:.5px solid rgba(0,16,37,.1);font-size:12px;font-weight:500;color:#7A8597}
+.cvm-bar i{width:10px;height:10px;border-radius:50%;background:#FF5F57}.cvm-bar i:nth-child(2){background:#FEBC2E}.cvm-bar i:nth-child(3){background:#28C840}
+.cvm-bar span{flex:1;text-align:center;margin-right:46px}
+.cvm-body{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;padding:18px 20px}
+.cvb{position:absolute;right:-7%;top:-9%;z-index:2;display:flex;align-items:center;gap:10px;width:64%;padding:10px 12px;border-radius:14px;
+  background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 18px 34px -16px rgba(0,16,37,.35)}
+.cvb-ic{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#fff;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.14),0 2px 6px -2px rgba(0,16,37,.2)}
+.cvb-ic svg{width:60%;height:auto}
+.cvb div{min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.cvb b{font-size:10.5px;font-weight:600;letter-spacing:.06em;color:#8C95A6}
+.cvb-t{font-size:13px;font-weight:600;color:var(--atc-navy)}.cvb-x{font-size:12px;color:#5B6B78;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cvb em{align-self:flex-start;margin-left:auto;font-style:normal;font-size:11px;color:#A3ABB8}
+.an-top{display:flex;align-items:flex-start;justify-content:space-between}
+.an-top small{display:block;font-size:12px;color:#8C95A6}.an-top strong{display:block;font-size:clamp(28px,2.6vw,40px);font-weight:500;letter-spacing:-.03em;color:var(--atc-navy)}
+.an-up{font-style:normal;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:#E6F5EC;color:#1F7A50}
+.an-chart{flex:1;min-height:0;width:100%}
+.an-grid{fill:none;stroke:#EEF0F4;stroke-width:1;vector-effect:non-scaling-stroke}
+.an-area{fill:url(#an-ag);fill:rgba(45,99,230,.08)}
+.an-line{fill:none;stroke:#2D63E6;stroke-width:2.6;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.an-rev{clip-path:inset(0 100% 0 0)}
+.au-rows{display:flex;flex-direction:column;gap:10px}
+.au-row{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:#F7F8FA}
+.au-ic{width:32px;height:32px;border-radius:9px;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 74%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.au-row b{display:block;font-size:14px;font-weight:600;color:var(--atc-navy)}.au-row small{display:block;font-size:12px;color:#8C95A6}
+.cv-tg{position:relative;width:38px;height:22px;border-radius:999px;background:#DADFE6;transition:background .35s ease}
+.cv-tg::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,16,37,.3);transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
+.cv-tg.on{background:#34C759}.cv-tg.on::after{transform:translateX(16px)}
+.au-count{margin:auto 0 0;font-size:14px;color:#5B6B78}.au-count strong{font-size:26px;font-weight:500;letter-spacing:-.02em;color:var(--atc-navy);margin-right:6px;font-variant-numeric:tabular-nums}
+.ft-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;margin:-6px -8px -8px}
+.ft-tile{position:relative;display:grid;place-items:center;border-radius:12px;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 22%,#fff),color-mix(in srgb,var(--c) 46%,#fff))}
+.ft-av{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 72%,#fff),var(--c));color:#fff;font-size:13px;font-weight:600;box-shadow:0 6px 14px -8px rgba(0,16,37,.5)}
+.ft-tile span{position:absolute;left:8px;bottom:7px;padding:3px 8px;border-radius:7px;background:rgba(0,16,37,.45);color:#fff;font-size:11.5px;font-weight:600}
+.ft-tile small{font-weight:400;opacity:.85;margin-left:5px}
+.bd-screens{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;min-height:0}
+.bd-s{display:flex;flex-direction:column;gap:7px;padding:10px;border-radius:12px;background:#F7F8FA;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.08)}
+.bd-s i{height:34%;border-radius:8px;background:linear-gradient(135deg,#E3ECFD,#E6F5EC)}.bd-s b{height:7px;border-radius:4px;background:#E3E7EE}.bd-s b.s{width:60%}
+.pt{flex:1;min-height:0;display:grid;grid-template-columns:28% 1fr;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 14px 30px -20px rgba(0,16,37,.3)}
+.pt-side{display:flex;flex-direction:column;gap:6px;padding:12px 10px;background:#FAFBFC;border-right:.5px solid rgba(0,16,37,.08)}
+.pt-logo{width:22px;height:22px;margin:0 0 8px 4px;border-radius:7px;background:linear-gradient(180deg,#5C86EC,#2D63E6)}
+.pt-nav{display:flex;align-items:center;gap:7px;padding:6px 7px;border-radius:8px;font-size:11.5px;font-weight:500;color:#7A8597}
+.pt-nav i{width:10px;height:10px;border-radius:3px;background:#D5DAE2}
+.pt-nav.on{background:#EEF3FD;color:#2D63E6}.pt-nav.on i{background:#2D63E6}
+.pt-main{min-width:0;display:flex;flex-direction:column;gap:10px;padding:12px 14px}
+.pt-head{display:flex;align-items:center;justify-content:space-between}
+.pt-head small{display:block;font-size:10.5px;color:#8C95A6}.pt-head b{display:block;font-size:13.5px;font-weight:600;color:var(--atc-navy)}
+.pt-av{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:linear-gradient(180deg,#56C792,#3FB27E);color:#fff;font-size:10px;font-weight:600}
+.pt-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pt-k{padding:8px 9px;border-radius:10px;background:#F7F8FA;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.06)}
+.pt-k small{display:block;font-size:10px;color:#8C95A6}.pt-k b{display:block;font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--atc-navy)}
+.pt-k em{font-style:normal;font-size:10px;font-weight:600;color:var(--c)}
+.pt-chart{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;padding:8px 9px;border-radius:10px;background:#F7F8FA;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.06)}
+.pt-chart small{font-size:10px;color:#8C95A6}
+.pt-bars{flex:1;min-height:0;display:flex;align-items:flex-end;gap:5px}
+.pt-bars i{flex:1;height:calc(var(--h) * 100%);border-radius:4px 4px 2px 2px;background:linear-gradient(180deg,#7FA3F2,#2D63E6)}
+.pt-sk u{display:block;height:7px;border-radius:4px;background:#E6E9EF;text-decoration:none}
+.pt-sk u.lg{height:11px;margin-top:6px;background:#DCE1E8}
+.pt-sk .pt-nav u{flex:1;height:6px}
+.pt-sk .pt-nav.on u{background:#C9D8F8}
+.pt-sk .pt-head div{flex:1}
+.pt-sk .pt-av{background:#E6E9EF}
+.pt-sk .pt-k{padding:10px}
+.pt-sk .pt-bars i{background:#DCE4F5}.pt-sk .pt-bars i:last-child{background:linear-gradient(180deg,#7FA3F2,#2D63E6)}
+.pt-min{grid-template-columns:64px 1fr;box-shadow:0 0 0 .5px rgba(0,16,37,.10),0 14px 30px -22px rgba(0,16,37,.28)}
+.pt-min .pt-side{align-items:center;gap:12px;padding:16px 0;background:#FAFBFC}
+.pt-min .pt-side .pt-logo{margin:0 0 6px}
+.pt-min .pt-side i{width:18px;height:18px;border-radius:6px;background:#E6E9EF}.pt-min .pt-side i.on{background:#C9D8F8}
+.pt-min .pt-main{gap:16px;padding:20px 22px}
+.pt-min .pt-main > u.lg{height:12px;margin:0;background:#DCE1E8}
+.pt-min .pt-kpis{grid-template-columns:1fr 1fr;gap:12px}
+.pt-min .pt-k{height:44px;display:flex;align-items:flex-end;padding:12px;border-radius:12px;background:#F5F7FA;box-shadow:none}
+.pt-min .pt-bars{flex:1;min-height:0;gap:10px}
+.pt-min .pt-bars i{border-radius:6px 6px 3px 3px}
+.bd-prog{display:flex;align-items:center;gap:12px;font-size:13px;color:#5B6B78}
+.bd-bar{flex:1;height:8px;border-radius:999px;background:#EEF0F4;overflow:hidden}.bd-bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#3FB27E,#2D63E6)}
+.bd-prog em{font-style:normal;font-weight:600;font-size:12px;padding:3px 10px;border-radius:999px;background:#E6F5EC;color:#1F7A50}
+.cv-w .cv-h b{font-size:17px}.cv-w .cv-h em{font-size:13px;padding:3px 10px}
+.cv-w .cv-note{font-size:14px}
+.cv-w .cv-bars{gap:12px}
+.cv-w .cv-flow span{font-size:14px;padding:9px 12px;border-radius:10px}.cv-w .cv-flow span.auto svg{width:16px;height:16px}
+.cv-w .cv-team{gap:14px}.cv-w .cv-team .av{width:40px;height:40px;font-size:13px}.cv-w .cv-team span{font-size:15px}.cv-w .cv-team small{font-size:13px}
+.cv-w3{padding:14px}
+.cv-w .cv-app-bar{height:32px;font-size:13px}.cv-w .cv-app-main p{font-size:15px}.cv-w .cv-app-cards span{height:54px}.cv-w .cv-app-side b{height:8px}
+.cv-w [data-in]{opacity:0}
+.cv-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cv-h b{font-size:13px;font-weight:600;color:var(--atc-navy)}
+.cv-h em{font-style:normal;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:#EEF3FD;color:#2D63E6}
+.cv-h em.up{background:#E6F5EC;color:#1F7A50}
+.cv-note{margin:auto 0 0;font-size:11.5px;line-height:1.35;color:#8C95A6}
+.cv-bars{flex:1;display:flex;align-items:flex-end;gap:6px;min-height:0}
+.cv-bars i{flex:1;height:calc(var(--h) * 100%);border-radius:5px 5px 2px 2px;background:linear-gradient(#7FA3F2,#2D63E6);transform-origin:bottom}
+.cv-flow{flex:1;display:flex;align-items:center;gap:4px;flex-wrap:nowrap}
+.cv-flow span{display:flex;align-items:center;gap:4px;padding:6px 8px;border-radius:8px;background:#F4F6F9;font-size:11.5px;font-weight:500;color:var(--atc-navy);white-space:nowrap}
+.cv-flow span.auto{background:#0C1628;color:#fff}.cv-flow span.auto svg{width:13px;height:13px;fill:none;stroke:#7FE0B0;stroke-width:2;stroke-linecap:round}
+.cv-flow span.ok{background:#E6F5EC;color:#1F7A50}
+.cv-flow i{flex:1;min-width:6px;height:1.5px;background:#C9D2DE}
+.cv-team{flex:1;display:flex;flex-direction:column;justify-content:center;gap:7px}
+.cv-team div{display:flex;align-items:center;gap:9px}
+.cv-team .av{display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:50%;background:var(--c);color:#fff;font-size:10.5px;font-weight:600}
+.cv-team span{display:flex;align-items:baseline;gap:6px;font-size:12px;font-weight:500;color:var(--atc-navy)}.cv-team small{font-size:11px;color:#8C95A6}
+.cv-w3{padding:8px}
+.cv-app{flex:1;display:flex;flex-direction:column;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px #E8EBEF}
+.cv-app-bar{display:flex;align-items:center;gap:4px;height:24px;padding:0 9px;background:#F4F6F9;font-size:11px;color:#8C95A6}
+.cv-app-bar i{width:6px;height:6px;border-radius:50%;background:#D5D9E0}.cv-app-bar span{margin-left:6px}
+.cv-app-bar em{margin-left:auto;font-style:normal;font-weight:600;font-size:10.5px;padding:1px 7px;border-radius:999px;background:#E6F5EC;color:#1F7A50}
+.cv-app-body{flex:1;display:grid;grid-template-columns:24% 1fr}
+.cv-app-side{display:flex;flex-direction:column;gap:7px;padding:10px 8px;background:#FAFBFC;border-right:1px solid #EEF0F4}
+.cv-app-side b{height:6px;border-radius:3px;background:#E3E7EE}.cv-app-side b:first-child{background:#2D63E6;width:70%}
+.cv-app-main{display:flex;flex-direction:column;gap:8px;padding:10px}
+.cv-app-main p{margin:0;font-size:11.5px;font-weight:600;color:var(--atc-navy)}
+.cv-app-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.cv-app-cards span{height:30px;border-radius:7px;background:#EEF3FD}.cv-app-cards span:nth-child(2){background:#E8F6EE}.cv-app-cards span:nth-child(3){background:#F3F7E2}
+.atc-cmd{display:flex;flex-direction:column;gap:2.2vh;width:100%;max-width:640px;justify-self:center}
+.atc-cmd-bar{display:flex;align-items:center;gap:14px;height:64px;padding:0 18px 0 12px;border-radius:18px;background:#fff;
+  box-shadow:0 0 0 1px rgba(0,16,37,.08),0 18px 40px -22px rgba(0,16,37,.35)}
+.atc-cmd-slot{flex:none;width:44px;height:44px;border-radius:12px;background:#F2F4F7;box-shadow:inset 0 0 0 1px #E2E6EC}
+.atc-cmd-q{flex:1;min-width:0;display:flex;align-items:center;font-size:clamp(15px,1.2vw,19px);color:var(--atc-navy);white-space:nowrap;overflow:hidden}
+.atc-cmd-caret{display:inline-block;width:2px;height:1.2em;margin-left:2px;background:#2D63E6;animation:mac-caret .8s steps(1) infinite}
+.atc-cmd-bar kbd{flex:none;display:grid;place-items:center;width:30px;height:26px;border-radius:7px;background:#F2F4F7;box-shadow:inset 0 -1px 0 #DCE1E7;font:600 13px var(--atc-font);color:#8C95A6}
+.atc-cmd-res{position:relative;height:clamp(240px,34vh,330px);border-radius:18px;background:#fff;box-shadow:0 0 0 1px rgba(0,16,37,.07),0 18px 40px -26px rgba(0,16,37,.3);overflow:hidden}
+.cmd-sc{position:absolute;inset:0;padding:22px 24px;display:flex;flex-direction:column;gap:14px;opacity:0;visibility:hidden}
+.cmd-sc [data-in]{opacity:0}
+.cmd-k{margin:0;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#8C95A6}
+.cmd-bars{flex:1;display:flex;align-items:flex-end;gap:12px;padding:0 4px;border-bottom:1px solid #EDF0F4}
+.cmd-bars i{flex:1;height:calc(var(--h) * 100%);border-radius:7px 7px 2px 2px;background:linear-gradient(#5A86EE,#2D63E6);transform-origin:bottom;opacity:0}
+.cmd-bars i.dip{background:linear-gradient(#F3A39B,#E5594C)}
+.cmd-chips{display:flex;flex-wrap:wrap;gap:8px}
+.cmd-chip{padding:7px 12px;border-radius:999px;font-size:13px;font-weight:500}
+.cmd-chip.is-red{background:#FDECEA;color:#C8382D}.cmd-chip.is-green{background:#E6F5EC;color:#1F7A50}
+.cmd-steps{display:flex;flex-wrap:wrap;gap:8px}
+.cmd-steps span{padding:8px 12px;border-radius:10px;background:#F4F6F9;box-shadow:inset 0 0 0 1px #E3E7EC;font-size:13px;color:#5B6B78}
+.cmd-flow{display:flex;align-items:center;gap:10px;margin-top:6px}
+.cmd-flow span,.cmd-flow b{padding:10px 14px;border-radius:12px;font-size:14px;font-weight:500;background:#F4F6F9;color:var(--atc-navy)}
+.cmd-flow b{display:flex;align-items:center;gap:8px;background:#0C1628;color:#fff}
+.cmd-flow b svg{width:18px;height:18px;fill:none;stroke:#7FE0B0;stroke-width:1.8;stroke-linecap:round}
+.cmd-flow span.ok{background:#E6F5EC;color:#1F7A50}
+.cmd-flow > *+*::before{content:"";display:none}
+.cmd-stat{margin:auto 0 0;font-size:15px;color:#5B6B78}.cmd-stat b{color:var(--atc-navy);font-weight:600}
+.cmd-people{display:flex;flex-direction:column;gap:10px}
+.cmd-p{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:#F7F8FA;box-shadow:inset 0 0 0 1px #E8EBEF}
+.cmd-p.is-pick{background:#fff;box-shadow:inset 0 0 0 1.5px #2D63E6,0 10px 24px -16px rgba(45,99,230,.6)}
+.cmd-p .av{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--c);color:#fff;font-size:13px;font-weight:600}
+.cmd-p strong{display:block;font-size:14px;color:var(--atc-navy)}.cmd-p span{display:block;font-size:12.5px;color:#8C95A6}
+.cmd-p em{font-style:normal;font-size:12.5px;font-weight:600;color:#1F7A50}
+.cmd-app{flex:1;display:flex;flex-direction:column;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px #E3E7EC}
+.cmd-app-bar{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;background:#F4F6F9;font-size:11.5px;color:#8C95A6}
+.cmd-app-bar i{width:8px;height:8px;border-radius:50%;background:#D5D9E0}
+.cmd-app-bar span{margin-left:8px}.cmd-app-bar em{margin-left:auto;font-style:normal;font-weight:600;padding:2px 8px;border-radius:999px;background:#E6F5EC;color:#1F7A50}
+.cmd-app-body{flex:1;display:grid;grid-template-columns:22% 1fr}
+.cmd-app-side{display:flex;flex-direction:column;gap:10px;padding:14px 12px;background:#FAFBFC;border-right:1px solid #EEF0F4}
+.cmd-app-side b{height:8px;border-radius:4px;background:#E3E7EE}.cmd-app-side b:first-child{background:#2D63E6;width:70%}
+.cmd-app-main{display:flex;flex-direction:column;gap:12px;padding:14px 16px}
+.cmd-app-main p{margin:0;font-size:14px;font-weight:600;color:var(--atc-navy)}
+.cmd-app-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cmd-app-cards span{height:46px;border-radius:10px;background:#EEF3FD}.cmd-app-cards span:nth-child(2){background:#E8F6EE}.cmd-app-cards span:nth-child(3){background:#F3F7E2}
+.cmd-app-row{height:38px;border-radius:10px;background:#F4F6F9}
+.atc-offer-list li{transition:none}
+@media (max-width:760px){.atc-offer{grid-template-columns:1fr;row-gap:2vh;padding:2vh 4vw}}
+.atc-sol-map{width:100%;height:auto;max-height:min(66vh,calc(100vh - var(--rail) - 2.4vh - 46px - 5.2vh - 1vh - 9.5rem - 3vh));margin-top:1vh;overflow:visible;font-family:var(--atc-font)}
+.atc-sol-map .sol-link{fill:none;stroke:#D2D6DC;stroke-width:1.5;stroke-linejoin:miter;stroke-dasharray:1;stroke-dashoffset:1}
+.atc-sol-map .sol-stub{stroke:#DCE0E5}
+.atc-sol-map .sol-card{fill:#fff;stroke:rgba(0,16,37,.07);stroke-width:1;filter:url(#sol-sh)}
+.atc-sol-map .sol-tile{stroke:rgba(0,16,37,.10);stroke-width:.8}
+.atc-sol-map .sol-tile-hi{stroke:rgba(255,255,255,.35);stroke-width:.8;pointer-events:none}
+.atc-sol-map .sol-glyph{fill:none;stroke:#fff;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
+.atc-sol-map .sol-lbl{font-size:20px;font-weight:500;fill:var(--atc-navy)}
+.atc-sol-map .sol-key{fill:url(#sol-kg);stroke:rgba(255,255,255,.06);stroke-width:1}
+.atc-sol-map .sol-lbl-m{font-size:21px;font-weight:600;letter-spacing:-.01em;fill:#fff}
+.atc-sol-map .sol-hub{fill:#fff;stroke:rgba(0,16,37,.08);stroke-width:1.2;filter:url(#sol-sh)}
+.atc-sol-map .sol-term rect,.atc-sol-map .sol-term circle{fill:#fff;stroke:#D2D6DC;stroke-width:1.3}
+.atc-sol-map .sol-term path{fill:none;stroke:#C2C8D0;stroke-width:1.4;stroke-linecap:round}
+.atc-sol-map .sol-term .f{fill:#C2C8D0;stroke:none}
+.atc-sol-map .sol-ticks{fill:none;stroke:#C9CED5;stroke-width:1.4;stroke-linecap:round}
+.atc-sol-map .sol-hub-glow{fill:url(#sol-ring);opacity:.6;filter:url(#sol-glowf)}
+.atc-sol-map .sol-dot{fill:#2D63E6}
+.atc-sol-map [data-atc="solA"],.atc-sol-map .sol-ltr{will-change:transform,opacity}
+.atc-sol-map .sol-flow{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:.09 3;stroke-dashoffset:.09;animation:3s linear infinite}
+.atc-sol-map .sol-fl{stroke:#3FB27E;animation-name:solFlowL}
+.atc-sol-map .sol-fc{stroke:#2D63E6;stroke-dasharray:.3 3;stroke-dashoffset:.3;animation-name:solFlowC}
+.atc-sol-map .sol-fr{stroke:#4D8CF5;animation-name:solFlowR}
+@keyframes solFlowL{0%{stroke-dashoffset:.09}100%{stroke-dashoffset:-1}}
+@keyframes solFlowC{0%{stroke-dashoffset:.3}100%{stroke-dashoffset:-1}}
+@keyframes solFlowR{0%{stroke-dashoffset:.09}100%{stroke-dashoffset:-1}}
 .atc-line-grad{background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 
 /* White band behind the header, so content scrolling up passes under it */
@@ -232,6 +532,14 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 
 /* Proven results: laid out like the client section above it. Heading and lede on top,
    three quiet cards below, each with its label and an inset panel holding the number */
+.atc-brands{padding:clamp(40px,8vh,104px) 0 clamp(48px,10vh,120px);text-align:center}
+.atc .atc-brands-k{margin:0 0 clamp(28px,5vh,56px)}
+.atc-brands-row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.atc-brands-track{display:flex;align-items:center;gap:clamp(48px,6vw,112px);width:max-content;animation:atc-brands 38s linear infinite}
+.atc-brands-track img{flex:none;height:calc(clamp(64px,6.4vw,104px) * var(--s,1));width:auto;filter:invert(1) grayscale(1) brightness(.62) sepia(.35) hue-rotate(178deg) saturate(1.6) opacity(.8);transition:filter .3s ease}
+.atc-brands-track img:hover{filter:invert(1) grayscale(1) brightness(.45) sepia(.45) hue-rotate(178deg) saturate(2) opacity(1)}
+.atc-brands-row:hover .atc-brands-track{animation-play-state:paused}
+@keyframes atc-brands{to{transform:translateX(calc(-50% - clamp(48px,6vw,112px) / 2))}}
 .atc-kpi .ds-label{margin-bottom:var(--sp-5)}
 .atc-kpi .atc-trust-side{padding-top:calc(var(--fs-label) + var(--sp-5) + .6em)}
 .atc-kpis{margin-top:clamp(32px,6vh,88px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto clamp(150px,23vh,250px);gap:0 clamp(16px,2.2vw,40px)}
@@ -440,6 +748,10 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mcomments .mlog svg{width:2cqw;height:2cqw;fill:none;stroke:#8C95A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .mcomments .st:not(.is-shown){display:none}
 .mcomments .st.is-shown{animation:mac-pop .4s cubic-bezier(.3,1.3,.5,1)}
+/* Messages slide open smoothly: the list grows to make room while each one fades up into place */
+.mac .mcomments{gap:0}
+.mac .mcomments .st,.mac .mcomments .st:not(.is-shown){display:flex;max-height:0;margin-top:0;opacity:0;transform:translateY(1.4cqw);overflow:hidden;animation:none;transition:max-height .55s cubic-bezier(.22,.8,.3,1),margin-top .55s cubic-bezier(.22,.8,.3,1),opacity .4s ease .08s,transform .55s cubic-bezier(.22,.8,.3,1) .04s}
+.mac .mcomments .st.is-shown{max-height:16cqw;margin-top:1.3cqw;opacity:1;transform:none;animation:none}
 .mtyping span{font-size:1.9cqw;color:#8C95A6}
 .mtyping i{width:.9cqw;height:.9cqw;border-radius:50%;background:#A6B0C2;animation:mac-dots 1s ease-in-out infinite}
 .mtyping i:nth-of-type(2){animation-delay:.15s}
@@ -469,7 +781,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .minvite.is-pop{animation:mac-pop .4s cubic-bezier(.3,1.4,.5,1)}
 @keyframes mac-pop{0%{transform:translateY(-1.5cqw) scale(.97);opacity:.4}100%{transform:none;opacity:1}}
 .minvite .ni{flex:none;display:grid;place-items:center;width:5cqw;height:5cqw;border-radius:1.2cqw;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,16,37,.1)}
-.minvite .ni svg{width:60%;fill:none;stroke:#E5483F;stroke-width:1.8;stroke-linecap:round}
+.minvite .ni svg{width:60%;fill:none;stroke:#2D63E6;stroke-width:1.8;stroke-linecap:round}
 .minvite>div{flex:1;min-width:0}
 .minvite p{font-size:1.95cqw;color:#3A4D55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .minvite p:first-child{display:flex;gap:1cqw;font-size:2cqw;color:var(--atc-navy)}
@@ -488,7 +800,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .mac-dock{position:absolute;left:50%;bottom:1cqw;transform:translateX(-50%);display:flex;align-items:flex-end;padding:1.1cqw 1.2cqw;border-radius:2.8cqw;
   background:rgba(246,248,252,.86);box-shadow:0 0 0 1px rgba(0,16,37,.08),0 1.6cqw 4cqw -1.6cqw rgba(0,16,37,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .dk{position:relative;flex:none;display:grid;place-items:center;width:7.4cqw;height:7.4cqw;margin:0 .6cqw;border-radius:1.9cqw;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,16,37,.06),0 .4cqw 1cqw -.3cqw rgba(0,16,37,.25)}
-.dk svg{width:58%;height:58%;fill:none;stroke:var(--g,#fff);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.dk svg{width:68%;height:68%;fill:none;stroke:var(--g,#fff);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .dk::after{content:"";position:absolute;bottom:-.9cqw;left:50%;width:.7cqw;height:.7cqw;margin-left:-.35cqw;border-radius:50%;background:#3A4D55;opacity:0;transition:opacity .3s ease}
 .dk-x{width:0;margin:0;opacity:0;transform:scale(.3);transition:width .3s ease,margin .3s ease,opacity .2s ease,transform .3s ease}
 .dk-x.is-in,.mac[data-scene="1"] .dk-x,.mac[data-scene="2"] .dk-x,.mac[data-scene="3"] .dk-x{width:7.4cqw;margin:0 .6cqw;opacity:1;transform:none;
@@ -496,6 +808,17 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 .dk.is-bounce{animation:mac-bounce .7s ease}
 @keyframes mac-bounce{25%{translate:0 -2.6cqw}50%{translate:0 0}70%{translate:0 -1cqw}100%{translate:0 0}}
 .dk.is-run::after,.mac[data-scene="1"] .dk[data-app="1"]::after,.mac[data-scene="2"] .dk[data-app="2"]::after,.mac[data-scene="3"] .dk[data-app="3"]::after{opacity:1}
+/* Premium finish: tinted tiles with a hairline top light, finer glyphs, softer layered shadows */
+.mac .dk{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 74%,#fff),var(--c) 72%);border-radius:24%;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,16,37,.12),inset 0 0 0 .5px rgba(0,16,37,.10),0 1px 2px rgba(0,16,37,.10),0 8px 16px -10px color-mix(in srgb,var(--c) 70%,#001025)}
+.mac .dk svg{stroke-width:1.5}
+.mac .av-t,.mac .avs b,.mac .av{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 76%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.mac .mw{box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 26px 52px -26px rgba(0,16,37,.30),0 2px 6px rgba(0,16,37,.05)}
+.mac .mac-dock{box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 18px 36px -20px rgba(0,16,37,.30)}
+.atc-offer-ic{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 74%,#fff),var(--c) 72%) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 0 0 .5px rgba(0,16,37,.10),0 8px 16px -10px color-mix(in srgb,var(--c) 70%,#001025) !important}
+.atc-offer-ic svg{stroke-width:1.55 !important}
+.cv-w,.atc-canvas{box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 22px 44px -26px rgba(0,16,37,.28),0 2px 5px rgba(0,16,37,.04) !important}
 @media (max-width:760px){
   .atc-mac{right:12px}
   .mac{width:min(100%,calc((46vh - var(--rail) - 12px) * 10 / 11))}
@@ -534,7 +857,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   <div class="atc-track" data-atc="track" style="height: {{trackHeight}}">
     <div class="atc-stage" data-atc="stage">
 
-      <div class="atc-layer atc-l2">
+      <div class="atc-herobg" data-atc="herobg" aria-hidden="true"></div>
+      <div class="atc-layer atc-l2" data-atc="l2">
         <video class="atc-video" data-atc="v2" src="../assets/af651f03cb8685835898c13376ca6a89.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
       </div>
       <div class="atc-layer atc-l4" data-atc="l4">
@@ -557,13 +881,13 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
       <section class="atc-ch atc-ch-0" data-atc="ch0" aria-label="Introduction">
         <div class="atc-in" data-atc="in0">
           <div class="atc-in atc-hero-in">
-            <div class="atc-block atc-hero-block">
-              <h1 class="ds-display"><span class="atc-line">A trusted tech partner </span><span class="atc-line">for business-led </span><span class="atc-line ds-soft">innovation.</span></h1>
-              <p class="ds-lede atc-hero-lede">We sit between strategy and execution, and solve what slows growth down.</p>
-              <div class="atc-ctas">
-                <a class="ds-btn" href="mailto:ankit.tanna@atconglobal.com">Start a conversation<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
-                <a class="ds-btn ds-btn--secondary ds-btn-down" href="#problem" onClick="{{ seeProblem }}">See why<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2.5 6.5L6 10l3.5-3.5"></path></svg></span></a>
+            <div class="atc-hero2">
+              <div class="atc-hero2-text">
+                <p class="atc-hero2-eyebrow"><i></i>Brussels, Belgium</p>
+                <h1 class="ds-display atc-hero2-title">Technology should move your business <span class="atc-line-grad">forward.</span></h1>
+                <p class="ds-lede atc-hero2-lede">From Belgium to the world: strategy, execution, ownership and scalable technology solutions.</p>
               </div>
+              <div class="atc-hero2-card" data-atc="heroCard"><span class="atc-hero2-tag"><i></i>Brussels</span></div>
             </div>
           </div>
         </div>
@@ -573,7 +897,7 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
         <div class="atc-in" data-atc="in1">
           <div class="atc-block">
             <h2 class="ds-h1 atc-title">Businesses often come to us
-with the same challenge.</h2>
+with a vision.</h2>
           </div>
         </div>
       </section>
@@ -584,23 +908,23 @@ with the same challenge.</h2>
         <div class="atc-steps" data-atc="steps" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">01</span></span></div>
-          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">But technology gets complicated.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise"><span class="atc-pl">Too many tools.</span><span class="atc-pl">Too many subscriptions.</span></span></span></p></div></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">But too many tools add complexity.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Which one is right for your software?</span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">02</span></span></div>
-          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">Many people. Different perspectives.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Business teams, IT, vendors and stakeholders all contribute.</span></span></p></div></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">And every vendor pulls a different way.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each one offers a different way to build it.</span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">03</span></span></div>
-          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">No clear ownership.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Decisions take longer, accountability is unclear and the result often drifts from the original vision.</span></span></p></div></div>
+          <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">Many people. Different perspectives. No clear ownership.</span></span></h2>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each team passes the task on until no one owns it.</span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">04</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">Instead of moving forward, your business gets stuck.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Higher costs. Slower delivery. Disconnected systems. Lost focus.</span></span></p></div></div>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Meeting after meeting, and the result is still zero.</span></span></p></div></div>
         </article>
       </section>
       <!-- Shared icon paint: one solid blue for strokes, one soft aurora fill for the second tone -->
@@ -691,7 +1015,7 @@ with the same challenge.</h2>
                 <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-red">Delayed 3 weeks</span></div>
                 <dl>
                   <dt>Owner</dt><dd><span class="pill owner" data-k="owner">Marketing</span></dd>
-                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#7F8FB0">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
+                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#5A86EE">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
                 </dl>
                 <div class="mcomments">
                   <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
@@ -700,8 +1024,8 @@ with the same challenge.</h2>
                   <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
                   <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
                   <small class="mlog st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>IT</b> reassigned this to <b>Bitforge Labs</b></small>
-                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#7F8FB0">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#7F8FB0">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
+                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#5A86EE">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
                   <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> removed the owner</small>
                   <small class="st" data-k="more">3 teams · 0 owners · still delayed</small>
                 </div>
@@ -748,20 +1072,20 @@ with the same challenge.</h2>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
           <div class="mac-dock">
-            <span class="dk" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 7 H10 L12 9 H20.5 V18 H3.5 Z"/></svg></span>
-            <span class="dk" data-app="1" style="--c:#4D8CF5"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4.5 7.5 L12 13 L19.5 7.5"/></svg></span>
-            <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#E5483F"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></span>
-            <span class="dk dk-x" data-dock="0" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19 M16 7 H21 M16 11 H21 M17.5 15 H21"/></svg></span>
-            <span class="dk dk-x" data-dock="1" data-app="2" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="5" height="15" rx="1.2"/><rect x="9.5" y="4.5" width="5" height="10" rx="1.2"/><rect x="15.5" y="4.5" width="5" height="7" rx="1.2"/></svg></span>
-            <span class="dk dk-x" data-dock="2" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M4 5.5 H20 V15.5 H11 L6.5 19 V15.5 H4 Z"/></svg></span>
-            <span class="dk dk-x" data-dock="3" style="--c:#1E8E5A"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5 H20 M4 14.5 H20 M10 4 V20"/></svg></span>
+            <span class="dk" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 7.2c0-.95.77-1.7 1.7-1.7h3.9l1.8 1.9h7.9c.94 0 1.7.76 1.7 1.7v.6H3.5z" style="fill:#fff;fill-opacity:.55;stroke:none"/><rect x="3.5" y="8.6" width="17" height="10.6" rx="1.8" style="fill:#fff;stroke:none"/><path d="M7 12.4h10" style="fill:none;stroke:var(--c);stroke-width:1.3;stroke-linecap:round;opacity:.45"/></svg></span>
+            <span class="dk" data-app="1" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.6" rx="2.1" style="fill:#fff;stroke:none"/><path d="M4.4 7.3l7.6 5.9 7.6-5.9" style="fill:none;stroke:var(--c);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round"/></svg></span>
+            <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#2D63E6"><svg viewBox="0 0 24 24"><path d="M4 9V7.6A3.1 3.1 0 0 1 7.1 4.5h9.8A3.1 3.1 0 0 1 20 7.6V9z" style="fill:var(--g,#2D63E6);stroke:none"/><text x="12" y="18.2" text-anchor="middle" style="fill:#001025;stroke:none;font:600 8.6px Geist,system-ui,sans-serif">14</text></svg></span>
+            <span class="dk dk-x" data-dock="0" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><rect x="5" y="3.8" width="14" height="16.4" rx="2.3" style="fill:#fff;stroke:none"/><circle cx="12" cy="10.1" r="2.7" style="fill:var(--c);stroke:none"/><path d="M7.7 16.8c.6-2.1 2.3-3.3 4.3-3.3s3.7 1.2 4.3 3.3z" style="fill:var(--c);stroke:none"/></svg></span>
+            <span class="dk dk-x" data-dock="1" data-app="2" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.6" y="5" width="4.9" height="14" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/><rect x="9.55" y="5" width="4.9" height="10" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/><rect x="15.5" y="5" width="4.9" height="6.8" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/></svg></span>
+            <span class="dk dk-x" data-dock="2" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M12 4.9c4.6 0 8.2 2.9 8.2 6.6s-3.6 6.6-8.2 6.6c-.9 0-1.8-.1-2.6-.3l-3.7 1.9.9-3.2C5 15.3 3.8 13.5 3.8 11.5c0-3.7 3.6-6.6 8.2-6.6z" style="fill:#fff;stroke:none"/><circle cx="8.7" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="12" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="15.3" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/></svg></span>
+            <span class="dk dk-x" data-dock="3" style="--c:#0B1E3A"><svg viewBox="0 0 24 24"><rect x="4.5" y="4" width="15" height="16" rx="2.1" style="fill:#fff;stroke:none"/><path d="M4.5 7.8V6.1A2.1 2.1 0 0 1 6.6 4h10.8a2.1 2.1 0 0 1 2.1 2.1v1.7z" style="fill:#3FB27E;stroke:none"/><path d="M4.5 11.9h15M4.5 15.9h15M10 7.8V20" style="fill:none;stroke:var(--c);stroke-width:1.1;opacity:.35"/></svg></span>
           </div>
         </div>
       </div>
 
       <!-- Focus statement: locked, lines close in, text fills -->
-      <section class="atc-fam" data-atc="fam" aria-label="You are not alone">
-        <h2 class="ds-statement atc-fam-text" data-atc="famText"><span class="atc-fam-line"><span class="ds-w">If</span> <span class="ds-w">this</span> <span class="ds-w">feels</span> <span class="ds-w">familiar,</span> <span class="ds-w">you’re</span> <span class="ds-w">not</span> <span class="ds-w">alone.</span></span><span class="atc-fam-line"><span class="ds-w">You</span> <span class="ds-w">just</span> <span class="ds-w">haven’t</span> <span class="ds-w">met</span> <span class="atc-gphrase"><span class="ds-w">the</span> <span class="ds-w">right</span> <span class="ds-w">partner.</span></span></span></h2>
+      <section class="atc-fam" data-atc="fam" aria-label="Where we come in">
+        <h2 class="ds-statement atc-fam-text" data-atc="famText"><span class="atc-fam-line"><span class="ds-w">If</span> <span class="ds-w">this</span> <span class="ds-w">feels</span> <span class="ds-w">like</span> <span class="ds-w">your</span> <span class="ds-w">problem,</span></span><span class="atc-fam-line"><span class="ds-w">that’s</span> <span class="ds-w">why</span> <span class="ds-w">we’re</span> <span class="atc-gphrase"><span class="ds-w">here</span> <span class="ds-w">for</span> <span class="ds-w">you.</span></span></span></h2>
       </section>
 
       <!-- Where we come in: title holds, then two lines, each with its graphic playing on its own -->
@@ -811,6 +1135,17 @@ with the same challenge.</h2>
         </svg>
       </div>
 
+      <!-- The solution: more than a supplier. Business on the left, the technology ecosystem on the right; they don't
+           reach each other directly, ATCON sits between them and connects every side -->
+      <section class="atc-sol" data-atc="sol" aria-label="More than a supplier, a true technology partner">
+        <div class="atc-float" data-atc="solFloat" aria-hidden="true"><img class="atc-float-word" src="../assets/798217b522466503844e74dfe6407be1.svg" alt=""><svg class="atc-float-a" viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></div><div class="atc-sol-win" data-atc="solWin"><div class="atc-sol-bar" aria-hidden="true"><span class="atc-sol-ind" data-atc="solInd"></span><span class="atc-sol-dots"><i></i><i></i><i></i></span><span class="atc-sol-tab is-on">Business-led technology</span><span class="atc-sol-tab">What we offer</span><span class="atc-sol-sep"></span><span class="atc-sol-tab">End-to-end ownership</span></div><div class="atc-sol-body"><div class="atc-offer" data-atc="offer"><div class="atc-offer-text"><p class="ds-label ds-grad-text">What we offer</p><h2 class="atc-offer-title">The right capabilities. <span class="ds-mute">Connected around your business.</span></h2><ol class="atc-offer-list"><li data-atc="offerL0"><span class="atc-offer-ic" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 20 H20.5"/><path d="M7 17 V13.5 M11 17 V11 M15 17 V12.5"/><path d="M4.5 11 L9.5 6.8 L13 9.3 L18.8 4.6"/><path d="M15.6 4.4 H19 V7.8"/></svg></span><div><strong>Data &amp; Analysis</strong><span>Turn your data into decisions. Find patterns, insights and opportunities.</span></div></li><li data-atc="offerL1"><span class="atc-offer-ic" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><circle cx="11" cy="12" r="2.6"/><path d="M11 6.2 V7.6 M11 16.4 V17.8 M5.2 12 H6.6 M15.4 12 H16.8 M6.9 7.9 L7.9 8.9 M14.1 15.1 L15.1 16.1 M6.9 16.1 L7.9 15.1 M14.1 8.9 L15.1 7.9"/><path d="M19.2 9.4 A8.6 8.6 0 1 0 19.6 13.8"/><path d="M20.4 6.6 L19.4 9.6 L16.4 8.8"/></svg></span><div><strong>Process &amp; Automation</strong><span>Remove repetitive work. Make processes scalable.</span></div></li><li data-atc="offerL2"><span class="atc-offer-ic" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><path d="M3 19.5 C3 15.8 5.4 13.6 8.5 13.6 C9.9 13.6 11.1 14 12.1 14.8"/><circle cx="17" cy="16" r="4.2"/><path d="M12.8 16 H21.2 M17 11.8 C15.5 13.2 15.5 18.8 17 20.2 M17 11.8 C18.5 13.2 18.5 18.8 17 20.2"/></svg></span><div><strong>Global Talent</strong><span>Access the right expertise when needed. Aligned with ownership and delivery.</span></div></li><li data-atc="offerL3"><span class="atc-offer-ic" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M3 8.5 H21"/><circle cx="5.8" cy="6.5" r=".5"/><path d="M10 11.6 L7.8 13.9 L10 16.2 M14 11.6 L16.2 13.9 L14 16.2"/></svg></span><div><strong>Digital Solutions</strong><span>Turn your idea into a custom solution. Build what you actually need.</span></div></li></ol></div><div class="atc-canvas"><div class="cv-bar"><i></i><i></i><i></i><span>Your business</span></div><div class="cv-body"><svg class="cv-links" viewBox="0 0 600 340" preserveAspectRatio="none"><path class="cv-link" data-atc="cvL0" d="M300 140 V86 H262" pathLength="1"></path><path class="cv-link" data-atc="cvL1" d="M300 200 V254 H262" pathLength="1"></path><path class="cv-link" data-atc="cvL2" d="M300 140 V86 H338" pathLength="1"></path><path class="cv-link" data-atc="cvL3" d="M300 200 V254 H338" pathLength="1"></path></svg><span class="cv-hub" data-atc="offerSlot"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div class="cv-w cv-w0" data-atc="cvW0"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Analytics</span></div><div class="cvm-body"><div class="an-top"><div><small>Revenue · this quarter</small><strong>€<span data-count="2.4" data-dec="1" data-from=".18" data-to=".55">0.0</span>M</strong></div><em class="an-up" data-in=".5">+18%</em></div><svg class="an-chart" viewBox="0 0 300 110" preserveAspectRatio="none"><path class="an-grid" d="M0 27 H300 M0 55 H300 M0 83 H300"/><path class="an-area an-rev" d="M0 96 C40 90 60 78 90 80 C120 82 140 60 170 58 C200 56 220 40 250 30 C270 24 285 16 300 10 V110 H0 Z"/><path class="an-line an-rev" d="M0 96 C40 90 60 78 90 80 C120 82 140 60 170 58 C200 56 220 40 250 30 C270 24 285 16 300 10"/></svg></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Insight ready</span><span class="cvb-x">Region C is your fastest-growing market</span></div><em>now</em></div></div><div class="cv-w cv-w1" data-atc="cvW1"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Automations</span></div><div class="cvm-body"><div class="au-rows"><div class="au-row" data-in="0.16"><span class="au-ic" style="--c:#2D63E6"></span><div><b>Invoice approvals</b><small>Runs on every new invoice</small></div><i class="cv-tg" data-on="0.32"></i></div><div class="au-row" data-in="0.24"><span class="au-ic" style="--c:#3FB27E"></span><div><b>Order sync</b><small>Shop → ERP, every minute</small></div><i class="cv-tg" data-on="0.42"></i></div><div class="au-row" data-in="0.32"><span class="au-ic" style="--c:#9BBA2A"></span><div><b>Weekly reports</b><small>Sent Monday 08:00</small></div><i class="cv-tg" data-on="0.52"></i></div></div><p class="au-count" data-in=".55"><strong data-count="1284" data-from=".55" data-to=".85">0</strong> tasks done for you this month</p></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">6 hours saved this week</span><span class="cvb-x">Automations ran 1,284 tasks for your team</span></div><em>now</em></div></div><div class="cv-w cv-w2" data-atc="cvW2"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>FaceTime · Project kickoff</span></div><div class="cvm-body"><div class="ft-grid"><div class="ft-tile" data-in="0.14" style="--c:#2D63E6"><b class="ft-av">AM</b><span>Ana<small>Cloud architect · Lisbon</small></span></div><div class="ft-tile" data-in="0.26" style="--c:#3FB27E"><b class="ft-av">RK</b><span>Rahul<small>Data engineer · Pune</small></span></div><div class="ft-tile" data-in="0.38" style="--c:#9BBA2A"><b class="ft-av">LB</b><span>Lena<small>Product designer · Berlin</small></span></div><div class="ft-tile" data-in="0.50" style="--c:#0C1628"><b class="ft-av">YOU</b><span>You<small>Product owner · Brussels</small></span></div></div></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Your project team is ready</span><span class="cvb-x">3 experts joined from Lisbon, Pune and Berlin</span></div><em>now</em></div></div><div class="cv-w cv-w3" data-atc="cvW3"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Client portal · build</span></div><div class="cvm-body"><div class="pt pt-sk pt-min"><div class="pt-side" data-in=".14"><span class="pt-logo"></span><i class="on"></i><i></i><i></i></div><div class="pt-main"><u class="lg" data-in=".2" style="width:46%"></u><div class="pt-kpis"><div class="pt-k" data-in="0.26"><u style="width:60%"></u></div><div class="pt-k" data-in="0.32"><u style="width:45%"></u></div></div><div class="pt-bars" data-in=".4"><i style="--h:0.38"></i><i style="--h:0.55"></i><i style="--h:0.47"></i><i style="--h:0.7"></i><i style="--h:0.95"></i></div></div></div><div class="bd-prog"><span>Building v1.0</span><div class="bd-bar"><i data-fill data-from=".2" data-to=".66"></i></div><em data-in=".66">Live</em></div></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Client portal is live</span><span class="cvb-x">v1.0 shipped to your customers</span></div><em>now</em></div></div></div></div></div><h2 class="ds-h1 atc-sol-head"><span class="ds-mask"><span class="ds-rise"><span class="ds-mute">More than</span> a supplier.</span></span><span class="ds-mask"><span class="ds-rise"><span class="atc-line-grad">A true technology partner.</span></span></span></h2><svg class="atc-sol-map" viewBox="0 40 1920 790" aria-hidden="true"><defs><linearGradient id="tg-2D63E6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5F88EC"></stop><stop offset="1" stop-color="#2D63E6"></stop></linearGradient><linearGradient id="tg-3FB27E" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6DC49D"></stop><stop offset="1" stop-color="#3FB27E"></stop></linearGradient><linearGradient id="tg-5A86EE" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#82A3F2"></stop><stop offset="1" stop-color="#5A86EE"></stop></linearGradient><linearGradient id="tg-9BBA2A" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B3CB5D"></stop><stop offset="1" stop-color="#9BBA2A"></stop></linearGradient><linearGradient id="tg-hi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"></stop><stop offset=".5" stop-color="#fff" stop-opacity="0"></stop></linearGradient><linearGradient id="sol-kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A2C4A"></stop><stop offset="1" stop-color="#001025"></stop></linearGradient><linearGradient id="sol-amark" x1="84.5321" y1="37.5117" x2="117.043" y2="111.535" gradientUnits="userSpaceOnUse">
+<stop offset="0.00480769" stop-color="#D3FFE4"></stop>
+<stop offset="0.3" stop-color="#EBFF39"></stop>
+<stop offset="0.7" stop-color="#0065ED"></stop>
+<stop offset="1" stop-color="#00112A"></stop>
+</linearGradient><filter id="sol-sh" x="-30%" y="-60%" width="160%" height="240%"><feDropShadow dx="0" dy="10" stdDeviation="13" flood-color="#001025" flood-opacity=".09"></feDropShadow><feDropShadow dx="0" dy="1.5" stdDeviation="1.2" flood-color="#001025" flood-opacity=".06"></feDropShadow></filter><linearGradient id="sol-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3FB27E"></stop><stop offset=".5" stop-color="#2D63E6"></stop><stop offset="1" stop-color="#9BBA2A"></stop></linearGradient><filter id="sol-glowf" x="-60%" y="-120%" width="220%" height="340%"><feGaussianBlur stdDeviation="12"></feGaussianBlur></filter></defs><g data-atc="solLinks"><path class="sol-link" d="M333 257 L470 257 L503 290 L625 290 L645 310 L645 338 L705 338 L705 446" pathLength="1"></path><path class="sol-link" d="M513 371 L540 371 L556 377 L653 377 L653 422 L705 422" pathLength="1"></path><path class="sol-link" d="M327 485 L378 485 L388 495 L468 495 L468 565 L705 565 L705 512" pathLength="1"></path><path class="sol-link" d="M416 574 L416 558 L428 546 L468 546" pathLength="1"></path><path class="sol-link" d="M340 713 L513 713 L513 647 L527 633 L596 633 L596 565" pathLength="1"></path><path class="sol-link" d="M825 479 L869 479" pathLength="1"></path><path class="sol-link" d="M1061 479 L1096 479" pathLength="1"></path><path class="sol-link" d="M1258 446 L1258 354 L1272 340 L1336 340 L1336 256 L1348 244 L1348 212 L1360 199 L1390 199" pathLength="1"></path><path class="sol-link" d="M1336 256 L1587 256 L1587 299 L1600 299" pathLength="1"></path><path class="sol-link" d="M1336 296 L1496 296 L1496 334 L1540 334 L1550 344 L1550 374" pathLength="1"></path><path class="sol-link" d="M1414 479 L1414 479 L1414 508 L1428 518 L1470 518 L1480 510 L1545 510 L1545 499 L1665 499" pathLength="1"></path><path class="sol-link" d="M1258 512 L1258 559 L1360 559 L1368 567 L1368 599 L1390 599" pathLength="1"></path><path class="sol-link" d="M1258 559 L1258 628 L1274 640 L1274 722 L1454 722 L1454 790 L1602 790 L1602 699 L1612 699" pathLength="1"></path><path class="sol-link sol-stub" d="M198 257 L198 257 L198 190 L70 190 L55 175 L55 103 L113 103" pathLength="1"></path><path class="sol-link sol-stub" d="M60 314 L60 296 L165 296 L165 228 L198 228" pathLength="1"></path><path class="sol-link sol-stub" d="M378 371 L261 371 L261 312 L161 312 L161 538 L85 538 L70 524 L70 466" pathLength="1"></path><path class="sol-link sol-stub" d="M146 485 L89 485 L89 418" pathLength="1"></path><path class="sol-link sol-stub" d="M416 624 L416 657 L378 657 L372 652 L236 652 L236 608 L193 608 L193 566" pathLength="1"></path><path class="sol-link sol-stub" d="M194 713 L130 713 L130 583 L38 583 L38 548" pathLength="1"></path><path class="sol-link sol-stub" d="M1654 199 L1712 199 L1723 210 L1753 210 L1753 116 L1836 116 L1836 64" pathLength="1"></path><path class="sol-link sol-stub" d="M1583 399 L1692 399 L1692 434 L1795 434 L1795 362 L1860 362" pathLength="1"></path><path class="sol-link sol-stub" d="M1839 499 L1862 499 L1862 546 L1898 546 L1898 520" pathLength="1"></path><path class="sol-link sol-stub" d="M1524 599 L1718 599 L1718 641 L1800 641 L1800 600 L1873 600 L1873 618" pathLength="1"></path><path class="sol-link sol-stub" d="M1866 699 L1900 699 L1900 728" pathLength="1"></path><g class="sol-acc sol-term"><rect x="114" y="97" width="24" height="12" rx="6"></rect><path d="M121 103 H131"></path></g><g class="sol-acc sol-term"><circle cx="60" cy="324" r="6"></circle><circle cx="60" cy="324" r="1.6" class="f"></circle></g><g class="sol-acc sol-term"><rect x="65" y="453" width="10" height="10" rx="2"></rect><rect x="68.5" y="456.5" width="3" height="3" class="f"></rect></g><g class="sol-acc sol-term"><rect x="76" y="402" width="24" height="12" rx="6"></rect><circle cx="84" cy="408" r="1.4" class="f"></circle><circle cx="92" cy="408" r="1.4" class="f"></circle></g><g class="sol-acc sol-term"><rect x="181" y="552" width="24" height="12" rx="6"></rect><circle cx="189" cy="558" r="1.4" class="f"></circle><circle cx="197" cy="558" r="1.4" class="f"></circle></g><g class="sol-acc sol-term"><rect x="33" y="535" width="10" height="10" rx="2"></rect><rect x="36.5" y="538.5" width="3" height="3" class="f"></rect></g><g class="sol-acc sol-term"><rect x="1824" y="49" width="24" height="12" rx="6"></rect><path d="M1831 55 H1841"></path></g><g class="sol-acc sol-term"><rect x="1860" y="356" width="24" height="12" rx="6"></rect><path d="M1867 362 H1877"></path></g><g class="sol-acc sol-term"><circle cx="1898" cy="512" r="6"></circle><circle cx="1898" cy="512" r="1.6" class="f"></circle></g><g class="sol-acc sol-term"><rect x="1868" y="621" width="10" height="10" rx="2"></rect><rect x="1871.5" y="624.5" width="3" height="3" class="f"></rect></g><g class="sol-acc sol-term"><circle cx="1900" cy="736" r="6"></circle><circle cx="1900" cy="736" r="1.6" class="f"></circle></g><path class="sol-acc sol-ticks" d="M170 318 V326 M180 318 V326 M190 318 V326"></path><path class="sol-acc sol-ticks" d="M422 499 V507 M432 499 V507 M442 499 V507"></path><path class="sol-acc sol-ticks" d="M1556 262 V270 M1566 262 V270 M1576 262 V270"></path><path class="sol-acc sol-ticks" d="M1692 607 V615 M1702 607 V615 M1712 607 V615"></path></g><g class="sol-pulses" data-atc="solPulse"><path class="sol-flow sol-fl" d="M333 257 L470 257 L503 290 L625 290 L645 310 L645 338 L705 338 L705 446" pathLength="1"></path><path class="sol-flow sol-fl" d="M513 371 L540 371 L556 377 L653 377 L653 422 L705 422" pathLength="1"></path><path class="sol-flow sol-fl" d="M327 485 L378 485 L388 495 L468 495 L468 565 L705 565 L705 512" pathLength="1"></path><path class="sol-flow sol-fl" d="M416 574 L416 558 L428 546 L468 546" pathLength="1"></path><path class="sol-flow sol-fl" d="M340 713 L513 713 L513 647 L527 633 L596 633 L596 565" pathLength="1"></path><path class="sol-flow sol-fc" d="M825 479 L869 479" pathLength="1"></path><path class="sol-flow sol-fc" d="M1061 479 L1096 479" pathLength="1"></path><path class="sol-flow sol-fr" d="M1258 446 L1258 354 L1272 340 L1336 340 L1336 256 L1348 244 L1348 212 L1360 199 L1390 199" pathLength="1"></path><path class="sol-flow sol-fr" d="M1336 256 L1587 256 L1587 299 L1600 299" pathLength="1"></path><path class="sol-flow sol-fr" d="M1336 296 L1496 296 L1496 334 L1540 334 L1550 344 L1550 374" pathLength="1"></path><path class="sol-flow sol-fr" d="M1414 479 L1414 479 L1414 508 L1428 518 L1470 518 L1480 510 L1545 510 L1545 499 L1665 499" pathLength="1"></path><path class="sol-flow sol-fr" d="M1258 512 L1258 559 L1360 559 L1368 567 L1368 599 L1390 599" pathLength="1"></path><path class="sol-flow sol-fr" d="M1258 559 L1258 628 L1274 640 L1274 722 L1454 722 L1454 790 L1602 790 L1602 699 L1612 699" pathLength="1"></path></g><g class="sol-side" data-atc="solL"><g transform="translate(198 232)"><rect class="sol-card" width="135" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-2D63E6)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.2"/></g><text class="sol-lbl" x="53" y="32">Goals</text></g><g transform="translate(378 346)"><rect class="sol-card" width="135" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-3FB27E)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19"/><circle cx="16.5" cy="8.5" r="2.4"/><path d="M16 13.2 C18.6 13.2 20.5 15 20.5 18"/></g><text class="sol-lbl" x="53" y="32">Teams</text></g><g transform="translate(146 460)"><rect class="sol-card" width="181" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-5A86EE)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 19.5 C5 15.5 8 13.5 12 13.5 C16 13.5 19 15.5 19 19.5"/></g><text class="sol-lbl" x="53" y="32">Customers</text></g><g transform="translate(376 574)"><rect class="sol-card" width="192" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-9BBA2A)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M5 7 H19 M5 12 H19 M5 17 H19"/><circle cx="9" cy="7" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="10" cy="17" r="1.8"/></g><text class="sol-lbl" x="53" y="32">Operations</text></g><g transform="translate(194 688)"><rect class="sol-card" width="146" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-3FB27E)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M4 17 L9.5 11.5 L13 15 L20 8"/><path d="M15.5 8 H20 V12.5"/></g><text class="sol-lbl" x="53" y="32">Growth</text></g><g transform="translate(585 446)"><rect class="sol-card sol-key" width="240" height="66" rx="16"></rect><rect class="sol-tile" x="19" y="15" width="36" height="36" rx="10" fill="url(#tg-3FB27E)"></rect><rect class="sol-tile-hi" x="19" y="15" width="36" height="36" rx="10" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(25 21)"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5 V5.5 H15 V7.5 M3.5 12.5 H20.5"/></g><text class="sol-lbl sol-lbl-m" x="69" y="41">Your business</text></g></g><g class="sol-side" data-atc="solR"><g transform="translate(1390 174)"><rect class="sol-card" width="264" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-2D63E6)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5 L13.4 13.4 L8.5 15.5 L10.6 10.6 Z"/></g><text class="sol-lbl" x="53" y="32">Strategy & Advisory</text></g><g transform="translate(1600 274)"><rect class="sol-card" width="284" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-3FB27E)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M8.5 7.5 L4 12 L8.5 16.5 M15.5 7.5 L20 12 L15.5 16.5 M13.2 5.5 L10.8 18.5"/></g><text class="sol-lbl" x="53" y="32">Product & Engineering</text></g><g transform="translate(1419 374)"><rect class="sol-card" width="164" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-5A86EE)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M12 3.5 L13.8 10.2 L20.5 12 L13.8 13.8 L12 20.5 L10.2 13.8 L3.5 12 L10.2 10.2 Z"/></g><text class="sol-lbl" x="53" y="32">Data & AI</text></g><g transform="translate(1665 474)"><rect class="sol-card" width="174" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-9BBA2A)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M19.5 12 A7.5 7.5 0 0 1 6.2 16.8 M4.5 12 A7.5 7.5 0 0 1 17.8 7.2"/><path d="M18.2 3.8 V7.6 H14.4 M5.8 20.2 V16.4 H9.6"/></g><text class="sol-lbl" x="53" y="32">Automation</text></g><g transform="translate(1390 574)"><rect class="sol-card" width="134" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-2D63E6)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><circle cx="9" cy="9" r="3"/><path d="M3.5 19 C3.5 15.5 6 13.5 9 13.5 C12 13.5 14.5 15.5 14.5 19"/><circle cx="16.5" cy="8.5" r="2.4"/><path d="M16 13.2 C18.6 13.2 20.5 15 20.5 18"/></g><text class="sol-lbl" x="53" y="32">Talent</text></g><g transform="translate(1612 674)"><rect class="sol-card" width="254" height="50" rx="13"></rect><rect x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-3FB27E)" class="sol-tile"></rect><rect class="sol-tile-hi" x="9" y="9" width="32" height="32" rx="8.5" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(14 14) scale(.9167)"><path d="M5 19.5 V14 M10 19.5 V10.5 M15 19.5 V7.5 M20 19.5 V4.5"/></g><text class="sol-lbl" x="53" y="32">Operations & Scale</text></g><g transform="translate(1096 446)"><rect class="sol-card sol-key" width="319" height="66" rx="16"></rect><rect class="sol-tile" x="19" y="15" width="36" height="36" rx="10" fill="url(#tg-2D63E6)"></rect><rect class="sol-tile-hi" x="19" y="15" width="36" height="36" rx="10" fill="url(#tg-hi)"></rect><g class="sol-glyph" transform="translate(25 21)"><path d="M12 3.5 L20 7.8 L12 12 L4 7.8 Z"/><path d="M4 12 L12 16.2 L20 12 M4 16.2 L12 20.5 L20 16.2"/></g><text class="sol-lbl sol-lbl-m" x="69" y="41">Technology ecosystem</text></g></g><g data-atc="solHub"><g data-atc="solFrame"><rect class="sol-hub-glow" x="875.0" y="442.0" width="180" height="74" rx="22"></rect><rect class="sol-hub" x="875.0" y="442.0" width="180" height="74" rx="24"></rect><rect x="875.0" y="442.0" width="180" height="74" rx="24" fill="none" stroke="url(#sol-ring)" stroke-width="3"></rect></g><g transform="translate(903.0 468.5) scale(0.18425)"><g data-atc="solA"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></g><g data-atc="solT"><g class="sol-ltr"><path d="M180.834 111.953V25.1359C180.834 25.0933 180.799 25.0588 180.756 25.0588L145.011 25.0588C144.968 25.0588 144.934 25.0243 144.934 24.9817V8.17755C144.934 8.13499 144.968 8.10049 145.011 8.10049L237.888 8.10049C237.93 8.10049 237.965 8.13499 237.965 8.17755V24.9817C237.965 25.0243 237.93 25.0588 237.888 25.0588H201.716C201.673 25.0588 201.639 25.0933 201.639 25.1359V111.89C201.639 111.932 201.604 111.967 201.562 111.967H180.847C180.84 111.967 180.834 111.961 180.834 111.953Z" fill="#001025"></path></g><g class="sol-ltr"><path d="M323.934 113.231C323.937 113.237 323.933 113.245 323.926 113.245C311.966 113.243 301.668 111.06 293.033 106.696C284.394 102.236 277.738 96.0068 273.093 88.0335C268.434 80.0602 266.118 70.7025 266.118 59.9738C266.118 49.245 268.447 40.0338 273.093 32.0471C277.738 24.0605 284.394 17.8974 293.033 13.5314C301.671 9.0722 311.974 6.83594 323.941 6.83594C334.004 6.83594 342.843 8.3534 350.443 11.3883C358.137 14.4233 364.313 18.6961 368.959 24.2069C373.599 29.6956 376.443 36.0689 377.492 43.3533C377.499 43.3997 377.463 43.4414 377.416 43.4414H356.481C356.445 43.4414 356.414 43.4167 356.406 43.382C354.971 37.4197 351.275 32.6475 345.305 29.0521C339.422 25.4448 332.3 23.6345 323.941 23.6345C312.733 23.6345 303.801 26.8159 297.159 33.1786C290.61 39.4481 287.335 48.3798 287.335 59.9604C287.335 71.5411 290.61 80.6592 297.159 87.0219C303.801 93.2914 312.733 96.4195 323.941 96.4195C332.487 96.4195 339.701 94.6092 345.598 91.0019C351.568 87.3137 355.211 82.4356 356.553 76.3938C356.561 76.3584 356.592 76.3331 356.628 76.3331L377.417 76.3331C377.464 76.3331 377.499 76.374 377.494 76.42C376.537 83.8907 373.639 90.3576 368.812 95.8471C363.967 101.358 357.698 105.631 350.004 108.666C342.314 111.699 333.627 113.216 323.942 113.218C323.936 113.218 323.931 113.225 323.934 113.231Z" fill="#001025"></path></g><g class="sol-ltr"><path d="M470.789 113.245C458.729 113.245 448.373 111.062 439.734 106.696C431.095 102.236 424.439 96.0068 419.794 88.0335C415.242 80.0602 412.952 70.7025 412.952 59.9738C412.952 49.245 415.281 40.0338 419.927 32.0471C424.586 24.0738 431.188 17.8974 439.734 13.5314C448.373 9.0722 458.729 6.83594 470.789 6.83594C482.848 6.83594 493.018 9.0722 501.564 13.5314C510.203 17.8974 516.805 24.0738 521.371 32.0471C526.03 40.0204 528.346 49.3382 528.346 59.9738C528.346 70.6093 526.016 80.0602 521.371 88.0335C516.712 96.0068 510.07 102.236 501.431 106.696C492.885 111.062 482.675 113.245 470.802 113.245H470.789ZM470.789 96.4328C481.903 96.4328 490.729 93.3047 497.291 87.0352C503.84 80.6725 507.115 71.6476 507.115 59.9738C507.115 48.2999 503.787 39.4614 497.144 33.1919C490.595 26.8292 481.81 23.6478 470.789 23.6478C459.767 23.6478 450.649 26.8292 444.007 33.1919C437.458 39.4614 434.183 48.3931 434.183 59.9738C434.183 71.5544 437.458 80.6725 444.007 87.0352C450.649 93.3047 459.581 96.4328 470.789 96.4328Z" fill="#001025"></path></g><g class="sol-ltr"><path d="M568.359 111.953C568.373 111.953 568.385 111.942 568.385 111.927V8.17754C568.385 8.13499 568.42 8.10049 568.462 8.10049L593.984 8.10049C594.008 8.10049 594.031 8.11188 594.046 8.13124L651.836 84.9945C651.851 85.0138 651.873 85.0252 651.898 85.0252H652.632C652.675 85.0252 652.71 84.9897 652.709 84.9464L651.992 52.3997V8.17755C651.992 8.13499 652.027 8.10049 652.069 8.10049L672.72 8.10049C672.763 8.10049 672.797 8.13499 672.797 8.17755V111.876C672.797 111.919 672.763 111.953 672.72 111.953L647.625 111.953C647.6 111.953 647.578 111.942 647.563 111.923L589.906 35.6185C589.891 35.5992 589.869 35.5879 589.844 35.5879H588.817C588.774 35.5879 588.739 35.6236 588.74 35.667L589.59 66.9354V111.876C589.59 111.919 589.555 111.953 589.513 111.953H568.359Z" fill="#001025"></path></g></g></g></g></svg></div></div>
+      </section>
+
 
 
     </div>
@@ -847,7 +1182,7 @@ with the same challenge.</h2>
           <svg viewBox="0 8 506 490" fill="currentColor" aria-hidden="true"><path d="M215 11H304L92 494H0Z"></path><path d="M365 173L506 493H417L320 272Z"></path></svg>
         </a>
         <button class="ds-burger atc-burger" data-atc="burger" type="button" aria-label="Open menu" aria-expanded="false" onClick="{{ toggleMenu }}"><span class="ds-burger-box"><span class="ds-burger-ln"></span><span class="ds-burger-ln"></span></span></button>
-        <a class="ds-btn ds-btn--sm atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+        <a class="ds-btn ds-btn--sm ds-btn--grad atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
       </div>
 
       <!-- Splash: blurred hero with the mark, 1s, then it clears into the hero -->
@@ -862,68 +1197,6 @@ with the same challenge.</h2>
   <div class="atc-after" data-theme="light">
 
     <!-- Each section settles into the screen and holds for a moment before the next one comes up -->
-    <div class="atc-pin" id="who">
-    <section class="atc-sec atc-who atc-pin-in" aria-labelledby="who-title">
-      <div class="atc-who-head">
-        <div class="ds-rv" data-rv="">
-          <p class="ds-label ds-grad-text">Who we are</p>
-          <h2 class="ds-display" id="who-title">A business-first<br>technology partner.</h2>
-        </div>
-      </div>
-      <div class="atc-cols" data-atc="cols">
-        <article class="atc-col">
-          <hr class="ds-rule">
-          <div class="atc-col-ic" aria-hidden="true">
-            <!-- Think: an idea, shaped together -->
-            <svg viewBox="-40 -40 80 82"><defs><linearGradient id="who-plate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E2E9F8"></stop><stop offset="1" stop-color="#E8F2EA"></stop></linearGradient><linearGradient id="who-lip" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D5DEEF"></stop><stop offset="1" stop-color="#C9D4EA"></stop></linearGradient><linearGradient id="who-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6FA48C"></stop><stop offset="0.5" stop-color="#5D9690"></stop><stop offset="1" stop-color="#4C8398"></stop></linearGradient><linearGradient id="who-shine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></linearGradient></defs><circle cy="4" r="34" fill="url(#who-lip)"></circle><circle cy="0" r="34" fill="url(#who-plate)"></circle><circle cy="2" r="24" fill="url(#who-side)"></circle><rect x="-24" y="-4" width="48" height="6" fill="url(#who-side)"></rect><circle cy="-4" r="24" fill="url(#ic-node)"></circle><path d="M-21.6 -14.4 A24 24 0 0 1 21.6 -14.4" fill="none" stroke="url(#who-shine)" stroke-width="1.2" stroke-linecap="round"></path><g transform="translate(0 -4) scale(.88)" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M-5 8 C-5 4 -10 1.5 -10 -4.5 A10 10 0 0 1 10 -4.5 C10 1.5 5 4 5 8 Z M-4 12.5 H4"></path></g></svg>
-          </div>
-          <h3 class="ds-h3"><span class="ds-mask"><span class="ds-rise">We think with you.</span></span></h3>
-          <p class="ds-body"><span class="ds-mask"><span class="ds-rise">We start with your goals and challenge ideas before anything gets built.</span></span></p>
-        </article>
-        <article class="atc-col">
-          <hr class="ds-rule">
-          <div class="atc-col-ic" aria-hidden="true">
-            <!-- Build: blocks going up, piece by piece -->
-            <svg viewBox="-40 -40 80 82"><circle cy="4" r="34" fill="url(#who-lip)"></circle><circle cy="0" r="34" fill="url(#who-plate)"></circle><circle cy="2" r="24" fill="url(#who-side)"></circle><rect x="-24" y="-4" width="48" height="6" fill="url(#who-side)"></rect><circle cy="-4" r="24" fill="url(#ic-node)"></circle><path d="M-21.6 -14.4 A24 24 0 0 1 21.6 -14.4" fill="none" stroke="url(#who-shine)" stroke-width="1.2" stroke-linecap="round"></path><g transform="translate(0 -4) scale(.88)" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><rect x="-6.5" y="-13" width="13" height="10" rx="2.5"></rect><rect x="-14" y="2" width="13" height="10" rx="2.5"></rect><rect x="1" y="2" width="13" height="10" rx="2.5"></rect></g></svg>
-          </div>
-          <h3 class="ds-h3"><span class="ds-mask"><span class="ds-rise">We build with you.</span></span></h3>
-          <p class="ds-body"><span class="ds-mask"><span class="ds-rise">The right experts, working alongside your team, with progress you can see.</span></span></p>
-        </article>
-        <article class="atc-col">
-          <hr class="ds-rule">
-          <div class="atc-col-ic" aria-hidden="true">
-            <!-- Stay: it works, and keeps improving -->
-            <svg viewBox="-40 -40 80 82"><circle cy="4" r="34" fill="url(#who-lip)"></circle><circle cy="0" r="34" fill="url(#who-plate)"></circle><circle cy="2" r="24" fill="url(#who-side)"></circle><rect x="-24" y="-4" width="48" height="6" fill="url(#who-side)"></rect><circle cy="-4" r="24" fill="url(#ic-node)"></circle><path d="M-21.6 -14.4 A24 24 0 0 1 21.6 -14.4" fill="none" stroke="url(#who-shine)" stroke-width="1.2" stroke-linecap="round"></path><g transform="translate(0 -4) scale(.88)" fill="none" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 -7.4 A13 13 0 1 0 12.6 3.4"></path><path d="M16.2 6.9 L13 1 L7.4 4.6"></path><path d="M-5 0 L-1.5 3.5 L5 -3"></path></g></svg>
-          </div>
-          <h3 class="ds-h3"><span class="ds-mask"><span class="ds-rise">We stay until it works.</span></span></h3>
-          <p class="ds-body"><span class="ds-mask"><span class="ds-rise">After launch, we keep improving it as your business grows.</span></span></p>
-        </article>
-      </div>
-    </section>
-    </div>
-
-    <div class="atc-pin" id="clients">
-    <section class="atc-sec atc-trust atc-pin-in" aria-labelledby="trust-title">
-      <div class="atc-trust-head">
-        <h2 class="ds-display ds-rv" data-rv="" id="trust-title">Trusted <span class="ds-mute">where</span><br><span class="ds-mute">the</span> stakes are high.</h2>
-        <div class="atc-trust-side ds-rv" data-rv="">
-          <p class="ds-lede">From fast-growing companies to complex enterprises, business leaders trust us to deliver what matters.</p>
-          <a class="ds-btn ds-btn--grad" href="mailto:hello@atconglobal.com">Start a conversation<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
-        </div>
-      </div>
-      <div class="atc-logos ds-rv" data-rv="">
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 1]</span></div>
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 2]</span></div>
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 3]</span></div>
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 4]</span></div>
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 5]</span></div>
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 6]</span></div>
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 7]</span></div>
-        <div class="atc-logo-cell"><span class="ds-small">[Client logo 8]</span></div>
-      </div>
-    </section>
-    </div>
-
     <!-- Proven results: the claim on the left, the numbers as a bento on the right -->
     <div class="atc-pin" id="results">
     <section class="atc-sec atc-kpi atc-pin-in" aria-labelledby="kpi-title">
@@ -967,6 +1240,12 @@ with the same challenge.</h2>
     </section>
     </div>
 
+    <!-- Trusted by: the client logos drift by slowly in one quiet line -->
+    <section class="atc-brands" id="clients" aria-label="Trusted by brands shaping the world">
+      <p class="ds-label ds-grad-text atc-brands-k">Trusted by brands shaping the world</p>
+      <div class="atc-brands-row"><div class="atc-brands-track"><img style="--s:1.55" src="../assets/clients/logo-1.svg" alt="Orange" loading="lazy"><img style="--s:1.05" src="../assets/clients/logo-2.svg" alt="INAMI" loading="lazy"><img style="--s:1.5" src="../assets/clients/logo-3.svg" alt="Elia" loading="lazy"><img style="--s:1.0" src="../assets/clients/logo-4.svg" alt="District09" loading="lazy"><img style="--s:0.9" src="../assets/clients/logo-5.svg" alt="Ypto" loading="lazy"><img style="--s:0.95" src="../assets/clients/logo-6.svg" alt="Sciensano" loading="lazy"><img style="--s:0.85" src="../assets/clients/logo-7.svg" alt="Belfius" loading="lazy"><img style="--s:1.55" src="../assets/clients/logo-1.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:1.05" src="../assets/clients/logo-2.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:1.5" src="../assets/clients/logo-3.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:1.0" src="../assets/clients/logo-4.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:0.9" src="../assets/clients/logo-5.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:0.95" src="../assets/clients/logo-6.svg" alt="" aria-hidden="true" loading="lazy"><img style="--s:0.85" src="../assets/clients/logo-7.svg" alt="" aria-hidden="true" loading="lazy"></div></div>
+    </section>
+
     <section class="atc-vtrack" data-atc="vtrack" aria-label="Partnership" style="height: {{vtrackHeight}}">
       <div class="atc-vstage">
         <video class="atc-video" data-atc="v5" src="../assets/0b1d056ba318870fd2c940e5af3b7173.mp4" muted="" playsinline="" preload="auto" aria-hidden="true"></video>
@@ -991,7 +1270,6 @@ with the same challenge.</h2>
         </div>
         <nav class="atc-foot-col" aria-label="Explore">
           <h3>Explore</h3>
-          <a href="#who" onClick="{{ goWho }}">Who we are</a>
           <a href="#how" onClick="{{ goHow }}">How we work</a>
           <a href="#clients" onClick="{{ goClients }}">Clients</a>
         </nav>
@@ -1032,39 +1310,40 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2650,
-      heroOut: [0, 50],
-      v2: [0, 288], v4: [288, 490], v3: [490, 690],
-      indoor: 216,
-      ch0: [-1, -1, 0, 32],
-      ch1: [223, 248, 352, 382],
-      frame: [335, 382],
-      white: [668, 694],
+      U: 2454,
+      heroGrow: [0, 78], heroOut: [1, 10],
+      v2: [0, 173], v4: [173, 294], v3: [294, 414],
+      indoor: 130,
+      ch0: [-1, -1, 0, 22],
+      ch1: [134, 149, 211, 229],
+      frame: [201, 229],
+      white: [401, 418],
       // Problem cards: each arrives in turn and stays; the graphic on the right follows the newest card
       stack: {
         // "What actually happens" rises centred, then moves to the top left as the 3D stack appears in the middle;
         // the stack then moves right and opens up while the four points come in one below the other
-        title: 700, titleMove: [770, 865],
-        isoIn: [790, 850], isoMove: [885, 980],
-        ins: [895, 1000, 1105, 1210],
-        out: 1330
+        title: 424, titleMove: [414, 509],
+        isoIn: [434, 494], isoMove: [529, 624],
+        ins: [539, 724, 909, 1094],
+        out: 1314
       },
-      famIn: [1390, 1480],
-      famOut: [1750, 1800],
-      focus: [1415, 1510],
-      unfocus: [1770, 1850],
-      fill: [1510, 1710],
+      famIn: [1344, 1389],
+      famOut: [1524, 1549],
+      focus: [1356, 1404],
+      unfocus: [1534, 1574],
+      fill: [1404, 1504],
       gap: {
-        // A mark arrives centred, slides to the right, then the line rises in on the left
-        mark: [1835, 1885, 2046, 2096], markMove: [1890, 1985],
-        title: 1991,
-        lift: [2051, 2111],
-        // "Not as another…": the page holds while the line and its icons play together (seconds)
-        a: 2126, aOut: 2201, aPlay: 1.95,
-        // The close: title to the centre, "As a partner.", then the logo and tagline
-        center: [2243, 2338], b: 2350, bOut: 2430, sign: 2474,
-        out: 2585
-      }
+        // The A mark, the title, "Not as another…" and "As a partner." are no longer shown: their slots
+        // are kept tiny so the ATCON logo and tagline follow the familiar-statement straight away
+        mark: [1569, 1570, 1572, 1574], markMove: [1570, 1572],
+        title: 1572,
+        lift: [1572, 1574],
+        a: 1575, aOut: 1576, aPlay: 0,
+        center: [1572, 1577], b: 1577, bOut: 1578, sign: 1579,
+        out: 1578
+      },
+      // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
+      sol: { mark: [1584, 1624], word: [1630, 1704], title: 1708, hub: [1754, 1799], sides: [1794, 1844], links: [1839, 1949], pop: [1995, 2025], swap: [2028, 2070], plug: [2074, 2116], glow: [2110, 2120], tiles: [2120, 2440], out: 2452 }
     };
   }
 
@@ -1183,6 +1462,7 @@ class Component extends DCLogic {
       var root = self.q('root');
       if (root && root.getAttribute('data-menu') === 'open') return;
       var dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? (window.innerHeight || 800) : 1);
+      dy = Math.max(-180, Math.min(180, dy));
       if (!dy) return;
       e.preventDefault();
       var se = document.scrollingElement || document.documentElement;
@@ -1214,7 +1494,7 @@ class Component extends DCLogic {
       self._lastY = y;
       clearTimeout(self._settleT);
       if (performance.now() < (self._snapUntil || 0)) return;
-      self._settleT = setTimeout(function () { self.settle(); }, 180);
+      self._settleT = setTimeout(function () { self.settle(); }, 320);
     };
     this._onTouch = function (e) {
       self._touching = e.type === 'touchstart';
@@ -1407,10 +1687,34 @@ class Component extends DCLogic {
     // Hero loop dissolves into video 2
     var heroOut = ease(map(u, T.heroOut[0], T.heroOut[1]));
     var l1 = this.q('l1'), v1 = this.q('v1');
+    // The film sits in the hero's card, then grows from that card to the whole screen
+    var grow = ease(map(u, T.heroGrow[0], T.heroGrow[1]));
+    var card = this.q('heroCard'), hbg = this.q('herobg');
+    // One scroll does both: the card grows to the full screen while the film already travels into the building
+    var l2 = this.q('l2');
+    if (card) {
+      var boxes = [l1, l2], ins = '', rad = '';
+      if (grow < 0.999) {
+        var cr = card.getBoundingClientRect(), vw0 = window.innerWidth || 1200, kk = 1 - grow;
+        var ct = Math.max(0, cr.top) * kk, cl = Math.max(0, cr.left) * kk, crt = Math.max(0, vw0 - cr.right) * kk, cb = Math.max(0, vh - cr.bottom) * kk;
+        ins = ct.toFixed(1) + 'px ' + crt.toFixed(1) + 'px ' + cb.toFixed(1) + 'px ' + cl.toFixed(1) + 'px';
+        rad = (24 * kk).toFixed(1) + 'px';
+      }
+      for (var bi = 0; bi < boxes.length; bi++) if (boxes[bi]) { boxes[bi].style.inset = ins; boxes[bi].style.borderRadius = rad; }
+    }
+    if (hbg) { hbg.style.opacity = grow >= 0.999 ? '0' : '1'; }
+    // The Contact button belongs to the hero: it fades out as soon as the page starts to scroll
+    var cbtn = this._cbtn || (this._cbtn = document.querySelector('.atc-contact'));
+    if (cbtn) {
+      var co = 1 - ease(map(u, 2, 24));
+      cbtn.style.opacity = co.toFixed(3);
+      cbtn.style.visibility = co > 0.01 ? 'visible' : 'hidden';
+      cbtn.style.pointerEvents = co > 0.5 ? '' : 'none';
+    }
     if (l1) {
       l1.style.opacity = String(1 - heroOut);
       // Opacity and scale only: both stay on the GPU, so the hand-off to the scrubbed video stays fluid
-      l1.style.transform = 'scale(' + (1 + heroOut * 0.03).toFixed(4) + ')';
+      l1.style.transform = '';
     }
     if (v1 && this._splash >= 1) {
       if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
@@ -1507,7 +1811,7 @@ class Component extends DCLogic {
 
     var root = this.q('root');
     if (root) {
-      var want = u >= T.indoor ? 'light' : 'dark';
+      var want = (u >= T.indoor || grow < 0.6) ? 'light' : 'dark';
       if (root.getAttribute('data-theme') !== want) root.setAttribute('data-theme', want);
     }
 
@@ -1551,6 +1855,7 @@ class Component extends DCLogic {
       fam.style.transform = 'translateY(' + ((1 - sl) * vh * 0.55 + so * 30).toFixed(1) + 'px)';
     }
     this.gap(T.gap, u);
+    this.sol(T.sol, u);
     this._lastU = u;
     var words = this.qa('[data-atc="famText"] .ds-w');
     var wp = map(u, T.fill[0], T.fill[1]) * words.length;
@@ -1641,10 +1946,26 @@ class Component extends DCLogic {
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
       // A scene starts only once its point's text has fully risen (title and line); until then the last one stays.
       var shown = -1;
-      for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 57.5) shown = si;
+      for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 4) shown = si;
       var scene = this._openIdx >= 0 && this._openIdx !== active ? this._openIdx : shown;
       var down = this._lastU == null || u >= this._lastU;
-      this.macScene(gv > 0.5 ? scene : -1, scene === shown && down && performance.now() > (this._jumpUntil || 0) ? S.ins[scene] + 58 : null);
+      this.macScene(gv > 0.5 ? scene : -1);
+      if (gv > 0.5 && scene >= 0) {
+        var sEnd = scene < S.ins.length - 1 ? S.ins[scene + 1] - 2 : S.out - 30;
+        this.macScrub(map(u, S.ins[scene] + 14, sEnd));
+      }
+      // A short pause once each point's scene has finished, so the text and the visual can be taken in (scrolling down only)
+      var pl = this._probLast == null ? u : this._probLast;
+      this._probLast = u;
+      if (u < S.ins[0]) this._probHeld = [];
+      this._probHeld = this._probHeld || [];
+      for (var ph = 0; ph < S.ins.length; ph++) {
+        var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 2 : S.out - 30;
+        if (!this._probHeld[ph] && pl < pe && u >= pe && performance.now() > (this._jumpUntil || 0)) {
+          this._probHeld[ph] = true;
+          this._lock = { top: this.unitTop(pe), until: performance.now() + 900, ease: true };
+        }
+      }
     }
   }
 
@@ -1681,10 +2002,12 @@ class Component extends DCLogic {
     var self = this, sc = scs[i];
     // The typing and arrivals are the story, so they play for everyone; reduced motion only drops the travel (CSS)
     // PACE scales the whole scene: every delay, typing speed and count below is written at 1x
-    var PACE = 0.65;
+    // The last point (the business gets stuck) gets more time: the calendar has to visibly fill up
+    var PACE = i === 3 ? 0.9 : 0.6;
     // START: a short beat after the point's words have landed before anything moves
-    var START = 350;
-    var at = function (ms, fn) { setTimeout(function () { if (run === self._mRun) fn(); }, (ms + START) * PACE); };
+    var START = 200;
+    var events = this._mEv = [];
+    var at = function (ms, fn) { events.push({ t: ms + START, fn: fn }); };
     var $ = function (key) { return sc.querySelector('[data-k="' + key + '"]'); };
     var show = function (key, on) { var el = typeof key === 'string' ? $(key) : key; if (el) el.classList.toggle('is-shown', on !== false); return el; };
     var flag = function (el, c) { if (!el) return; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); };
@@ -1755,8 +2078,13 @@ class Component extends DCLogic {
       [1, 2, 3].forEach(function (n) {
         var from = tt;
         at(from, function () { show('t' + n); });
-        at(from + 700, function () { show('t' + n, false); show('k' + n); });
-        var end = type(from + 750, 'k' + n, 26);
+        // Each reply lands whole, like a chat message, after its typing indicator
+        at(from + 700, function () {
+          var msg = $('k' + n), sp = msg && msg.querySelector('[data-type]');
+          if (sp) sp.textContent = sp.getAttribute('data-type');
+          show('t' + n, false); show(msg);
+        });
+        var end = from + 700 + 900;
         at(end + 200, function () {
           show('l' + n);
           owner.textContent = owners[n - 1];
@@ -1787,11 +2115,24 @@ class Component extends DCLogic {
       var total = 700 + slots.length * 480 + 900;
     }
     total += START;
-    fillSteps(total * PACE);
-    if (holdAt != null && total) {
-      this._lock = { top: this.unitTop(holdAt), until: performance.now() + total * PACE + 150, ease: true };
-      this.holdScroll();
-    }
+    fillSteps(0);
+    events.sort(function (a, b) { return a.t - b.t; });
+    this._mTotal = total;
+    this._mDone = 0;
+    this._mVT = 0;
+  }
+
+  // Scrub the open scene to progress p (0..1): play every event up to that point; going back rebuilds and replays
+  macScrub(p) {
+    var i = this._mScene;
+    if (i == null || i < 0 || !this._mEv) return;
+    var vt = Math.max(0, Math.min(1, p)) * this._mTotal;
+    if (vt < this._mVT - 1) { this._mScene = null; this.macScene(i); }
+    var ev = this._mEv;
+    while (this._mDone < ev.length && ev[this._mDone].t <= vt) { ev[this._mDone].fn(); this._mDone++; }
+    this._mVT = vt;
+    var mk = document.querySelectorAll('[data-atc="steps"] i')[i];
+    if (mk && mk.firstChild) { mk.firstChild.style.transition = 'none'; mk.firstChild.style.width = (Math.max(0, Math.min(1, p)) * 100).toFixed(1) + '%'; }
   }
 
 
@@ -1809,7 +2150,8 @@ class Component extends DCLogic {
     var live = u > G.title - 6 && u < G.out + 70;
     var sink = ease(map(u, G.out, G.out + 44));
     // The first line plays in time: the page holds as it arrives, the line and its graphic together
-    var tA = this.beat('a', u, G.a, G.a - 10, G.aPlay);
+    // "Not as another…" is no longer shown, so the page no longer holds for it
+    var tA = 0;
     var outA = ease(map(u, G.aOut, G.aOut + 40));
     if (box) box.style.visibility = live ? 'visible' : 'hidden';
     var endLive = u > G.b - 6 && u < G.out + 60;
@@ -1892,15 +2234,215 @@ class Component extends DCLogic {
 
   // Rest points: every reveal runs between a start and an end unit. If the scroll stops part-way through
   // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
+  // The solution, played on scroll: tagline, both sides, the direct line that breaks, ATCON arriving in the middle,
+  // then every side connected through it, with data flowing from business to technology.
+  sol(S, u) {
+    var map = this._fx.map, ease = this._fx.ease;
+    var box = this.q('sol');
+    if (!box) return;
+    // A short pause once the ATCON wordmark has formed (only when scrolling down into it)
+    var lastU = this._solLastU == null ? u : this._solLastU;
+    this._solLastU = u;
+    if (u < S.mark[0]) this._solHeld = false;
+    var holdU = S.word[1] + 2;
+    if (!this._solHeld && lastU < holdU && u >= holdU && performance.now() > (this._jumpUntil || 0)) {
+      this._solHeld = true;
+      this._lock = { top: this.unitTop(holdU), until: performance.now() + 1300, ease: true };
+    }
+    // What we offer: a short pause on each finished point (only when scrolling down into it)
+    if (u < S.tiles[0]) this._offHeld = [];
+    this._offHeld = this._offHeld || [];
+    var stepLen = (S.tiles[1] - S.tiles[0]) / 4;
+    for (var hs = 0; hs < 4; hs++) {
+      var hu = S.tiles[0] + hs * stepLen + stepLen * 0.85;
+      if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
+        this._offHeld[hs] = true;
+        this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
+      }
+    }
+    var live = u > S.mark[0] - 6;
+    box.style.visibility = live ? 'visible' : 'hidden';
+    if (!live) return;
+    // On the way out the whole section scrolls up as one piece instead of fading
+    // No separate exit: when the story ends the whole stage scrolls up with the page and the next section follows
+    box.style.transform = '';
+    var sink = 0;
+    var rises = this.qa('[data-atc="sol"] .atc-sol-head .ds-rise');
+    for (var j = 0; j < rises.length; j++) {
+      var k = ease(map(u, S.title + j * 10, S.title + j * 10 + 46));
+      rises[j].style.transform = 'translateY(' + ((1 - k) * 112 + sink * 112).toFixed(2) + '%)';
+    }
+    var side = ease(map(u, S.sides[0], S.sides[1])) * (1 - sink);
+    var cap = this.q('solCap');
+    if (cap) { cap.style.opacity = side.toFixed(3); cap.style.transform = 'translateY(' + ((1 - side) * 16).toFixed(1) + 'px)'; }
+    var L = this.q('solL'), R = this.q('solR');
+    if (L) { L.style.opacity = side.toFixed(3); L.style.transform = 'translateX(' + (-(1 - side) * 30).toFixed(1) + 'px)'; }
+    if (R) { R.style.opacity = side.toFixed(3); R.style.transform = 'translateX(' + ((1 - side) * 30).toFixed(1) + 'px)'; }
+    // ATCON first: the A mark alone and large in the middle of the screen, then it slides left as TCON appears;
+    // the tagline comes in on top, and the frame settles around the wordmark as the circuit arrives on both sides
+    var mk = ease(map(u, S.mark[0], S.mark[1])), wd = ease(map(u, S.word[0], S.word[1]));
+    var hub = ease(map(u, S.hub[0], S.hub[1])), tin = ease(map(u, S.title, S.title + 46));
+    var H = this.q('solHub'), A = this.q('solA'), Tw = this.q('solT'), F = this.q('solFrame');
+    if (H) {
+      var base = 5.6 - 2.2 * wd, sc = base + (1 - base) * hub;
+      H.setAttribute('transform', 'translate(965 479) scale(' + sc.toFixed(4) + ') translate(-965 -479)');
+      H.style.opacity = mk.toFixed(3);
+    }
+    // The whole wordmark is held centred on what has appeared so far: A alone, then A+T, A+TC, ...
+    var shift = (1 - wd) * 266;
+    if (A) A.style.transform = 'translateX(' + shift.toFixed(1) + 'px)';
+    // T, C, O, N come in one after another as the A makes room for them
+    var ltr = Tw ? Tw.querySelectorAll('.sol-ltr') : [];
+    for (var n = 0; n < ltr.length; n++) {
+      var lp = ease(map(wd, n * 0.17, n * 0.17 + 0.49));
+      ltr[n].style.opacity = lp.toFixed(3);
+      ltr[n].style.transform = 'translateX(' + (shift - (1 - lp) * 34).toFixed(1) + 'px)';
+    }
+    if (F) F.style.opacity = hub.toFixed(3);
+    // Until the tagline is in, hold the wordmark in the middle of the screen
+    // The window around the circuit fades in with the circuit, so the ATCON intro plays on a clean page
+    var win = this.q('solWin');
+    if (win) win.style.setProperty('--wo', side.toFixed(3));
+    var map2 = win || box.querySelector('.atc-sol-map'), head = box.querySelector('.atc-sol-head');
+    if (map2 && head && H) {
+      var cur = this._solLift || 0, hb = H.getBoundingClientRect();
+      var lift = (hb.top + hb.height / 2 - cur) - (window.innerHeight || 800) / 2;
+      this._solLift = tin < 1 ? -lift * (1 - tin) : 0;
+      map2.style.transform = tin < 1 ? 'translateY(' + this._solLift.toFixed(1) + 'px)' : '';
+    }
+    var acc = this.qa('[data-atc="solLinks"] .sol-acc');
+    for (var c = 0; c < acc.length; c++) acc[c].style.opacity = (ease(map(u, S.links[1] - 30, S.links[1])) * (1 - sink)).toFixed(3);
+    var links = this.qa('[data-atc="solLinks"] .sol-link');
+    for (var i = 0; i < links.length; i++) {
+      var lp = ease(map(u, S.links[0] + i * 2.5, S.links[0] + i * 2.5 + 30));
+      links[i].style.strokeDashoffset = (1 - lp).toFixed(3);
+      links[i].style.opacity = (1 - sink).toFixed(3);
+    }
+    // What we offer: the ATCON button floats up off the circuit and stays floating while the tab switches (like
+    // Safari); then it tilts to the box's angle and settles into the centre slot, and the four buttons light up
+    var pop = ease(map(u, S.pop[0], S.pop[1])), sw = ease(map(u, S.swap[0], S.swap[1]));
+    var pl = ease(map(u, S.plug[0], S.plug[1])), glow = ease(map(u, S.glow[0], S.glow[1]));
+    var mapEl = box.querySelector('.atc-sol-map'), headEl = box.querySelector('.atc-sol-head'), off = this.q('offer');
+    if (mapEl) { mapEl.style.opacity = (1 - sw).toFixed(3); mapEl.style.transform = sw > 0 ? 'translateX(' + (-sw * 7).toFixed(2) + '%)' : ''; }
+    if (headEl) { headEl.style.opacity = (1 - sw).toFixed(3); headEl.style.transform = sw > 0 ? 'translateX(' + (-sw * 7).toFixed(2) + '%)' : ''; }
+    if (off) {
+      off.style.opacity = sw.toFixed(3);
+      off.style.visibility = sw > 0.01 ? 'visible' : 'hidden';
+      off.style.transform = 'translateX(' + ((1 - sw) * 7).toFixed(2) + '%)';
+    }
+    var tabs = win ? win.querySelectorAll('.atc-sol-tab') : [];
+    if (tabs.length > 1) {
+      tabs[0].classList.toggle('is-on', sw < 0.5); tabs[1].classList.toggle('is-on', sw >= 0.5);
+      // the outline glides from the first tab to the second; names fade out and in with it
+      var tk = ease(map(sw, 0.05, 0.95));
+      tabs[0].style.setProperty('--on', (1 - tk).toFixed(3));
+      tabs[1].style.setProperty('--on', tk.toFixed(3));
+      if (tabs[2]) tabs[2].style.setProperty('--on', '0');
+      var ind = this.q('solInd');
+      if (ind) {
+        var a0 = tabs[0].offsetLeft, w0 = tabs[0].offsetWidth, a1 = tabs[1].offsetLeft, w1 = tabs[1].offsetWidth;
+        ind.style.width = (w0 + (w1 - w0) * tk).toFixed(1) + 'px';
+        ind.style.height = tabs[0].offsetHeight + 'px';
+        ind.style.transform = 'translateX(' + (a0 + (a1 - a0) * tk).toFixed(1) + 'px)';
+      }
+    }
+    var fl = this.q('solFloat'), hubRect = box.querySelector('.sol-hub'), slot = this.q('offerSlot');
+    if (fl && hubRect && slot) {
+      var br = box.getBoundingClientRect();
+      // where the button sits in the circuit (remembered before the switch, so it keeps floating in place)
+      if ((sw <= 0 && hub >= 1) || !this._fStart) {
+        var hr = hubRect.getBoundingClientRect();
+        this._fStart = { x: hr.left + hr.width / 2 - br.left, y: hr.top + hr.height / 2 - br.top, w: hr.width, h: hr.height };
+      }
+      var st0 = this._fStart, sr = slot.getBoundingClientRect();
+      var ex = sr.left + sr.width / 2 - br.left, ey = sr.top + sr.height / 2 - br.top;
+      // step 2 starts by turning the button into a square that shows only the A mark
+      var mo = ease(map(u, S.plug[0], S.plug[0] + 20)), tv = ease(map(u, S.plug[0] + 14, S.plug[1]));
+      var side = st0.h * 1.3, bw = st0.w + (side - st0.w) * mo, bh = st0.h + (side - st0.h) * mo;
+      // the centre cell's side on screen (its iso projection is twice as wide as one side's run)
+      var sEnd = sr.width / side;
+      var cx = st0.x + (ex - st0.x) * tv, cy = st0.y + (ey - st0.y) * tv;
+      var lift = 16 * pop * (1 - tv) + Math.sin(tv * Math.PI) * 30;
+      var sc2 = (1 + 0.08 * pop) * (1 - tv) + sEnd * tv;
+      var on = false;   // ATCON stays in its own view; the tab switch carries the change
+      fl.style.visibility = on ? 'visible' : 'hidden';
+      fl.style.opacity = on ? '1' : '0';
+      fl.style.width = bw.toFixed(1) + 'px';
+      fl.style.height = bh.toFixed(1) + 'px';
+      fl.style.borderRadius = (999 * (1 - mo) + bh * 0.24 * mo).toFixed(1) + 'px';
+      fl.style.transform = 'translate(' + (cx - bw / 2).toFixed(1) + 'px,' + (cy - bh / 2 - lift).toFixed(1) + 'px) '
+        + 'scale(' + sc2.toFixed(4) + ')';
+      var fw = fl.firstChild, fa = fl.lastChild;
+      if (fw) fw.style.opacity = (1 - Math.min(1, mo * 1.6)).toFixed(3);
+      if (fa) fa.style.opacity = Math.max(0, mo * 1.6 - 0.6).toFixed(3);
+      var sh = 1 - tv * 0.6;
+      fl.style.boxShadow = '0 ' + (6 + 22 * pop * sh).toFixed(1) + 'px ' + (14 + 34 * pop * sh).toFixed(1) + 'px -10px rgba(0,16,37,' + (0.18 + 0.2 * pop * sh).toFixed(3) + ')';
+      if (H) H.style.opacity = on ? '0' : H.style.opacity;
+    }
+    // One canvas, four layers: each capability adds its piece around ATCON and stays, linked back to the centre
+    var span4 = (S.tiles[1] - S.tiles[0]) / 4, active = -1;
+    for (var oi = 0; oi < 4; oi++) {
+      var s0 = S.tiles[0] + oi * span4, r = map(u, s0, s0 + span4);
+      if (u >= s0 - 4) active = oi;
+      var wv = this.q('cvW' + oi), lk = this.q('cvL' + oi);
+      if (lk) lk.style.strokeDashoffset = (1 - ease(map(r, 0, 0.3))).toFixed(3);
+      if (!wv) continue;
+      var wk = ease(map(r, 0.08, 0.3));
+      var wout = oi < 3 ? ease(map(u, s0 + span4 - 8, s0 + span4 + 2)) : 0;
+      wv.style.opacity = (wk * (1 - wout)).toFixed(3);
+      wv.style.visibility = wk * (1 - wout) > 0.01 ? 'visible' : 'hidden';
+      wv.style.transform = 'translateY(' + ((1 - wk) * 10).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * wk).toFixed(4) + ')';
+      var els = wv.querySelectorAll('[data-in]');
+      for (var ei = 0; ei < els.length; ei++) {
+        var el = els[ei], a0 = parseFloat(el.getAttribute('data-in')), k2 = ease(map(r, a0 + 0.1, a0 + 0.24));
+        el.style.opacity = k2.toFixed(3);
+        el.style.transform = el.classList.contains('cvb') ? 'translateX(' + ((1 - k2) * 26).toFixed(1) + 'px)' : 'translateY(' + ((1 - k2) * 6).toFixed(1) + 'px)';
+      }
+      var cts = wv.querySelectorAll('[data-count]');
+      for (var ci = 0; ci < cts.length; ci++) {
+        var ct = cts[ci], tgt = parseFloat(ct.getAttribute('data-count')), dec = parseInt(ct.getAttribute('data-dec') || '0', 10);
+        var kc = ease(map(r, parseFloat(ct.getAttribute('data-from')), parseFloat(ct.getAttribute('data-to'))));
+        var txt = dec ? (tgt * kc).toFixed(dec) : Math.round(tgt * kc).toLocaleString('en');
+        if (ct.textContent !== txt) ct.textContent = txt;
+      }
+      var tgs = wv.querySelectorAll('.cv-tg');
+      for (var ti = 0; ti < tgs.length; ti++) tgs[ti].classList.toggle('on', r >= parseFloat(tgs[ti].getAttribute('data-on')));
+      var fills = wv.querySelectorAll('[data-fill]');
+      for (var fi = 0; fi < fills.length; fi++) fills[fi].style.width = (ease(map(r, parseFloat(fills[fi].getAttribute('data-from')), parseFloat(fills[fi].getAttribute('data-to')))) * 100).toFixed(1) + '%';
+      // the revenue line (and its soft area) are revealed left to right
+      var revs = wv.querySelectorAll('.an-rev');
+      for (var ri = 0; ri < revs.length; ri++) revs[ri].style.clipPath = 'inset(0 ' + ((1 - ease(map(r, 0.2, 0.6))) * 100).toFixed(2) + '% 0 0)';
+      var drs = wv.querySelectorAll('.dr');
+      for (var di = 0; di < drs.length; di++) drs[di].style.strokeDashoffset = (1 - ease(map(r, 0.2, 0.6))).toFixed(3);
+    }
+    for (var li2 = 0; li2 < 4; li2++) {
+      var li = this.q('offerL' + li2);
+      if (!li) continue;
+      // each point appears with its own layer on the right, and stays
+      var ls0 = S.tiles[0] + li2 * span4;
+      var le = ease(map(u, ls0 - 2, ls0 + span4 * 0.3));
+      var on2 = li2 === active;
+      li.style.opacity = (le * (on2 ? 1 : 0.5)).toFixed(3);
+      li.style.transform = 'translateX(' + (-(1 - le) * 14 + (on2 ? 6 : 0)).toFixed(1) + 'px)';
+      var ic = li.querySelector('.atc-offer-ic');
+      if (ic) ic.style.filter = on2 ? 'none' : 'grayscale(1) opacity(.6)';
+    }
+    var P = this.q('solPulse');
+    if (P) P.style.opacity = (ease(map(u, S.links[1] - 10, S.links[1] + 10)) * (1 - sink)).toFixed(3);
+  }
+
   motionRanges() {
     if (this._ranges) return this._ranges;
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
-    r.push(T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
+    r.push(T.heroGrow, T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
     r.push([S.title, S.title + 46], S.titleMove, S.isoIn, S.isoMove);
+    // the scenes themselves follow the scroll exactly (no glide inside them); only the point's text settles
     for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 58]);
     r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
+    var O = T.sol;
+    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0], O.tiles[0] + 68], [O.tiles[0] + 80, O.tiles[0] + 148], [O.tiles[0] + 160, O.tiles[0] + 228], [O.tiles[0] + 240, O.tiles[0] + 308]);
     this._ranges = r;
     return r;
   }
@@ -1934,7 +2476,7 @@ class Component extends DCLogic {
         }
         if (!moved) break;
       }
-      if (t !== null && Math.abs(t - u) <= 150) target = y + (t - u) / U * span;
+      if (t !== null && Math.abs(t - u) <= 90) target = y + (t - u) / U * span;
     } else if (u >= U - 0.5 && dir > 0) {
       // Sections after the story: one that has started to come up finishes settling under the header
       var pins = document.querySelectorAll('.atc-pin');
@@ -1946,7 +2488,7 @@ class Component extends DCLogic {
     if (target === null || Math.abs(target - y) < 2) return;
     // A calm glide: longer for longer distances, eased in and out like an unhurried scroll
     var dist = Math.abs(target - y);
-    var dur = Math.max(1000, Math.min(2000, 900 + dist * 0.8));
+    var dur = Math.max(1100, Math.min(2200, 1000 + dist * 0.9));
     this._glide = { from: y, to: target, t0: now, dur: dur };
     this._snapUntil = now + dur + 250;
   }
@@ -2009,7 +2551,7 @@ class Component extends DCLogic {
     var se = document.scrollingElement || document.documentElement;
     var y = window.pageYOffset || se.scrollTop || 0;
     if (this._lock || this._touching || (s.last != null && Math.abs(y - s.last) > 2)) { s.y = null; s.last = null; return; }
-    var k = 1 - Math.pow(1 - 0.12, dt / 16.67);
+    var k = 1 - Math.pow(1 - 0.085, dt / 16.67);
     var ny = y + (s.y - y) * k;
     if (Math.abs(s.y - ny) < 0.5) { ny = s.y; s.y = null; }
     window.scrollTo(0, ny);
@@ -2110,6 +2652,7 @@ class Component extends DCLogic {
     stage.style.setProperty('--by', v[3].toFixed(1) + 'px');
     stage.style.setProperty('--rt', v[4].toFixed(1) + 'px');
     stage.style.setProperty('--rh', Math.max(0, v[5] - v[4]).toFixed(1) + 'px');
+    stage.style.setProperty('--lo', Math.min(1, c * 4).toFixed(3));
   }
 
   // Scrub to the nearest frame (24 fps). Seeking to a frame we are already on is skipped, and a new
