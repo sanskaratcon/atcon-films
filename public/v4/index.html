@@ -218,6 +218,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
   background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box}
 .atc-sol-tab.is-on::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:4px;background:#fff}
 .atc-sol-sep{width:1px;height:16px;align-self:center;margin:0 4px;background:#D5D9E0}
+/* only the open tab shows its name; the others stay out of the way */
+.atc-sol-tab:not(.is-on),.atc-sol-sep{display:none}
 .atc-sol-body{position:relative;isolation:isolate;margin:0 10px 10px;padding:1.4vh .6vw}
 .atc-sol-body::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:16px;border:2px solid transparent;border-bottom:0;
   background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box;opacity:var(--wo);
