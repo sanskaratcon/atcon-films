@@ -867,6 +867,10 @@ html,body{overscroll-behavior-y:none}
 @media (prefers-reduced-motion:reduce){
   .atc-splash,.atc-splash-logo,.atc-hero-in{transition-duration:.01s !important}
 }
+/* one typeface, one heading voice across every section */
+.atc,.atc *,.atc svg text,.atc button,.atc input,.atc textarea,.atc select{font-family:var(--atc-font)}
+.atc h1,.atc h2,.atc .ds-display,.atc .ds-h1,.atc .ds-statement,.atc .atc-offer-title,.atc .atc-stack .atc-card-title{font-weight:400}
+.atc .ds-lede{font-weight:400}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1091,7 +1095,7 @@ with a vision.</h2>
           <div class="mac-dock">
             <span class="dk" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 7.2c0-.95.77-1.7 1.7-1.7h3.9l1.8 1.9h7.9c.94 0 1.7.76 1.7 1.7v.6H3.5z" style="fill:#fff;fill-opacity:.55;stroke:none"/><rect x="3.5" y="8.6" width="17" height="10.6" rx="1.8" style="fill:#fff;stroke:none"/><path d="M7 12.4h10" style="fill:none;stroke:var(--c);stroke-width:1.3;stroke-linecap:round;opacity:.45"/></svg></span>
             <span class="dk" data-app="1" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.6" rx="2.1" style="fill:#fff;stroke:none"/><path d="M4.4 7.3l7.6 5.9 7.6-5.9" style="fill:none;stroke:var(--c);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round"/></svg></span>
-            <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#2D63E6"><svg viewBox="0 0 24 24"><path d="M4 9V7.6A3.1 3.1 0 0 1 7.1 4.5h9.8A3.1 3.1 0 0 1 20 7.6V9z" style="fill:var(--g,#2D63E6);stroke:none"/><text x="12" y="18.2" text-anchor="middle" style="fill:#001025;stroke:none;font:600 8.6px Geist,system-ui,sans-serif">14</text></svg></span>
+            <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#2D63E6"><svg viewBox="0 0 24 24"><path d="M4 9V7.6A3.1 3.1 0 0 1 7.1 4.5h9.8A3.1 3.1 0 0 1 20 7.6V9z" style="fill:var(--g,#2D63E6);stroke:none"/><text x="12" y="18.2" text-anchor="middle" style="fill:#001025;stroke:none;font:600 8.6px var(--atc-font)">14</text></svg></span>
             <span class="dk dk-x" data-dock="0" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><rect x="5" y="3.8" width="14" height="16.4" rx="2.3" style="fill:#fff;stroke:none"/><circle cx="12" cy="10.1" r="2.7" style="fill:var(--c);stroke:none"/><path d="M7.7 16.8c.6-2.1 2.3-3.3 4.3-3.3s3.7 1.2 4.3 3.3z" style="fill:var(--c);stroke:none"/></svg></span>
             <span class="dk dk-x" data-dock="1" data-app="2" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.6" y="5" width="4.9" height="14" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/><rect x="9.55" y="5" width="4.9" height="10" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/><rect x="15.5" y="5" width="4.9" height="6.8" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/></svg></span>
             <span class="dk dk-x" data-dock="2" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M12 4.9c4.6 0 8.2 2.9 8.2 6.6s-3.6 6.6-8.2 6.6c-.9 0-1.8-.1-2.6-.3l-3.7 1.9.9-3.2C5 15.3 3.8 13.5 3.8 11.5c0-3.7 3.6-6.6 8.2-6.6z" style="fill:#fff;stroke:none"/><circle cx="8.7" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="12" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="15.3" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/></svg></span>
