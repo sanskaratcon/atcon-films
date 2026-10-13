@@ -1988,7 +1988,7 @@ class Component extends DCLogic {
         var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 2 : S.out - 30;
         if (!this._probHeld[ph] && pl < pe && u >= pe && performance.now() > (this._jumpUntil || 0)) {
           this._probHeld[ph] = true;
-          this._lock = { top: this.unitTop(pe), until: performance.now() + 900, ease: true };
+          this._lock = { top: this.unitTop(pe), until: performance.now() + 450, ease: true };
         }
       }
     }
