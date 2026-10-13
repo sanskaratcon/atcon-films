@@ -1981,7 +1981,7 @@ class Component extends DCLogic {
       var down = this._lastU == null || u >= this._lastU;
       this.macScene(gv > 0.5 ? scene : -1);
       if (gv > 0.5 && scene >= 0) {
-        var sEnd = scene < S.ins.length - 1 ? S.ins[scene + 1] - 2 : S.out - 30;
+        var sEnd = scene < S.ins.length - 1 ? S.ins[scene + 1] - 12 : S.out - 30;
         this.macScrub(map(u, S.ins[scene] + 14, sEnd));
       }
       // A short pause once each point's scene has finished, so the text and the visual can be taken in (scrolling down only)
@@ -1990,7 +1990,7 @@ class Component extends DCLogic {
       if (u < S.ins[0]) this._probHeld = [];
       this._probHeld = this._probHeld || [];
       for (var ph = 0; ph < S.ins.length; ph++) {
-        var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 2 : S.out - 30;
+        var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 12 : S.out - 30;
         if (!this._probHeld[ph] && pl < pe && u >= pe && performance.now() > (this._jumpUntil || 0)) {
           this._probHeld[ph] = true;
           this._lock = { top: this.unitTop(pe), until: performance.now() + 450, ease: true };
@@ -2467,7 +2467,7 @@ class Component extends DCLogic {
     var S = this.timeline().stack, held = this._probHeld || [];
     for (var ph = 0; ph < S.ins.length; ph++) {
       if (held[ph]) continue;
-      var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 2 : S.out - 30;
+      var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 12 : S.out - 30;
       var py = this.unitTop(pe) + 1;
       if (from <= py + 2 && to > py) return py;
     }
