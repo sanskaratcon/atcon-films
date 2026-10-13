@@ -922,6 +922,18 @@ html,body{overscroll-behavior-y:none}
   .atc-offer-list li.is-on span{font-size:15px}
   .atc-offer .atc-canvas{flex:none;height:min(46vh,520px);max-width:640px;align-self:center}
 }
+/* Phones and portrait tablets: each problem's text leads at the top, its visual sits underneath */
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
+  .atc-stack{top:calc(var(--rail) + 20px);bottom:auto;align-content:start;justify-content:flex-start}
+  .atc-steps{margin:0 0 14px}
+  .atc-iso{top:38%;bottom:calc(16px + env(safe-area-inset-bottom,0px));align-items:flex-start}
+  .mac{width:min(100%,calc((62vh - 32px) * 10 / 11))}
+}
+@media (min-width:600px) and (max-width:1100px) and (orientation:portrait){
+  .atc-stack{top:calc(var(--rail) + 4vh)}
+  .atc-iso{top:36%}
+  .mac{width:min(100%,calc((64vh - 40px) * 10 / 11))}
+}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
