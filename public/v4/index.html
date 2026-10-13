@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ATCON GLOBAL</title>
 <script src="../vendor/react.js"></script>
 <script src="../vendor/react-dom.js"></script>
@@ -110,7 +111,7 @@ html,body{overscroll-behavior-y:none}
 .atc-hero2-tag{position:absolute;left:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);
   color:var(--atc-navy);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 18px -8px rgba(0,16,37,.35)}
 .atc-hero2-tag i{width:6px;height:6px;border-radius:50%;background:#3FB27E}
-@media (max-width:760px){
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   .atc-hero2{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);row-gap:4vh;padding:calc(var(--rail) + 3vh) 16px 4vh calc(var(--rail) + 18px)}
 }
 .atc-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-2)}
@@ -238,7 +239,7 @@ html,body{overscroll-behavior-y:none}
 /* the white inside stays solid all the way down, only the coloured line fades */
 .atc-sol-body::after{content:"";position:absolute;inset:2px 2px 0;z-index:-1;border-radius:14px 14px 16px 16px;background:#fff;opacity:var(--wo)}
 .atc-sol-body .atc-sol-head{margin:4vh 0 1.2vh}
-@media (max-width:760px){.atc-sol-tab:not(.is-on),.atc-sol-sep{display:none}}
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){.atc-sol-tab:not(.is-on),.atc-sol-sep{display:none}}
 .atc-offer{position:absolute;inset:0;z-index:3;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.3fr);align-items:center;column-gap:2vw;
   padding:3vh 4vw 4vh;text-align:left;opacity:0;visibility:hidden;pointer-events:none}
 .atc-offer-text{display:flex;flex-direction:column;align-items:flex-start}
@@ -449,7 +450,7 @@ html,body{overscroll-behavior-y:none}
 .cmd-app-cards span{height:46px;border-radius:10px;background:#EEF3FD}.cmd-app-cards span:nth-child(2){background:#E8F6EE}.cmd-app-cards span:nth-child(3){background:#F3F7E2}
 .cmd-app-row{height:38px;border-radius:10px;background:#F4F6F9}
 .atc-offer-list li{transition:none}
-@media (max-width:760px){.atc-offer{grid-template-columns:1fr;row-gap:2vh;padding:2vh 4vw}}
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){.atc-offer{grid-template-columns:1fr;row-gap:2vh;padding:2vh 4vw}}
 .atc-sol-map{width:100%;height:auto;max-height:min(66vh,calc(100vh - var(--rail) - 2.4vh - 46px - 5.2vh - 1vh - 9.5rem - 3vh));margin-top:1vh;overflow:visible;font-family:var(--atc-font)}
 .atc-sol-map .sol-link{fill:none;stroke:#D2D6DC;stroke-width:1.5;stroke-linejoin:miter;stroke-dasharray:1;stroke-dashoffset:1}
 .atc-sol-map .sol-stub{stroke:#DCE0E5}
@@ -488,7 +489,7 @@ html,body{overscroll-behavior-y:none}
    linear-gradient(180deg,rgba(245,243,238,.5) 0%,rgba(245,243,238,0) 20%)}
 .atc-vtext{position:absolute;left:var(--content-x);right:44%;bottom:calc(var(--rail) + var(--gutter) + 6vh);display:flex;flex-direction:column;align-items:flex-start;gap:var(--cta-gap);visibility:hidden}
 .atc-vtext .ds-h1{max-width:14em}
-@media (max-width:760px){ .atc-vtext{right:16px} }
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){ .atc-vtext{right:16px} }
 
 /* Normal-flow sections after the story */
 .atc-after{position:relative;z-index:1;--cta-gap:var(--sp-6);--atc-paper:#FFFFFF;background:#FFFFFF;color:var(--atc-navy)}
@@ -836,7 +837,7 @@ html,body{overscroll-behavior-y:none}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 0 0 .5px rgba(0,16,37,.10),0 8px 16px -10px color-mix(in srgb,var(--c) 70%,#001025) !important}
 .atc-offer-ic svg{stroke-width:1.55 !important}
 .cv-w,.atc-canvas{box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 22px 44px -26px rgba(0,16,37,.28),0 2px 5px rgba(0,16,37,.04) !important}
-@media (max-width:760px){
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   .atc-mac{right:12px}
   .mac{width:min(100%,calc((46vh - var(--rail) - 12px) * 10 / 11))}
 }
@@ -846,7 +847,7 @@ html,body{overscroll-behavior-y:none}
   .mac .mlist .mmsg.st{transform:none}
 }
 
-@media (max-width:760px){
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   .atc-block{left:calc(var(--rail) + 18px);right:16px}
   .atc-line{white-space:normal;display:inline}
   .atc-hero-lede{max-width:none}
@@ -874,6 +875,53 @@ html,body{overscroll-behavior-y:none}
 /* Large desktops: the offer list and its panels grow with the screen instead of staying laptop-sized */
 @media (min-width:1800px) and (min-height:1000px){.atc-offer .atc-canvas,.atc-offer-list{zoom:1.2}}
 @media (min-width:2200px) and (min-height:1250px){.atc-offer .atc-canvas,.atc-offer-list{zoom:1.4}}
+/* Phones: the window fills the screen, the circuit sits in its middle, the offer list stays compact above its panel,
+   and the problem text sits right under its visual */
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
+  .atc-sol{padding:calc(var(--rail) + 12px) 12px 12px calc(var(--rail) + 10px)}
+  .atc-sol-win{flex:1;min-height:0;display:flex;flex-direction:column}
+  .atc-sol-bar{flex:none;padding:0 12px}
+  .atc-sol-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;margin:0 6px 6px;padding:12px 8px}
+  .atc-sol-body .atc-sol-head{margin:0 0 12px}
+  .atc-sol-map{max-height:none}
+  .atc-offer{display:flex;flex-direction:column;justify-content:flex-start;gap:14px;padding:16px 16px 12px}
+  .atc-offer-text .ds-label{margin:0 0 10px}
+  .atc-offer-title{margin:0 0 14px;font-size:26px}
+  .atc-offer-list{gap:8px}
+  .atc-offer-list li{grid-template-columns:30px minmax(0,1fr);column-gap:12px}
+  .atc-offer-ic{width:30px;height:30px;border-radius:9px}
+  .atc-offer-ic svg{width:17px;height:17px}
+  .atc-offer-list strong{font-size:15px}
+  .atc-offer-list span{display:none}
+  .atc-offer-list li.is-on span{display:block;font-size:13px}
+  .atc-offer .atc-canvas{flex:1;min-height:0;width:100%}
+  .atc-offer .cv-body{height:100%;min-height:200px}
+  .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:4%;width:92%;top:14%;height:84%}
+  .cvb{right:-2%;top:-8%;width:82%}
+  .atc-iso{align-items:flex-end}
+  .atc-stack{top:calc(46% + 14px);bottom:16px;align-content:start;justify-content:flex-start}
+}
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
+  /* the logo strip centres in the space beside the rail */
+  .atc-brands{padding-left:var(--rail)}
+  /* closing banner: the copy sits low on a soft white wash so it reads over the photo */
+  .atc-vtext{left:calc(var(--rail) + 18px);bottom:calc(28px + env(safe-area-inset-bottom,0px));isolation:isolate}
+  .atc-vtext::before{content:"";position:absolute;z-index:-1;left:-60px;right:-40px;top:-70px;bottom:-60px;pointer-events:none;
+    background:linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,.86) 38%,rgba(255,255,255,.94) 100%)}
+}
+/* Portrait tablets: the phone layout, with tablet-sized type and visuals */
+@media (min-width:600px) and (max-width:1100px) and (orientation:portrait){
+  .mac{width:min(100%,calc((50vh - var(--rail) - 12px) * 10 / 11))}
+  .atc-iso,.atc-gfx{bottom:50%}
+  .atc-stack{top:calc(50% + 20px);left:calc(var(--rail) + 6vw);right:6vw}
+  .atc .atc-stack .atc-card-title{font-size:40px}
+  .atc .atc-stack .atc-card-body{font-size:19px}
+  .atc-offer{padding:28px 32px 20px;gap:22px}
+  .atc-offer-title{font-size:36px}
+  .atc-offer-list strong{font-size:18px}
+  .atc-offer-list li.is-on span{font-size:15px}
+  .atc-offer .atc-canvas{flex:none;height:min(46vh,520px);max-width:640px;align-self:center}
+}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1790,7 +1838,7 @@ class Component extends DCLogic {
       var whoEl = document.getElementById('who'), cols = this.q('cols');
       if (whoEl && cols) {
         var wt = whoEl.getBoundingClientRect().top, ct = cols.getBoundingClientRect().top;
-        var narrow = (window.innerWidth || 1200) <= 760;
+        var narrow = window.matchMedia("(max-width:760px),(max-width:1100px) and (orientation:portrait)").matches;
         var play = cols.classList.contains('is-play');
         if (!play && ct < vh * 0.88 && (narrow || wt < vh * 0.12)) cols.classList.add('is-play');
         else if (play && wt > vh * 0.8) cols.classList.remove('is-play');
@@ -1799,7 +1847,7 @@ class Component extends DCLogic {
       var resEl = document.getElementById('results'), bento = this.q('bento');
       if (resEl && bento) {
         var rt = resEl.getBoundingClientRect().top, bt = bento.getBoundingClientRect().top;
-        var narrowK = (window.innerWidth || 1200) <= 760;
+        var narrowK = window.matchMedia("(max-width:760px),(max-width:1100px) and (orientation:portrait)").matches;
         var kp = bento.classList.contains('is-play');
         if (!kp && bt < vh * 0.88 && (narrowK || rt < vh * 0.12)) { bento.classList.add('is-play'); this._kpiT0 = now; }
         else if (kp && rt > vh * 0.8) { bento.classList.remove('is-play'); this._kpiT0 = null; }
@@ -2450,6 +2498,7 @@ class Component extends DCLogic {
       var ls0 = S.tiles[0] + li2 * span4;
       var le = ease(map(u, ls0 - 2, ls0 + span4 * 0.3));
       var on2 = li2 === active;
+      if (li.classList.contains('is-on') !== on2) li.classList.toggle('is-on', on2);
       li.style.opacity = (le * (on2 ? 1 : 0.5)).toFixed(3);
       li.style.transform = 'translateX(' + (-(1 - le) * 14 + (on2 ? 6 : 0)).toFixed(1) + 'px)';
       var ic = li.querySelector('.atc-offer-ic');
