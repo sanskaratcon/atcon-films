@@ -970,6 +970,19 @@ html,body{overscroll-behavior-y:none}
   .atc .atc-stack .atc-card-title{font-size:clamp(38px,3.6vw,66px);max-width:11em}
   .atc .atc-stack .atc-card-body{font-size:clamp(18px,1.4vw,24px)}
 }
+/* More than a supplier and What we offer, content first like the problem section:
+   the words lead, the visuals are smaller, calmer and only illustrate them */
+.atc-sol-map,.atc-offer .atc-canvas{filter:saturate(.7)}
+.atc-offer .cvb{box-shadow:0 0 0 1px rgba(0,16,37,.06),0 10px 24px -16px rgba(0,16,37,.22) !important}
+@media (min-width:761px) and (orientation:landscape),(min-width:1101px){
+  .atc-sol-body .atc-sol-head{font-size:clamp(38px,3.6vw,66px);line-height:1.08;margin-bottom:2vh}
+  .atc-sol-map{width:86%;margin-left:auto;margin-right:auto}
+  .atc-offer{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:4vw}
+  .atc-offer-title{font-size:clamp(38px,3.6vw,66px);line-height:1.08}
+  .atc-offer-list strong{font-size:clamp(17px,1.3vw,22px)}
+  .atc-offer-list span{font-size:clamp(14px,1.05vw,17px)}
+  .atc-offer .atc-canvas{max-width:560px}
+}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
