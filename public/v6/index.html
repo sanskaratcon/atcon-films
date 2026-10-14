@@ -953,6 +953,14 @@ html,body{overscroll-behavior-y:none}
   box-shadow:inset 0 0 0 .5px rgba(0,16,37,.10),0 .6cqw 2.2cqw -.4cqw var(--c),0 0 0 .35cqw color-mix(in srgb,var(--c) 18%,transparent)}
 .mac[data-scene="3"] .dk[data-app="3"]{box-shadow:inset 0 0 0 .5px rgba(0,16,37,.10),0 .6cqw 2.2cqw -.4cqw #2D63E6,0 0 0 .35cqw rgba(45,99,230,.16)}
 @media (prefers-reduced-motion:reduce){.pill-red,.owner.is-none{animation:none}}
+/* One illustration style across the site: the problem apps use the same soft panels as What we offer.
+   No window chrome; the app's name stays as a quiet caption at the top of the panel. */
+.mac .mw{background:#F8F9FB;border-radius:2.6cqw;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.08),0 1.4cqw 3.6cqw -2cqw rgba(0,16,37,.16)}
+.mac .mw-bar{height:auto;padding:2cqw 2.4cqw 0;background:none;border-bottom:0;color:#8C95A6;font-size:1.8cqw}
+.mac .mw-bar i{display:none}
+.mac .mw-bar span{margin-left:0}
+.mac .mw-b{padding:1.4cqw 2.4cqw 2.4cqw}
+.mac .mac-dock{background:#F8F9FB;box-shadow:inset 0 0 0 .5px rgba(0,16,37,.08),0 1.4cqw 3.6cqw -2cqw rgba(0,16,37,.16)}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
