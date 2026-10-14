@@ -940,7 +940,7 @@ html,body{overscroll-behavior-y:none}
   .mac{width:min(100%,calc((64vh - 40px) * 10 / 11))}
 }
 /* Problem scenes use the brand palette only: navy, the four gradient colours and their light tints */
-.mac .dk{background:var(--c)}
+.mac .dk{background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0) 50%),linear-gradient(180deg,color-mix(in srgb,var(--c) 76%,#fff),var(--c));box-shadow:inset 0 0 0 .5px rgba(0,16,37,.10),0 .4cqw 1cqw -.3cqw rgba(0,16,37,.25)}
 .mac .dk[data-app="3"]{background:#fff}
 .mw-bar i,.mw-bar i:nth-child(2),.mw-bar i:nth-child(3),.cvm-bar i,.cvm-bar i:nth-child(2),.cvm-bar i:nth-child(3){background:#D5D9E0}
 .mplus,.pill-red,.owner.is-none{background:#E9EFFC;color:#2D63E6}
