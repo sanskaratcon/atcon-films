@@ -978,6 +978,17 @@ html,body{overscroll-behavior-y:none}
 .atc-iso .mac,.atc-sol-map,.atc-offer .atc-canvas{filter:opacity(.8) brightness(1.03)}
 /* Illustrations in lighter tints of the same brand colours (not greyed), so the words stay in focus */
 .atc-iso .mac,.atc-sol-map,.atc-offer .atc-canvas{filter:opacity(.78)}
+/* The screen wakes up */
+.atc-wake{position:absolute;inset:0;z-index:2;opacity:0;visibility:hidden;pointer-events:none;overflow:hidden}
+.atc-wake-wall{position:absolute;inset:-4%;will-change:transform,opacity;
+  background:radial-gradient(48% 52% at 26% 34%,rgba(63,178,126,.18),rgba(63,178,126,0) 70%),
+    radial-gradient(52% 56% at 76% 62%,rgba(45,99,230,.17),rgba(45,99,230,0) 72%),
+    radial-gradient(36% 40% at 84% 18%,rgba(155,186,42,.14),rgba(155,186,42,0) 70%),
+    radial-gradient(40% 44% at 18% 84%,rgba(90,134,238,.12),rgba(90,134,238,0) 70%),#FFFFFF}
+.atc-wake-hi{position:absolute;left:0;right:0;top:50%;margin:-.6em 0 0;text-align:center;font-family:var(--atc-font);
+  font-size:clamp(38px,4.2vw,76px);font-weight:400;line-height:1.1;letter-spacing:-.035em;color:var(--atc-navy);will-change:transform,opacity,filter}
+.atc-wake-g{background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
+@media (max-width:760px){.atc-wake-hi{font-size:30px;padding:0 calc(16px + var(--rail,0px)) 0 calc(var(--rail) + 16px)}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -999,6 +1010,12 @@ html,body{overscroll-behavior-y:none}
         <video class="atc-video" data-atc="v1" src="../assets/e322ff24ab50b14ec5d76a67fbcf9fe4.mp4" poster="../assets/4fd01bfb6adcae317f57f79d1011dd57.jpg" muted="" loop="" autoplay="" playsinline="" preload="auto" aria-hidden="true"></video>
       </div>
       <div class="atc-white" data-atc="white"></div>
+      <!-- The screen wakes up: once we are inside the laptop, a soft brand wallpaper blooms, a greeting appears,
+           the dock rises, and the wallpaper hands over to the first point -->
+      <div class="atc-wake" data-atc="wake" aria-hidden="true">
+        <div class="atc-wake-wall" data-atc="wakeWall"></div>
+        <p class="atc-wake-hi" data-atc="wakeHi">What actually <span class="atc-wake-g">happens</span></p>
+      </div>
 
       <div class="atc-ovs" aria-hidden="true">
         <span class="atc-ov atc-ov-0" data-atc="ov0"></span>
@@ -2068,6 +2085,24 @@ class Component extends DCLogic {
         ty = (vh / 2 - wah.offsetHeight / 2 - top) * k;
       }
       wah.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px)';
+    }
+
+    // The screen wakes up: wallpaper blooms in as we land inside the laptop, the greeting rises, then both
+    // give way to the first point while the desktop moves beside the list
+    var wk = this.q('wake');
+    if (wk) {
+      var wOn = ease(map(u, 414, 450)), wOff = ease(map(u, 508, 556)), wo = wOn * (1 - wOff);
+      wk.style.opacity = wo.toFixed(3);
+      wk.style.visibility = wo > 0.001 ? 'visible' : 'hidden';
+      var ww = this.q('wakeWall');
+      if (ww) ww.style.transform = 'scale(' + (1.1 - 0.1 * wOn + 0.04 * wOff).toFixed(4) + ')';
+      var wh = this.q('wakeHi');
+      if (wh) {
+        var hIn = ease(map(u, 430, 472)), hOut = ease(map(u, 500, 530));
+        wh.style.opacity = (hIn * (1 - hOut)).toFixed(3);
+        wh.style.transform = 'translateY(' + ((1 - hIn) * 32 - hOut * 24).toFixed(1) + 'px)';
+        wh.style.filter = hOut > 0.001 ? 'blur(' + (hOut * 6).toFixed(2) + 'px)' : 'none';
+      }
     }
 
     // Inside the laptop: the desktop appears in the middle, moves beside the list, and plays one short
