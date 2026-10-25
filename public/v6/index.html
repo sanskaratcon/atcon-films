@@ -1003,6 +1003,12 @@ html,body{overscroll-behavior-y:none}
   .wv-rider .mac{width:min(100%,calc((78vh - 210px) * 10 / 11))}
 }
 .wv-world{z-index:2}.wv-rider{z-index:1}.wv-slot{pointer-events:none}
+/* v6 zig-zag polish: masked word reveals, a gradient key phrase, a lifting desktop with a floor shadow */
+.wv-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
+.wv-wi{display:inline-block;will-change:transform}
+.wv-key{background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wv-floor{position:absolute;z-index:0;width:min(38vw,520px);height:70px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(0,16,37,.16),rgba(0,16,37,0));filter:blur(8px)}
+.wv-rider{transform-style:preserve-3d}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2138,6 +2144,16 @@ class Component extends DCLogic {
         world.style.transformOrigin = '';
         world.style.transform = 'translate3d(0,' + (H / 2 - (50 + f * STEP) * H / 100).toFixed(1) + 'px,0)';
         var cards = world.querySelectorAll('.wv-card');
+        if (!world.__split) {
+          world.__split = true;
+          var KEY = ['complexity.', 'a different way.', 'No clear ownership.', 'gets stuck.'];
+          Array.prototype.forEach.call(cards, function (cd, q) {
+            var h = cd.querySelector('.wv-text h3'); if (!h) return;
+            var txt = h.textContent, key = KEY[q], at = txt.indexOf(key), pre = at >= 0 ? txt.slice(0, at) : txt, kw = at >= 0 ? key : '';
+            var wrap = function (str, cls) { return str.split(' ').filter(Boolean).map(function (w) { return '<span class="wv-w"><span class="wv-wi' + (cls ? ' ' + cls : '') + '">' + w + '</span></span>'; }).join(' '); };
+            h.setAttribute('aria-label', txt); h.innerHTML = wrap(pre) + (kw ? ' ' + wrap(kw, 'wv-key') : '');
+          });
+        }
         for (var ci = 0; ci < cards.length; ci++) {
           var near = 1 - Math.min(1, Math.abs(f - ci)), off = ci - f, side = narrow ? 0 : (ci % 2 ? 1 : -1);
           cards[ci].style.opacity = Math.pow(near, 1.4).toFixed(3);
@@ -2145,6 +2161,11 @@ class Component extends DCLogic {
           var tx2 = cards[ci].querySelector('.wv-text');
           // the words slide in from their own side as the desktop arrives
           if (tx2) tx2.style.transform = 'translate3d(' + (side * Math.abs(off) * 80).toFixed(1) + 'px,' + (off * 40).toFixed(1) + 'px,0)';
+          // words rise out of their masks one after another; the line under the title follows
+          var ws = cards[ci].querySelectorAll('.wv-wi'), arr = near * 1.25;
+          for (var wi = 0; wi < ws.length; wi++) { var wp = Math.max(0, Math.min(1, (arr - wi * 0.045) / 0.55)); wp = 1 - Math.pow(1 - wp, 3);
+            ws[wi].style.transform = 'translate3d(0,' + ((1 - wp) * 105).toFixed(1) + '%,0)'; }
+          var lp = cards[ci].querySelector('.wv-text p'); if (lp) { var lq = Math.max(0, Math.min(1, (near - 0.55) / 0.4)); lp.style.opacity = lq.toFixed(3); lp.style.transform = 'translate3d(0,' + ((1 - lq) * 14).toFixed(1) + 'px,0)'; }
         }
         var rider = wv.querySelector('.wv-rider');
         if (!rider) { rider = document.createElement('div'); rider.className = 'wv-rider'; wv.appendChild(rider); }
@@ -2158,7 +2179,13 @@ class Component extends DCLogic {
         rider.style.left = L.toFixed(1) + 'px'; rider.style.top = T.toFixed(1) + 'px';
         rider.style.width = (A.width + (B.width - A.width) * e).toFixed(1) + 'px'; rider.style.height = (A.height + (B.height - A.height) * e).toFixed(1) + 'px';
         var dirX = B.left > A.left ? 1 : -1;
-        rider.style.transform = 'scale(' + (1 - arc * 0.06).toFixed(4) + ') rotate(' + (dirX * arc * 2.2).toFixed(2) + 'deg)';
+        if (!this._wvPtr) { var self2 = this; this._wvPtr = { x: 0, y: 0, sx: 0, sy: 0 };
+          window.addEventListener('pointermove', function (ev) { self2._wvPtr.x = ev.clientX / (window.innerWidth || 1) - 0.5; self2._wvPtr.y = ev.clientY / (window.innerHeight || 1) - 0.5; }, { passive: true }); }
+        var pt = this._wvPtr; pt.sx += (pt.x - pt.sx) * 0.08; pt.sy += (pt.y - pt.sy) * 0.08;
+        rider.style.transform = 'perspective(1400px) translate3d(0,' + (-arc * 18).toFixed(1) + 'px,0) rotateY(' + (dirX * arc * 14 + pt.sx * 7).toFixed(2) + 'deg) rotateX(' + (-pt.sy * 5 + arc * 3).toFixed(2) + 'deg) rotate(' + (dirX * arc * 1.6).toFixed(2) + 'deg) scale(' + (1 - arc * 0.04).toFixed(4) + ')';
+        var floor = wv.querySelector('.wv-floor'); if (!floor) { floor = document.createElement('i'); floor.className = 'wv-floor'; wv.insertBefore(floor, rider); }
+        floor.style.left = (L + (A.width + (B.width - A.width) * e) * 0.5).toFixed(1) + 'px'; floor.style.top = (T + (A.height + (B.height - A.height) * e) * 0.9).toFixed(1) + 'px';
+        floor.style.transform = 'translate(-50%,-50%) scale(' + (1 + arc * 0.5).toFixed(3) + ',' + (1 + arc * 0.3).toFixed(3) + ')'; floor.style.opacity = (0.5 - arc * 0.3).toFixed(3);
         mac.style.opacity = (1 - arc * 0.18).toFixed(3);
       }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
