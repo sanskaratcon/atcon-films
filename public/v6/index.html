@@ -957,6 +957,33 @@ html,body{overscroll-behavior-y:none}
   background:linear-gradient(90deg,rgba(63,178,126,0),rgba(63,178,126,.35) 30%,rgba(45,99,230,.45) 50%,rgba(155,186,42,.35) 70%,rgba(155,186,42,0))}
 .mac-aura{position:absolute;left:50%;top:50%;width:130%;aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;opacity:0}
 .atc-iso{isolation:isolate}
+/* v6 wave: the problems live along a wave and the camera travels between them */
+.wv{position:absolute;inset:0;z-index:6;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;perspective:1400px}
+.wv-world{position:absolute;left:0;top:0;width:180vw;height:400vh;transform-origin:0 0;will-change:transform}
+.wv-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.wv-track{fill:none;stroke:#E3E8EF;stroke-width:2;vector-effect:non-scaling-stroke;stroke-dasharray:2 7}
+.wv-line{fill:none;stroke:url(#wvg);stroke-width:2.5;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1}
+.wv-orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.5;will-change:transform}
+.wv-o1{left:8vw;top:10vh;width:34vw;height:34vw;background:radial-gradient(closest-side,rgba(63,178,126,.22),rgba(63,178,126,0))}
+.wv-o2{left:120vw;top:110vh;width:38vw;height:38vw;background:radial-gradient(closest-side,rgba(45,99,230,.18),rgba(45,99,230,0))}
+.wv-o3{left:10vw;top:220vh;width:36vw;height:36vw;background:radial-gradient(closest-side,rgba(90,134,238,.2),rgba(90,134,238,0))}
+.wv-o4{left:118vw;top:315vh;width:36vw;height:36vw;background:radial-gradient(closest-side,rgba(155,186,42,.2),rgba(155,186,42,0))}
+.wv-card{position:absolute;width:min(1080px,76vw);height:min(68vh,640px);transform:translate(-50%,-50%);display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);align-items:center;gap:3vw;
+  padding:clamp(24px,3.4vw,56px);border-radius:34px;background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(0,16,37,.06),0 50px 90px -50px rgba(0,16,37,.4);will-change:transform,opacity}
+.wv-card[data-k='0']{left:40vw;top:50vh}.wv-card[data-k='1']{left:130vw;top:150vh}.wv-card[data-k='2']{left:40vw;top:250vh}.wv-card[data-k='3']{left:130vw;top:350vh}
+.wv-num{display:block;font-size:13px;font-weight:600;letter-spacing:.14em;color:#2D63E6}.wv-num i{font-style:normal;color:#8C95A6;margin-left:6px}
+.wv-text h3{margin:16px 0 18px;font-family:var(--atc-font);font-weight:400;font-size:clamp(28px,2.9vw,50px);line-height:1.08;letter-spacing:-.035em;color:var(--atc-navy);max-width:11em}
+.wv-text p{margin:0;font-size:clamp(15px,1.15vw,19px);line-height:1.5;color:var(--atc-slate);max-width:22em}
+.wv-slot{position:relative;height:100%;display:flex;align-items:center;justify-content:center}
+.wv-slot .mac{width:min(100%,calc(min(68vh,640px) * .86 * 10 / 11))}
+.atc.is-wave .atc-stack,.atc.is-wave .atc-iso{opacity:0 !important;visibility:hidden !important}
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
+  .wv-card{width:88vw;height:78vh;grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:12px;padding:22px}
+  .wv-card{width:calc(100vw - var(--rail) - 24px)}
+  .wv-card[data-k='0'],.wv-card[data-k='2']{left:calc(var(--rail) + (100vw - var(--rail)) / 2)}.wv-card[data-k='1'],.wv-card[data-k='3']{left:calc(var(--rail) + (100vw - var(--rail)) / 2 + 90vw)}
+  .wv-text h3{font-size:24px;margin:10px 0 8px}.wv-text p{font-size:14px}
+  .wv-slot .mac{width:min(100%,calc((78vh - 210px) * 10 / 11))}
+}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1050,6 +1077,14 @@ with a vision.</h2>
       <!-- One project, four layers: shown as a single block, then opened up beside the list -->
       <!-- Inside the laptop: the white screen we flew into becomes its desktop -->
       <!-- What actually happens, played live on that screen: one short moment per point, driven by macScene() -->
+      <!-- v6: the four points sit along a wave; the camera glides from one to the next, tilting as it travels,
+           and the live desktop plays inside the card the camera has reached -->
+      <div class="wv" data-atc="wave" aria-hidden="true"><div class="wv-world" data-atc="waveWorld">
+        <i class="wv-orb wv-o1"></i><i class="wv-orb wv-o2"></i><i class="wv-orb wv-o3"></i><i class="wv-orb wv-o4"></i>
+        <svg class="wv-path" viewBox="0 0 180 400" preserveAspectRatio="none"><defs><linearGradient id="wvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FB27E"/><stop offset=".4" stop-color="#2D63E6"/><stop offset=".7" stop-color="#5A86EE"/><stop offset="1" stop-color="#9BBA2A"/></linearGradient></defs>
+          <path class="wv-track" d="M40 50 C 40 100, 130 100, 130 150 S 40 200, 40 250 S 130 300, 130 350"/><path class="wv-line" pathLength="1" d="M40 50 C 40 100, 130 100, 130 150 S 40 200, 40 250 S 130 300, 130 350"/></svg>
+        <article class="wv-card" data-k="0"><div class="wv-text"><span class="wv-num">01<i>/ 04</i></span><h3>But too many tools add complexity.</h3><p>Which one is right for your software?</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="1"><div class="wv-text"><span class="wv-num">02<i>/ 04</i></span><h3>And every vendor pulls a different way.</h3><p>Each one offers a different way to build it.</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="2"><div class="wv-text"><span class="wv-num">03<i>/ 04</i></span><h3>Many people. Different perspectives. No clear ownership.</h3><p>Each team passes the task on until no one owns it.</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="3"><div class="wv-text"><span class="wv-num">04<i>/ 04</i></span><h3>Instead of moving forward, your business gets stuck.</h3><p>Meeting after meeting, and the result is still zero.</p></div><div class="wv-slot"></div></article>
+      </div></div>
       <div class="atc-iso atc-mac" data-atc="iso" aria-hidden="true">
         <div class="mac" data-atc="mac" data-scene="-1">
           <i class="mac-glint" data-atc="macGlint"></i>
@@ -2065,11 +2100,51 @@ class Component extends DCLogic {
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
+
+      // v6 wave: the camera travels along the wave from point to point; the live desktop moves into the card it reaches
+      (function () {
+        var wv = this.q('wave'), world = this.q('waveWorld'), root = this.q('root'), mac = this.q('mac');
+        if (!wv || !world || !mac) return;
+        var on = ease(map(u, S.ins[0] - 40, S.ins[0] - 4)) * (1 - ease(map(u, S.out + 4, S.out + 40)));
+        wv.style.opacity = on.toFixed(3); wv.style.visibility = on > 0.002 ? 'visible' : 'hidden';
+        var waveOn = on > 0.5;
+        if (root && root.classList.contains('is-wave') !== waveOn) root.classList.toggle('is-wave', waveOn);
+        this._waveOn = waveOn;
+        var W = window.innerWidth || 1200, H = window.innerHeight || 800;
+        var narrow = window.matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
+        var c0 = world.querySelector('.wv-card'), nb = c0 ? parseFloat(getComputedStyle(c0).left) / W * 100 : 50;
+        var P = narrow ? [[nb, 50], [nb + 90, 150], [nb, 250], [nb + 90, 350]] : [[40, 50], [130, 150], [40, 250], [130, 350]];
+        var f = 0; for (var k = 1; k < 4; k++) f += ease(map(u, S.ins[k] - 10, S.ins[k] + 32));
+        var k0 = Math.min(2, Math.floor(f)), ft = f - k0; if (f >= 3) { k0 = 2; ft = 1; }
+        var A = P[k0], B = P[k0 + 1], tr = Math.sin(Math.PI * ft);
+        // the camera follows the wave: it eases across, and bows outwards at the middle of each crossing
+        var cx = A[0] + (B[0] - A[0]) * ft, cy = A[1] + (B[1] - A[1]) * ft;
+        var dir = B[0] > A[0] ? 1 : -1;
+        var zoom = 1 - tr * 0.18;
+        var fx = narrow && c0 ? parseFloat(getComputedStyle(c0).left) : W / 2;  // on phones the free space starts after the rail
+        var tx = fx - cx * W / 100, ty = H / 2 - cy * H / 100;
+        world.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + zoom.toFixed(4) + ') rotateY(' + (-dir * tr * 7).toFixed(2) + 'deg) rotateX(' + (tr * 5).toFixed(2) + 'deg) rotateZ(' + (dir * tr * 2.4).toFixed(2) + 'deg)';
+        world.style.transformOrigin = (cx * W / 100).toFixed(1) + 'px ' + (cy * H / 100).toFixed(1) + 'px';
+        var orbs = world.querySelectorAll('.wv-orb');
+        for (var oi = 0; oi < orbs.length; oi++) orbs[oi].style.transform = 'translate(' + ((cx - 85) * W / 100 * (0.15 + oi * 0.05)).toFixed(1) + 'px,' + ((cy - 200) * H / 100 * 0.12).toFixed(1) + 'px)';
+        var line = world.querySelector('.wv-line'); if (line) line.style.strokeDashoffset = (1 - f / 3 * 0.86 - 0.07).toFixed(4);
+        var cards = world.querySelectorAll('.wv-card');
+        for (var ci = 0; ci < cards.length; ci++) {
+          var near = 1 - Math.min(1, Math.abs(f - ci));
+          cards[ci].style.opacity = (0.32 + 0.68 * near).toFixed(3);
+          cards[ci].style.transform = 'translate(-50%,-50%) scale(' + (0.9 + 0.1 * near).toFixed(4) + ')';
+        }
+        // the live desktop sits in the card the camera is closest to, and fades through the crossing
+        var target = waveOn ? world.querySelectorAll('.wv-slot')[Math.min(3, Math.round(f))] : this.q('iso');
+        if (target && mac.parentNode !== target) target.appendChild(mac);
+        mac.style.opacity = waveOn ? (Math.abs(ft - 0.5) * 2 > 0.999 || f === 0 || f >= 3 ? 1 : Math.pow(Math.abs(ft - 0.5) * 2, 1.4)).toFixed(3) : '';
+      }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
       // swings forward into the next scene; while a point plays it drifts gently in depth, over a glow in that point's colour
       (function () {
         var mac = this.q('mac'), glint = this.q('macGlint'), aura = this.q('macAura');
         if (!mac) return;
+        if (this._waveOn) { mac.style.transform = ''; mac.style.filter = ''; if (glint) glint.style.opacity = '0'; return; }
         var cut = 0, gl = -1, cur = 0;
         for (var ck = 0; ck < S.ins.length; ck++) if (u >= S.ins[ck] - 6) cur = ck;
         for (var ck2 = 1; ck2 < S.ins.length; ck2++) {
