@@ -1011,6 +1011,11 @@ html,body{overscroll-behavior-y:none}
 .wv-rider{transform-style:preserve-3d}
 /* v6 spark: brand light runs through each title as it lands; the words rest in navy */
 .wv-text .wv-wi{background:linear-gradient(100deg,#001025 0,#001025 36%,#3FB27E 44%,#2D63E6 51%,#5A86EE 57%,#9BBA2A 63%,#001025 70%,#001025 100%);background-size:360% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+/* v6 3D desktop: the windows float at their own depths above the desktop and the dock sits in front */
+.wv-rider .mac,.wv-rider .wv-3d{transform-style:preserve-3d}
+.wv-rider .mac{will-change:auto}
+.wv-rider .mac [style*='--z']{translate:0 0 var(--z)}
+.wv-rider .mac .mw{box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 3cqw 6cqw -2cqw rgba(0,16,37,.28),0 .4cqw 1cqw rgba(0,16,37,.06)}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2184,6 +2189,15 @@ class Component extends DCLogic {
         var rider = wv.querySelector('.wv-rider');
         if (!rider) { rider = document.createElement('div'); rider.className = 'wv-rider'; wv.appendChild(rider); }
         if (waveOn && mac.parentNode !== rider) rider.appendChild(mac);
+        if (!mac.__depth) { mac.__depth = true;
+          var lift = function (el, z) { el.style.setProperty('--z', z); for (var pe = el.parentElement; pe && pe !== mac.parentElement; pe = pe.parentElement) pe.classList.add('wv-3d'); };
+          Array.prototype.forEach.call(mac.querySelectorAll('.mac-sc'), function (sc) {
+            var top = Array.prototype.filter.call(sc.querySelectorAll('.mw'), function (w) { return w.parentElement.closest('.mw') === null; });
+            top.forEach(function (w, wi2) { lift(w, (3 + wi2 * 3.2).toFixed(1) + 'cqw'); });
+          });
+          var dk = mac.querySelector('.mac-dock'); if (dk) lift(dk, '7cqw');
+          var gq = mac.querySelector('.mac-glint'); if (gq) lift(gq, '14cqw');
+        }
         if (!waveOn && iso && mac.parentNode !== iso) iso.appendChild(mac);
         if (!waveOn) { mac.style.opacity = ''; mac.style.transform = ''; rider.style.opacity = '0'; return; }
         // the desktop rides between the two slots: it glides across in a soft arc, turning slightly into the move.
@@ -2208,12 +2222,15 @@ class Component extends DCLogic {
         if (!this._wvPtr) { var self2 = this; this._wvPtr = { x: 0, y: 0, sx: 0, sy: 0 };
           window.addEventListener('pointermove', function (ev) { self2._wvPtr.x = ev.clientX / (window.innerWidth || 1) - 0.5; self2._wvPtr.y = ev.clientY / (window.innerHeight || 1) - 0.5; }, { passive: true }); }
         var pt = this._wvPtr; pt.sx += (pt.x - pt.sx) * 0.06; pt.sy += (pt.y - pt.sy) * 0.06;
-        rider.style.transform = 'translate3d(' + R[0].toFixed(2) + 'px,' + (R[1] - arc * 18).toFixed(2) + 'px,0) perspective(1400px) rotateY(' + (dirX * arc * 14 + pt.sx * 7).toFixed(2) + 'deg) rotateX(' + (-pt.sy * 5 + arc * 3).toFixed(2) + 'deg) rotate(' + (dirX * arc * 1.6).toFixed(2) + 'deg) scale(' + (1 - arc * 0.04 + (e > 0.72 && e < 1 ? Math.sin(Math.PI * (e - 0.72) / 0.28) * 0.012 : 0)).toFixed(4) + ')';
-        rider.style.opacity = outE.toFixed(3);
+        var faceA = narrow ? -1 : (k0 % 2 ? 1 : -1), faceB = narrow ? -1 : ((k0 + 1) % 2 ? 1 : -1), face = faceA + (faceB - faceA) * ease(e);
+        var curP = Math.min(3, Math.round(f)), pEnd = curP < 3 ? S.ins[curP + 1] - 12 : S.out, orbit = (map(u, S.ins[curP] + 32, pEnd) - 0.5) * 8;
+        var d3 = inE * (narrow ? 0.6 : 1), rY = (face * 16 + orbit) * d3, rX = 9 * d3;
+        rider.style.transform = 'translate3d(' + R[0].toFixed(2) + 'px,' + (R[1] - arc * 18).toFixed(2) + 'px,0) perspective(1600px) rotateY(' + (rY + dirX * arc * 14 + pt.sx * 7).toFixed(2) + 'deg) rotateX(' + (rX - pt.sy * 5 + arc * 3).toFixed(2) + 'deg) rotate(' + (dirX * arc * 1.6).toFixed(2) + 'deg) scale(' + (1 - arc * 0.04 + (e > 0.72 && e < 1 ? Math.sin(Math.PI * (e - 0.72) / 0.28) * 0.012 : 0)).toFixed(4) + ')';
+        rider.style.opacity = outE < 0.999 ? outE.toFixed(3) : '';
         var floor = wv.querySelector('.wv-floor'); if (!floor) { floor = document.createElement('i'); floor.className = 'wv-floor'; wv.insertBefore(floor, rider); }
         floor.style.transform = 'translate3d(' + (R[0] + R[2] * 0.5).toFixed(2) + 'px,' + (R[1] + R[3] * 0.9).toFixed(2) + 'px,0) translate(-50%,-50%) scale(' + (1 + arc * 0.5).toFixed(3) + ',' + (1 + arc * 0.3).toFixed(3) + ')';
         floor.style.opacity = ((0.5 - arc * 0.3) * outE).toFixed(3);
-        mac.style.opacity = (1 - arc * 0.18).toFixed(3);
+        mac.style.opacity = '';
         var gl2 = this.q('macGlint'), gp = inE < 1 ? inE : ft;
         if (gl2) { gl2.style.opacity = (gp > 0 && gp < 1 ? Math.pow(Math.sin(Math.PI * gp), 2) * 0.5 : 0).toFixed(3); gl2.style.transform = 'translateX(' + (-80 + gp * 300).toFixed(1) + '%) skewX(-16deg)'; }
       }).call(this);
