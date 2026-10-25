@@ -1016,6 +1016,9 @@ html,body{overscroll-behavior-y:none}
 .wv-rider .mac{will-change:auto}
 .wv-rider .mac [style*='--z']{translate:0 0 var(--z)}
 .wv-rider .mac .mw{box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 3cqw 6cqw -2cqw rgba(0,16,37,.28),0 .4cqw 1cqw rgba(0,16,37,.06)}
+/* v6 desktop shadow: a soft ambient pool with a tighter contact shadow under the dock */
+.wv-floor{background:radial-gradient(closest-side,rgba(0,16,37,.30),rgba(0,16,37,.10) 55%,rgba(0,16,37,0)) !important;filter:blur(6px) !important}
+.wv-floor::after{content:'';position:absolute;left:22%;right:22%;top:32%;bottom:32%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,16,37,.18),rgba(0,16,37,0));filter:blur(4px)}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2228,8 +2231,9 @@ class Component extends DCLogic {
         rider.style.transform = 'translate3d(' + R[0].toFixed(2) + 'px,' + (R[1] - arc * 18).toFixed(2) + 'px,0) perspective(1600px) rotateY(' + (rY + dirX * arc * 9 + pt.sx * 4).toFixed(2) + 'deg) rotateX(' + (rX - pt.sy * 3 + arc * 2).toFixed(2) + 'deg) rotate(' + (dirX * arc * 1.6).toFixed(2) + 'deg) scale(' + (1 - arc * 0.04 + (e > 0.72 && e < 1 ? Math.sin(Math.PI * (e - 0.72) / 0.28) * 0.012 : 0)).toFixed(4) + ')';
         rider.style.opacity = outE < 0.999 ? outE.toFixed(3) : '';
         var floor = wv.querySelector('.wv-floor'); if (!floor) { floor = document.createElement('i'); floor.className = 'wv-floor'; wv.insertBefore(floor, rider); }
-        floor.style.transform = 'translate3d(' + (R[0] + R[2] * 0.5).toFixed(2) + 'px,' + (R[1] + R[3] * 0.9).toFixed(2) + 'px,0) translate(-50%,-50%) scale(' + (1 + arc * 0.5).toFixed(3) + ',' + (1 + arc * 0.3).toFixed(3) + ')';
-        floor.style.opacity = ((0.5 - arc * 0.3) * outE).toFixed(3);
+        floor.style.transform = 'translate3d(' + (R[0] + R[2] * 0.5).toFixed(2) + 'px,' + (R[1] + R[3] * 0.885).toFixed(2) + 'px,0) translate(-50%,-50%) scale(' + (1 + arc * 0.5).toFixed(3) + ',' + (1 + arc * 0.3).toFixed(3) + ')';
+        if (Math.abs((floor.__w || 0) - R[2]) > 0.5) { floor.__w = R[2]; floor.style.width = (R[2] * 0.82).toFixed(1) + 'px'; floor.style.height = (R[2] * 0.13).toFixed(1) + 'px'; }
+        floor.style.opacity = ((0.95 - arc * 0.45) * outE * Math.max(inE, 0.0)).toFixed(3);
         mac.style.opacity = '';
         var gl2 = this.q('macGlint'), gp = inE < 1 ? inE : ft;
         if (gl2) { gl2.style.opacity = (gp > 0 && gp < 1 ? Math.pow(Math.sin(Math.PI * gp), 2) * 0.5 : 0).toFixed(3); gl2.style.transform = 'translateX(' + (-80 + gp * 300).toFixed(1) + '%) skewX(-16deg)'; }
