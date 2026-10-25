@@ -1001,7 +1001,6 @@ html,body{overscroll-behavior-y:none}
 @keyframes sk-splash{0%{transform:scale(0)}8%{transform:scale(.9)}50%{transform:scale(3.2)}100%{transform:scale(10)}}
 .atc.is-ready .atc-sketch{animation:sk-gone 0s linear 5s forwards}
 @keyframes sk-gone{to{visibility:hidden}}
-@media (prefers-reduced-motion:reduce){.atc-sketch{display:none}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1806,7 +1805,7 @@ class Component extends DCLogic {
     el.classList.add('is-in', 'is-out', 'is-gone');
     if (root) root.classList.add('is-ready');
     this._splash = 2;
-    if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) this._sketchUntil = performance.now() + 2600;
+    this._sketchUntil = performance.now() + 2600;
     return;
     this.watchSplash(el);
     this._waitT += dt;
