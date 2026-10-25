@@ -989,6 +989,20 @@ html,body{overscroll-behavior-y:none}
 .wv-card{background:none !important;box-shadow:none !important;border-radius:0 !important;padding:0 2vw !important}
 .wv-text h3{margin-top:0}
 .wv-text,.wv-slot{will-change:transform,opacity}
+/* v6 zig-zag: straight down the page; text and desktop swap sides from point to point */
+.wv-card{left:50vw !important}
+.wv-card[data-k='0']{top:50vh !important}.wv-card[data-k='1']{top:142vh !important}.wv-card[data-k='2']{top:234vh !important}.wv-card[data-k='3']{top:326vh !important}
+.wv-card[data-k='1'],.wv-card[data-k='3']{grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr)}
+.wv-card[data-k='1'] .wv-text,.wv-card[data-k='3'] .wv-text{order:2}
+.wv-rider{position:absolute;left:0;top:0;display:flex;align-items:center;justify-content:center;pointer-events:none;will-change:left,top,transform}
+.wv-rider .mac{width:min(100%,calc(min(68vh,640px) * .86 * 10 / 11))}
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){
+  .wv-card{left:calc(var(--rail) + (100vw - var(--rail)) / 2) !important}
+  .wv-card[data-k='1']{top:150vh !important}.wv-card[data-k='2']{top:250vh !important}.wv-card[data-k='3']{top:350vh !important}
+  .wv-card[data-k='1'],.wv-card[data-k='3']{grid-template-columns:1fr}.wv-card[data-k='1'] .wv-text,.wv-card[data-k='3'] .wv-text{order:0}
+  .wv-rider .mac{width:min(100%,calc((78vh - 210px) * 10 / 11))}
+}
+.wv-world{z-index:2}.wv-rider{z-index:1}.wv-slot{pointer-events:none}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2106,47 +2120,46 @@ class Component extends DCLogic {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
 
-      // v6 wave: the camera travels along the wave from point to point; the live desktop moves into the card it reaches
+      // v6 zig-zag: the camera moves straight down; the live desktop glides from side to side between the points,
+      // and each point's words arrive on the other side as the desktop lands beside them
       (function () {
-        var wv = this.q('wave'), world = this.q('waveWorld'), root = this.q('root'), mac = this.q('mac');
+        var wv = this.q('wave'), world = this.q('waveWorld'), root = this.q('root'), mac = this.q('mac'), iso = this.q('iso');
         if (!wv || !world || !mac) return;
         var on = ease(map(u, S.ins[0] - 40, S.ins[0] - 4)) * (1 - ease(map(u, S.out + 4, S.out + 40)));
         wv.style.opacity = on.toFixed(3); wv.style.visibility = on > 0.002 ? 'visible' : 'hidden';
         var waveOn = on > 0.5;
         if (root && root.classList.contains('is-wave') !== waveOn) root.classList.toggle('is-wave', waveOn);
         this._waveOn = waveOn;
-        var W = window.innerWidth || 1200, H = window.innerHeight || 800;
+        var H = window.innerHeight || 800;
         var narrow = window.matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
-        var c0 = world.querySelector('.wv-card'), nb = c0 ? parseFloat(getComputedStyle(c0).left) / W * 100 : 50;
-        var P = narrow ? [[nb, 50], [nb + 90, 150], [nb, 250], [nb + 90, 350]] : [[46, 50], [78, 130], [46, 210], [78, 290]];
+        var STEP = narrow ? 100 : 92;
         var f = 0; for (var k = 1; k < 4; k++) f += ease(map(u, S.ins[k] - 10, S.ins[k] + 32));
         var k0 = Math.min(2, Math.floor(f)), ft = f - k0; if (f >= 3) { k0 = 2; ft = 1; }
-        var A = P[k0], B = P[k0 + 1], tr = Math.sin(Math.PI * ft);
-        // the camera follows the wave: it eases across, and bows outwards at the middle of each crossing
-        var cx = A[0] + (B[0] - A[0]) * ft, cy = A[1] + (B[1] - A[1]) * ft;
-        var dir = B[0] > A[0] ? 1 : -1;
-        var zoom = 1 - tr * 0.07;
-        var fx = narrow && c0 ? parseFloat(getComputedStyle(c0).left) : W / 2;  // on phones the free space starts after the rail
-        var tx = fx - cx * W / 100, ty = H / 2 - cy * H / 100;
-        world.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + zoom.toFixed(4) + ') rotateY(' + (-dir * tr * 2.6).toFixed(2) + 'deg) rotateX(' + (tr * 1.6).toFixed(2) + 'deg)';
-        world.style.transformOrigin = (cx * W / 100).toFixed(1) + 'px ' + (cy * H / 100).toFixed(1) + 'px';
-        var orbs = world.querySelectorAll('.wv-orb');
-        for (var oi = 0; oi < orbs.length; oi++) orbs[oi].style.transform = 'translate(' + ((cx - 85) * W / 100 * (0.15 + oi * 0.05)).toFixed(1) + 'px,' + ((cy - 200) * H / 100 * 0.12).toFixed(1) + 'px)';
-        var line = world.querySelector('.wv-line'); if (line) line.style.strokeDashoffset = (1 - f / 3 * 0.86 - 0.07).toFixed(4);
+        world.style.transformOrigin = '';
+        world.style.transform = 'translate3d(0,' + (H / 2 - (50 + f * STEP) * H / 100).toFixed(1) + 'px,0)';
         var cards = world.querySelectorAll('.wv-card');
         for (var ci = 0; ci < cards.length; ci++) {
-          var near = 1 - Math.min(1, Math.abs(f - ci));
-          var off = ci - f;  // where this problem sits relative to the camera
-          cards[ci].style.opacity = Math.pow(near, 1.6).toFixed(3);
-          cards[ci].style.transform = 'translate(-50%,-50%) scale(' + (0.96 + 0.04 * near).toFixed(4) + ')';
-          var tx2 = cards[ci].querySelector('.wv-text'), sl2 = cards[ci].querySelector('.wv-slot');
-          if (tx2) tx2.style.transform = 'translate3d(' + (off * -40).toFixed(1) + 'px,' + (off * 36).toFixed(1) + 'px,0)';
-          if (sl2) sl2.style.transform = 'translate3d(' + (off * 70).toFixed(1) + 'px,' + (off * -24).toFixed(1) + 'px,0)';
+          var near = 1 - Math.min(1, Math.abs(f - ci)), off = ci - f, side = narrow ? 0 : (ci % 2 ? 1 : -1);
+          cards[ci].style.opacity = Math.pow(near, 1.4).toFixed(3);
+          cards[ci].style.transform = 'translate(-50%,-50%)';
+          var tx2 = cards[ci].querySelector('.wv-text');
+          // the words slide in from their own side as the desktop arrives
+          if (tx2) tx2.style.transform = 'translate3d(' + (side * Math.abs(off) * 80).toFixed(1) + 'px,' + (off * 40).toFixed(1) + 'px,0)';
         }
-        // the live desktop sits in the card the camera is closest to, and fades through the crossing
-        var target = waveOn ? world.querySelectorAll('.wv-slot')[Math.min(3, Math.round(f))] : this.q('iso');
-        if (target && mac.parentNode !== target) target.appendChild(mac);
-        mac.style.opacity = waveOn ? (Math.abs(ft - 0.5) * 2 > 0.999 || f === 0 || f >= 3 ? 1 : Math.pow(Math.abs(ft - 0.5) * 2, 1.4)).toFixed(3) : '';
+        var rider = wv.querySelector('.wv-rider');
+        if (!rider) { rider = document.createElement('div'); rider.className = 'wv-rider'; wv.appendChild(rider); }
+        if (waveOn && mac.parentNode !== rider) rider.appendChild(mac);
+        if (!waveOn && iso && mac.parentNode !== iso) iso.appendChild(mac);
+        if (!waveOn) { mac.style.opacity = ''; mac.style.transform = ''; return; }
+        // the desktop rides between the two slots: it glides across in a soft arc, turning slightly into the move
+        var slots = world.querySelectorAll('.wv-slot'), wr = wv.getBoundingClientRect();
+        var A = slots[k0].getBoundingClientRect(), B = slots[k0 + 1].getBoundingClientRect(), e = ft, arc = Math.sin(Math.PI * e);
+        var L = A.left + (B.left - A.left) * e - wr.left, T = A.top + (B.top - A.top) * e - wr.top;
+        rider.style.left = L.toFixed(1) + 'px'; rider.style.top = T.toFixed(1) + 'px';
+        rider.style.width = (A.width + (B.width - A.width) * e).toFixed(1) + 'px'; rider.style.height = (A.height + (B.height - A.height) * e).toFixed(1) + 'px';
+        var dirX = B.left > A.left ? 1 : -1;
+        rider.style.transform = 'scale(' + (1 - arc * 0.06).toFixed(4) + ') rotate(' + (dirX * arc * 2.2).toFixed(2) + 'deg)';
+        mac.style.opacity = (1 - arc * 0.18).toFixed(3);
       }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
       // swings forward into the next scene; while a point plays it drifts gently in depth, over a glow in that point's colour
