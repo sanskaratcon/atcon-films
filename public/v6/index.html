@@ -941,6 +941,13 @@ html,body{overscroll-behavior-y:none}
 .mplus,.pill-red,.owner.is-none{background:#E9EFFC;color:#2D63E6}
 .msheet span:nth-child(10),.mtally .is-zero,.mtally .is-zero b,.mcomments small{color:#2D63E6}
 .pill-amber,.ms-note{background:#F1F5E1;color:#5E7417}
+/* UI/UX Pro Max pass (v6): accessibility fixes that keep the design as it is */
+/* 1. a visible keyboard focus ring on everything that can be clicked (mouse clicks show no ring) */
+.atc :is(a,button,[role=button],[tabindex]):focus-visible{outline:2px solid #2D63E6 !important;outline-offset:3px;border-radius:6px}
+/* 2. footer small print reaches 4.5:1 contrast on white (was 3.0:1) */
+.atc-foot-legal .ds-small,.atc-logo-cell .ds-small,.atc-foot-links a,.atc-foot-links span{color:#5B6B78}
+/* 3. footer links are at least 24px tall to point at and tap */
+.atc-foot-links a,.atc-foot-col a{display:inline-flex;align-items:center;min-height:24px}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1551,6 +1558,8 @@ class Component extends DCLogic {
     // Smooth wheel: each notch sets a target and the page eases towards it every frame (see smoothStep)
     this._sw = { y: null, last: null };
     this._onWheel = function (e) {
+      // 4. people who ask for less motion get the browser's own scrolling, not the eased wheel
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (e.defaultPrevented || e.ctrlKey || !e.cancelable) return;
       var root = self.q('root');
       if (root && root.getAttribute('data-menu') === 'open') return;
