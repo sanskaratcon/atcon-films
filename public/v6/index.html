@@ -976,7 +976,7 @@ html,body{overscroll-behavior-y:none}
 .wv-text p{margin:0;font-size:clamp(15px,1.15vw,19px);line-height:1.5;color:var(--atc-slate);max-width:22em}
 .wv-slot{position:relative;height:100%;display:flex;align-items:center;justify-content:center}
 .wv-slot .mac{width:min(100%,calc(min(68vh,640px) * .86 * 10 / 11))}
-.atc.is-wave .atc-stack,.atc.is-wave .atc-iso{opacity:0 !important;visibility:hidden !important}
+
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   .wv-card{width:88vw;height:78vh;grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:12px;padding:22px}
   .wv-card{width:calc(100vw - var(--rail) - 24px)}
@@ -994,7 +994,7 @@ html,body{overscroll-behavior-y:none}
 .wv-card[data-k='0']{top:50vh !important}.wv-card[data-k='1']{top:142vh !important}.wv-card[data-k='2']{top:234vh !important}.wv-card[data-k='3']{top:326vh !important}
 .wv-card[data-k='1'],.wv-card[data-k='3']{grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr)}
 .wv-card[data-k='1'] .wv-text,.wv-card[data-k='3'] .wv-text{order:2}
-.wv-rider{position:absolute;left:0;top:0;display:flex;align-items:center;justify-content:center;pointer-events:none;will-change:left,top,transform}
+.wv-rider{position:absolute;left:0;top:0;display:flex;align-items:center;justify-content:center;pointer-events:none;will-change:transform,opacity;transform-origin:50% 50%;backface-visibility:hidden}
 .wv-rider .mac{width:min(100%,calc(min(68vh,640px) * .86 * 10 / 11))}
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   .wv-card{left:calc(var(--rail) + (100vw - var(--rail)) / 2) !important}
@@ -1007,7 +1007,7 @@ html,body{overscroll-behavior-y:none}
 .wv-w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
 .wv-wi{display:inline-block;will-change:transform}
 .wv-key{background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
-.wv-floor{position:absolute;z-index:0;width:min(38vw,520px);height:70px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(0,16,37,.16),rgba(0,16,37,0));filter:blur(8px)}
+.wv-floor{position:absolute;left:0;top:0;z-index:0;will-change:transform,opacity;width:min(38vw,520px);height:70px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(0,16,37,.16),rgba(0,16,37,0));filter:blur(8px)}
 .wv-rider{transform-style:preserve-3d}
 </style>
 </helmet>
@@ -2131,11 +2131,20 @@ class Component extends DCLogic {
       (function () {
         var wv = this.q('wave'), world = this.q('waveWorld'), root = this.q('root'), mac = this.q('mac'), iso = this.q('iso');
         if (!wv || !world || !mac) return;
-        var on = ease(map(u, S.ins[0] - 40, S.ins[0] - 4)) * (1 - ease(map(u, S.out + 4, S.out + 40)));
-        wv.style.opacity = on.toFixed(3); wv.style.visibility = on > 0.002 ? 'visible' : 'hidden';
-        var waveOn = on > 0.5;
+        var inE = ease(map(u, S.ins[0] - 40, S.ins[0] - 4)), outE = 1 - ease(map(u, S.out + 4, S.out + 40)), on = inE * outE;
+        // the desktop rides from the moment the wave starts until the section has fully gone, so it is never handed over in sight
+        var ride = u > S.ins[0] - 40 && u < S.out + 50;
+        wv.style.opacity = ride ? '1' : '0'; wv.style.visibility = ride ? 'visible' : 'hidden';
+        world.style.opacity = on.toFixed(3);
+        var waveOn = ride;
         if (root && root.classList.contains('is-wave') !== waveOn) root.classList.toggle('is-wave', waveOn);
         this._waveOn = waveOn;
+        // the earlier layout fades out with the scroll instead of switching off
+        var oldA = u >= S.out + 50 ? 1 : 1 - inE, olds = [this.q('stack'), iso];
+        for (var oi = 0; oi < olds.length; oi++) if (olds[oi]) { olds[oi].style.filter = oldA > 0.001 && oldA < 0.999 ? 'opacity(' + oldA.toFixed(3) + ')' : ''; olds[oi].style.visibility = oldA <= 0.001 ? 'hidden' : ''; }
+        // where the desktop sits in the earlier layout, so the ride can start exactly there
+        if (!ride && mac.parentNode === iso && u > S.ins[0] - 90 && u <= S.ins[0] - 40) { var mr = mac.getBoundingClientRect(), ir = iso.getBoundingClientRect();
+          if (ir.width > 0 && mr.width > 0) this._wvR0 = [(mr.left - ir.left) / ir.width, (mr.top - ir.top) / ir.height, mr.width / ir.width, mr.height / ir.height]; }
         var H = window.innerHeight || 800;
         var narrow = window.matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
         var STEP = narrow ? 100 : 92;
@@ -2171,21 +2180,34 @@ class Component extends DCLogic {
         if (!rider) { rider = document.createElement('div'); rider.className = 'wv-rider'; wv.appendChild(rider); }
         if (waveOn && mac.parentNode !== rider) rider.appendChild(mac);
         if (!waveOn && iso && mac.parentNode !== iso) iso.appendChild(mac);
-        if (!waveOn) { mac.style.opacity = ''; mac.style.transform = ''; return; }
-        // the desktop rides between the two slots: it glides across in a soft arc, turning slightly into the move
-        var slots = world.querySelectorAll('.wv-slot'), wr = wv.getBoundingClientRect();
-        var A = slots[k0].getBoundingClientRect(), B = slots[k0 + 1].getBoundingClientRect(), e = ft, arc = Math.sin(Math.PI * e);
-        var L = A.left + (B.left - A.left) * e - wr.left, T = A.top + (B.top - A.top) * e - wr.top;
-        rider.style.left = L.toFixed(1) + 'px'; rider.style.top = T.toFixed(1) + 'px';
-        rider.style.width = (A.width + (B.width - A.width) * e).toFixed(1) + 'px'; rider.style.height = (A.height + (B.height - A.height) * e).toFixed(1) + 'px';
-        var dirX = B.left > A.left ? 1 : -1;
+        if (!waveOn) { mac.style.opacity = ''; mac.style.transform = ''; rider.style.opacity = '0'; return; }
+        // the desktop rides between the two slots: it glides across in a soft arc, turning slightly into the move.
+        // Slot positions are measured once per size; each frame only moves it with a GPU transform.
+        var wkey = (window.innerWidth || 0) + 'x' + H;
+        if (this._wvKey !== wkey || !this._wvSlots) {
+          this._wvKey = wkey; var prevT = world.style.transform; world.style.transform = 'none';
+          var wr0 = wv.getBoundingClientRect();
+          this._wvSlots = Array.prototype.map.call(world.querySelectorAll('.wv-slot'), function (sl) { var r = sl.getBoundingClientRect(); return [r.left - wr0.left, r.top - wr0.top, r.width, r.height]; });
+          world.style.transform = prevT;
+        }
+        var wy = H / 2 - (50 + f * STEP) * H / 100, SL = this._wvSlots;
+        var sr = function (q) { return [SL[q][0], SL[q][1] + wy, SL[q][2], SL[q][3]]; };
+        var A = sr(k0), B = sr(k0 + 1), e = ft, arc = Math.sin(Math.PI * e), dirX = B[0] > A[0] ? 1 : -1;
+        var R = [A[0] + (B[0] - A[0]) * e, A[1] + (B[1] - A[1]) * e, A[2] + (B[2] - A[2]) * e, A[3] + (B[3] - A[3]) * e];
+        // coming in, it travels from where it sat in the earlier layout to the first point
+        if (inE < 1 && this._wvR0 && iso) { var ir2 = iso.getBoundingClientRect(), wr2 = wv.getBoundingClientRect(), r0 = this._wvR0;
+          var R0 = [ir2.left - wr2.left + r0[0] * ir2.width, ir2.top - wr2.top + r0[1] * ir2.height, r0[2] * ir2.width, r0[3] * ir2.height];
+          for (var ri = 0; ri < 4; ri++) R[ri] = R0[ri] + (R[ri] - R0[ri]) * inE;
+          arc = Math.max(arc, Math.sin(Math.PI * inE) * 0.6); dirX = R0[0] > R[0] ? -1 : 1; }
+        if (Math.abs((this._wvW || 0) - R[2]) > 0.5 || Math.abs((this._wvH || 0) - R[3]) > 0.5) { this._wvW = R[2]; this._wvH = R[3]; rider.style.width = R[2].toFixed(1) + 'px'; rider.style.height = R[3].toFixed(1) + 'px'; }
         if (!this._wvPtr) { var self2 = this; this._wvPtr = { x: 0, y: 0, sx: 0, sy: 0 };
           window.addEventListener('pointermove', function (ev) { self2._wvPtr.x = ev.clientX / (window.innerWidth || 1) - 0.5; self2._wvPtr.y = ev.clientY / (window.innerHeight || 1) - 0.5; }, { passive: true }); }
-        var pt = this._wvPtr; pt.sx += (pt.x - pt.sx) * 0.08; pt.sy += (pt.y - pt.sy) * 0.08;
-        rider.style.transform = 'perspective(1400px) translate3d(0,' + (-arc * 18).toFixed(1) + 'px,0) rotateY(' + (dirX * arc * 14 + pt.sx * 7).toFixed(2) + 'deg) rotateX(' + (-pt.sy * 5 + arc * 3).toFixed(2) + 'deg) rotate(' + (dirX * arc * 1.6).toFixed(2) + 'deg) scale(' + (1 - arc * 0.04).toFixed(4) + ')';
+        var pt = this._wvPtr; pt.sx += (pt.x - pt.sx) * 0.06; pt.sy += (pt.y - pt.sy) * 0.06;
+        rider.style.transform = 'translate3d(' + R[0].toFixed(2) + 'px,' + (R[1] - arc * 18).toFixed(2) + 'px,0) perspective(1400px) rotateY(' + (dirX * arc * 14 + pt.sx * 7).toFixed(2) + 'deg) rotateX(' + (-pt.sy * 5 + arc * 3).toFixed(2) + 'deg) rotate(' + (dirX * arc * 1.6).toFixed(2) + 'deg) scale(' + (1 - arc * 0.04).toFixed(4) + ')';
+        rider.style.opacity = outE.toFixed(3);
         var floor = wv.querySelector('.wv-floor'); if (!floor) { floor = document.createElement('i'); floor.className = 'wv-floor'; wv.insertBefore(floor, rider); }
-        floor.style.left = (L + (A.width + (B.width - A.width) * e) * 0.5).toFixed(1) + 'px'; floor.style.top = (T + (A.height + (B.height - A.height) * e) * 0.9).toFixed(1) + 'px';
-        floor.style.transform = 'translate(-50%,-50%) scale(' + (1 + arc * 0.5).toFixed(3) + ',' + (1 + arc * 0.3).toFixed(3) + ')'; floor.style.opacity = (0.5 - arc * 0.3).toFixed(3);
+        floor.style.transform = 'translate3d(' + (R[0] + R[2] * 0.5).toFixed(2) + 'px,' + (R[1] + R[3] * 0.9).toFixed(2) + 'px,0) translate(-50%,-50%) scale(' + (1 + arc * 0.5).toFixed(3) + ',' + (1 + arc * 0.3).toFixed(3) + ')';
+        floor.style.opacity = ((0.5 - arc * 0.3) * outE).toFixed(3);
         mac.style.opacity = (1 - arc * 0.18).toFixed(3);
       }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
