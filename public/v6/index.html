@@ -989,15 +989,17 @@ html,body{overscroll-behavior-y:none}
   font-size:clamp(38px,4.2vw,76px);font-weight:400;line-height:1.1;letter-spacing:-.035em;color:var(--atc-navy);will-change:transform,opacity,filter}
 .atc-wake-g{background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
 @media (max-width:760px){.atc-wake-hi{font-size:30px;padding:0 calc(16px + var(--rail,0px)) 0 calc(var(--rail) + 16px)}}
-/* Hero: the building is drawn as a navy line sketch first, then the colour film sweeps in over it and starts playing */
-.atc-sketch{position:absolute;inset:0;z-index:1;background:#FFFFFF;pointer-events:none;overflow:hidden;border-radius:inherit}
-.atc-sketch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 100% 0 0)}
-.atc.is-ready .atc-sketch img{animation:sk-draw 1.8s cubic-bezier(.45,0,.25,1) .5s forwards}
+/* Hero (v6): no loader. The card opens on a black-and-white sketch that draws itself in, then colour splashes out
+   from the building like ink, and the film plays */
+.atc-splash{display:none !important}
+.atc-sketch{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none}
+.sk-img{clip-path:inset(0 100% 0 0)}
+.atc.is-ready .sk-img{animation:sk-draw 1.8s cubic-bezier(.45,0,.25,1) .3s forwards}
 @keyframes sk-draw{to{clip-path:inset(0 0 0 0)}}
-.atc.is-ready .atc-sketch{-webkit-mask-image:linear-gradient(105deg,transparent 42%,#000 58%);mask-image:linear-gradient(105deg,transparent 42%,#000 58%);
-  -webkit-mask-size:280% 100%;mask-size:280% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;
-  animation:sk-color 1.6s cubic-bezier(.5,0,.2,1) 2.9s forwards,sk-gone 0s linear 4.6s forwards}
-@keyframes sk-color{to{-webkit-mask-position:0 0;mask-position:0 0}}
+.sk-splash{transform-box:view-box;transform-origin:1080px 430px;transform:scale(0)}
+.atc.is-ready .sk-splash{animation:sk-splash 2.4s cubic-bezier(.35,.4,.45,1) 2.5s forwards}
+@keyframes sk-splash{0%{transform:scale(0)}8%{transform:scale(.9)}50%{transform:scale(3.2)}100%{transform:scale(10)}}
+.atc.is-ready .atc-sketch{animation:sk-gone 0s linear 5s forwards}
 @keyframes sk-gone{to{visibility:hidden}}
 @media (prefers-reduced-motion:reduce){.atc-sketch{display:none}}
 </style>
@@ -1019,7 +1021,14 @@ html,body{overscroll-behavior-y:none}
       </div>
       <div class="atc-layer atc-l1" data-atc="l1">
         <video class="atc-video" data-atc="v1" src="../assets/e322ff24ab50b14ec5d76a67fbcf9fe4.mp4" poster="../assets/4fd01bfb6adcae317f57f79d1011dd57.jpg" muted="" loop="" autoplay="" playsinline="" preload="auto" aria-hidden="true"></video>
-        <div class="atc-sketch" aria-hidden="true"><img src="../assets/hero-line.jpg" alt="" decoding="async"></div>
+        <!-- The hero opens on a black-and-white sketch of the building; colour splashes out from the building and the film plays -->
+        <svg class="atc-sketch" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <filter id="sk-ink" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2400" height="1700"><feTurbulence type="fractalNoise" baseFrequency=".014" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="70" xChannelSelector="R" yChannelSelector="G"/></filter>
+            <mask id="sk-m" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900"><rect width="1600" height="900" fill="#fff"/><g filter="url(#sk-ink)"><g class="sk-splash" fill="#000"><circle cx="1080" cy="430" r="120"/><circle cx="980" cy="380" r="80"/><circle cx="1170" cy="500" r="90"/><circle cx="1150" cy="360" r="70"/><circle cx="1010" cy="500" r="70"/><circle cx="820" cy="300" r="22"/><circle cx="1330" cy="610" r="26"/><circle cx="900" cy="600" r="16"/><circle cx="1300" cy="280" r="18"/><circle cx="760" cy="470" r="12"/><circle cx="1420" cy="450" r="14"/></g></g></mask>
+          </defs>
+          <g mask="url(#sk-m)"><rect width="1600" height="900" fill="#FFFFFF"/><image class="sk-img" href="../assets/hero-sketch.jpg" width="1600" height="900" preserveAspectRatio="none"/></g>
+        </svg>
       </div>
       <div class="atc-white" data-atc="white"></div>
       <!-- The screen wakes up: once we are inside the laptop, a soft brand wallpaper blooms, a greeting appears,
@@ -1792,6 +1801,13 @@ class Component extends DCLogic {
     if (this._splash >= 2) return;
     var el = this.q('splash'), root = this.q('root'), v1 = this.q('v1');
     if (!el) return;
+    // v6: no loader. The page opens straight onto the hero, whose film waits on its first frame
+    // while the sketch draws, then plays as the colour splashes in
+    el.classList.add('is-in', 'is-out', 'is-gone');
+    if (root) root.classList.add('is-ready');
+    this._splash = 2;
+    if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) this._sketchUntil = performance.now() + 2600;
+    return;
     this.watchSplash(el);
     this._waitT += dt;
     var hidden = document.visibilityState && document.visibilityState !== 'visible';
