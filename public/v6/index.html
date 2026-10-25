@@ -989,27 +989,42 @@ html,body{overscroll-behavior-y:none}
   font-size:clamp(38px,4.2vw,76px);font-weight:400;line-height:1.1;letter-spacing:-.035em;color:var(--atc-navy);will-change:transform,opacity,filter}
 .atc-wake-g{background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
 @media (max-width:760px){.atc-wake-hi{font-size:30px;padding:0 calc(16px + var(--rail,0px)) 0 calc(var(--rail) + 16px)}}
-/* Hero (v6): no loader, an Apple-style reveal. The card opens on soft grey; the film grows out from its centre
-   into the rounded card while it settles from a gentle zoom and soft focus; one reflection passes over the glass;
-   the words arrive one after another */
+/* Hero (v6): no loader. The card is built like software: code types itself on a design grid, the building
+   renders in from coarse pixels to sharp while a scan line passes, then the film plays and ATCON says it is live */
 .atc-splash{display:none !important}
-.atc-l1{background:#F5F5F7}
-.atc-l1 .atc-video{background:#F5F5F7;clip-path:inset(16% 16% 16% 16% round 28px);transform:scale(1.16);filter:blur(14px);opacity:0}
-.atc.is-ready .atc-l1 .atc-video{animation:hx-reveal 2.4s cubic-bezier(.22,1,.36,1) .25s forwards}
-@keyframes hx-reveal{0%{clip-path:inset(16% 16% 16% 16% round 28px);transform:scale(1.16);filter:blur(14px);opacity:0}
-  18%{opacity:1}100%{clip-path:inset(0 0 0 0 round 0);transform:none;filter:none;opacity:1}}
-.hx-sheen{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
-.hx-sheen::before{content:"";position:absolute;top:-20%;bottom:-20%;left:-60%;width:38%;transform:skewX(-18deg);opacity:0;
-  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.28) 50%,rgba(255,255,255,0))}
-.atc.is-ready .hx-sheen::before{animation:hx-sheen 1.6s cubic-bezier(.45,0,.2,1) 1.25s forwards}
-@keyframes hx-sheen{0%{left:-60%;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:125%;opacity:0}}
-/* the words: each line rises out of soft focus in turn */
-.atc .atc-hero-in{opacity:1;transform:none;transition:none}
-.atc-hero2-eyebrow,.atc-hero2-title,.atc-hero2-lede{opacity:0;transform:translateY(22px);filter:blur(8px)}
-.atc.is-ready .atc-hero2-eyebrow{animation:hx-word 1.2s cubic-bezier(.16,1,.3,1) .35s forwards}
-.atc.is-ready .atc-hero2-title{animation:hx-word 1.3s cubic-bezier(.16,1,.3,1) .5s forwards}
-.atc.is-ready .atc-hero2-lede{animation:hx-word 1.2s cubic-bezier(.16,1,.3,1) .7s forwards}
-@keyframes hx-word{to{opacity:1;transform:none;filter:blur(0)}}
+.atc-build{position:absolute;inset:0;z-index:1;overflow:hidden;border-radius:inherit;background:#FFFFFF;pointer-events:none}
+.bd-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(45,99,230,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(45,99,230,.07) 1px,transparent 1px);background-size:28px 28px;background-position:center}
+.bd-px{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.bd-code{position:absolute;left:8%;top:50%;margin:0;transform:translateY(-50%);padding:22px 26px 24px;border-radius:16px;background:rgba(255,255,255,.92);
+  box-shadow:0 0 0 1px rgba(0,16,37,.07),0 24px 48px -28px rgba(0,16,37,.35);font:500 clamp(13px,1.15vw,19px)/1.7 var(--atc-font);color:var(--atc-navy);white-space:pre}
+.bd-file{display:block;margin:0 0 10px;font-size:.72em;font-weight:600;letter-spacing:.06em;color:#8C95A6}
+.bd-ln{display:block;clip-path:inset(0 100% 0 0)}
+.bd-code .k{font-style:normal;color:#2D63E6}.bd-code .s{font-style:normal;color:#3FB27E}.bd-code .f{font-style:normal;color:#5A86EE}
+.bd-caret{display:inline-block;width:2px;height:1.1em;margin-left:2px;vertical-align:-.15em;background:#2D63E6;animation:bd-blink .8s steps(1) infinite}
+@keyframes bd-blink{50%{opacity:0}}
+.bd-scan{position:absolute;left:0;right:0;top:0;height:3px;opacity:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);box-shadow:0 0 18px 4px rgba(45,99,230,.35)}
+.atc.is-ready .bd-ln{animation:bd-type .42s steps(18) calc(.25s + var(--d) * .36s) forwards}
+@keyframes bd-type{to{clip-path:inset(0 0 0 0)}}
+.atc.is-ready .bd-code{animation:bd-out .45s cubic-bezier(.4,0,.2,1) 2.15s forwards}
+@keyframes bd-out{to{opacity:0;transform:translateY(-50%) scale(.96);filter:blur(6px)}}
+.atc.is-ready .bd-px:nth-of-type(1){animation:bd-on 0s linear 2.1s forwards}
+.atc.is-ready .bd-px:nth-of-type(2){animation:bd-on 0s linear 2.5s forwards}
+.atc.is-ready .bd-px:nth-of-type(3){animation:bd-on 0s linear 2.85s forwards}
+.atc.is-ready .bd-px:nth-of-type(4){animation:bd-on 0s linear 3.15s forwards}
+@keyframes bd-on{to{opacity:1}}
+.atc.is-ready .bd-scan{animation:bd-scan 1.5s cubic-bezier(.45,0,.55,1) 2.05s forwards}
+@keyframes bd-scan{0%{opacity:1;top:0}92%{opacity:1}100%{opacity:0;top:calc(100% - 3px)}}
+.atc.is-ready .atc-build{animation:bd-done .5s ease 3.55s forwards}
+@keyframes bd-done{to{opacity:0;visibility:hidden}}
+.bd-toast{position:absolute;left:18px;bottom:18px;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:14px;background:rgba(255,255,255,.94);
+  box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 18px 36px -20px rgba(0,16,37,.45);font-family:var(--atc-font);opacity:0;transform:translateY(10px);pointer-events:none}
+.bd-toast b{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.12)}
+.bd-toast svg{width:62%;height:auto}
+.bd-toast span{display:flex;flex-direction:column;font-size:12px;color:#5B6B78}.bd-toast strong{font-size:13px;font-weight:600;color:var(--atc-navy)}
+.bd-toast em{align-self:flex-start;margin-left:8px;font-style:normal;font-size:11px;color:#8C95A6}
+.atc.is-ready .bd-toast{animation:bd-toast 2.6s cubic-bezier(.2,.8,.2,1) 3.9s forwards}
+@keyframes bd-toast{0%{opacity:0;transform:translateY(10px)}14%,80%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-6px)}}
+@media (max-width:760px){.bd-code{left:6%;right:6%;padding:16px 18px}}
 /* v6 problem section, twain-style: one large rounded panel behind the scenes, tinted in the brand colours.
    The tint flows green, blue, light blue, olive as the points change, over a faint grid */
 .atc-iso-bg{position:absolute;z-index:3;left:calc(var(--rail) + 1.2vw);right:1.2vw;top:calc(var(--rail) + 1.4vh);bottom:1.4vh;border-radius:36px;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
@@ -1074,8 +1089,15 @@ html,body{overscroll-behavior-y:none}
       </div>
       <div class="atc-layer atc-l1" data-atc="l1">
         <video class="atc-video" data-atc="v1" src="../assets/e322ff24ab50b14ec5d76a67fbcf9fe4.mp4" poster="../assets/4fd01bfb6adcae317f57f79d1011dd57.jpg" muted="" loop="" autoplay="" playsinline="" preload="auto" aria-hidden="true"></video>
-        <!-- A single soft reflection passes over the film as it settles -->
-        <i class="hx-sheen" aria-hidden="true"></i>
+        <!-- The hero is built like software: code types itself on a design grid, the building renders in from
+             coarse pixels to sharp, and the film goes live with a small ATCON notice -->
+        <div class="atc-build" aria-hidden="true">
+          <div class="bd-grid"></div>
+          <img class="bd-px" src="../assets/hero-px64.jpg" alt=""><img class="bd-px" src="../assets/hero-px32.jpg" alt=""><img class="bd-px" src="../assets/hero-px16.jpg" alt=""><img class="bd-px" src="../assets/hero-px8.jpg" alt="">
+          <i class="bd-scan"></i>
+          <pre class="bd-code"><span class="bd-file">business.ts</span><span class="bd-ln" style="--d:0"><i class="k">const</i> business = <i class="k">await</i> atcon.<i class="f">build</i>({</span><span class="bd-ln" style="--d:1">  strategy: <i class="s">"clear"</i>,</span><span class="bd-ln" style="--d:2">  ownership: <i class="s">"end-to-end"</i>,</span><span class="bd-ln" style="--d:3">  scale: <i class="s">"ready"</i></span><span class="bd-ln" style="--d:4">});</span><span class="bd-caret"></span></pre>
+        </div>
+        <div class="bd-toast" aria-hidden="true"><b><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"/><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#2D63E6"/></svg></b><span><strong>Build ready</strong>Your business is live</span><em>now</em></div>
       </div>
       <div class="atc-white" data-atc="white"></div>
       <!-- The screen wakes up: once we are inside the laptop, a soft brand wallpaper blooms, a greeting appears,
@@ -1869,6 +1891,7 @@ class Component extends DCLogic {
     el.classList.add('is-in', 'is-out', 'is-gone');
     if (root) root.classList.add('is-ready');
     this._splash = 2;
+    this._sketchUntil = performance.now() + 3550;
     return;
     this.watchSplash(el);
     this._waitT += dt;
