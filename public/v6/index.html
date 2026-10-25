@@ -1019,6 +1019,15 @@ html,body{overscroll-behavior-y:none}
 /* v6 desktop shadow: a soft ambient pool with a tighter contact shadow under the dock */
 .wv-floor{background:radial-gradient(closest-side,rgba(0,16,37,.30),rgba(0,16,37,.10) 55%,rgba(0,16,37,0)) !important;filter:blur(6px) !important}
 .wv-floor::after{content:'';position:absolute;left:22%;right:22%;top:32%;bottom:32%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,16,37,.18),rgba(0,16,37,0));filter:blur(4px)}
+/* v6 larger, sharper desktop on laptops and desktops: more room for the illustration so its text reads */
+@media (min-width:1101px),(min-width:761px) and (orientation:landscape){
+  .wv-card{width:min(1280px,86vw);height:min(86vh,860px);gap:2.4vw}
+  .wv-card[data-k='0'],.wv-card[data-k='2']{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}
+  .wv-card[data-k='1'],.wv-card[data-k='3']{grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr)}
+  .wv-rider .mac{width:min(100%,calc(min(86vh,860px) * .84 * 10 / 11))}
+}
+.wv-rider.is-still,.wv-rider.is-still .mac{will-change:auto}
+.wv-rider .mac{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2230,6 +2239,7 @@ class Component extends DCLogic {
         var d3 = inE * (narrow ? 0.6 : 1), rY = (face * 8 + orbit) * d3, rX = 4.5 * d3;
         rider.style.transform = 'translate3d(' + R[0].toFixed(2) + 'px,' + (R[1] - arc * 18).toFixed(2) + 'px,0) perspective(1600px) rotateY(' + (rY + dirX * arc * 9 + pt.sx * 4).toFixed(2) + 'deg) rotateX(' + (rX - pt.sy * 3 + arc * 2).toFixed(2) + 'deg) rotate(' + (dirX * arc * 1.6).toFixed(2) + 'deg) scale(' + (1 - arc * 0.04 + (e > 0.72 && e < 1 ? Math.sin(Math.PI * (e - 0.72) / 0.28) * 0.012 : 0)).toFixed(4) + ')';
         rider.style.opacity = outE < 0.999 ? outE.toFixed(3) : '';
+        var still = arc < 0.002 && inE > 0.999; if (rider.classList.contains('is-still') !== still) rider.classList.toggle('is-still', still);
         var floor = wv.querySelector('.wv-floor'); if (!floor) { floor = document.createElement('i'); floor.className = 'wv-floor'; wv.insertBefore(floor, rider); }
         floor.style.transform = 'translate3d(' + (R[0] + R[2] * 0.5).toFixed(2) + 'px,' + (R[1] + R[3] * 0.885).toFixed(2) + 'px,0) translate(-50%,-50%) scale(' + (1 + arc * 0.5).toFixed(3) + ',' + (1 + arc * 0.3).toFixed(3) + ')';
         if (Math.abs((floor.__w || 0) - R[2]) > 0.5) { floor.__w = R[2]; floor.style.width = (R[2] * 0.82).toFixed(1) + 'px'; floor.style.height = (R[2] * 0.13).toFixed(1) + 'px'; }
