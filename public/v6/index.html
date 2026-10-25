@@ -989,62 +989,6 @@ html,body{overscroll-behavior-y:none}
   font-size:clamp(38px,4.2vw,76px);font-weight:400;line-height:1.1;letter-spacing:-.035em;color:var(--atc-navy);will-change:transform,opacity,filter}
 .atc-wake-g{background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
 @media (max-width:760px){.atc-wake-hi{font-size:30px;padding:0 calc(16px + var(--rail,0px)) 0 calc(var(--rail) + 16px)}}
-/* Hero: the building is drawn as a navy line sketch first, then the colour film sweeps in over it and starts playing */
-.atc-sketch{position:absolute;inset:0;z-index:1;background:#FFFFFF;pointer-events:none;overflow:hidden;border-radius:inherit}
-.atc-sketch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 100% 0 0)}
-.atc.is-ready .atc-sketch img{animation:sk-draw 1.8s cubic-bezier(.45,0,.25,1) .5s forwards}
-@keyframes sk-draw{to{clip-path:inset(0 0 0 0)}}
-.atc.is-ready .atc-sketch{-webkit-mask-image:linear-gradient(105deg,transparent 42%,#000 58%);mask-image:linear-gradient(105deg,transparent 42%,#000 58%);
-  -webkit-mask-size:280% 100%;mask-size:280% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;
-  animation:sk-color 1.6s cubic-bezier(.5,0,.2,1) 2.9s forwards,sk-gone 0s linear 4.6s forwards}
-@keyframes sk-color{to{-webkit-mask-position:0 0;mask-position:0 0}}
-@keyframes sk-gone{to{visibility:hidden}}
-/* v6 problem section, twain-style: one large rounded panel behind the scenes, tinted in the brand colours.
-   The tint flows green, blue, light blue, olive as the points change, over a faint grid */
-.atc-iso-bg{position:absolute;z-index:3;left:calc(var(--rail) + 1.2vw);right:1.2vw;top:calc(var(--rail) + 1.4vh);bottom:1.4vh;border-radius:36px;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
-.atc-iso-bg i{position:absolute;inset:0;opacity:0}
-.atc-iso-bg .ib0{opacity:1;background:radial-gradient(90% 70% at 18% 12%,#D3EFE1 0,rgba(211,239,225,0) 70%),radial-gradient(80% 70% at 90% 95%,#E3F4EC 0,rgba(227,244,236,0) 70%),#EEF7F2}
-.atc-iso-bg .ib1{background:radial-gradient(90% 70% at 82% 10%,#D5E1FB 0,rgba(213,225,251,0) 70%),radial-gradient(80% 70% at 10% 95%,#E4EBFC 0,rgba(228,235,252,0) 70%),#EEF2FD}
-.atc-iso-bg .ib2{background:radial-gradient(90% 70% at 20% 90%,#DCE5FD 0,rgba(220,229,253,0) 70%),radial-gradient(80% 70% at 88% 12%,#E8EDFE 0,rgba(232,237,254,0) 70%),#F1F4FE}
-.atc-iso-bg .ib3{background:radial-gradient(90% 70% at 80% 88%,#E8F0CC 0,rgba(232,240,204,0) 70%),radial-gradient(80% 70% at 12% 10%,#F0F5DF 0,rgba(240,245,223,0) 70%),#F5F8EA}
-.atc-iso-bg .ib-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,16,37,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,16,37,.05) 1px,transparent 1px);background-size:36px 36px;background-position:center;
-  -webkit-mask-image:radial-gradient(75% 70% at 50% 55%,#000 30%,transparent 80%);mask-image:radial-gradient(75% 70% at 50% 55%,#000 30%,transparent 80%)}
-.atc-iso .mac{position:relative;z-index:1}
-.atc-iso .mac{filter:none}
-@media (max-width:760px),(max-width:1100px) and (orientation:portrait){.atc-iso-bg{left:calc(var(--rail) + 8px);right:8px;top:calc(var(--rail) + 8px);bottom:8px;border-radius:24px}}
-/* v6: the background tint fills the whole screen */
-.atc-iso-bg{left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;border-radius:0 !important}
-/* v6: the connected board (twain-style tokens and lines) replaces the desktop */
-.atc-iso .mac{display:none}
-.ptw{position:relative;z-index:1;width:min(100%,calc(100vh - var(--rail) - 10vh));aspect-ratio:1/1;container-type:inline-size;font-family:var(--atc-font)}
-.ptw-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.ptw-lines path,.pl-loop{fill:none;stroke:#8E9AAB;stroke-width:1.4;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.ptw-lines [data-l=tangle] path{stroke:#A7B1BF;stroke-dasharray:3 4}
-.ptw-lines [data-l=pull] path{stroke:#2D63E6;stroke-width:1.8}
-.pl-loop{stroke:#5A86EE;stroke-dasharray:4 5;opacity:0}
-.ptw-lines [data-l=stuck] path{stroke:#9BBA2A;stroke-dasharray:2 4}
-.pl-dot{fill:#2D63E6;opacity:0}
-.ptk{position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;gap:1.2cqw;transform:translate(-50%,-50%);will-change:transform,opacity,left,top}
-.ptk-i{position:relative;display:grid;place-items:center;width:14.5cqw;height:14.5cqw;border-radius:4.2cqw;background:linear-gradient(180deg,#FFFFFF,#F2F4F8);
-  box-shadow:inset 0 1px 0 #fff,0 .9cqw 0 -.1cqw #DCE1E8,0 1.1cqw 0 -.05cqw rgba(0,16,37,.06),0 3.2cqw 4.4cqw -2cqw rgba(0,16,37,.35)}
-.ptk-i::before{content:"";position:absolute;inset:2.5cqw;border-radius:50%;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 72%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 .5cqw 1cqw -.4cqw var(--c)}
-.ptk-i svg{position:relative;width:5.4cqw;height:5.4cqw;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.ptk-i em{position:relative;font-style:normal;font-size:3.2cqw;font-weight:600;letter-spacing:.02em;color:#fff}
-.ptk span{padding:.5cqw 1.4cqw;border-radius:2cqw;background:rgba(255,255,255,.85);box-shadow:0 0 0 .5px rgba(0,16,37,.08);font-size:2.7cqw;font-weight:500;color:var(--atc-navy);white-space:nowrap}
-.ptk-goal .ptk-i{width:21cqw;height:21cqw;border-radius:5.6cqw}
-.ptk-goal .ptk-i::before{inset:3.2cqw;border-radius:3.8cqw;background:linear-gradient(135deg,#3FB27E,#2D63E6 50%,#5A86EE 72%,#9BBA2A)}
-.ptk-goal .ptk-i svg{width:7.4cqw;height:7.4cqw}
-.ptk-goal span{font-size:3cqw;font-weight:600}
-.ptk-goal small{position:absolute;top:100%;margin-top:.8cqw;padding:.4cqw 1.3cqw;border-radius:2cqw;font-size:2.5cqw;font-weight:500;white-space:nowrap;opacity:0}
-.ptk-own{background:#E9EFFC;color:#2D63E6}.ptk-own i{font-style:normal;font-weight:600}
-.ptk-pct{background:#F1F5E1;color:#5E7417}
-.ptk-ring{position:absolute;left:50%;top:10.5cqw;width:30cqw;height:30cqw;margin:-15cqw 0 0 -15cqw;opacity:0;overflow:visible}
-.pr-t{fill:none;stroke:rgba(0,16,37,.10);stroke-width:1.6}
-.pr-v{fill:none;stroke:#9BBA2A;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:2 100;transform:rotate(-90deg);transform-origin:50px 50px}
-.ptw-chips{position:absolute;left:-10cqw;right:-10cqw;bottom:-11cqw;display:grid;justify-items:center}
-.ptw-chip{grid-area:1/1;margin:0;padding:1.2cqw 2.4cqw;border-radius:3cqw;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.10),0 2cqw 3.6cqw -2cqw rgba(0,16,37,.35);font-size:2.8cqw;font-weight:500;color:var(--atc-navy);white-space:nowrap;opacity:0}
-@media (max-width:760px),(max-width:1100px) and (orientation:portrait){.ptw{width:min(100%,calc(62vh - 40px))}}
-@media (prefers-reduced-motion:reduce){.atc-sketch{display:none}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1064,7 +1008,6 @@ html,body{overscroll-behavior-y:none}
       </div>
       <div class="atc-layer atc-l1" data-atc="l1">
         <video class="atc-video" data-atc="v1" src="../assets/e322ff24ab50b14ec5d76a67fbcf9fe4.mp4" poster="../assets/4fd01bfb6adcae317f57f79d1011dd57.jpg" muted="" loop="" autoplay="" playsinline="" preload="auto" aria-hidden="true"></video>
-        <div class="atc-sketch" aria-hidden="true"><img src="../assets/hero-line.jpg" alt="" decoding="async"></div>
       </div>
       <div class="atc-white" data-atc="white"></div>
       <!-- The screen wakes up: once we are inside the laptop, a soft brand wallpaper blooms, a greeting appears,
@@ -1872,8 +1815,6 @@ class Component extends DCLogic {
     if (this._splashT >= 600 && performance.now() - (this._splInAt || 0) >= 1850) {
       el.classList.add('is-out');
       if (root) root.classList.add('is-ready');
-      // the hero film waits on its first frame while the line sketch draws, then plays as the colour sweeps in
-      if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) this._sketchUntil = performance.now() + 2950;
       this._splash = 2;
       if (this._sio) { this._sio.disconnect(); this._sio = null; }
       this._goneT = setTimeout(function () { el.classList.add('is-gone'); }, 1150);
@@ -1941,8 +1882,7 @@ class Component extends DCLogic {
       l1.style.transform = '';
     }
     if (v1 && this._splash >= 1) {
-      if (performance.now() < (this._sketchUntil || 0)) { if (!v1.paused) v1.pause(); if (v1.currentTime > 0.04) v1.currentTime = 0; }
-      else if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
+      if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
       else if (v1.paused) { var pr = v1.play(); if (pr && pr.catch) pr.catch(function () {}); }
     }
 
