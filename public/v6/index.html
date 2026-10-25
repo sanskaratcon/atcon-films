@@ -2141,7 +2141,7 @@ class Component extends DCLogic {
         this._waveOn = waveOn;
         // the earlier layout fades out with the scroll instead of switching off
         var oldA = u >= S.out + 50 ? 1 : 1 - inE, olds = [this.q('stack'), iso];
-        for (var oi = 0; oi < olds.length; oi++) if (olds[oi]) { olds[oi].style.filter = oldA > 0.001 && oldA < 0.999 ? 'opacity(' + oldA.toFixed(3) + ')' : ''; olds[oi].style.visibility = oldA <= 0.001 ? 'hidden' : ''; }
+        for (var oi = 0; oi < olds.length; oi++) if (olds[oi]) { olds[oi].style.filter = oldA < 0.999 ? 'opacity(' + Math.max(0, oldA).toFixed(3) + ')' : ''; olds[oi].style.visibility = oldA <= 0.001 ? 'hidden' : ''; }
         // where the desktop sits in the earlier layout, so the ride can start exactly there
         if (!ride && mac.parentNode === iso && u > S.ins[0] - 90 && u <= S.ins[0] - 40) { var mr = mac.getBoundingClientRect(), ir = iso.getBoundingClientRect();
           if (ir.width > 0 && mr.width > 0) this._wvR0 = [(mr.left - ir.left) / ir.width, (mr.top - ir.top) / ir.height, mr.width / ir.width, mr.height / ir.height]; }
