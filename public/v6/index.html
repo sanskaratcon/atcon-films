@@ -1028,6 +1028,8 @@ html,body{overscroll-behavior-y:none}
 }
 .wv-rider.is-still,.wv-rider.is-still .mac{will-change:auto}
 .wv-rider .mac{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+/* the story is driven by the scroll position, so the browser must never shift the page to 'anchor' content that changes size */
+html,body{overflow-anchor:none}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1660,9 +1662,10 @@ class Component extends DCLogic {
       var y = window.pageYOffset || se.scrollTop || 0;
       var max = Math.max(0, se.scrollHeight - (window.innerHeight || 800));
       var base = self._sw.y == null ? y : self._sw.y;
+      // Around each problem's resting point the wheel goes softer, so the page slows to let it be read, never stops dead
+      dy *= self.probDamp(base);
       self._sw.y = Math.max(0, Math.min(max, base + dy));
       // Going down, the wheel eases into a point's pause instead of running past it and being pulled back
-      if (dy > 0) self._sw.y = self.probStop(base, self._sw.y);
       self._glide = null; self._cine = null;
     };
     window.addEventListener('wheel', this._onWheel, { passive: false });
@@ -2292,7 +2295,6 @@ class Component extends DCLogic {
         var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 12 : S.out - 30;
         if (!this._probHeld[ph] && pl < pe && u >= pe && performance.now() > (this._jumpUntil || 0)) {
           this._probHeld[ph] = true;
-          this._lock = { top: this.unitTop(pe), until: performance.now() + 450, ease: true };
         }
       }
     }
@@ -2761,6 +2763,17 @@ class Component extends DCLogic {
     if (P) P.style.opacity = (ease(map(u, S.links[1] - 10, S.links[1] + 10)) * (1 - sink)).toFixed(3);
   }
 
+  // How much of a wheel move to keep near a problem's resting point: 1 far from it, easing down to about a third on it
+  probDamp(y) {
+    var S = this.timeline().stack, vh = window.innerHeight || 800, B = vh * 0.5, k = 1;
+    for (var ph = 0; ph < S.ins.length; ph++) {
+      var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 12 : S.out - 30;
+      var d = Math.abs(y - this.unitTop(pe)) / B;
+      if (d < 1) { var sm = d * d * (3 - 2 * d); k = Math.min(k, 0.32 + 0.68 * sm); }
+    }
+    return k;
+  }
+
   // Where a wheel move going down should come to rest: the next problem pause it would otherwise run past
   probStop(from, to) {
     if (performance.now() < (this._jumpUntil || 0)) return to;
@@ -2778,9 +2791,9 @@ class Component extends DCLogic {
     if (this._ranges) return this._ranges;
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
     r.push(T.heroGrow, T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white);
-    r.push([S.title, S.title + 46], S.titleMove, S.isoIn, S.isoMove);
+    r.push([S.title, S.title + 46], S.titleMove, S.isoIn);
     // the scenes themselves follow the scroll exactly (no glide inside them); only the point's text settles
-    for (var i = 0; i < S.ins.length; i++) r.push([S.ins[i], S.ins[i] + 58]);
+    // the problem section follows the scroll exactly: no auto-glide between its points
     r.push([S.out, S.out + 80], T.famIn, T.focus, T.famOut, T.unfocus);
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
