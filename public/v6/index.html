@@ -948,70 +948,6 @@ html,body{overscroll-behavior-y:none}
 .atc-foot-legal .ds-small,.atc-logo-cell .ds-small,.atc-foot-links a,.atc-foot-links span{color:#5B6B78}
 /* 3. footer links are at least 24px tall to point at and tap */
 .atc-foot-links a,.atc-foot-col a{display:inline-flex;align-items:center;min-height:24px}
-/* v6 problem scenes: a different idea per point, so the visuals never become predictable */
-.atc-iso .mac{display:none}
-.pxs{position:relative;width:min(100%,calc((100vh - var(--rail) - 4vh) * 10 / 11));aspect-ratio:10/11;container-type:inline-size;font-family:var(--atc-font);color:var(--atc-navy)}
-.pxk{position:absolute;inset:0;opacity:0;visibility:hidden;will-change:opacity,transform}
-.px-meter{position:absolute;left:50%;bottom:3cqw;transform:translateX(-50%);margin:0;padding:1.4cqw 2.8cqw;border-radius:4cqw;background:#fff;white-space:nowrap;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.10),0 2.4cqw 5cqw -3cqw rgba(0,16,37,.35);font-size:2.5cqw;font-weight:500}
-.px-meter span{color:#2D63E6}
-/* 1 · tabs keep opening */
-.tb-win{position:absolute;left:4%;right:4%;top:14%;border-radius:2.4cqw;background:#fff;overflow:hidden;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 4cqw 8cqw -4cqw rgba(0,16,37,.35)}
-.tb-strip{display:flex;align-items:flex-end;gap:.5cqw;height:7cqw;padding:0 1.6cqw;background:#EEF1F5}
-.tb-tab{display:none;flex:1 1 0;min-width:0;align-items:center;gap:1cqw;height:5.2cqw;padding:0 1.4cqw;border-radius:1.4cqw 1.4cqw 0 0;background:#E2E7EE;font-size:2cqw;font-weight:500;color:#5B6B78}
-.tb-tab.on{display:flex}.tb-tab.is-act{background:#fff;color:var(--atc-navy)}
-.tb-tab i{flex:none;width:2.2cqw;height:2.2cqw;border-radius:.7cqw;background:var(--c)}
-.tb-tab b{font-weight:inherit;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.tb-more{display:none;flex:none;align-self:center;padding:.6cqw 1.2cqw;border-radius:2cqw;background:#2D63E6;color:#fff;font-size:1.9cqw;font-weight:600}
-.tb-more.on{display:block}
-.tb-url{display:flex;align-items:center;gap:1.2cqw;margin:1.4cqw 1.6cqw;padding:1.2cqw 1.8cqw;border-radius:3cqw;background:#F3F5F8;font-size:2cqw;color:#5B6B78}
-.tb-url i{width:1.6cqw;height:1.6cqw;border-radius:50%;border:.35cqw solid #9AA6B6}
-.tb-body{padding:1cqw 3cqw 4cqw;display:grid;gap:1.8cqw}
-.tb-h{margin:0 0 .6cqw;font-size:3.4cqw;font-weight:500;letter-spacing:-.02em}
-.tb-body i{display:block;height:2.4cqw;border-radius:1.2cqw;background:#EDF0F5;width:var(--w,70%)}
-/* 2 · three vendors drag the project apart */
-.tg-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.tg-card{fill:#fff;stroke:rgba(0,16,37,.18);stroke-width:.35;filter:drop-shadow(0 1.2px 2.4px rgba(0,16,37,.18))}
-.tg-sk line{stroke:#E3E8EF;stroke-width:1.6;stroke-linecap:round}.tg-sk line.hd{stroke:#C9D2DE;stroke-width:2.6}
-.tg-title{position:absolute;margin:0;transform:translate(-50%,-50%);font-size:3cqw;font-weight:600;white-space:nowrap}
-.tg-cur{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:flex-start;gap:.6cqw;transform:translate(-.6cqw,-.4cqw);will-change:left,top}
-.tg-cur svg{width:4.4cqw;height:4.4cqw;fill:var(--c);stroke:#fff;stroke-width:1.4;stroke-linejoin:round;filter:drop-shadow(0 .4cqw .6cqw rgba(0,16,37,.3))}
-.tg-cur span{margin:-1cqw 0 0 3cqw;padding:.5cqw 1.4cqw;border-radius:1.4cqw;background:var(--c);color:#fff;font-size:1.9cqw;font-weight:600;white-space:nowrap}
-.tg-cur em{margin-left:3cqw;padding:.6cqw 1.4cqw;border-radius:1.4cqw;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 1.6cqw 3cqw -1.6cqw rgba(0,16,37,.35);font-style:normal;font-size:2cqw;white-space:nowrap;opacity:0}
-/* 3 · one card, a different story from every side */
-.fl-stage{position:absolute;left:14%;right:14%;top:16%;height:46%;perspective:120cqw}
-.fl-card{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
-.fl-in{position:absolute;inset:0;display:flex;flex-direction:column;gap:2cqw;padding:5cqw;border-radius:3cqw;background:#fff;backface-visibility:visible;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 5cqw 9cqw -5cqw rgba(0,16,37,.4)}
-.fl-by{margin:0;font-size:2.2cqw;color:#5B6B78}.fl-by b{font-weight:600;color:var(--fc,#5A86EE)}
-.fl-sees{margin:0;font-size:5.4cqw;line-height:1.1;letter-spacing:-.03em;font-weight:500}
-.fl-tag{align-self:flex-start;padding:.8cqw 1.8cqw;border-radius:3cqw;background:color-mix(in srgb,var(--fc,#5A86EE) 14%,#fff);color:var(--fc,#5A86EE);font-size:2.1cqw;font-weight:600}
-.fl-foot{margin:auto 0 0;padding-top:2cqw;border-top:1px solid #EDF0F5;font-size:2.1cqw;color:#8C95A6}
-.fl-who{position:absolute;left:50%;top:68%;display:flex;gap:2.4cqw;transform:translateX(-50%)}
-.fl-who b{display:grid;place-items:center;width:7cqw;height:7cqw;border-radius:50%;background:var(--c);color:#fff;font-size:2.3cqw;font-weight:600;opacity:.35;transition:opacity .3s,transform .3s}
-.fl-who b.on{opacity:1;transform:translateY(-1cqw);box-shadow:0 0 0 .7cqw #fff,0 0 0 1.1cqw var(--c)}
-.fl-owner span{display:inline-block}
-/* 4 · a launch bar every meeting resets */
-.pg-card{position:absolute;left:8%;right:8%;top:16%;padding:4cqw 4.4cqw;border-radius:3cqw;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 5cqw 9cqw -5cqw rgba(0,16,37,.4)}
-.pg-t{margin:0 0 3cqw;font-size:3cqw;font-weight:600}
-.pg-bar{height:3cqw;border-radius:2cqw;background:#EDF0F5;overflow:hidden}
-.pg-bar i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#3FB27E,#2D63E6 55%,#5A86EE 80%,#9BBA2A)}
-.pg-row{margin:2cqw 0 0;font-size:2.4cqw;color:#5B6B78}.pg-pct{font-size:6cqw;font-weight:500;letter-spacing:-.03em;color:var(--atc-navy);margin-right:1cqw}
-.pg-toast{position:absolute;right:6%;top:6%;display:flex;flex-direction:column;padding:1.8cqw 2.6cqw;border-radius:2.2cqw;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 3cqw 6cqw -3cqw rgba(0,16,37,.45);opacity:0}
-.pg-toast b{font-size:2.4cqw;font-weight:600}.pg-toast span{font-size:2cqw;color:#5B6B78}
-.pg-cal{position:absolute;left:8%;right:8%;top:56%;padding:3cqw 4cqw;border-radius:3cqw;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 4cqw 8cqw -5cqw rgba(0,16,37,.35)}
-.pg-cal p{margin:0 0 2cqw;font-size:2.2cqw;color:#5B6B78}
-.pg-cal div{display:grid;grid-template-columns:repeat(10,1fr);gap:1cqw}
-.pg-cal i{height:3.4cqw;border-radius:.8cqw;background:#F1F3F7;transition:background .25s}
-.pg-cal i.on{background:#5A86EE}.pg-cal i.on:nth-child(3n){background:#3FB27E}.pg-cal i.on:nth-child(4n){background:#9BBA2A}
-@media (max-width:760px),(max-width:1100px) and (orientation:portrait){.pxs{width:min(100%,calc((62vh - 32px) * 10 / 11))}}
-.tg-cur.tg-r{align-items:flex-end;transform:translate(calc(-100% + 3.8cqw),-.4cqw)}
-.tg-cur.tg-r svg{transform:scaleX(-1)}
-.tg-cur.tg-r span,.tg-cur.tg-r em{margin-left:0;margin-right:3cqw}
-.pk1 .px-meter{bottom:auto;top:62%}
-.tg-title{top:0;left:0}
-.pg-toast{right:4%;top:9%;z-index:2}
-.fl-owner{opacity:0}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1106,35 +1042,6 @@ with a vision.</h2>
       <!-- Inside the laptop: the white screen we flew into becomes its desktop -->
       <!-- What actually happens, played live on that screen: one short moment per point, driven by macScene() -->
       <div class="atc-iso atc-mac" data-atc="iso" aria-hidden="true">
-        <!-- v6: four different scenes, one per point, so the next one is never what you expect.
-             1 tabs keep opening (too many tools) . 2 three vendor cursors drag the project apart .
-             3 one card, a different story from every side (perspectives, no owner) .
-             4 a launch bar that every new meeting resets to zero (stuck) -->
-        <div class="pxs" data-atc="pxs">
-          <div class="pxk pk1">
-            <div class="tb-win"><div class="tb-strip"><span class="tb-tab" style="--c:#2D63E6"><i></i><b>CRM</b></span><span class="tb-tab" style="--c:#3FB27E"><i></i><b>Billing</b></span><span class="tb-tab" style="--c:#5A86EE"><i></i><b>Board</b></span><span class="tb-tab" style="--c:#9BBA2A"><i></i><b>Budget.xlsx</b></span><span class="tb-tab" style="--c:#2D63E6"><i></i><b>Chat</b></span><span class="tb-tab" style="--c:#5A86EE"><i></i><b>Mail</b></span><span class="tb-tab" style="--c:#001025"><i></i><b>Docs</b></span><span class="tb-tab" style="--c:#3FB27E"><i></i><b>Calendar</b></span><span class="tb-tab" style="--c:#9BBA2A"><i></i><b>Wiki</b></span><span class="tb-tab" style="--c:#2D63E6"><i></i><b>Tickets</b></span><span class="tb-tab" style="--c:#5A86EE"><i></i><b>Analytics</b></span><span class="tb-tab" style="--c:#3FB27E"><i></i><b>HR</b></span><span class="tb-tab" style="--c:#001025"><i></i><b>Drive</b></span><span class="tb-tab" style="--c:#9BBA2A"><i></i><b>Forms</b></span><span class="tb-more">+0</span></div>
-              <div class="tb-url"><i></i><span class="tb-addr">app.crm.io/pipeline</span></div>
-              <div class="tb-body"><p class="tb-h"></p><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-            <p class="px-meter"><b class="tb-n">1</b> tools · <b class="tb-c">€890</b> / month · <span>0 talking to each other</span></p>
-          </div>
-          <div class="pxk pk2">
-            <svg class="tg-svg" viewBox="0 0 100 110" preserveAspectRatio="none"><polygon class="tg-card"/><g class="tg-sk"></g></svg>
-            <p class="tg-title">Customer portal</p>
-            <div class="tg-cur" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><path d="M4 2.5l15 8.2-6.6 1.7-3 6.9z"/></svg><span>Northfield · Design</span><em>“Make it bolder.”</em></div><div class="tg-cur tg-r" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M4 2.5l15 8.2-6.6 1.7-3 6.9z"/></svg><span>Bitforge · Dev</span><em>“Use our framework.”</em></div><div class="tg-cur tg-r" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M4 2.5l15 8.2-6.6 1.7-3 6.9z"/></svg><span>Cloudline · Infra</span><em>“Move it to our cloud.”</em></div>
-            <p class="px-meter">3 vendors · 3 directions · <span>0 owning the whole</span></p>
-          </div>
-          <div class="pxk pk3">
-            <div class="fl-stage"><div class="fl-card"><div class="fl-in"><p class="fl-by">Seen by <b>Marketing</b></p><p class="fl-sees">A campaign launch</p><span class="fl-tag">Launch · Q3</span><p class="fl-foot">Customer portal</p></div></div></div>
-            <div class="fl-who"><b style="--c:#5A86EE">MK</b><b style="--c:#001025">IT</b><b style="--c:#3FB27E">BF</b></div>
-            <p class="px-meter fl-owner">Owner: <span>nobody</span></p>
-          </div>
-          <div class="pxk pk4">
-            <div class="pg-card"><p class="pg-t">Customer portal · Launch</p><div class="pg-bar"><i></i></div><p class="pg-row"><b class="pg-pct">0%</b> shipped</p></div>
-            <div class="pg-toast"><b class="pg-tn">Alignment sync</b><span>Invitation · 45 min</span></div>
-            <div class="pg-cal"><p>This month</p><div><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-            <p class="px-meter"><b class="pg-m">12</b> meetings · <span>0% shipped</span></p>
-          </div>
-        </div>
         <div class="mac" data-atc="mac" data-scene="-1">
 
           <!-- 01 You have the tools: apps keep arriving, each one adds to the monthly bill -->
@@ -2141,91 +2048,6 @@ class Component extends DCLogic {
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
-
-      // v6 problem scenes: each point plays its own scene with the scroll and finishes before the pause
-      (function () {
-        var pxs = this.q('pxs');
-        if (!pxs) return;
-        var cl = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x; };
-        var ins = S.ins, ks = pxs.querySelectorAll('.pxk');
-        var end = function (k) { return k < ins.length - 1 ? ins[k + 1] - 12 : S.out - 30; };
-        for (var k = 0; k < ks.length; k++) {
-          var wi = k === 0 ? 1 : ease(map(u, ins[k] - 4, ins[k] + 20));
-          var wo = k === ks.length - 1 ? 0 : ease(map(u, ins[k + 1] - 10, ins[k + 1] + 14));
-          var w = wi * (1 - wo) * gv;
-          ks[k].style.opacity = w.toFixed(3);
-          ks[k].style.visibility = w > 0.01 ? 'visible' : 'hidden';
-          ks[k].style.transform = 'translateY(' + ((1 - wi) * 2.4 - wo * 2.4).toFixed(2) + 'cqw) scale(' + (0.97 + 0.03 * Math.min(wi, 1 - wo)).toFixed(4) + ')';
-        }
-        var L = [0, 1, 2, 3].map(function (k) { return cl(map(u, ins[k] + 8, end(k))); });
-        var D = this._pxD || (this._pxD = {
-          tabs: pxs.querySelectorAll('.tb-tab'), addr: pxs.querySelector('.tb-addr'), more: pxs.querySelector('.tb-more'),
-          win: pxs.querySelector('.tb-win'), n: pxs.querySelector('.tb-n'), c: pxs.querySelector('.tb-c'), h: pxs.querySelector('.tb-h'), rows: pxs.querySelectorAll('.tb-body i'),
-          card: pxs.querySelector('.tg-card'), sk: pxs.querySelector('.tg-sk'), title: pxs.querySelector('.tg-title'), curs: pxs.querySelectorAll('.tg-cur'),
-          flc: pxs.querySelector('.fl-card'), flin: pxs.querySelector('.fl-in'), flby: pxs.querySelector('.fl-by b'), flsees: pxs.querySelector('.fl-sees'), fltag: pxs.querySelector('.fl-tag'), who: pxs.querySelectorAll('.fl-who b'), owner: pxs.querySelector('.fl-owner span'),
-          bar: pxs.querySelector('.pg-bar i'), pct: pxs.querySelector('.pg-pct'), toast: pxs.querySelector('.pg-toast'), tn: pxs.querySelector('.pg-tn'), cells: pxs.querySelectorAll('.pg-cal i'), m: pxs.querySelector('.pg-m')
-        });
-        // 1 · tabs keep opening until they can't be read, the strip overflows and the window shudders
-        var addrs = ['app.crm.io/pipeline','billing.app/renewals','boards.io/sprint','sheets/budget_v7_final','chat.team/general','mail/inbox','docs/spec-draft-3','cal/week','wiki/how-we-work','desk/queue','stats/overview','people/requests','drive/shared','forms/intake'];
-        var cost = [890,420,310,120,610,180,240,90,160,380,270,150,90,70];
-        var n = 1 + Math.floor(cl(L[0] / 0.86) * 13.99), shown = Math.min(n, 11);
-        if (this._pxN !== n) {
-          this._pxN = n;
-          for (var t = 0; t < D.tabs.length; t++) { D.tabs[t].classList.toggle('on', t < shown); D.tabs[t].classList.toggle('is-act', t === shown - 1); }
-          D.more.textContent = '+' + (n - shown); D.more.classList.toggle('on', n > shown);
-          D.addr.textContent = addrs[n - 1]; D.h.textContent = D.tabs[Math.min(n, D.tabs.length) - 1].textContent;
-          var sum = 0; for (var ci = 0; ci < n; ci++) sum += cost[ci];
-          D.n.textContent = n; D.c.textContent = '€' + sum.toLocaleString('en-US');
-          for (var ri = 0; ri < D.rows.length; ri++) D.rows[ri].style.setProperty('--w', (28 + (ri * 37 + n * 23) % 62) + '%');
-        }
-        var shake = n >= 12 ? (n - 11) / 3 : 0;
-        D.win.style.transform = shake ? 'translateX(' + (Math.sin(u * 2.6) * 0.5 * shake).toFixed(2) + 'cqw) rotate(' + (Math.sin(u * 1.9) * 0.4 * shake).toFixed(2) + 'deg)' : '';
-        // 2 · three vendor cursors grab the project and drag it three ways
-        var l2 = L[1], ap = ease(cl(l2 / 0.3)), pu = ease(cl((l2 - 0.3) / 0.7));
-        var base = [[30, 36], [70, 36], [70, 74], [30, 74]], from = [[-14, 6], [114, 4], [64, 122]], to = [[8, 13], [90, 17], [80, 92]], grab = [0, 1, 2];
-        var Q = base.map(function (b) { return b.slice(); });
-        var wob = Math.sin(u * 0.9) * 1.2 * pu;
-        for (var g = 0; g < 3; g++) {
-          var bi = grab[g], c0 = base[bi];
-          var tx = c0[0] + (to[g][0] - c0[0]) * pu + (g === 1 ? -wob : wob), ty = c0[1] + (to[g][1] - c0[1]) * pu + (g === 2 ? wob : -wob * 0.5);
-          Q[bi] = [tx, ty];
-          var cx = from[g][0] + (tx - from[g][0]) * ap, cy = from[g][1] + (ty - from[g][1]) * ap;
-          D.curs[g].style.left = cx.toFixed(2) + '%'; D.curs[g].style.top = (cy / 110 * 100).toFixed(2) + '%';
-          var em = D.curs[g].querySelector('em'); if (em) em.style.opacity = cl((pu - 0.1 - g * 0.12) * 4).toFixed(3);
-        }
-        var bl = function (uu, vv) { return [ (1 - vv) * ((1 - uu) * Q[0][0] + uu * Q[1][0]) + vv * ((1 - uu) * Q[3][0] + uu * Q[2][0]),
-                                             (1 - vv) * ((1 - uu) * Q[0][1] + uu * Q[1][1]) + vv * ((1 - uu) * Q[3][1] + uu * Q[2][1]) ]; };
-        D.card.setAttribute('points', Q.map(function (q) { return q[0].toFixed(2) + ',' + q[1].toFixed(2); }).join(' '));
-        var sk = '', rowsV = [[0.38, 0.12, 0.7, 'hd'], [0.52, 0.12, 0.88, ''], [0.62, 0.12, 0.8, ''], [0.72, 0.12, 0.6, ''], [0.84, 0.12, 0.45, '']];
-        for (var rv = 0; rv < rowsV.length; rv++) { var a1 = bl(rowsV[rv][1], rowsV[rv][0]), a2 = bl(rowsV[rv][2], rowsV[rv][0]);
-          sk += '<line class="' + rowsV[rv][3] + '" x1="' + a1[0].toFixed(2) + '" y1="' + a1[1].toFixed(2) + '" x2="' + a2[0].toFixed(2) + '" y2="' + a2[1].toFixed(2) + '"/>'; }
-        D.sk.innerHTML = sk;
-        var tp = bl(0.5, 0.17); D.title.style.left = tp[0].toFixed(2) + '%'; D.title.style.top = (tp[1] / 110 * 100).toFixed(2) + '%';
-        // 3 · one card turns, and every side tells a different story; nobody's name lands on it
-        var faces = [['Marketing', '#5A86EE', 'A campaign launch', 'Launch · Q3'], ['IT team', '#001025', 'An integration ticket', 'IT-4127 · Backlog'], ['Bitforge (vendor)', '#3FB27E', 'A change request', 'CR-09 · Needs budget']];
-        var ang = ease(cl(L[2] / 0.8)) * 360, fi = Math.min(2, Math.floor((ang + 90) / 180) % 3);
-        if (ang > 270) fi = 2;
-        D.flc.style.transform = 'rotateY(' + ang.toFixed(2) + 'deg)';
-        D.flin.style.transform = (Math.floor((ang + 90) / 180) % 2 === 1) ? 'rotateY(180deg)' : '';
-        if (this._pxF !== fi) {
-          this._pxF = fi; var F = faces[fi];
-          D.flby.textContent = F[0]; D.flsees.textContent = F[2]; D.fltag.textContent = F[3]; D.flin.style.setProperty('--fc', F[1]);
-          for (var wi2 = 0; wi2 < D.who.length; wi2++) D.who[wi2].classList.toggle('on', wi2 === fi);
-        }
-        var ow = cl((L[2] - 0.82) / 0.12);
-        D.owner.parentNode.style.opacity = cl((L[2] - 0.7) / 0.12).toFixed(3);
-        D.owner.style.transform = ow > 0 && ow < 1 ? 'translateX(' + (Math.sin(ow * 18) * 0.6).toFixed(2) + 'cqw)' : '';
-        // 4 · the launch bar keeps filling, and every meeting sends it back to zero
-        var l4 = L[3], cyc = 0.215, ci4 = Math.min(3, Math.floor(l4 / cyc)), tt = (l4 - ci4 * cyc) / cyc, top = 18 + ci4 * 7;
-        var fill = l4 >= 0.86 ? 0 : tt < 0.66 ? ease(tt / 0.66) * top : tt < 0.78 ? top * (1 - ease((tt - 0.66) / 0.12)) : 0;
-        D.bar.style.width = fill.toFixed(2) + '%'; D.pct.textContent = Math.round(fill) + '%';
-        var names = ['Alignment sync', 'Kickoff #2', 'Steering review', 'Re-alignment'];
-        var to4 = l4 >= 0.86 ? 0 : (tt > 0.6 && tt < 0.98 ? Math.sin(cl((tt - 0.6) / 0.38) * Math.PI) : 0);
-        D.toast.style.opacity = to4.toFixed(3); D.toast.style.transform = 'translateY(' + ((1 - to4) * -2).toFixed(2) + 'cqw)';
-        if (this._pxT !== ci4) { this._pxT = ci4; D.tn.textContent = names[ci4]; }
-        var mf = cl(l4 / 0.9), on4 = Math.round(mf * D.cells.length);
-        if (this._pxC !== on4) { this._pxC = on4; for (var ce = 0; ce < D.cells.length; ce++) D.cells[ce].classList.toggle('on', ce < on4); D.m.textContent = Math.round(12 + 36 * mf); }
-      }).call(this);
       // A scene starts only once its point's text has fully risen (title and line); until then the last one stays.
       var shown = -1;
       for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 4) shown = si;
