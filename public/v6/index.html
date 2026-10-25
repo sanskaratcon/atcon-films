@@ -989,6 +989,17 @@ html,body{overscroll-behavior-y:none}
   font-size:clamp(38px,4.2vw,76px);font-weight:400;line-height:1.1;letter-spacing:-.035em;color:var(--atc-navy);will-change:transform,opacity,filter}
 .atc-wake-g{background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
 @media (max-width:760px){.atc-wake-hi{font-size:30px;padding:0 calc(16px + var(--rail,0px)) 0 calc(var(--rail) + 16px)}}
+/* Hero: the building is drawn as a navy line sketch first, then the colour film sweeps in over it and starts playing */
+.atc-sketch{position:absolute;inset:0;z-index:1;background:#FFFFFF;pointer-events:none;overflow:hidden;border-radius:inherit}
+.atc-sketch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 100% 0 0)}
+.atc.is-ready .atc-sketch img{animation:sk-draw 1.8s cubic-bezier(.45,0,.25,1) .5s forwards}
+@keyframes sk-draw{to{clip-path:inset(0 0 0 0)}}
+.atc.is-ready .atc-sketch{-webkit-mask-image:linear-gradient(105deg,transparent 42%,#000 58%);mask-image:linear-gradient(105deg,transparent 42%,#000 58%);
+  -webkit-mask-size:280% 100%;mask-size:280% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;
+  animation:sk-color 1.6s cubic-bezier(.5,0,.2,1) 2.9s forwards,sk-gone 0s linear 4.6s forwards}
+@keyframes sk-color{to{-webkit-mask-position:0 0;mask-position:0 0}}
+@keyframes sk-gone{to{visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.atc-sketch{display:none}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1008,6 +1019,7 @@ html,body{overscroll-behavior-y:none}
       </div>
       <div class="atc-layer atc-l1" data-atc="l1">
         <video class="atc-video" data-atc="v1" src="../assets/e322ff24ab50b14ec5d76a67fbcf9fe4.mp4" poster="../assets/4fd01bfb6adcae317f57f79d1011dd57.jpg" muted="" loop="" autoplay="" playsinline="" preload="auto" aria-hidden="true"></video>
+        <div class="atc-sketch" aria-hidden="true"><img src="../assets/hero-line.jpg" alt="" decoding="async"></div>
       </div>
       <div class="atc-white" data-atc="white"></div>
       <!-- The screen wakes up: once we are inside the laptop, a soft brand wallpaper blooms, a greeting appears,
@@ -1799,6 +1811,8 @@ class Component extends DCLogic {
     if (this._splashT >= 600 && performance.now() - (this._splInAt || 0) >= 1850) {
       el.classList.add('is-out');
       if (root) root.classList.add('is-ready');
+      // the hero film waits on its first frame while the line sketch draws, then plays as the colour sweeps in
+      if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) this._sketchUntil = performance.now() + 2950;
       this._splash = 2;
       if (this._sio) { this._sio.disconnect(); this._sio = null; }
       this._goneT = setTimeout(function () { el.classList.add('is-gone'); }, 1150);
@@ -1866,7 +1880,8 @@ class Component extends DCLogic {
       l1.style.transform = '';
     }
     if (v1 && this._splash >= 1) {
-      if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
+      if (performance.now() < (this._sketchUntil || 0)) { if (!v1.paused) v1.pause(); if (v1.currentTime > 0.04) v1.currentTime = 0; }
+      else if (heroOut > 0.995) { if (!v1.paused) v1.pause(); }
       else if (v1.paused) { var pr = v1.play(); if (pr && pr.catch) pr.catch(function () {}); }
     }
 
