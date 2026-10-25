@@ -970,7 +970,7 @@ html,body{overscroll-behavior-y:none}
 .wv-o4{left:118vw;top:315vh;width:36vw;height:36vw;background:radial-gradient(closest-side,rgba(155,186,42,.2),rgba(155,186,42,0))}
 .wv-card{position:absolute;width:min(1080px,76vw);height:min(68vh,640px);transform:translate(-50%,-50%);display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);align-items:center;gap:3vw;
   padding:clamp(24px,3.4vw,56px);border-radius:34px;background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(0,16,37,.06),0 50px 90px -50px rgba(0,16,37,.4);will-change:transform,opacity}
-.wv-card[data-k='0']{left:40vw;top:50vh}.wv-card[data-k='1']{left:130vw;top:150vh}.wv-card[data-k='2']{left:40vw;top:250vh}.wv-card[data-k='3']{left:130vw;top:350vh}
+.wv-card[data-k='0']{left:46vw;top:50vh}.wv-card[data-k='1']{left:78vw;top:130vh}.wv-card[data-k='2']{left:46vw;top:210vh}.wv-card[data-k='3']{left:78vw;top:290vh}
 .wv-num{display:block;font-size:13px;font-weight:600;letter-spacing:.14em;color:#2D63E6}.wv-num i{font-style:normal;color:#8C95A6;margin-left:6px}
 .wv-text h3{margin:16px 0 18px;font-family:var(--atc-font);font-weight:400;font-size:clamp(28px,2.9vw,50px);line-height:1.08;letter-spacing:-.035em;color:var(--atc-navy);max-width:11em}
 .wv-text p{margin:0;font-size:clamp(15px,1.15vw,19px);line-height:1.5;color:var(--atc-slate);max-width:22em}
@@ -984,6 +984,11 @@ html,body{overscroll-behavior-y:none}
   .wv-text h3{font-size:24px;margin:10px 0 8px}.wv-text p{font-size:14px}
   .wv-slot .mac{width:min(100%,calc((78vh - 210px) * 10 / 11))}
 }
+/* v6 wave, minimal: no boxes, no lines, no numbers; only the words and the illustration, carried by a gentle camera */
+.wv-path,.wv-orb,.wv-num{display:none !important}
+.wv-card{background:none !important;box-shadow:none !important;border-radius:0 !important;padding:0 2vw !important}
+.wv-text h3{margin-top:0}
+.wv-text,.wv-slot{will-change:transform,opacity}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2113,17 +2118,17 @@ class Component extends DCLogic {
         var W = window.innerWidth || 1200, H = window.innerHeight || 800;
         var narrow = window.matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches;
         var c0 = world.querySelector('.wv-card'), nb = c0 ? parseFloat(getComputedStyle(c0).left) / W * 100 : 50;
-        var P = narrow ? [[nb, 50], [nb + 90, 150], [nb, 250], [nb + 90, 350]] : [[40, 50], [130, 150], [40, 250], [130, 350]];
+        var P = narrow ? [[nb, 50], [nb + 90, 150], [nb, 250], [nb + 90, 350]] : [[46, 50], [78, 130], [46, 210], [78, 290]];
         var f = 0; for (var k = 1; k < 4; k++) f += ease(map(u, S.ins[k] - 10, S.ins[k] + 32));
         var k0 = Math.min(2, Math.floor(f)), ft = f - k0; if (f >= 3) { k0 = 2; ft = 1; }
         var A = P[k0], B = P[k0 + 1], tr = Math.sin(Math.PI * ft);
         // the camera follows the wave: it eases across, and bows outwards at the middle of each crossing
         var cx = A[0] + (B[0] - A[0]) * ft, cy = A[1] + (B[1] - A[1]) * ft;
         var dir = B[0] > A[0] ? 1 : -1;
-        var zoom = 1 - tr * 0.18;
+        var zoom = 1 - tr * 0.07;
         var fx = narrow && c0 ? parseFloat(getComputedStyle(c0).left) : W / 2;  // on phones the free space starts after the rail
         var tx = fx - cx * W / 100, ty = H / 2 - cy * H / 100;
-        world.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + zoom.toFixed(4) + ') rotateY(' + (-dir * tr * 7).toFixed(2) + 'deg) rotateX(' + (tr * 5).toFixed(2) + 'deg) rotateZ(' + (dir * tr * 2.4).toFixed(2) + 'deg)';
+        world.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + zoom.toFixed(4) + ') rotateY(' + (-dir * tr * 2.6).toFixed(2) + 'deg) rotateX(' + (tr * 1.6).toFixed(2) + 'deg)';
         world.style.transformOrigin = (cx * W / 100).toFixed(1) + 'px ' + (cy * H / 100).toFixed(1) + 'px';
         var orbs = world.querySelectorAll('.wv-orb');
         for (var oi = 0; oi < orbs.length; oi++) orbs[oi].style.transform = 'translate(' + ((cx - 85) * W / 100 * (0.15 + oi * 0.05)).toFixed(1) + 'px,' + ((cy - 200) * H / 100 * 0.12).toFixed(1) + 'px)';
@@ -2131,8 +2136,12 @@ class Component extends DCLogic {
         var cards = world.querySelectorAll('.wv-card');
         for (var ci = 0; ci < cards.length; ci++) {
           var near = 1 - Math.min(1, Math.abs(f - ci));
-          cards[ci].style.opacity = (0.32 + 0.68 * near).toFixed(3);
-          cards[ci].style.transform = 'translate(-50%,-50%) scale(' + (0.9 + 0.1 * near).toFixed(4) + ')';
+          var off = ci - f;  // where this problem sits relative to the camera
+          cards[ci].style.opacity = Math.pow(near, 1.6).toFixed(3);
+          cards[ci].style.transform = 'translate(-50%,-50%) scale(' + (0.96 + 0.04 * near).toFixed(4) + ')';
+          var tx2 = cards[ci].querySelector('.wv-text'), sl2 = cards[ci].querySelector('.wv-slot');
+          if (tx2) tx2.style.transform = 'translate3d(' + (off * -40).toFixed(1) + 'px,' + (off * 36).toFixed(1) + 'px,0)';
+          if (sl2) sl2.style.transform = 'translate3d(' + (off * 70).toFixed(1) + 'px,' + (off * -24).toFixed(1) + 'px,0)';
         }
         // the live desktop sits in the card the camera is closest to, and fades through the crossing
         var target = waveOn ? world.querySelectorAll('.wv-slot')[Math.min(3, Math.round(f))] : this.q('iso');
