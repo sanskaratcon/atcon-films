@@ -1014,6 +1014,38 @@ html,body{overscroll-behavior-y:none}
 .atc-iso .mac{position:relative;z-index:1}
 .atc-iso .mac{filter:none}
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){.atc-iso-bg{left:calc(var(--rail) + 8px);right:8px;top:calc(var(--rail) + 8px);bottom:8px;border-radius:24px}}
+/* v6: the background tint fills the whole screen */
+.atc-iso-bg{left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;border-radius:0 !important}
+/* v6: the connected board (twain-style tokens and lines) replaces the desktop */
+.atc-iso .mac{display:none}
+.ptw{position:relative;z-index:1;width:min(100%,calc(100vh - var(--rail) - 10vh));aspect-ratio:1/1;container-type:inline-size;font-family:var(--atc-font)}
+.ptw-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ptw-lines path,.pl-loop{fill:none;stroke:#8E9AAB;stroke-width:1.4;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.ptw-lines [data-l=tangle] path{stroke:#A7B1BF;stroke-dasharray:3 4}
+.ptw-lines [data-l=pull] path{stroke:#2D63E6;stroke-width:1.8}
+.pl-loop{stroke:#5A86EE;stroke-dasharray:4 5;opacity:0}
+.ptw-lines [data-l=stuck] path{stroke:#9BBA2A;stroke-dasharray:2 4}
+.pl-dot{fill:#2D63E6;opacity:0}
+.ptk{position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;gap:1.2cqw;transform:translate(-50%,-50%);will-change:transform,opacity,left,top}
+.ptk-i{position:relative;display:grid;place-items:center;width:14.5cqw;height:14.5cqw;border-radius:4.2cqw;background:linear-gradient(180deg,#FFFFFF,#F2F4F8);
+  box-shadow:inset 0 1px 0 #fff,0 .9cqw 0 -.1cqw #DCE1E8,0 1.1cqw 0 -.05cqw rgba(0,16,37,.06),0 3.2cqw 4.4cqw -2cqw rgba(0,16,37,.35)}
+.ptk-i::before{content:"";position:absolute;inset:2.5cqw;border-radius:50%;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 72%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 .5cqw 1cqw -.4cqw var(--c)}
+.ptk-i svg{position:relative;width:5.4cqw;height:5.4cqw;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ptk-i em{position:relative;font-style:normal;font-size:3.2cqw;font-weight:600;letter-spacing:.02em;color:#fff}
+.ptk span{padding:.5cqw 1.4cqw;border-radius:2cqw;background:rgba(255,255,255,.85);box-shadow:0 0 0 .5px rgba(0,16,37,.08);font-size:2.7cqw;font-weight:500;color:var(--atc-navy);white-space:nowrap}
+.ptk-goal .ptk-i{width:21cqw;height:21cqw;border-radius:5.6cqw}
+.ptk-goal .ptk-i::before{inset:3.2cqw;border-radius:3.8cqw;background:linear-gradient(135deg,#3FB27E,#2D63E6 50%,#5A86EE 72%,#9BBA2A)}
+.ptk-goal .ptk-i svg{width:7.4cqw;height:7.4cqw}
+.ptk-goal span{font-size:3cqw;font-weight:600}
+.ptk-goal small{position:absolute;top:100%;margin-top:.8cqw;padding:.4cqw 1.3cqw;border-radius:2cqw;font-size:2.5cqw;font-weight:500;white-space:nowrap;opacity:0}
+.ptk-own{background:#E9EFFC;color:#2D63E6}.ptk-own i{font-style:normal;font-weight:600}
+.ptk-pct{background:#F1F5E1;color:#5E7417}
+.ptk-ring{position:absolute;left:50%;top:10.5cqw;width:30cqw;height:30cqw;margin:-15cqw 0 0 -15cqw;opacity:0;overflow:visible}
+.pr-t{fill:none;stroke:rgba(0,16,37,.10);stroke-width:1.6}
+.pr-v{fill:none;stroke:#9BBA2A;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:2 100;transform:rotate(-90deg);transform-origin:50px 50px}
+.ptw-chips{position:absolute;left:-10cqw;right:-10cqw;bottom:-11cqw;display:grid;justify-items:center}
+.ptw-chip{grid-area:1/1;margin:0;padding:1.2cqw 2.4cqw;border-radius:3cqw;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.10),0 2cqw 3.6cqw -2cqw rgba(0,16,37,.35);font-size:2.8cqw;font-weight:500;color:var(--atc-navy);white-space:nowrap;opacity:0}
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){.ptw{width:min(100%,calc(62vh - 40px))}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1261,6 +1293,19 @@ with a vision.</h2>
             <span class="dk dk-x" data-dock="2" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M12 4.9c4.6 0 8.2 2.9 8.2 6.6s-3.6 6.6-8.2 6.6c-.9 0-1.8-.1-2.6-.3l-3.7 1.9.9-3.2C5 15.3 3.8 13.5 3.8 11.5c0-3.7 3.6-6.6 8.2-6.6z" style="fill:#fff;stroke:none"/><circle cx="8.7" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="12" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="15.3" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/></svg></span>
             <span class="dk dk-x" data-dock="3" style="--c:#001025"><svg viewBox="0 0 24 24"><rect x="4.5" y="4" width="15" height="16" rx="2.1" style="fill:#fff;stroke:none"/><path d="M4.5 7.8V6.1A2.1 2.1 0 0 1 6.6 4h10.8a2.1 2.1 0 0 1 2.1 2.1v1.7z" style="fill:#3FB27E;stroke:none"/><path d="M4.5 11.9h15M4.5 15.9h15M10 7.8V20" style="fill:none;stroke:var(--c);stroke-width:1.1;opacity:.35"/></svg></span>
           </div>
+        </div>
+        <!-- v6: one connected board instead of the desktop. The same pieces carry through the four points:
+             the client's goal sits in the middle; tools tangle around it, vendors pull it apart, teams pass it
+             round a loop, and meetings pile up while it stays at 0% -->
+        <div class="ptw" data-atc="ptw">
+          <svg class="ptw-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <g data-l="tangle"></g><g data-l="pull"></g>
+            <ellipse class="pl-loop" data-l="loop" cx="50" cy="50" rx="34" ry="34"/>
+            <g data-l="stuck"></g>
+            <circle class="pl-dot" data-l="dot" r="1.3"/>
+          </svg>
+          <div class="ptk" data-t="crm" style="--c:#2D63E6"><b class="ptk-i"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3"/><path d="M3.5 18.5c.9-3 3-4.6 5.5-4.6s4.6 1.6 5.5 4.6"/><circle cx="17" cy="10" r="2.3"/><path d="M15.6 14.2c1.9.1 3.4 1.5 4 3.8"/></svg></b><span>CRM</span></div><div class="ptk" data-t="mail" style="--c:#5A86EE"><b class="ptk-i"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M4 7l8 6 8-6"/></svg></b><span>Mail</span></div><div class="ptk" data-t="board" style="--c:#3FB27E"><b class="ptk-i"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="4.4" height="14" rx="1.2"/><rect x="9.8" y="5" width="4.4" height="9" rx="1.2"/><rect x="15.6" y="5" width="4.4" height="11" rx="1.2"/></svg></b><span>Board</span></div><div class="ptk" data-t="sheet" style="--c:#001025"><b class="ptk-i"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 10h16M4 14.5h16M10 5v14"/></svg></b><span>Sheets</span></div><div class="ptk" data-t="chat" style="--c:#9BBA2A"><b class="ptk-i"><svg viewBox="0 0 24 24"><path d="M5 6h14a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 19 16h-8l-4 3.2V16H5a1.5 1.5 0 0 1-1.5-1.5v-7A1.5 1.5 0 0 1 5 6z"/></svg></b><span>Chat</span></div><div class="ptk" data-t="bill" style="--c:#2D63E6"><b class="ptk-i"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2"/><path d="M3.5 10.5h17M7 14.5h4"/></svg></b><span>Billing</span></div><div class="ptk ptk-p" data-t="ns" style="--c:#2D63E6"><b class="ptk-i"><em>NS</em></b><span>Northfield · Design</span></div><div class="ptk ptk-p" data-t="bf" style="--c:#3FB27E"><b class="ptk-i"><em>BF</em></b><span>Bitforge · Dev</span></div><div class="ptk ptk-p" data-t="cl" style="--c:#9BBA2A"><b class="ptk-i"><em>CL</em></b><span>Cloudline · Infra</span></div><div class="ptk ptk-p" data-t="mk" style="--c:#5A86EE"><b class="ptk-i"><em>MK</em></b><span>Marketing</span></div><div class="ptk ptk-p" data-t="it" style="--c:#001025"><b class="ptk-i"><em>IT</em></b><span>IT team</span></div><div class="ptk" data-t="cal" style="--c:#5A86EE"><b class="ptk-i"><svg viewBox="0 0 24 24"><rect x="4.5" y="5.5" width="15" height="14" rx="2.2"/><path d="M4.5 10h15M8.5 3.5v4M15.5 3.5v4"/></svg></b><span>48 meetings</span></div><div class="ptk ptk-goal" data-t="goal"><svg class="ptk-ring" viewBox="0 0 100 100"><circle class="pr-t" cx="50" cy="50" r="46"/><circle class="pr-v" cx="50" cy="50" r="46" pathLength="100"/></svg><b class="ptk-i"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2.2"/><path d="M3.5 9h17"/><circle cx="6.3" cy="7" r=".5"/><circle cx="8.3" cy="7" r=".5"/></svg></b><span>Customer portal</span><small class="ptk-own">Owner: <i>none</i></small><small class="ptk-pct">0% shipped</small></div>
+          <div class="ptw-chips"><p class="ptw-chip">14 tools · €3,980 / month · 0 talking to each other</p><p class="ptw-chip">3 vendors · 3 promises · 0 owning the whole</p><p class="ptw-chip">3 teams · 0 owners · still delayed</p><p class="ptw-chip">48 meetings · 0% shipped</p></div>
         </div>
       </div>
 
@@ -2157,6 +2202,82 @@ class Component extends DCLogic {
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
+      // v6 board: every piece has a place per point; the layout flows from one point to the next with the scroll,
+      // and each point plays a little life of its own (tangle, pull, loop, pile-up)
+      (function () {
+      var ptw = this.q('ptw');
+      if (ptw && gv > 0.01) {
+        var L = this._ptwL || (this._ptwL = {
+          // [x, y, scale, opacity] for points 1-4 (board %)
+          crm:   [[18,22,1,1],[7,9,.55,.3],[7,9,.4,0],[7,9,.4,0]],
+          mail:  [[47,12,1,1],[50,3,.55,.3],[50,3,.4,0],[50,3,.4,0]],
+          board: [[80,20,1,1],[93,9,.55,.3],[93,9,.4,0],[93,9,.4,0]],
+          sheet: [[86,54,1,1],[97,52,.55,.3],[97,52,.4,0],[97,52,.4,0]],
+          chat:  [[70,84,1,1],[90,95,.55,.3],[90,95,.4,0],[90,95,.4,0]],
+          bill:  [[20,78,1,1],[6,92,.55,.3],[6,92,.4,0],[6,92,.4,0]],
+          ns:    [[50,56,.3,0],[15,25,1,1],[50,16,1,1],[20,72,.72,.4]],
+          bf:    [[50,56,.3,0],[86,32,1,1],[82,61,1,1],[84,24,.72,.4]],
+          cl:    [[50,56,.3,0],[56,88,1,1],[30,78,1,1],[86,80,.72,.4]],
+          mk:    [[50,56,.3,0],[50,50,.3,0],[18,52,1,1],[46,90,.72,.4]],
+          it:    [[50,56,.3,0],[50,50,.3,0],[70,80,1,1],[60,10,.72,.4]],
+          cal:   [[50,56,.3,0],[50,50,.3,0],[50,50,.3,0],[22,30,1.25,1]],
+          goal:  [[50,52,.82,.55],[50,50,1.05,1],[50,47,1,1],[56,52,1,1]]
+        });
+        var tw = [1, ease(map(u, S.ins[1] - 16, S.ins[1] + 34)), ease(map(u, S.ins[2] - 16, S.ins[2] + 34)), ease(map(u, S.ins[3] - 16, S.ins[3] + 34))];
+        var life = function (k) { var e = k < S.ins.length - 1 ? S.ins[k + 1] - 12 : S.out - 30; return map(u, S.ins[k] + 10, e); };
+        var P = {};
+        for (var key in L) {
+          var a = L[key][0].slice();
+          for (var sc = 1; sc < 4; sc++) for (var ai = 0; ai < 4; ai++) a[ai] += (L[key][sc][ai] - a[ai]) * tw[sc];
+          P[key] = a;
+        }
+        // point 2: the vendors tug the goal back and forth
+        var l1 = life(1), pullOn = tw[1] * (1 - tw[2]);
+        P.goal[0] += Math.sin(l1 * Math.PI * 5) * 2.2 * pullOn; P.goal[1] += Math.cos(l1 * Math.PI * 4) * 1.4 * pullOn;
+        var els = this._ptwE || (this._ptwE = Array.prototype.slice.call(ptw.querySelectorAll('.ptk')));
+        for (var ei = 0; ei < els.length; ei++) {
+          var el = els[ei], v = P[el.getAttribute('data-t')];
+          if (!v) continue;
+          el.style.left = v[0].toFixed(2) + '%'; el.style.top = v[1].toFixed(2) + '%';
+          el.style.transform = 'translate(-50%,-50%) scale(' + v[2].toFixed(3) + ')';
+          el.style.opacity = v[3].toFixed(3);
+          el.style.visibility = v[3] > 0.01 ? 'visible' : 'hidden';
+        }
+        var curve = function (p, q, bend) { var mx = (p[0] + q[0]) / 2 + (q[1] - p[1]) * bend, my = (p[1] + q[1]) / 2 - (q[0] - p[0]) * bend;
+          return 'M' + p[0].toFixed(2) + ' ' + p[1].toFixed(2) + ' Q' + mx.toFixed(2) + ' ' + my.toFixed(2) + ' ' + q[0].toFixed(2) + ' ' + q[1].toFixed(2); };
+        var lg = function (name) { return ptw.querySelector('[data-l="' + name + '"]'); };
+        // point 1: the tools tangle with each other, and none of them reaches the goal
+        var l0 = life(0), tg = lg('tangle'), pairs = [['crm','sheet',.25],['mail','bill',-.3],['board','chat',.28],['crm','board',-.18],['sheet','bill',.2],['mail','chat',-.22],['crm','chat',.35],['board','bill',-.32]];
+        var td = '';
+        for (var pi = 0; pi < pairs.length; pi++) { if (l0 * pairs.length * 1.3 < pi) break; td += '<path d="' + curve(P[pairs[pi][0]], P[pairs[pi][1]], pairs[pi][2]) + '"/>'; }
+        tg.innerHTML = td; tg.style.opacity = (1 - tw[1]).toFixed(3);
+        // point 2: three tight lines, each vendor pulling its own way
+        var pg = lg('pull'), pd = '';
+        ['ns','bf','cl'].forEach(function (k) { pd += '<path d="' + curve(P[k], P.goal, 0) + '"/>'; });
+        pg.innerHTML = pd; pg.style.opacity = (pullOn * Math.min(1, l1 * 4 + .2)).toFixed(3);
+        // point 3: the task goes round the loop of teams and never lands
+        var loopOn = tw[2] * (1 - tw[3]), l2 = life(2);
+        lg('loop').style.opacity = loopOn.toFixed(3);
+        var dot = lg('dot'), ang = (-90 + l2 * 900) * Math.PI / 180;
+        dot.setAttribute('cx', (50 + 34 * Math.cos(ang)).toFixed(2)); dot.setAttribute('cy', (50 + 34 * Math.sin(ang)).toFixed(2));
+        dot.style.opacity = loopOn.toFixed(3);
+        // point 4: meetings feed in, progress stays at zero
+        var sOn = tw[3], l3 = life(3), sg = lg('stuck'), sd = '';
+        for (var mi = 0; mi < 4; mi++) { var st0 = [P.cal[0] + (mi - 1.5) * 3, P.cal[1] + 6]; sd += '<path d="' + curve(st0, P.goal, .12 * (mi - 1.5)) + '"/>'; }
+        sg.innerHTML = sd; sg.style.opacity = sOn.toFixed(3);
+        var goal = els[els.length - 1];
+        var own = goal.querySelector('.ptk-own'), pct = goal.querySelector('.ptk-pct'), ring = goal.querySelector('.ptk-ring');
+        if (own) own.style.opacity = loopOn.toFixed(3);
+        if (pct) pct.style.opacity = sOn.toFixed(3);
+        if (ring) ring.style.opacity = sOn.toFixed(3);
+        goal.style.filter = sOn > 0.01 ? 'saturate(' + (1 - .55 * sOn).toFixed(3) + ')' : 'none';
+        var calS = goal.parentNode.querySelector('[data-t="cal"] span');
+        if (calS) calS.textContent = Math.round(12 + 36 * Math.min(1, l3 * 1.4)) + ' meetings';
+        // one quiet chip under the board says what the point means
+        var chipsE = ptw.querySelectorAll('.ptw-chip'), cw = [1 - tw[1], tw[1] * (1 - tw[2]), tw[2] * (1 - tw[3]), tw[3]];
+        for (var ci = 0; ci < chipsE.length; ci++) chipsE[ci].style.opacity = (cw[ci] * Math.min(1, life(ci) * 3 + .3)).toFixed(3);
+      }
+      }).call(this);
       // The tinted panel arrives as the desktop moves beside the list, then flows to each point's colour
       var ibg = this.q('isoBg');
       if (ibg) {
