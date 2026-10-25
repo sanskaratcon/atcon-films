@@ -1030,22 +1030,6 @@ html,body{overscroll-behavior-y:none}
 .wv-rider .mac{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
 /* the story is driven by the scroll position, so the browser must never shift the page to 'anchor' content that changes size */
 html,body{overflow-anchor:none}
-/* v6 dark statement section (after What we offer) */
-.atc-dark-fade{height:38vh;background:linear-gradient(180deg,#FFFFFF 0%,#E8ECF2 38%,#7C8798 72%,#001025 100%)}
-.atc-dark-pin{background:#001025}
-.atc.is-darksec .atc-headfill{background:#001025;transition:background-color .3s ease}.atc-headfill{transition:background-color .3s ease}
-.atc-dark-fade-out{height:30vh;background:linear-gradient(0deg,#FFFFFF 0%,#E8ECF2 38%,#7C8798 72%,#001025 100%)}
-.atc-dark-sec{background:#001025;color:#FFFFFF;justify-content:center;padding-top:calc(var(--rail) + 4vh)}
-.atc-dark-pill{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;margin:0 0 clamp(24px,4vh,40px);padding:9px 18px;border-radius:999px;font-size:14px;letter-spacing:.01em;color:rgba(255,255,255,.86);
-  border:1px solid transparent;background:linear-gradient(#071a33,#071a33) padding-box,linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A) border-box}
-.atc-dark-dot{width:7px;height:7px;border-radius:50%;background:#3FB27E;box-shadow:0 0 0 4px rgba(63,178,126,.18)}
-.atc-dark-title{margin:0;color:#FFFFFF;max-width:14em}
-.atc-dark-grad{background:linear-gradient(90deg,#3FB27E,#2D63E6 40%,#5A86EE 68%,#9BBA2A);-webkit-background-clip:text;background-clip:text;color:transparent}
-.atc-dark-lede{margin:clamp(20px,3vh,32px) 0 0;max-width:34em;color:rgba(255,255,255,.66)}
-.atc-dark-chips{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:clamp(24px,4vh,40px) 0 0;padding:0}
-.atc-dark-chips li{padding:8px 16px;border-radius:999px;font-size:14px;color:rgba(255,255,255,.82);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
-.atc-dark-cta{align-self:flex-start;margin-top:clamp(28px,5vh,48px);--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
-.atc-dark-sec .ds-rv:nth-child(2){transition-delay:.08s}.atc-dark-sec .ds-rv:nth-child(3){transition-delay:.16s}.atc-dark-sec .ds-rv:nth-child(4){transition-delay:.24s}.atc-dark-sec .ds-rv:nth-child(5){transition-delay:.32s}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1402,19 +1386,6 @@ with a vision.</h2>
       </div>
 
   <div class="atc-after" data-theme="light">
-
-    <!-- Dark statement: after What we offer the page fades into navy for one confident line about the whole package -->
-    <div class="atc-dark-fade" aria-hidden="true"></div>
-    <div class="atc-pin atc-dark-pin" id="ops">
-    <section class="atc-sec atc-dark-sec atc-pin-in" data-atc="darkSec" aria-labelledby="ops-title">
-      <p class="atc-dark-pill ds-rv" data-rv=""><span class="atc-dark-dot" aria-hidden="true"></span>One partner, end to end</p>
-      <h2 class="ds-display atc-dark-title ds-rv" data-rv="" id="ops-title">Your full technology team,<br><span class="atc-dark-grad">out of the box.</span></h2>
-      <p class="ds-lede atc-dark-lede ds-rv" data-rv="">Free your team. Data, automation, talent and development in one place, owned by us from the first idea to the live product.</p>
-      <ul class="atc-dark-chips ds-rv" data-rv=""><li>Move faster</li><li>Spend smarter</li><li>Scale without limits</li></ul>
-      <a class="ds-btn atc-dark-cta ds-rv" data-rv="" href="mailto:ankit.tanna@atconglobal.com">Start your project<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
-    </section>
-    </div>
-    <div class="atc-dark-fade atc-dark-fade-out" aria-hidden="true"></div>
 
     <!-- Each section settles into the screen and holds for a moment before the next one comes up -->
     <!-- Proven results: the claim on the left, the numbers as a bento on the right -->
@@ -2037,7 +2008,6 @@ class Component extends DCLogic {
     var root = this.q('root');
     if (root) {
       var want = (u >= T.indoor || grow < 0.6) ? 'light' : 'dark';
-      var dsk = this.q('darkSec'); if (dsk) { var dr = dsk.parentNode.getBoundingClientRect(); var onDk = dr.top < 40 && dr.bottom > 40; if (onDk) want = 'dark'; if (root.classList.contains('is-darksec') !== onDk) root.classList.toggle('is-darksec', onDk); }
       if (root.getAttribute('data-theme') !== want) root.setAttribute('data-theme', want);
     }
 
