@@ -948,6 +948,15 @@ html,body{overscroll-behavior-y:none}
 .atc-foot-legal .ds-small,.atc-logo-cell .ds-small,.atc-foot-links a,.atc-foot-links span{color:#5B6B78}
 /* 3. footer links are at least 24px tall to point at and tap */
 .atc-foot-links a,.atc-foot-col a{display:inline-flex;align-items:center;min-height:24px}
+/* v6 problem section magic: titles carry a brand light, the desktop moves like a camera between points */
+.atc .atc-stack .atc-card-title .ds-rise{transform-origin:50% 100%;background:linear-gradient(100deg,#001025 0 38%,#3FB27E 45%,#2D63E6 50%,#9BBA2A 55%,#001025 62% 100%);
+  background-size:260% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent !important}
+.atc .atc-stack .atc-card-body .ds-rise{transform-origin:50% 100%}
+.mac{will-change:transform,filter}
+.mac-glint{position:absolute;top:-10%;bottom:-10%;left:0;width:34%;z-index:30;pointer-events:none;opacity:0;filter:blur(18px);
+  background:linear-gradient(90deg,rgba(63,178,126,0),rgba(63,178,126,.35) 30%,rgba(45,99,230,.45) 50%,rgba(155,186,42,.35) 70%,rgba(155,186,42,0))}
+.mac-aura{position:absolute;left:50%;top:50%;width:130%;aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;opacity:0}
+.atc-iso{isolation:isolate}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1042,7 +1051,9 @@ with a vision.</h2>
       <!-- Inside the laptop: the white screen we flew into becomes its desktop -->
       <!-- What actually happens, played live on that screen: one short moment per point, driven by macScene() -->
       <div class="atc-iso atc-mac" data-atc="iso" aria-hidden="true">
+        <i class="mac-aura" data-atc="macAura"></i>
         <div class="mac" data-atc="mac" data-scene="-1">
+          <i class="mac-glint" data-atc="macGlint"></i>
 
           <!-- 01 You have the tools: apps keep arriving, each one adds to the monthly bill -->
           <div class="mac-sc">
@@ -2011,7 +2022,14 @@ class Component extends DCLogic {
         for (var j = 0; j < rises.length; j++) {
           var rin = ease(map(u, t0 + 6 + j * 8, t0 + 6 + j * 8 + 44));
           var rout = ease(map(u, next - 10 + j * 4, next + 26 + j * 4));
-          rises[j].style.transform = 'translateY(' + ((1 - rin) * 112 - rout * 112).toFixed(2) + '%)';
+          // v6: each line folds up out of soft focus, and a band of the brand gradient passes through the title once it lands
+          rises[j].style.transform = 'translateY(' + ((1 - rin) * 112 - rout * 112).toFixed(2) + '%) perspective(700px) rotateX(' + ((1 - rin) * -48 + rout * 30).toFixed(2) + 'deg)';
+          var bl = (1 - rin) * 7 + rout * 7;
+          rises[j].style.filter = bl > 0.05 ? 'blur(' + bl.toFixed(2) + 'px)' : '';
+          if (rises[j].parentNode.parentNode.classList.contains('atc-card-title')) {
+            var sw = ease(map(u, t0 + 26 + j * 10, t0 + 86 + j * 10));
+            rises[j].style.backgroundPosition = (100 - sw * 100).toFixed(2) + '% 0';
+          }
         }
       }
     }
@@ -2048,6 +2066,30 @@ class Component extends DCLogic {
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
+      // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
+      // swings forward into the next scene; while a point plays it drifts gently in depth, over a glow in that point's colour
+      (function () {
+        var mac = this.q('mac'), glint = this.q('macGlint'), aura = this.q('macAura');
+        if (!mac) return;
+        var cut = 0, gl = -1, cur = 0;
+        for (var ck = 0; ck < S.ins.length; ck++) if (u >= S.ins[ck] - 6) cur = ck;
+        for (var ck2 = 1; ck2 < S.ins.length; ck2++) {
+          var tc = map(u, S.ins[ck2] - 6, S.ins[ck2] + 26);
+          if (tc > 0 && tc < 1) { cut = Math.sin(Math.PI * tc); gl = tc; }
+        }
+        var ce = cur < S.ins.length - 1 ? S.ins[cur + 1] - 12 : S.out - 30;
+        var drift = (map(u, S.ins[cur], ce) - 0.5) * -6 * (u >= S.ins[0] ? 1 : 0);
+        mac.style.transformOrigin = '50% 60%';
+        mac.style.transform = 'perspective(1600px) rotateX(' + (cut * 9).toFixed(2) + 'deg) rotateY(' + (drift - cut * 12).toFixed(2) + 'deg) scale(' + (1 - cut * 0.08).toFixed(4) + ')';
+        mac.style.filter = cut > 0.01 ? 'blur(' + (cut * 2.6).toFixed(2) + 'px) saturate(' + (1 - cut * 0.35).toFixed(3) + ')' : '';
+        if (glint) { glint.style.opacity = gl >= 0 ? Math.sin(Math.PI * gl).toFixed(3) : '0'; glint.style.transform = 'translateX(' + (gl >= 0 ? -60 + gl * 220 : -60).toFixed(1) + '%) skewX(-16deg)'; }
+        if (aura) {
+          var cols = [[63,178,126],[45,99,230],[90,134,238],[155,186,42]], c = cols[0].slice();
+          for (var ak = 1; ak < cols.length; ak++) { var at = ease(map(u, S.ins[ak] - 6, S.ins[ak] + 26)); for (var ci = 0; ci < 3; ci++) c[ci] += (cols[ak][ci] - c[ci]) * at; }
+          aura.style.background = 'radial-gradient(closest-side,rgba(' + c.map(Math.round).join(',') + ',.22) 0,rgba(' + c.map(Math.round).join(',') + ',.08) 55%,rgba(' + c.map(Math.round).join(',') + ',0) 100%)';
+          aura.style.opacity = (gv * ease(map(u, S.ins[0] - 20, S.ins[0] + 30))).toFixed(3);
+        }
+      }).call(this);
       // A scene starts only once its point's text has fully risen (title and line); until then the last one stays.
       var shown = -1;
       for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 4) shown = si;
