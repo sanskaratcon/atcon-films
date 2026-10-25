@@ -1031,13 +1031,12 @@ html,body{overscroll-behavior-y:none}
 /* the story is driven by the scroll position, so the browser must never shift the page to 'anchor' content that changes size */
 html,body{overflow-anchor:none}
 /* Layered landscape wave (after What we offer) */
-.lw{position:relative;height:400vh;background:#FFFFFF}
+.lw{position:relative;height:300vh;background:#FFFFFF}
 .lw-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 .lw-svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .lw-title{position:absolute;left:50%;top:50%;width:min(90vw,980px);margin:0;transform:translate(-50%,-50%);text-align:center;color:#FFFFFF;opacity:0;
   font-family:var(--atc-font);font-weight:400;font-size:clamp(34px,5.4vw,84px);line-height:1.06;letter-spacing:-.035em;will-change:transform,opacity}
-.lw-title{z-index:1}
-.lw-tw{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}.lw-twi{display:inline-block;will-change:transform}
+.lw-tail{height:70vh;background:linear-gradient(180deg,#001025 0%,#001025 35%,#7C8798 72%,#FFFFFF 100%)}
 .atc.is-darksec .atc-headfill{background:#001025}
 </style>
 </helmet>
@@ -1401,13 +1400,16 @@ with a vision.</h2>
     <section class="lw" data-atc="lw" aria-labelledby="lw-title">
       <div class="lw-stage">
         <svg class="lw-svg" data-atc="lwSvg" preserveAspectRatio="none" aria-hidden="true">
-          <defs><linearGradient id="lw-u0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6F9FF"/><stop offset=".22" stop-color="#EAF0FC"/><stop offset="1" stop-color="#D3DFF9"/></linearGradient><linearGradient id="lw-u1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9CCF7"/><stop offset=".22" stop-color="#94B0F2"/><stop offset="1" stop-color="#6A8FEA"/></linearGradient><linearGradient id="lw-u2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5C86EC"/><stop offset=".22" stop-color="#3A68E0"/><stop offset="1" stop-color="#1F46B2"/></linearGradient><linearGradient id="lw-u3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A2D4F"/><stop offset=".22" stop-color="#0B1C38"/><stop offset="1" stop-color="#001025"/></linearGradient><linearGradient id="lw-d0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5C86EC"/><stop offset=".22" stop-color="#3A68E0"/><stop offset="1" stop-color="#2D63E6"/></linearGradient><linearGradient id="lw-d1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".22" stop-color="#EEF3FD"/><stop offset="1" stop-color="#DCE6FB"/></linearGradient><linearGradient id="lw-d2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".22" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient></defs>
-          <path class="lw-l" fill="url(#lw-u0)"/><path class="lw-l" fill="url(#lw-u1)"/><path class="lw-l" fill="url(#lw-u2)"/><path class="lw-l" fill="url(#lw-u3)"/>
-          <path class="lw-d" fill="url(#lw-d0)"/><path class="lw-d" fill="url(#lw-d1)"/><path class="lw-d" fill="url(#lw-d2)"/>
+          <defs>
+            <linearGradient id="lw-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4F4EB"/><stop offset="1" stop-color="#BFE3CF"/></linearGradient>
+            <linearGradient id="lw-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2D63E6"/><stop offset="1" stop-color="#163C9A"/></linearGradient>
+          </defs>
+          <path class="lw-l" fill="url(#lw-g0)"/><path class="lw-l" fill="#5A86EE"/><path class="lw-l" fill="url(#lw-g2)"/><path class="lw-l" fill="#001025"/>
         </svg>
         <h2 class="lw-title" id="lw-title" data-atc="lwTitle">You focus on the business.<br>We own the technology.</h2>
       </div>
     </section>
+    <div class="lw-tail" aria-hidden="true"></div>
 
     <!-- Each section settles into the screen and holds for a moment before the next one comes up -->
     <!-- Proven results: the claim on the left, the numbers as a bento on the right -->
@@ -1875,28 +1877,19 @@ class Component extends DCLogic {
   }
 
   // Layered landscape wave: four plateau-shaped hills (flat tops, flat valleys, smooth S-curves between) rise with the
-  // scroll one after another, each drifting sideways at its own depth; they keep rising until navy fills the screen and
-  // the line rises in word by word. Then three light hills roll in the same way and hand over to the white page below.
+  // scroll, one after another, then all keep rising until the navy layer fills the screen and the line arrives on it.
   // Returns true while navy sits under the header, so the header can turn dark.
   landWave(dt) {
     var LW = this._lw || (this._lw = {
-      // the shared height profile: one value (-1..1) per control point, spread evenly across the width (it repeats)
+      // the shared height profile: one value (-1..1) per control point, spread evenly across the width
       profile: [0.15, -0.55, -0.6, 0.5, 0.55, -0.85, -0.8, 0.35, 0.4, -0.2],
-      // in: resting top edge (fraction of screen height), amplitude, delay, idle drift, sideways parallax
-      up: [
-        { rest: 0.22, amp: 0.030, delay: 0.00, drift: 0.010, par: 0.05 },
-        { rest: 0.40, amp: 0.045, delay: 0.05, drift: 0.013, par: 0.09 },
-        { rest: 0.52, amp: 0.060, delay: 0.10, drift: 0.016, par: 0.13 },
-        { rest: 0.80, amp: 0.075, delay: 0.15, drift: 0.020, par: 0.17 }
+      // resting top edge (fraction of the screen height), amplitude, delay, idle drift
+      layers: [
+        { rest: 0.22, amp: 0.030, delay: 0.00, drift: 0.010 },
+        { rest: 0.40, amp: 0.045, delay: 0.06, drift: 0.013 },
+        { rest: 0.52, amp: 0.060, delay: 0.12, drift: 0.016 },
+        { rest: 0.80, amp: 0.075, delay: 0.18, drift: 0.020 }
       ],
-      // out: the light hills that hand over to the white page
-      down: [
-        { rest: 0.30, amp: 0.050, delay: 0.00, drift: 0.012, par: 0.06 },
-        { rest: 0.55, amp: 0.060, delay: 0.10, drift: 0.015, par: 0.10 },
-        { rest: 0.80, amp: 0.070, delay: 0.20, drift: 0.018, par: 0.14 }
-      ],
-      // timeline (0..1 through the section): rise, cover, line in, line out, light hills
-      T: { rise: 0.36, cover: 0.56, lineIn: [0.52, 0.64], lineOut: [0.70, 0.78], out: [0.74, 1] },
       lerp: 0.08, p: 0, W: 0, H: 0
     });
     var sec = this.q('lw'), svg = this.q('lwSvg'), title = this.q('lwTitle');
@@ -1908,58 +1901,33 @@ class Component extends DCLogic {
     var target = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - vh)));
     var k = 1 - Math.pow(1 - LW.lerp, (dt || 16.67) / 16.67);
     LW.p += (target - LW.p) * k; if (Math.abs(target - LW.p) < 0.0002) LW.p = target;
-    var p = LW.p, T = LW.T, clamp = function (x) { return Math.min(1, Math.max(0, x)); };
+    var p = LW.p, clamp = function (x) { return Math.min(1, Math.max(0, x)); };
     var outC = function (t) { return 1 - Math.pow(1 - t, 3); };
     var inOutC = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+    var q = inOutC(clamp((p - 0.55) / 0.45)), flat = 1 - q;
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var tm = still ? 0 : performance.now() / 1000, P = LW.profile, n = P.length;
     // narrow screens squeeze the same hills into less width, so they are kept a little lower there
-    var ampK = Math.min(1, 0.45 + W / H * 0.5), sp = W / (n - 1);
-    var draw = function (path, top, L, flat, li, shift) {
-      var off = shift * W, base = Math.floor(off / sp), frac = off - base * sp, d = '', px = 0, py = 0;
-      for (var i = -1; i <= n; i++) {
-        var pi = ((i + base) % n + n) % n, x = i * sp - frac;
-        var wob = still ? 0 : (Math.sin(tm * 0.7 + (i + base) * 0.9 + li * 1.3) * 0.6 + Math.sin(tm * 0.33 + (i + base) * 1.7 + li * 0.7) * 0.4) * L.drift;
-        var y = H * (top + (P[pi] * L.amp * ampK + wob) * flat);
-        if (i === -1) d = 'M' + x.toFixed(1) + ' ' + y.toFixed(1);
+    var ampK = Math.min(1, 0.45 + W / H * 0.5);
+    var paths = svg.querySelectorAll('.lw-l'), last = LW.layers[LW.layers.length - 1], lift = last.rest + last.amp + last.drift + 0.04;
+    for (var li = 0; li < LW.layers.length && li < paths.length; li++) {
+      var L = LW.layers[li];
+      var e1 = outC(clamp((p - L.delay) / (0.55 - 0.18)));
+      var top = 1.12 + L.amp + (L.rest - 1.12 - L.amp) * e1 - q * lift;
+      var d = '', px = 0, py = 0;
+      for (var i = 0; i < n; i++) {
+        var x = W * i / (n - 1);
+        var wob = still ? 0 : (Math.sin(tm * 0.7 + i * 0.9 + li * 1.3) * 0.6 + Math.sin(tm * 0.33 + i * 1.7 + li * 0.7) * 0.4) * L.drift;
+        var y = H * (top + (P[i] * L.amp * ampK + wob) * flat);
+        if (i === 0) d = 'M0 ' + y.toFixed(1);
         else { var hx = (x - px) / 2; d += 'C' + (px + hx).toFixed(1) + ' ' + py.toFixed(1) + ' ' + (x - hx).toFixed(1) + ' ' + y.toFixed(1) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1); }
         px = x; py = y;
       }
-      path.setAttribute('d', d + 'L' + (W + sp).toFixed(1) + ' ' + H + 'L' + (-sp).toFixed(1) + ' ' + H + 'Z');
-    };
-    // the dark landscape comes in
-    var q = inOutC(clamp((p - T.rise) / (T.cover - T.rise))), ups = svg.querySelectorAll('.lw-l');
-    var lastU = LW.up[LW.up.length - 1], liftU = lastU.rest + lastU.amp + lastU.drift + 0.05, span1 = T.rise - lastU.delay;
-    for (var li = 0; li < LW.up.length && li < ups.length; li++) {
-      var L = LW.up[li], e1 = outC(clamp((p - L.delay) / span1));
-      draw(ups[li], 1.12 + L.amp + (L.rest - 1.12 - L.amp) * e1 - q * liftU, L, 1 - q, li, p * L.par);
+      paths[li].setAttribute('d', d + 'L' + W + ' ' + H + 'L0 ' + H + 'Z');
     }
-    // the light hills roll in over it and hand over to the white page
-    var pw = clamp((p - T.out[0]) / (T.out[1] - T.out[0])), qw = inOutC(clamp((pw - 0.55) / 0.45)), downs = svg.querySelectorAll('.lw-d');
-    var lastD = LW.down[LW.down.length - 1], liftD = lastD.rest + lastD.amp + lastD.drift + 0.05;
-    for (var di = 0; di < LW.down.length && di < downs.length; di++) {
-      var D = LW.down[di], e2 = outC(clamp((pw - D.delay) / (0.55 - lastD.delay)));
-      downs[di].style.visibility = pw > 0 ? 'visible' : 'hidden';
-      draw(downs[di], 1.12 + D.amp + (D.rest - 1.12 - D.amp) * e2 - qw * liftD, D, 1 - qw, di + 4, p * D.par);
-    }
-    // the line rises in word by word once navy has filled the screen, and lifts away as the light comes back
-    if (title) {
-      if (!title.__split) {
-        title.__split = true; title.setAttribute('aria-label', title.textContent);
-        // split the text into masked words, keeping the line break (built from the DOM, so template attributes don't matter)
-        var lines = [[]];
-        Array.prototype.forEach.call(title.childNodes, function (nd) { if (nd.nodeName === 'BR') lines.push([]); else lines[lines.length - 1].push(nd.textContent); });
-        title.innerHTML = lines.map(function (ln) {
-          return ln.join(' ').trim().split(/\s+/).map(function (w) { return '<span class="lw-tw" aria-hidden="true"><span class="lw-twi">' + w + '</span></span>'; }).join(' ');
-        }).join('<br>');
-      }
-      var hin = clamp((p - T.lineIn[0]) / (T.lineIn[1] - T.lineIn[0])), hout = inOutC(clamp((p - T.lineOut[0]) / (T.lineOut[1] - T.lineOut[0])));
-      var ws = title.querySelectorAll('.lw-twi');
-      for (var wi = 0; wi < ws.length; wi++) { var wp = outC(clamp((hin * 1.5 - wi * 0.07) / 0.6)); ws[wi].style.transform = 'translate3d(0,' + ((1 - wp) * 110).toFixed(1) + '%,0)'; }
-      title.style.opacity = (hin > 0 ? 1 - hout : 0).toFixed(3);
-      title.style.transform = 'translate(-50%,calc(-50% - ' + (hout * 40).toFixed(1) + 'px))';
-    }
-    return r.top <= 0 && q > 0.93 && qw < 0.6 && r.bottom > 0;
+    if (title) { var o = inOutC(clamp((p - 0.86) / 0.11)); title.style.opacity = o.toFixed(3); title.style.transform = 'translate(-50%,calc(-50% + ' + ((1 - o) * 30).toFixed(1) + 'px))'; }
+    // navy is under the header once it has filled the screen, and through the navy tail below
+    return r.top <= 0 && q > 0.93 && r.bottom > -vh * 0.25;
   }
 
   frame(now) {
