@@ -1001,6 +1001,19 @@ html,body{overscroll-behavior-y:none}
 @keyframes sk-splash{0%{transform:scale(0)}8%{transform:scale(.9)}50%{transform:scale(3.2)}100%{transform:scale(10)}}
 .atc.is-ready .atc-sketch{animation:sk-gone 0s linear 5s forwards}
 @keyframes sk-gone{to{visibility:hidden}}
+/* v6 problem section, twain-style: one large rounded panel behind the scenes, tinted in the brand colours.
+   The tint flows green, blue, light blue, olive as the points change, over a faint grid */
+.atc-iso-bg{position:absolute;z-index:3;left:calc(var(--rail) + 1.2vw);right:1.2vw;top:calc(var(--rail) + 1.4vh);bottom:1.4vh;border-radius:36px;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
+.atc-iso-bg i{position:absolute;inset:0;opacity:0}
+.atc-iso-bg .ib0{opacity:1;background:radial-gradient(90% 70% at 18% 12%,#D3EFE1 0,rgba(211,239,225,0) 70%),radial-gradient(80% 70% at 90% 95%,#E3F4EC 0,rgba(227,244,236,0) 70%),#EEF7F2}
+.atc-iso-bg .ib1{background:radial-gradient(90% 70% at 82% 10%,#D5E1FB 0,rgba(213,225,251,0) 70%),radial-gradient(80% 70% at 10% 95%,#E4EBFC 0,rgba(228,235,252,0) 70%),#EEF2FD}
+.atc-iso-bg .ib2{background:radial-gradient(90% 70% at 20% 90%,#DCE5FD 0,rgba(220,229,253,0) 70%),radial-gradient(80% 70% at 88% 12%,#E8EDFE 0,rgba(232,237,254,0) 70%),#F1F4FE}
+.atc-iso-bg .ib3{background:radial-gradient(90% 70% at 80% 88%,#E8F0CC 0,rgba(232,240,204,0) 70%),radial-gradient(80% 70% at 12% 10%,#F0F5DF 0,rgba(240,245,223,0) 70%),#F5F8EA}
+.atc-iso-bg .ib-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,16,37,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,16,37,.05) 1px,transparent 1px);background-size:36px 36px;background-position:center;
+  -webkit-mask-image:radial-gradient(75% 70% at 50% 55%,#000 30%,transparent 80%);mask-image:radial-gradient(75% 70% at 50% 55%,#000 30%,transparent 80%)}
+.atc-iso .mac{position:relative;z-index:1}
+.atc-iso .mac{filter:none}
+@media (max-width:760px),(max-width:1100px) and (orientation:portrait){.atc-iso-bg{left:calc(var(--rail) + 8px);right:8px;top:calc(var(--rail) + 8px);bottom:8px;border-radius:24px}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1036,6 +1049,9 @@ html,body{overscroll-behavior-y:none}
         <div class="atc-wake-wall" data-atc="wakeWall"></div>
         <p class="atc-wake-hi" data-atc="wakeHi">What actually <span class="atc-wake-g">happens</span></p>
       </div>
+      <!-- The problems sit on one large rounded panel behind the words and the desktop; its tint flows through
+           the brand colours, one per problem, so the four read as one connected story -->
+      <div class="atc-iso-bg" data-atc="isoBg" aria-hidden="true"><i class="ib0"></i><i class="ib1"></i><i class="ib2"></i><i class="ib3"></i><b class="ib-grid"></b></div>
 
       <div class="atc-ovs" aria-hidden="true">
         <span class="atc-ov atc-ov-0" data-atc="ov0"></span>
@@ -2141,6 +2157,15 @@ class Component extends DCLogic {
     if (iso) {
       var gv = Math.min(ease(map(u, S.isoIn[0], S.isoIn[1])), 1 - gone);
       this.markAt(iso, gv, ease(map(u, S.isoMove[0], S.isoMove[1])));
+      // The tinted panel arrives as the desktop moves beside the list, then flows to each point's colour
+      var ibg = this.q('isoBg');
+      if (ibg) {
+        var ibo = ease(map(u, S.isoMove[0] - 8, S.isoMove[0] + 36)) * (1 - gone);
+        ibg.style.opacity = ibo.toFixed(3);
+        ibg.style.visibility = ibo > 0.001 ? 'visible' : 'hidden';
+        var ibs = ibg.querySelectorAll('i');
+        for (var ik = 1; ik < ibs.length && ik < S.ins.length; ik++) ibs[ik].style.opacity = ease(map(u, S.ins[ik] - 14, S.ins[ik] + 26)).toFixed(3);
+      }
       // A scene starts only once its point's text has fully risen (title and line); until then the last one stays.
       var shown = -1;
       for (var si = 0; si < S.ins.length; si++) if (u >= S.ins[si] + 4) shown = si;
