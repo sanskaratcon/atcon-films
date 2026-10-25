@@ -957,6 +957,26 @@ html,body{overscroll-behavior-y:none}
   background:linear-gradient(90deg,rgba(63,178,126,0),rgba(63,178,126,.35) 30%,rgba(45,99,230,.45) 50%,rgba(155,186,42,.35) 70%,rgba(155,186,42,0))}
 .mac-aura{position:absolute;left:50%;top:50%;width:130%;aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;opacity:0}
 .atc-iso{isolation:isolate}
+/* v6 chapter list: the four points are listed like chapters; the current one is open, the others stay as one grey line */
+.atc-card-mini{display:none}
+@media (min-width:761px) and (orientation:landscape),(min-width:1101px){
+  .atc .atc-stack{display:flex;flex-direction:column;justify-content:center;padding-top:var(--rail)}
+  .atc .atc-stack .atc-steps{display:none}
+  .atc .atc-stack .atc-card{display:grid;grid-template-columns:3.4em minmax(0,1fr);grid-template-rows:auto auto auto;padding:18px 0;border-top:1px solid rgba(0,16,37,.10)}
+  .atc .atc-stack .atc-card:last-of-type{border-bottom:1px solid rgba(0,16,37,.10)}
+  .atc .atc-stack .atc-card-side{display:block;grid-column:1;grid-row:1 / span 3;padding-top:.2em}
+  .atc .atc-stack .atc-card-side .atc-card-tog{display:none}
+  .atc .atc-stack .atc-card-side .ds-rise{transform:none !important}
+  .atc .atc-stack .atc-card .atc-card-num{color:#8C95A6;transition:color .4s ease}
+  .atc .atc-stack .atc-card.is-active .atc-card-num{color:var(--atc-navy)}
+  .atc-card-mini{display:block;grid-column:2;grid-row:1;margin:0;max-height:1.6em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    font-family:var(--atc-font);font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#5B6B78;transition:opacity .45s ease,max-height .7s cubic-bezier(.16,1,.3,1)}
+  .atc-card.is-active .atc-card-mini{opacity:0;max-height:0}
+  .atc .atc-stack .atc-card-title{grid-column:2;grid-row:2;max-height:0;overflow:hidden;transition:max-height .8s cubic-bezier(.16,1,.3,1)}
+  .atc .atc-stack .atc-card.is-active .atc-card-title{max-height:7em}
+  .atc .atc-stack .atc-card-acc{grid-column:2;grid-row:3;grid-template-rows:0fr;opacity:0}
+  .atc .atc-stack .atc-card.is-active .atc-card-acc{grid-template-rows:1fr;opacity:1}
+}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1998,9 +2018,23 @@ class Component extends DCLogic {
       var next = c + 1 < cards.length ? S.ins[c + 1] : S.out;
       var kin = ease(map(u, t0, t0 + 50));
       var kout = ease(map(u, next - 10, next + 30));
-      card.style.opacity = (kin * (1 - kout)).toFixed(3);
-      card.style.visibility = kin > 0.001 && kout < 0.999 ? 'visible' : 'hidden';
-      card.style.transform = 'translateY(' + ((1 - kin) * 24 - kout * 24).toFixed(1) + 'px)';
+      // v6 chapter list (laptop and desktop): all four points stay listed like chapters; the current one opens
+      var chap = this._chapMQ || (this._chapMQ = window.matchMedia('(min-width:761px) and (orientation:landscape),(min-width:1101px)'));
+      if (chap.matches) {
+        if (!card.querySelector('.atc-card-mini')) {
+          var mini = document.createElement('p'); mini.className = 'atc-card-mini'; mini.setAttribute('aria-hidden', 'true');
+          mini.textContent = card.querySelector('.atc-card-title').textContent.trim();
+          card.insertBefore(mini, card.querySelector('.atc-card-title'));
+        }
+        var chO = ease(map(u, S.ins[0] - 30, S.ins[0] + 6)) * (1 - gone);
+        card.style.opacity = chO.toFixed(3);
+        card.style.visibility = chO > 0.001 ? 'visible' : 'hidden';
+        card.style.transform = 'translateY(' + ((1 - chO) * 18).toFixed(1) + 'px)';
+      } else {
+        card.style.opacity = (kin * (1 - kout)).toFixed(3);
+        card.style.visibility = kin > 0.001 && kout < 0.999 ? 'visible' : 'hidden';
+        card.style.transform = 'translateY(' + ((1 - kin) * 24 - kout * 24).toFixed(1) + 'px)';
+      }
       card.classList.toggle('is-active', c === active && kout < 0.5);
       var past = c < active;
       if (card.classList.contains('is-past') !== past) card.classList.toggle('is-past', past);
