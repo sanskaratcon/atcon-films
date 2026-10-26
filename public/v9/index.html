@@ -1208,15 +1208,14 @@ html,body{overflow-anchor:none}
 .atc-sol-bar{display:none !important}
 .atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none !important}
 /* v9: the problem room (after wlt.design), drawn with three.js; words and pieces are placed in it with CSS3D */
-.sp{background:#F4F4F2}
+.sp{background:#F7F8FA}
 .sp-space{overflow:hidden}
 .r3,.r3-gl,.r3-css{position:absolute;inset:0;width:100%;height:100%}
 .r3-css{pointer-events:none}
 .r3-st{position:absolute !important;left:0 !important;top:0 !important;width:900px !important;text-align:left !important;visibility:visible}
-.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-size:96px !important;line-height:1.02 !important;color:#0B1C38;
-  text-shadow:1px 1px 0 #D5DAE2,2px 2px 0 #CCD2DC,3px 4px 10px rgba(0,16,37,.16)}
-.r3-st .sp-t .ds-mute{color:#8A94A6}
-.r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;color:#4A5A6E;text-shadow:none}
+.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-family:var(--atc-font);font-weight:400 !important;font-size:96px !important;line-height:1.04 !important;letter-spacing:-.045em;color:var(--atc-navy);text-shadow:none}
+.r3-st .sp-t .ds-mute{color:var(--atc-mute)}
+.r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;line-height:1.5;color:var(--atc-slate);text-shadow:none}
 .r3-o{position:absolute !important;left:0 !important;top:0 !important}
 </style>
 </helmet>
@@ -2605,7 +2604,7 @@ class Component extends DCLogic {
           var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
           Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js')]).then(function (m) {
             var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry, RoomEnv = m[3].RoomEnvironment;
-            var scene = new THREE.Scene(); scene.background = new THREE.Color('#F4F4F2');
+            var scene = new THREE.Scene(); scene.background = new THREE.Color('#F7F8FA');
             var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
             var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
             gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.05;
@@ -2617,8 +2616,8 @@ class Component extends DCLogic {
             // the room, after the supplied office lounge: a glass wall with birch V columns and a mountain view, a glossy white
             // floor, a white ceiling with a linear light and hanging greenery, a terrazzo table with leather stools, a planter
             var pm = new THREE.PMREMGenerator(gl); scene.environment = pm.fromScene(new RoomEnv(), 0.04).texture;
-            var wallM = mat('#F4F4F2', { roughness: 0.9 }), ceilM = mat('#FAFAF9', { roughness: 0.9 });
-            var floorM = new THREE.MeshStandardMaterial({ color: '#F3F3F1', roughness: 0.14, metalness: 0, envMapIntensity: 1.2 });
+            var wallM = mat('#F7F8FA', { roughness: 0.9 }), ceilM = mat('#FBFCFD', { roughness: 0.9 });
+            var floorM = new THREE.MeshStandardMaterial({ color: '#F4F6F9', roughness: 0.14, metalness: 0, envMapIntensity: 1.2 });
             add(new THREE.PlaneGeometry(22, 18), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
             var ceil = add(new THREE.PlaneGeometry(22, 18), ceilM, 0, 6.2, 0, 0, false); ceil.rotation.x = Math.PI / 2;
             add(new THREE.PlaneGeometry(18, 6.2), wallM, 11, 3.1, 0, -Math.PI / 2, false);
@@ -2626,9 +2625,9 @@ class Component extends DCLogic {
             add(new THREE.PlaneGeometry(22, 6.2), wallM, 0, 3.1, 9, Math.PI, false);
             // the view: sky, haze and layered blue mountains on one canvas far behind the glass
             var vc = document.createElement('canvas'); vc.width = 2048; vc.height = 640; var vx = vc.getContext('2d');
-            var vg = vx.createLinearGradient(0, 0, 0, 640); vg.addColorStop(0, '#C9D9EC'); vg.addColorStop(0.55, '#E9EFF5'); vg.addColorStop(1, '#DCE3EA');
+            var vg = vx.createLinearGradient(0, 0, 0, 640); vg.addColorStop(0, '#D6E2FA'); vg.addColorStop(0.55, '#F2F6FD'); vg.addColorStop(1, '#E4EBF7');
             vx.fillStyle = vg; vx.fillRect(0, 0, 2048, 640);
-            [['#B7C3D2', 360, 70, 0.0021], ['#9FADC0', 410, 60, 0.0034], ['#8C9AAE', 470, 45, 0.0052]].forEach(function (L2, li2) {
+            [['#D2DDF6', 360, 70, 0.0021], ['#B8CAF2', 410, 60, 0.0034], ['#A0B7EE', 470, 45, 0.0052]].forEach(function (L2, li2) {
               vx.fillStyle = L2[0]; vx.beginPath(); vx.moveTo(0, 640);
               for (var px2 = 0; px2 <= 2048; px2 += 8) vx.lineTo(px2, L2[1] - Math.sin(px2 * L2[3] + li2 * 2) * L2[2] - Math.sin(px2 * L2[3] * 2.7 + li2) * L2[2] * 0.4);
               vx.lineTo(2048, 640); vx.closePath(); vx.fill();
@@ -2636,7 +2635,7 @@ class Component extends DCLogic {
             var vt = new THREE.CanvasTexture(vc); vt.colorSpace = THREE.SRGBColorSpace;
             add(new THREE.PlaneGeometry(48, 15), new THREE.MeshBasicMaterial({ map: vt }), 0, 4.2, -16, 0, false).receiveShadow = false;
             // the glass wall: slim dark mullions, a sill, and birch columns leaning into V shapes
-            var mullM = mat('#3B414C', { roughness: 0.5, metalness: 0.4 }), woodM = mat('#E2D2BA', { roughness: 0.62 });
+            var mullM = mat('#1A2C4A', { roughness: 0.5, metalness: 0.3 }), woodM = mat('#ECEFF4', { roughness: 0.55 });
             for (var mx = -10; mx <= 10.01; mx += 3.4) box(0.07, 6.2, 0.07, mullM, mx, 3.1, -8, 0.01);
             box(22, 0.08, 0.12, mullM, 0, 0.04, -8, 0.01); box(22, 0.1, 0.14, mullM, 0, 6.15, -8, 0.01);
             [-8.9, 0, 8.9].forEach(function (cx) {
@@ -2645,12 +2644,12 @@ class Component extends DCLogic {
             // the ceiling: a long linear light and a hanging planter spilling greenery
             add(new THREE.BoxGeometry(6.5, 0.05, 0.16), new THREE.MeshBasicMaterial({ color: '#FFFFFF' }), 1.2, 6.15, -2.6, 0, false);
             box(4.2, 0.4, 0.7, mat('#FFFFFF'), 0.0, 5.95, -6.6, 0.05);
-            var leafM = mat('#5B7F45', { roughness: 0.75 }), leaf2M = mat('#7E9A5C', { roughness: 0.75 });
+            var leafM = mat('#3FB27E', { roughness: 0.75 }), leaf2M = mat('#2E8A60', { roughness: 0.75 });
             for (var hl = 0; hl < 46; hl++) { var hx = -2.0 + (hl % 12) * 0.36 + Math.sin(hl * 3.1) * 0.15, hy = 5.7 - Math.abs(Math.sin(hl * 1.7)) * 0.9, hz = -6.6 + Math.cos(hl * 2.3) * 0.4;
               var lfm = add(new THREE.SphereGeometry(0.14, 12, 8), hl % 3 ? leafM : leaf2M, hx, hy, hz); lfm.scale.set(0.6, 1.5, 0.3); lfm.rotation.set(Math.sin(hl) * 0.6, hl, Math.cos(hl * 1.3) * 0.7); }
             // the round terrazzo table on its cone pedestal, a laptop and two cups
-            var tc = document.createElement('canvas'); tc.width = tc.height = 256; var tx = tc.getContext('2d'); tx.fillStyle = '#ECEBE8'; tx.fillRect(0, 0, 256, 256);
-            for (var sp4 = 0; sp4 < 2600; sp4++) { var g4 = 150 + Math.floor((Math.sin(sp4 * 12.9898) * 43758.5453 % 1 + 1) % 1 * 90); tx.fillStyle = 'rgb(' + g4 + ',' + g4 + ',' + (g4 + 4) + ')';
+            var tc = document.createElement('canvas'); tc.width = tc.height = 256; var tx = tc.getContext('2d'); tx.fillStyle = '#F1F3F7'; tx.fillRect(0, 0, 256, 256);
+            for (var sp4 = 0; sp4 < 2600; sp4++) { var g4 = 150 + Math.floor((Math.sin(sp4 * 12.9898) * 43758.5453 % 1 + 1) % 1 * 90); tx.fillStyle = 'rgb(' + (g4 - 10) + ',' + g4 + ',' + Math.min(255, g4 + 30) + ')';
               tx.fillRect((Math.sin(sp4 * 78.233) * 43758.5 % 1 + 1) % 1 * 256, (Math.cos(sp4 * 37.719) * 43758.5 % 1 + 1) % 1 * 256, 1.6, 1.6); }
             var tt2 = new THREE.CanvasTexture(tc); tt2.wrapS = tt2.wrapT = THREE.RepeatWrapping; tt2.repeat.set(3, 2); tt2.colorSpace = THREE.SRGBColorSpace;
             var terrM = new THREE.MeshStandardMaterial({ map: tt2, roughness: 0.55 });
@@ -2660,7 +2659,7 @@ class Component extends DCLogic {
             var lapS = box(0.62, 0.42, 0.015, mat('#D2D6DC', { roughness: 0.3, metalness: 0.7 }), -0.5, 1.35, -3.98, 0.01); lapS.rotation.x = -0.25;
             [[-1.3, -3.2], [0.2, -3.3]].forEach(function (cp2) { add(new THREE.CylinderGeometry(0.06, 0.05, 0.09, 24), mat('#FFFFFF', { roughness: 0.3 }), cp2[0], 1.18, cp2[1]); });
             // tan leather stools with slim wood legs around the table
-            var leatherM = mat('#A97B57', { roughness: 0.55 }), legW = mat('#7A5A40', { roughness: 0.5 });
+            var leatherM = mat('#1A2C4A', { roughness: 0.55 }), legW = mat('#C9CED6', { roughness: 0.3, metalness: 0.6 });
             [[-2.15, -3.1, 1.2], [0.95, -3.0, -1.3], [-0.6, -2.0, 0], [-1.7, -4.9, 2.4]].forEach(function (sl2) {
               var gS = new THREE.Group(); gS.position.set(sl2[0], 0, sl2[1]); gS.rotation.y = sl2[2]; scene.add(gS);
               var seat = new THREE.Mesh(new RBox(0.55, 0.08, 0.52, 6, 0.04), leatherM); seat.position.y = 0.82; seat.castShadow = true; gS.add(seat);
@@ -2673,10 +2672,10 @@ class Component extends DCLogic {
             for (var pl2 = 0; pl2 < 34; pl2++) { var pa3 = pl2 * 2.4, pr3 = 0.15 + (pl2 % 5) * 0.09; var pf = add(new THREE.SphereGeometry(0.16, 12, 8), pl2 % 2 ? leafM : leaf2M, -5.2 + Math.cos(pa3) * pr3, 1.55 + (pl2 % 6) * 0.13, -5.6 + Math.sin(pa3) * pr3);
               pf.scale.set(0.4, 1.7, 0.4); pf.rotation.set(Math.cos(pa3) * 0.8, 0, Math.sin(pa3) * 0.8); }
             // a dark column in the foreground, as in the photograph
-            box(0.9, 6.2, 0.9, mat('#6E7682', { roughness: 0.6 }), -7.4, 3.1, 3.2, 0.02);
+            box(0.9, 6.2, 0.9, mat('#22324D', { roughness: 0.6 }), -7.4, 3.1, 3.2, 0.02);
             // daylight from beyond the glass, soft fill from the room
-            scene.add(new THREE.HemisphereLight('#FFFFFF', '#E8E6E1', 0.9));
-            var sun = new THREE.DirectionalLight('#FFF8EE', 2.0); sun.position.set(-6, 9, -16); sun.target.position.set(0, 0, 0); sun.castShadow = true;
+            scene.add(new THREE.HemisphereLight('#FFFFFF', '#E6EBF2', 0.95));
+            var sun = new THREE.DirectionalLight('#FFFFFF', 2.0); sun.position.set(-6, 9, -16); sun.target.position.set(0, 0, 0); sun.castShadow = true;
             sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 12; sun.shadow.camera.bottom = -12; sun.shadow.bias = -0.0004;
             scene.add(sun); scene.add(sun.target);
             // light: a soft sky light and a low sun through the slits, its shadows blurred
