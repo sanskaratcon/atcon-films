@@ -1133,6 +1133,25 @@ html,body{overflow-anchor:none}
 .sp-meta b{display:block;margin-top:2px;font-size:17px;font-weight:600}
 .sp-brief{width:300px;padding:16px 20px;text-align:center;border:1.5px dashed #C9D2DE;box-shadow:0 24px 44px -28px rgba(0,16,37,.25)}
 .sp-brief strong{display:block;margin:3px 0 2px;font-size:18px;font-weight:600}.sp-brief span{font-size:13px;color:var(--atc-slate)}
+/* v7 problem flight, Apple-quiet: soft wide shadows, a hairline edge, generous space, one label and one value */
+.sp-card{border-radius:24px;box-shadow:0 0 0 1px rgba(0,16,37,.05),0 30px 60px -32px rgba(0,16,37,.22),0 1px 2px rgba(0,16,37,.03)}
+.sp-min{padding:22px 26px;min-width:230px}
+.sp-min small{display:flex;align-items:center;font-size:12px;font-weight:500;letter-spacing:.01em;color:var(--atc-mute)}
+.sp-min strong{display:block;margin-top:8px;font-size:22px;font-weight:500;letter-spacing:-.025em;color:var(--atc-navy)}
+.sp-min strong em{font-style:normal;font-size:14px;font-weight:400;color:var(--atc-mute)}
+.sp-min>span{display:block;margin-top:6px;font-size:14px;color:var(--atc-slate)}
+.sp-prop small i{display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:var(--c)}
+.sp-brief{background:#F6F8FB;box-shadow:none;text-align:center;min-width:200px}.sp-brief small{justify-content:center}
+.sp-min .sp-none{display:inline-block;padding:3px 14px;border-radius:999px;border:1.5px dashed #C3CBD6;font-size:18px;color:var(--atc-mute)}
+.sp-tool i{width:72px;height:72px;border-radius:21px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 18px 32px -18px color-mix(in srgb,var(--c) 70%,#001025)}
+.sp-av{width:34px;height:34px;font-size:11px}
+.sp-bub{padding:14px 18px;border-radius:20px 20px 20px 6px;box-shadow:0 0 0 1px rgba(0,16,37,.05),0 26px 50px -30px rgba(0,16,37,.22)}
+.sp-bub p{font-size:17px;font-weight:500;letter-spacing:-.01em}
+.sp-week{width:300px;padding:18px 18px 16px}.sp-week-h em{background:#F1F4F9;color:var(--atc-slate)}
+.sp-week-g i{background:color-mix(in srgb,var(--c) 11%,#fff);box-shadow:inset 2px 0 0 color-mix(in srgb,var(--c) 70%,#fff)}
+.sp-road{width:400px;padding:22px 24px 20px}.sp-road>small{font-size:12px}
+.sp-road .sp-steps{margin:42px 0 16px}.sp-road .sp-steps b{background:#F5F7FA;color:#B6BEC9}.sp-road .sp-steps b.on{color:#fff;background:linear-gradient(180deg,#5F88EC,#2D63E6);box-shadow:0 12px 22px -14px #2D63E6}
+.sp-road-l{margin:0;font-size:14px;color:var(--atc-slate)}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2389,7 +2408,7 @@ class Component extends DCLogic {
             arrow: '<path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/>'
           };
           var svg = function (g) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + G[g] + '</svg>'; };
-          var tool = function (g, name, c) { return '<div class="sp-tool"><i style="--c:' + c + '">' + svg(g) + '</i><span>' + name + '</span></div>'; };
+          var tool = function (g, name, c) { return '<div class="sp-tool"><i style="--c:' + c + '">' + svg(g) + '</i>' + (name ? '<span>' + name + '</span>' : '') + '</div>'; };
           var av = function (t, c) { return '<b class="sp-av" style="--c:' + c + '">' + t + '</b>'; };
           var vendor = function (t, name, role, how, c, ang) {
             return '<div class="sp-card sp-vendor"><div class="sp-row">' + av(t, c) + '<div><strong>' + name + '</strong><small>' + role + '</small></div>'
@@ -2418,34 +2437,34 @@ class Component extends DCLogic {
               + '<p class="sp-meta"><span><small>Timeline</small><b>' + time + '</b></span><span><small>Price</small><b>' + price + '</b></span></p></div>';
           };
           var B = '#2D63E6', GR = '#3FB27E', LB = '#5A86EE', OL = '#9BBA2A', NV = '#0C1E3B';
+          // Apple-quiet: few pieces, one small label and one clear value each, colour only in small accents
+          var mini = function (label, value, sub, cls) { return '<div class="sp-card sp-min ' + (cls || '') + '"><small>' + label + '</small><strong>' + value + '</strong>' + (sub ? '<span>' + sub + '</span>' : '') + '</div>'; };
+          var prop = function (name, what, meta, c) { return '<div class="sp-card sp-min sp-prop"><small><i style="--c:' + c + '"></i>' + name + '</small><strong>' + what + '</strong><span>' + meta + '</span></div>'; };
           var SETS = [
             [ // too many tools
-              [tool('chart', 'CRM', B), -0.38, -0.3, 0.12], [tool('mail', 'Mail', LB), 0.37, -0.31, -0.18], [tool('chat', 'Chat', GR), -0.43, 0.04, 0.32],
-              [tool('board', 'Boards', OL), 0.43, 0.03, -0.32], [tool('sheet', 'Sheets', GR), -0.3, 0.34, -0.12], [tool('card', 'Billing', B), 0.31, 0.35, 0.22],
-              [tool('cal', 'Calendar', LB), -0.1, -0.39, 0.46], [tool('folder', 'Files', OL), 0.2, -0.42, -0.42],
-              ['<div class="sp-card sp-subs"><small>Software subscriptions</small><strong>€3,160<em>/ month</em></strong><span>14 tools · 0 talking to each other</span></div>', 0.0, 0.37, 0.04]
+              [tool('chart', '', B), -0.37, -0.28, 0.12], [tool('mail', '', LB), 0.36, -0.3, -0.18], [tool('chat', '', GR), -0.42, 0.06, 0.3],
+              [tool('board', '', OL), 0.42, 0.04, -0.3], [tool('sheet', '', GR), -0.28, 0.33, -0.1], [tool('card', '', B), 0.29, 0.34, 0.22],
+              [mini('Software subscriptions', '€3,160<em> / month</em>', '14 tools · none connected'), 0.0, 0.36, 0.04]
             ],
             [ // one brief, four vendors, four different answers that pull it apart
-              [offer('NS', 'Northfield Studio', 'Design agency', 'A Webflow website', ['Webflow', 'CMS'], '6 weeks', '€18k', B, -145), -0.33, -0.26, 0.1, -1],
-              [offer('BF', 'Bitforge Labs', 'Development', 'A custom React app', ['React', 'Node', 'AWS'], '5 months', '€64k', GR, -35), 0.33, -0.27, -0.12, -1],
-              [offer('CL', 'Cloudline', 'Infrastructure', 'Cloud hosting first', ['Azure', 'Kubernetes'], '8 weeks', '€26k', OL, 145), -0.34, 0.27, -0.04, -1],
-              [offer('PX', 'Pixelhaus', 'Marketing', 'A marketing campaign', ['Ads', 'Landing page'], '3 weeks', '€9k', LB, 35), 0.34, 0.28, 0.2, -1],
-              ['<div class="sp-card sp-brief"><small>Your brief</small><strong>Customer portal</strong><span>Launch in Q2 · one platform for every customer</span></div>', 0.0, 0.36, -0.05]
+              [prop('Northfield Studio', 'A Webflow website', '6 weeks · €18k', B), -0.32, -0.26, 0.1, -1],
+              [prop('Bitforge Labs', 'A custom React app', '5 months · €64k', GR), 0.32, -0.27, -0.12, -1],
+              [prop('Cloudline', 'Cloud hosting first', '8 weeks · €26k', OL), -0.33, 0.27, -0.04, -1],
+              [prop('Pixelhaus', 'A marketing campaign', '3 weeks · €9k', LB), 0.33, 0.28, 0.2, -1],
+              [mini('Your brief', 'Customer portal', '', 'sp-brief'), 0.0, 0.36, -0.05]
             ],
             [ // many people, no owner
-              [say('MK', 'Marketing', 'It’s an IT issue.', B), -0.36, -0.28, 0.12],
-              [say('IT', 'IT', 'The vendor changed the API.', GR), 0.3, -0.29, -0.16],
-              [say('FN', 'Finance', 'Not in this year’s budget.', OL), -0.4, 0.27, -0.04],
-              [say('SL', 'Sales', 'Customers are still waiting.', LB), 0.38, 0.29, 0.26],
-              [say('BF', 'Bitforge Labs', 'We built what the brief said.', NV), -0.04, -0.4, 0.5],
-              ['<div class="sp-card sp-task"><strong>Launch customer portal</strong><dl><dt>Owner</dt><dd><span class="sp-none">Unassigned</span></dd><dt>Status</dt><dd>Delayed 3 weeks</dd></dl></div>', 0.04, 0.33, -0.4]
+              [say('MK', 'Marketing', 'It’s an IT issue.', B), -0.34, -0.27, 0.12],
+              [say('IT', 'IT', 'The vendor changed the API.', GR), 0.31, -0.28, -0.16],
+              [say('FN', 'Finance', 'Not in this year’s budget.', OL), -0.36, 0.26, -0.04],
+              [say('SL', 'Sales', 'Customers are still waiting.', LB), 0.34, 0.27, 0.26],
+              [mini('Customer portal · Owner', '<span class="sp-none">Unassigned</span>', ''), 0.0, 0.36, -0.1]
             ],
-            [ // stuck in meetings: a week with no room left, recurring calls, an invitation about the last meeting, and 0% done
-              [week(), -0.29, -0.25, 0.05],
-              [event('Alignment call', 'Tue · 14:00 – 15:00', B, ['MK', 'IT', 'FN'], 6), 0.3, -0.28, -0.12],
-              ['<div class="sp-card sp-road"><div class="sp-road-h"><strong>Customer portal · Roadmap</strong><em>Blocked · waiting for alignment</em></div>'
-                + '<div class="sp-steps"><div class="sp-here"><span>You are here</span></div><b class="on">Idea</b><b>Design</b><b>Build</b><b>Launch</b></div>'
-                + '<div class="sp-road-f"><p><small>Time spent</small><strong class="sp-wk">Week 1</strong></p><p><small>Meetings held</small><strong class="sp-mt">3</strong></p><p><small>Progress</small><strong>0%</strong></p></div></div>', 0.02, 0.33, -0.1]
+            [ // stuck: weeks and meetings pass, the roadmap stays on Idea
+              [week(), -0.3, -0.25, 0.05],
+              [mini('Next meeting', 'Alignment call', 'Tomorrow · 14:00'), 0.31, -0.27, -0.12],
+              ['<div class="sp-card sp-road"><small>Customer portal</small><div class="sp-steps"><div class="sp-here"><span>You are here</span></div><b class="on">Idea</b><b>Design</b><b>Build</b><b>Launch</b></div>'
+                + '<p class="sp-road-l"><span class="sp-wk">Week 1</span> · <span class="sp-mt">3</span> meetings · 0% progress</p></div>', 0.02, 0.34, -0.1]
             ]
           ];
           var objs = [];
@@ -2497,7 +2516,7 @@ class Component extends DCLogic {
           // anything drifting behind the words steps out of the way, so the statement always reads clearly
           if (rel > -0.05 && Math.abs(px - W / 2) < W * 0.34 && Math.abs(py - H / 2) < H * 0.2) oo *= 0.12;
           var ob = rel < -0.04 ? -rel * 18 : (rel > 0.9 ? (rel - 0.9) * 3 : 0);
-          es.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-50%) scale(' + (os * (narrow ? 0.62 : Math.min(1, W / 1180))).toFixed(4) + ')' + (o.pull ? ' rotate(' + ((o.x < 0 ? -1 : 1) * (o.y < 0 ? -1 : 1) * 3 * ease(pa)).toFixed(2) + 'deg)' : '');
+          es.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-50%) scale(' + (os * (narrow ? 0.62 : Math.min(1.1, Math.max(0.9, W / 1180)))).toFixed(4) + ')' + (o.pull ? ' rotate(' + ((o.x < 0 ? -1 : 1) * (o.y < 0 ? -1 : 1) * 3 * ease(pa)).toFixed(2) + 'deg)' : '');
           es.opacity = oo.toFixed(3);
           es.filter = ob > 0.4 ? 'blur(' + ob.toFixed(1) + 'px)' : '';
           es.zIndex = String(Math.round((2 - rel) * 100));
