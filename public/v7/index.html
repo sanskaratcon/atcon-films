@@ -1055,7 +1055,7 @@ html,body{overflow-anchor:none}
   .atc-offer .cvb{width:max(64%,250px);right:-12%}
 }
 /* v7 problem flight (after superplay.co) */
-.sp{position:absolute;inset:0;z-index:7;overflow:hidden;visibility:hidden;pointer-events:none;background:#F1FAF5}
+.sp{position:absolute;inset:0;z-index:7;overflow:hidden;visibility:hidden;pointer-events:none;background:#FFFFFF}
 .sp-space{position:absolute;inset:0;z-index:1}
 .sp-obj{position:absolute;left:0;top:0;display:flex;justify-content:center;aspect-ratio:auto !important;height:auto !important;visibility:hidden;will-change:transform,opacity}
 .sp-obj .mw,.sp-obj .mac-dock{position:relative !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;transform:none !important;opacity:1 !important;flex:none}
@@ -1064,9 +1064,9 @@ html,body{overflow-anchor:none}
 .sp-obj .mw{box-shadow:0 0 0 .5px rgba(0,16,37,.10),0 4cqw 8cqw -3cqw rgba(0,16,37,.25),0 .4cqw 1cqw rgba(0,16,37,.05)}
 .sp-words{position:absolute;inset:0;z-index:2}
 .sp-st{position:absolute;left:50%;top:50%;width:min(90vw,1180px);text-align:center;transform:translate(-50%,-50%);visibility:hidden;will-change:transform,opacity}
-.sp-t{margin:0;font-family:var(--atc-font);font-weight:500;font-size:clamp(38px,6.2vw,104px);line-height:1.04;letter-spacing:-.045em;color:var(--atc-navy);text-wrap:balance}
-.sp-chip{display:inline-block;padding:.02em .24em .08em;margin:0 .04em;border-radius:.26em;background:#001025;color:#FFFFFF;line-height:1}
-.sp-p{margin:2.4vh auto 0;max-width:30em;font-size:clamp(15px,1.25vw,20px);line-height:1.5;color:var(--atc-slate)}
+.sp-k{display:inline-block;margin:0 0 2.6vh}
+.sp-t{margin:0 auto;max-width:15em;color:var(--atc-navy);text-wrap:balance}
+.sp-p{margin:2.4vh auto 0;max-width:30em;color:var(--atc-slate)}
 .sp-ic .dk{position:relative !important;left:auto !important;bottom:auto !important;width:8cqw;height:8cqw;flex:none;box-shadow:0 2cqw 4cqw -1.5cqw rgba(0,16,37,.35) !important}
 .sp-ic .dk::after{display:none}
 </style>
@@ -1165,7 +1165,7 @@ with a vision.</h2>
       <!-- v6: the four points sit along a wave; the camera glides from one to the next, tilting as it travels,
            and the live desktop plays inside the card the camera has reached -->
       <!-- v7: the problem section as one camera flight (after superplay.co) -->
-      <div class="sp" data-atc="sp" aria-hidden="true"><div class="sp-space" data-atc="spSpace"></div><div class="sp-words"><div class="sp-st" data-k="0"><h3 class="sp-t">But too many tools <span class="sp-chip">add complexity.</span></h3><p class="sp-p">Which one is right for your software?</p></div><div class="sp-st" data-k="1"><h3 class="sp-t">And every vendor pulls <span class="sp-chip">a different way.</span></h3><p class="sp-p">Each one offers a different way to build it.</p></div><div class="sp-st" data-k="2"><h3 class="sp-t">Many people. Different perspectives. <span class="sp-chip">No clear ownership.</span></h3><p class="sp-p">Each team passes the task on until no one owns it.</p></div><div class="sp-st" data-k="3"><h3 class="sp-t">Instead of moving forward, your business <span class="sp-chip">gets stuck.</span></h3><p class="sp-p">Meeting after meeting, and the result is still zero.</p></div></div></div>
+      <div class="sp" data-atc="sp" aria-hidden="true"><div class="sp-space" data-atc="spSpace"></div><div class="sp-words"><div class="sp-st" data-k="0"><p class="ds-label ds-grad-text sp-k">The challenge</p><h3 class="ds-display sp-t"><span class="ds-mute">But too many tools</span> add complexity.</h3><p class="ds-lede sp-p">Which one is right for your software?</p></div><div class="sp-st" data-k="1"><p class="ds-label ds-grad-text sp-k">The challenge</p><h3 class="ds-display sp-t"><span class="ds-mute">And every vendor pulls</span> a different way.</h3><p class="ds-lede sp-p">Each one offers a different way to build it.</p></div><div class="sp-st" data-k="2"><p class="ds-label ds-grad-text sp-k">The challenge</p><h3 class="ds-display sp-t"><span class="ds-mute">Many people. Different perspectives.</span> No clear ownership.</h3><p class="ds-lede sp-p">Each team passes the task on until no one owns it.</p></div><div class="sp-st" data-k="3"><p class="ds-label ds-grad-text sp-k">The challenge</p><h3 class="ds-display sp-t"><span class="ds-mute">Instead of moving forward, your business</span> gets stuck.</h3><p class="ds-lede sp-p">Meeting after meeting, and the result is still zero.</p></div></div></div>
       <div class="wv" data-atc="wave" aria-hidden="true"><div class="wv-world" data-atc="waveWorld">
         <i class="wv-orb wv-o1"></i><i class="wv-orb wv-o2"></i><i class="wv-orb wv-o3"></i><i class="wv-orb wv-o4"></i>
         <svg class="wv-path" viewBox="0 0 180 400" preserveAspectRatio="none"><defs><linearGradient id="wvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FB27E"/><stop offset=".4" stop-color="#2D63E6"/><stop offset=".7" stop-color="#5A86EE"/><stop offset="1" stop-color="#9BBA2A"/></linearGradient></defs>
@@ -2343,10 +2343,6 @@ class Component extends DCLogic {
         var f = 0; for (var kk = 1; kk < 4; kk++) f += ease(map(u, S.ins[kk] - 10, S.ins[kk] + 40));
         // the camera's place along the flight: -1 before the first point, 0..3 through the points, 4 after the last
         var F = f + (inE - 1) + (1 - outE);
-        // a faint brand tint per point, blending as the camera travels
-        var TINT = [[241, 250, 245], [240, 245, 254], [242, 246, 253], [247, 249, 235]], fc = Math.max(0, Math.min(3, F));
-        var t0 = Math.floor(Math.min(2.999, fc)), tf = fc - t0, c0 = TINT[t0], c1 = TINT[Math.min(3, t0 + 1)];
-        sp.style.backgroundColor = 'rgb(' + [0, 1, 2].map(function (q) { return Math.round(c0[q] + (c1[q] - c0[q]) * tf); }).join(',') + ')';
         // the statements: far and small, then full size while read, then past the camera
         var sts = sp.querySelectorAll('.sp-st');
         for (var si = 0; si < sts.length; si++) {
@@ -2369,6 +2365,8 @@ class Component extends DCLogic {
           var os = Math.pow(3.4, -rel), spread = narrow ? 0.85 : 1;
           var push = 0.62 + 0.38 * Math.min(os, 3), px = W / 2 + o.x * W * spread * push * Math.max(1, os * 0.7), py = H / 2 + o.y * H * push * Math.max(1, os * 0.7);
           var oo = Math.max(0, Math.min(1, (1.55 - rel) / 0.55)) * (rel < 0 ? Math.max(0, 1 + rel / 0.55) : 1);
+          // anything drifting behind the words steps out of the way, so the statement always reads clearly
+          if (rel > -0.05 && Math.abs(px - W / 2) < W * 0.34 && Math.abs(py - H / 2) < H * 0.2) oo *= 0.12;
           var ob = rel < -0.04 ? -rel * 18 : (rel > 0.9 ? (rel - 0.9) * 3 : 0);
           es.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-50%) scale(' + (os * (narrow ? 0.55 : 0.8) * (o.ic ? 1.6 : 1)).toFixed(4) + ')';
           es.opacity = oo.toFixed(3);
