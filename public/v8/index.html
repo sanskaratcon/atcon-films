@@ -1203,6 +1203,9 @@ html,body{overflow-anchor:none}
 /* v8: the floating pieces carry a light 3D pose; a soft sheen sits on the cards so the turn reads */
 .sp-o{transform-style:preserve-3d;backface-visibility:hidden}
 .sp-min,.vd,.sp-week,.sp-road,.pz-in{background-image:linear-gradient(135deg,rgba(255,255,255,1) 0%,rgba(255,255,255,1) 55%,rgba(240,244,252,1) 100%)}
+/* v8: More than a supplier sits straight on the page, without the browser-window frame (bar, dots, tabs, panel, gradient edge) */
+.atc-sol-bar{display:none !important}
+.atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none !important}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
