@@ -1212,8 +1212,8 @@ html,body{overflow-anchor:none}
 .sp-space{overflow:hidden}
 .r3,.r3-gl,.r3-css{position:absolute;inset:0;width:100%;height:100%}
 .r3-css{pointer-events:none}
-.r3-st{position:absolute !important;left:0 !important;top:0 !important;width:900px !important;text-align:left !important;visibility:visible}
-.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-size:96px !important;line-height:1.02 !important;color:#0F2147;
+.r3-st{position:absolute !important;left:0 !important;top:0 !important;width:1000px !important;text-align:center !important;visibility:visible}
+.r3-st .sp-t{margin:0 auto !important;max-width:11em;font-size:96px !important;line-height:1.02 !important;color:#0F2147;
   text-shadow:1px 1px 0 #9FB6E6,2px 2px 0 #92ABE0,3px 3px 0 #86A0DA,4px 4px 0 #7A95D3,5px 5px 0 #6F8BCC,8px 14px 22px rgba(0,16,37,.3)}
 .r3-st .sp-t .ds-mute{color:#5875AE}
 .r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;color:#2B4170;text-shadow:none}
@@ -2634,14 +2634,9 @@ class Component extends DCLogic {
             var stripM = new THREE.MeshBasicMaterial({ color: '#7FA3F2' });
             var bandM = mat('#2D63E6', { roughness: 0.7 }); box(19.6, 0.5, 0.9, bandM, 0, 6.75, -7.5, 0.05); box(0.9, 0.5, 15.2, bandM, 9.5, 6.75, 0, 0.05); box(0.9, 0.5, 15.2, bandM, -9.5, 6.75, 0, 0.05);
             add(new THREE.BoxGeometry(19.4, 0.05, 0.08), stripM, 0, 6.48, -7.25, 0, false); add(new THREE.BoxGeometry(0.08, 0.05, 15), stripM, 9.25, 6.48, 0, 0, false);
-            // three ring pendants that glow
-            var ringM = new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#DCE6FB', emissiveIntensity: 1.6, roughness: 0.3 });
-            var cableM = new THREE.MeshBasicMaterial({ color: '#2B3A55' });
-            [[-1.6, 5.1, -2.2, 1.1], [1.4, 5.3, -1.4, 1.35], [0, 4.75, -0.2, 1.5]].forEach(function (r) {
-              var ring = add(new THREE.TorusGeometry(r[3], 0.07, 16, 96), ringM, r[0], r[1], r[2], 0, false); ring.rotation.x = Math.PI / 2;
-              [-1, 1].forEach(function (sd) { add(new THREE.CylinderGeometry(0.008, 0.008, 7 - r[1]), cableM, r[0] + sd * r[3] * 0.7, r[1] + (7 - r[1]) / 2, r[2], 0, false); });
-              var pl = new THREE.PointLight('#E3EBFF', 4, 9, 2); pl.position.set(r[0], r[1] - 0.3, r[2]); scene.add(pl); var gl2 = new THREE.PointLight('#FFE7C2', 3, 6, 2); gl2.position.set(-1.0, 2.1, -6.3); if (!R.lamp) { R.lamp = gl2; scene.add(gl2); }
-            });
+            // soft light from the ceiling (no pendants), and the warm glow of the floor lamp
+            [[-3.6, -3.5], [4.6, -3.5], [0, 3.0], [0, 6.2], [7.5, -4.4]].forEach(function (cl) { var pl = new THREE.PointLight('#EEF3FF', 3.2, 11, 2); pl.position.set(cl[0], 6.2, cl[1]); scene.add(pl); });
+            var gl2 = new THREE.PointLight('#FFE7C2', 3, 6, 2); gl2.position.set(-1.0, 2.1, -6.3); scene.add(gl2);
             // the rug and the coffee table
             add(new THREE.CylinderGeometry(3.0, 3.0, 0.03, 64), mat('#EEF3FC'), -0.6, 0.016, -2.4, 0, false);
             var navyM = mat('#1A2C4A', { roughness: 0.5 });
@@ -2678,23 +2673,25 @@ class Component extends DCLogic {
             sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
             scene.add(sun); scene.add(sun.target);
             // the statements as lettering on the walls, and each point's pieces in front of its view
-            var WALL = [[-3.4, 3.85, -7.96, 0], [4.6, 4.15, -7.96, 0], [9.96, 3.9, -3.2, -Math.PI / 2], [0, 5.55, -7.96, 0]];
+            // each point hangs on its own wall like an exhibit: the statement on top, its illustration grouped right below it
+            var WALL = [[-3.6, -7.94, 0], [4.6, -7.94, 0], [9.94, -4.4, -Math.PI / 2], [0, 7.94, Math.PI]];
+            var axisY = new THREE.Vector3(0, 1, 0);
+            var spot = function (k, along, h) { var wv = WALL[k], rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, wv[2]), nrm = new THREE.Vector3(0, 0, 1).applyAxisAngle(axisY, wv[2]);
+              var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[2] === 0 || wv[2] === Math.PI ? wv[1] : wv[1];
+              return { pos: new THREE.Vector3(px, h, pz).addScaledVector(rgt, along).addScaledVector(nrm, 0.06), right: rgt, normal: nrm, rot: wv[2] }; };
             var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
-            Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el); var wv = WALL[k];
-              o3.position.set(wv[0], wv[1], wv[2]); o3.rotation.y = wv[3]; o3.scale.setScalar(0.0058); scene.add(o3); R.st.push(o3); });
-            // where the camera stands and looks for each view, and where its pieces float
+            Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el), sp5 = spot(k, 0, 5.3);
+              o3.position.copy(sp5.pos); o3.rotation.y = sp5.rot; o3.scale.setScalar(0.0045); scene.add(o3); R.st.push(o3); });
+            // the camera faces each exhibit in turn
             R.views = [
-              { p: [3.6, 2.6, 7.2], t: [-2.6, 3.0, -8] }, { p: [3.4, 2.7, 0.6], t: [4.4, 3.3, -8] },
-              { p: [2.4, 2.7, 1.4], t: [10, 3.2, -3.0] }, { p: [0.2, 2.2, 4.6], t: [0, 4.7, -8] }];
-            R.pre = { p: [3.8, 2.9, 7.8], t: [-2.6, 3.1, -8] }; R.post = { p: [0.2, 2.6, 2.6], t: [0, 4.9, -8] };
+              { p: [-2.4, 3.3, -0.6], t: [-3.6, 3.8, -8] }, { p: [3.4, 3.3, -0.6], t: [4.6, 3.8, -8] },
+              { p: [2.6, 3.3, -3.8], t: [10, 3.8, -4.4] }, { p: [0.6, 3.3, 0.6], t: [0, 3.8, 8] }];
+            R.pre = { p: [-1.2, 3.7, 4.6], t: [-3.6, 3.9, -8] }; R.post = { p: [0.4, 3.5, 3.6], t: [0, 3.85, 8] };
             R.objs = [];
             (space.__objs || []).forEach(function (o) {
-              var o3 = new CSS3DObject(o.el); o.el.classList.add('r3-o'); var v = R.views[o.k], P = v.p, T = v.t;
-              // a spot in front of the view: between the camera and its wall, spread across the frame
-              var dir = new THREE.Vector3(T[0] - P[0], T[1] - P[1], T[2] - P[2]).normalize();
-              var right = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).normalize(), up = new THREE.Vector3().crossVectors(right, dir).normalize();
-              var dd = 5.2 + ((o.z - 0.08) / 0.4) * 0.8, pos = new THREE.Vector3(P[0], P[1], P[2]).addScaledVector(dir, dd).addScaledVector(right, o.x * dd * 1.05).addScaledVector(up, -o.y * dd * 0.62);
-              o3.position.copy(pos); o3.lookAt(new THREE.Vector3(P[0], P[1], P[2])); o3.scale.setScalar(0.0036); scene.add(o3); R.objs.push({ o: o, o3: o3, base: pos.clone(), right: right, up: up });
+              var o3 = new CSS3DObject(o.el); o.el.classList.add('r3-o'); var sp6 = spot(o.k, o.x * 4.9, 2.95 - o.y * 2.5);
+              o3.position.copy(sp6.pos).addScaledVector(sp6.normal, 0.12); o3.rotation.y = sp6.rot; o3.scale.setScalar(0.0043); scene.add(o3);
+              R.objs.push({ o: o, o3: o3, base: o3.position.clone(), right: sp6.right, up: new THREE.Vector3(0, 1, 0) });
             });
             R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
           }).catch(function () { R.failed = true; });
@@ -2716,7 +2713,7 @@ class Component extends DCLogic {
           for (var rk = 0; rk < R.st.length; rk++) { var wk = Math.max(0, 1 - Math.abs(F - rk) * 1.7); R.st[rk].element.style.opacity = wk.toFixed(3); R.st[rk].visible = wk > 0.002; }
           for (var ro = 0; ro < R.objs.length; ro++) {
             var q = R.objs[ro], wo = Math.max(0, 1 - Math.abs(F - q.o.k) * 1.6), pa2 = q.o.pull ? ease(map(u, S.ins[q.o.k] - 10, q.o.k < 3 ? S.ins[q.o.k + 1] - 12 : S.out)) : 0;
-            q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.5).addScaledVector(q.up, -q.o.y * pa2 * 0.3);
+            q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.35).addScaledVector(q.up, -q.o.y * pa2 * 0.2);
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
           R.gl.render(R.scene, R.cam); R.css.render(R.scene, R.cam);
