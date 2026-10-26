@@ -2654,12 +2654,44 @@ class Component extends DCLogic {
     var pop = ease(map(u, S.pop[0], S.pop[1])), sw = ease(map(u, S.swap[0], S.swap[1]));
     var pl = ease(map(u, S.plug[0], S.plug[1])), glow = ease(map(u, S.glow[0], S.glow[1]));
     var mapEl = box.querySelector('.atc-sol-map'), headEl = box.querySelector('.atc-sol-head'), off = this.q('offer');
-    if (mapEl) { mapEl.style.opacity = (1 - sw).toFixed(3); mapEl.style.transform = sw > 0 ? 'translateX(' + (-sw * 7).toFixed(2) + '%)' : ''; }
-    if (headEl) { headEl.style.opacity = (1 - sw).toFixed(3); headEl.style.transform = sw > 0 ? 'translateX(' + (-sw * 7).toFixed(2) + '%)' : ''; }
-    if (off) {
-      off.style.opacity = sw.toFixed(3);
-      off.style.visibility = sw > 0.01 ? 'visible' : 'hidden';
-      off.style.transform = 'translateX(' + ((1 - sw) * 7).toFixed(2) + '%)';
+    // v6: the camera flies into the O of ATCON. The headline clears, the zoom builds up on the O, and What we offer is
+    // already there inside the O's opening; it grows with the opening until it fills the window.
+    var zr = ease(map(u, S.pop[0], S.swap[1])), bodyEl = box.querySelector('.atc-sol-body');
+    var Oel = Tw ? Tw.querySelectorAll('.sol-ltr')[2] : null;
+    sw = zr;
+    if (bodyEl && Oel && mapEl) {
+      var bR = bodyEl.getBoundingClientRect();
+      // the O (its centre and the radius of its opening) and the map, measured while nothing is zoomed
+      var oKey = Math.round(bR.width) + 'x' + Math.round(bR.height);
+      if (zr <= 0 || !this._oCam || this._oCam.k !== oKey) {
+        var pt = mapEl.style.transform; mapEl.style.transform = '';
+        var oR = Oel.getBoundingClientRect(), mR = mapEl.getBoundingClientRect();
+        mapEl.style.transform = pt;
+        this._oCam = { k: oKey, x: oR.left + oR.width / 2 - bR.left, y: oR.top + oR.height / 2 - bR.top,
+          r: Math.max(2, Math.min(oR.width, oR.height) * 0.3), mx: mR.left - bR.left, my: mR.top - bR.top };
+      }
+      var oc = this._oCam, Smax = Math.hypot(bR.width, bR.height) / oc.r * 1.15, s = Math.pow(Smax, zr);
+      // the camera also glides toward the O while it zooms, so it flies straight through the middle of it
+      var pan = ease(map(zr, 0, 0.6)), ox = oc.x + (bR.width / 2 - oc.x) * pan, oy = oc.y + (bR.height / 2 - oc.y) * pan;
+      var mid = zr > 0 && zr < 1;
+      bodyEl.style.overflow = mid ? 'hidden' : '';
+      mapEl.style.transformOrigin = (oc.x - oc.mx).toFixed(1) + 'px ' + (oc.y - oc.my).toFixed(1) + 'px';
+      mapEl.style.transform = zr > 0 ? 'translate(' + (ox - oc.x).toFixed(1) + 'px,' + (oy - oc.y).toFixed(1) + 'px) scale(' + s.toFixed(4) + ')' : '';
+      mapEl.style.opacity = (1 - ease(map(zr, 0.9, 1))).toFixed(3);
+      if (headEl) { var hz = ease(map(zr, 0, 0.22)); headEl.style.opacity = (1 - hz).toFixed(3); headEl.style.transform = hz > 0 ? 'translateY(' + (-hz * 24).toFixed(1) + 'px) scale(' + (1 + hz * 0.06).toFixed(4) + ')' : ''; }
+      if (off) {
+        off.style.visibility = zr > 0.001 ? 'visible' : 'hidden';
+        off.style.opacity = ease(map(zr, 0, 0.12)).toFixed(3);
+        // a miniature of the whole view sits inside the opening (sized to fit it, centred on the O) and grows with it,
+        // gliding to its own place as it reaches full size
+        var Wb = bR.width, Hb = bR.height, Rs = oc.r * s * 0.94, fs = Math.min(1, 2 * Rs / Math.hypot(Wb, Hb));
+        var fcx = ox + (Wb / 2 - ox) * fs, fcy = oy + (Hb / 2 - oy) * fs;
+        var tx = fcx - Wb * fs / 2, ty = fcy - Hb * fs / 2;
+        off.style.transformOrigin = '0 0';
+        off.style.transform = zr < 1 ? 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + fs.toFixed(4) + ')' : '';
+        // the clip is drawn before the transform, so the opening is mapped back into the view's own coordinates
+        off.style.clipPath = mid ? 'circle(' + (Rs / fs).toFixed(1) + 'px at ' + ((ox - tx) / fs).toFixed(1) + 'px ' + ((oy - ty) / fs).toFixed(1) + 'px)' : '';
+      }
     }
     var tabs = win ? win.querySelectorAll('.atc-sol-tab') : [];
     if (tabs.length > 1) {
