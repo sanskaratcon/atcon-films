@@ -2604,19 +2604,32 @@ class Component extends DCLogic {
         if (!R) {
           R = space.__r3 = { ready: false };
           var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
-          Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js')]).then(function (m) {
-            var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry;
+          Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js'),
+            import('three/addons/postprocessing/EffectComposer.js'), import('three/addons/postprocessing/RenderPass.js'), import('three/addons/postprocessing/GTAOPass.js'), import('three/addons/postprocessing/UnrealBloomPass.js'), import('three/addons/postprocessing/OutputPass.js')]).then(function (m) {
+            var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry, RoomEnv = m[3].RoomEnvironment;
+            var EffectComposer = m[4].EffectComposer, RenderPass = m[5].RenderPass, GTAOPass = m[6].GTAOPass, UnrealBloomPass = m[7].UnrealBloomPass, OutputPass = m[8].OutputPass;
             var scene = new THREE.Scene(); scene.background = new THREE.Color('#D7E2F7');
             var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
             var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.22;
+            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.08;
             gl.outputColorSpace = THREE.SRGBColorSpace; gl.domElement.className = 'r3-gl'; holder.appendChild(gl.domElement);
             var css = new CSS3DRenderer(); css.domElement.className = 'r3-css'; holder.appendChild(css.domElement);
+            // the finish: a studio light environment for soft reflections, and surfaces with real texture instead of flat colour
+            var pmF = new THREE.PMREMGenerator(gl); scene.environment = pmF.fromScene(new RoomEnv(), 0.04).texture;
+            var noiseTex = function (size, draw, rep2) { var c = document.createElement('canvas'); c.width = c.height = size; draw(c.getContext('2d'), size);
+              var t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rep2, rep2); t.anisotropy = 8; return t; };
+            var hsh = function (i) { var v = Math.sin(i * 12.9898) * 43758.5453; return v - Math.floor(v); };
+            var weaveT = noiseTex(256, function (x, n) { x.fillStyle = '#808080'; x.fillRect(0, 0, n, n);
+              for (var yy = 0; yy < n; yy += 2) for (var xx = 0; xx < n; xx += 2) { var v = ((xx >> 1) + (yy >> 1)) % 2 ? 150 : 110; v += (hsh(xx * 7 + yy) - 0.5) * 30; x.fillStyle = 'rgb(' + v + ',' + v + ',' + v + ')'; x.fillRect(xx, yy, 2, 2); } }, 6);
+            var cementT = noiseTex(512, function (x, n) { x.fillStyle = '#7f7f7f'; x.fillRect(0, 0, n, n);
+              for (var q = 0; q < 9000; q++) { var v = 110 + hsh(q) * 40; x.fillStyle = 'rgba(' + v + ',' + v + ',' + v + ',.35)'; x.beginPath(); x.arc(hsh(q + 1) * n, hsh(q + 2) * n, 1 + hsh(q + 3) * 6, 0, 6.28); x.fill(); } }, 4);
+            var plasterT = noiseTex(512, function (x, n) { x.fillStyle = '#808080'; x.fillRect(0, 0, n, n);
+              for (var q = 0; q < 6000; q++) { var v = 118 + hsh(q + 9) * 22; x.fillStyle = 'rgba(' + v + ',' + v + ',' + v + ',.4)'; x.fillRect(hsh(q + 4) * n, hsh(q + 5) * n, 2 + hsh(q + 6) * 10, 1 + hsh(q + 7) * 3); } }, 3);
             var mat = function (c, o) { return new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.85, metalness: 0 }, o || {})); };
             var add = function (geo, m2, x, y, z, ry, cast) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = cast !== false; me.receiveShadow = true; scene.add(me); return me; };
             var box = function (w, h, d, m2, x, y, z, r) { return add(new RBox(w, h, d, 3, r == null ? Math.min(w, h, d) * 0.12 : r), m2, x, y, z); };
             // the room: 20 wide, 7 high, 16 deep; a big window on the left, stairs on the right, a lit cove in the ceiling
-            var wallM = mat('#D3DFF6'), floorM = mat('#BFD0EE', { roughness: 0.55 }), ceilM = mat('#E2EAF9');
+            var wallM = mat('#D3DFF6', { bumpMap: plasterT, bumpScale: 0.6 }), floorM = mat('#BFD0EE', { roughness: 0.42, roughnessMap: cementT, bumpMap: cementT, bumpScale: 0.3, envMapIntensity: 0.9 }), ceilM = mat('#E2EAF9', { emissive: '#DCE5F7', emissiveIntensity: 0.45 });
             add(new THREE.PlaneGeometry(20, 16), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
             var ceil = add(new THREE.PlaneGeometry(20, 16), ceilM, 0, 7, 0, 0, false); ceil.rotation.x = Math.PI / 2;
             add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, -8, 0, false);
@@ -2644,12 +2657,12 @@ class Component extends DCLogic {
             box(2.4, 0.16, 1.1, navyM, -0.8, 0.58, -2.4); box(2.2, 0.08, 0.9, navyM, -0.8, 0.28, -2.4);
             [[-1.8, -2.85], [0.2, -2.85], [-1.8, -1.95], [0.2, -1.95]].forEach(function (lg) { add(new THREE.CylinderGeometry(0.035, 0.02, 0.56), navyM, lg[0], 0.28, lg[1]); });
             // the sofa against the back wall
-            var sofaM = mat('#3FB27E', { roughness: 0.9 });
+            var sofaM = mat('#3FB27E', { roughness: 0.95, bumpMap: weaveT, bumpScale: 1.2, envMapIntensity: 0.4 });
             box(4.6, 0.55, 1.4, sofaM, -3.6, 0.45, -6.4); box(4.6, 1.05, 0.4, sofaM, -3.6, 1.15, -7.05);
             box(0.4, 0.95, 1.4, sofaM, -5.9, 0.75, -6.4); box(0.4, 0.95, 1.4, sofaM, -1.3, 0.75, -6.4);
-            for (var cu = 0; cu < 3; cu++) box(1.25, 0.25, 1.05, mat('#5CC394', { roughness: 0.9 }), -5.0 + cu * 1.38, 0.86, -6.25, 0.1);
+            for (var cu = 0; cu < 3; cu++) box(1.25, 0.25, 1.05, mat('#5CC394', { roughness: 0.95, bumpMap: weaveT, bumpScale: 1.2, envMapIntensity: 0.4 }), -5.0 + cu * 1.38, 0.86, -6.25, 0.1);
             // the armchair by the window, a floor lamp, and a plant
-            var chairM = mat('#2D63E6', { roughness: 0.85 });
+            var chairM = mat('#2D63E6', { roughness: 0.95, bumpMap: weaveT, bumpScale: 1.2, envMapIntensity: 0.4 });
             box(1.3, 0.45, 1.25, chairM, -6.2, 0.75, -1.4, 0.22).rotation.y = 0.6;
             box(1.3, 1.1, 0.32, chairM, -6.55, 1.2, -1.85, 0.16).rotation.y = 0.6;
             add(new THREE.CylinderGeometry(0.05, 0.05, 0.55), navyM, -6.2, 0.27, -1.4);
@@ -2669,7 +2682,7 @@ class Component extends DCLogic {
             var stepM = mat('#E6EEFB', { roughness: 0.6 });
             for (var stp = 0; stp < 9; stp++) box(1.7, 0.4 + stp * 0.38, 0.6, stepM, 9.1, (0.4 + stp * 0.38) / 2, 3.6 - stp * 0.6, 0.03);
             // light: soft sky light, sun through the window, and a fill
-            scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.55));
+            scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.15));
             var sun = new THREE.DirectionalLight('#FFE9C8', 2.6); sun.position.set(-16, 9, 2); sun.target.position.set(0, 0, -2); sun.castShadow = true;
             sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
             scene.add(sun); scene.add(sun.target);
@@ -2706,12 +2719,22 @@ class Component extends DCLogic {
               o3.position.copy(e.origin).addScaledVector(e.right, o.x * 7.4); o3.position.y = 3.0 - o.y * 2.7; o3.rotation.y = e.rot; o3.scale.setScalar(0.0084); scene.add(o3);
               R.objs.push({ o: o, o3: o3, base: o3.position.clone(), right: e.right, up: new THREE.Vector3(0, 1, 0) });
             });
+            // on capable screens: soft contact shadows (GTAO), a gentle bloom on the bright areas, smooth edges; phones keep the plain render
+            var rich = !window.matchMedia('(max-width:760px),(pointer:coarse)').matches;
+            if (rich) {
+              var rt = new THREE.WebGLRenderTarget(16, 16, { type: THREE.HalfFloatType, samples: 4 });
+              var comp = new EffectComposer(gl, rt); comp.addPass(new RenderPass(scene, cam));
+              var ao = new GTAOPass(scene, cam, 16, 16); ao.updateGtaoMaterial({ radius: 0.9, distanceExponent: 1.4, thickness: 1.2, scale: 1.2, samples: 12 });
+              ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 }); comp.addPass(ao);
+              comp.addPass(new UnrealBloomPass(new THREE.Vector2(16, 16), 0.22, 0.55, 0.92));
+              comp.addPass(new OutputPass()); R.comp = comp;
+            }
             R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
           }).catch(function () { R.failed = true; });
         }
         if (R.ready) {
           var THREE3 = R.THREE, Wv = space.clientWidth || W, Hv = space.clientHeight || H;
-          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
+          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); if (R.comp) R.comp.setSize(Wv, Hv); R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
           // the camera eases from view to view
           var fc = Math.max(-1, Math.min(4, F)), a0 = Math.floor(fc), tt = fc - a0, st3 = tt * tt * (3 - 2 * tt);
           var vw = function (i) { return i < 0 ? R.pre : i > 3 ? R.post : R.views[i]; };
@@ -2732,7 +2755,7 @@ class Component extends DCLogic {
             q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.35).addScaledVector(q.up, -q.o.y * pa2 * 0.2); q.o3.position.y += bob(q.o.k);
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
-          R.gl.render(R.scene, R.cam); R.css.render(R.scene, R.cam);
+          if (R.comp) R.comp.render(); else R.gl.render(R.scene, R.cam); R.css.render(R.scene, R.cam);
         }
       }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
