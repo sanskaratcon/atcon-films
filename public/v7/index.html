@@ -1113,6 +1113,17 @@ html,body{overflow-anchor:none}
 .sp-rep svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .sp-toast{display:flex;align-items:center;gap:12px;padding:12px 16px 12px 12px;border-radius:16px}.sp-toast strong{display:block;font-size:15px;font-weight:600}
 .sp-prog-h{display:flex;align-items:center;justify-content:space-between;gap:12px}.sp-prog-h em{margin:0 !important}
+/* v7 problem 4: the roadmap that never moves */
+.sp-road{width:440px;padding:20px 22px 18px}
+.sp-road-h{display:flex;align-items:center;justify-content:space-between;gap:12px}.sp-road-h strong{font-size:16px;font-weight:600}
+.sp-road-h em{padding:5px 11px;border-radius:999px;font-style:normal;font-size:11px;font-weight:600;color:#6E8520;background:#F3F7E4}
+.sp-steps{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:40px 0 14px}
+.sp-steps b{padding:10px 6px;border-radius:12px;text-align:center;font-size:13px;font-weight:500;color:#B3BBC7;background:#F4F6F9}
+.sp-steps b.on{color:#fff;background:linear-gradient(180deg,#5F88EC,#2D63E6);box-shadow:0 12px 22px -12px #2D63E6}
+.sp-here{position:absolute;left:0;top:-32px;width:25%;display:flex;justify-content:center}
+.sp-here span{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;color:#fff;background:#001025}
+.sp-road-f{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sp-road-f p{margin:0;padding:10px 12px;border-radius:12px;background:#F7F9FC}
+.sp-road-f strong{display:block;margin-top:2px;font-size:20px;font-weight:500;letter-spacing:-.02em}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2416,10 +2427,9 @@ class Component extends DCLogic {
             [ // stuck in meetings: a week with no room left, recurring calls, an invitation about the last meeting, and 0% done
               [week(), -0.29, -0.25, 0.05],
               [event('Alignment call', 'Tue · 14:00 – 15:00', B, ['MK', 'IT', 'FN'], 6), 0.3, -0.28, -0.12],
-              [event('Status update', 'Wed · 10:00 – 10:30', GR, ['SL', 'BF', 'MK'], 4), -0.37, 0.3, 0.24],
-              [event('Steering committee', 'Fri · 11:00 – 12:30', OL, ['FN', 'IT', 'SL'], 9), 0.37, 0.27, 0.3],
-              ['<div class="sp-card sp-toast"><i class="sp-inv-ic">' + svg('cal') + '</i><div><small>New invitation</small><strong>Follow-up on last week’s sync</strong></div></div>', 0.1, -0.41, 0.42],
-              ['<div class="sp-card sp-prog"><div class="sp-prog-h"><strong>Customer portal</strong><em>Still an idea</em></div><div class="sp-bar"><i></i></div><p><span>Progress</span><b>0%</b></p><p><span>Meetings held</span><b>24</b></p></div>', 0.03, 0.34, -0.1]
+              ['<div class="sp-card sp-road"><div class="sp-road-h"><strong>Customer portal · Roadmap</strong><em>Blocked · waiting for alignment</em></div>'
+                + '<div class="sp-steps"><div class="sp-here"><span>You are here</span></div><b class="on">Idea</b><b>Design</b><b>Build</b><b>Launch</b></div>'
+                + '<div class="sp-road-f"><p><small>Time spent</small><strong class="sp-wk">Week 1</strong></p><p><small>Meetings held</small><strong class="sp-mt">3</strong></p><p><small>Progress</small><strong>0%</strong></p></div></div>', 0.02, 0.33, -0.1]
             ]
           ];
           var objs = [];
@@ -2447,6 +2457,15 @@ class Component extends DCLogic {
           st.transform = 'translate(-50%,-50%) scale(' + sc.toFixed(4) + ')';
           st.opacity = op.toFixed(3);
           st.filter = bl > 0.3 ? 'blur(' + bl.toFixed(2) + 'px)' : '';
+        }
+        // the stuck roadmap: time and meetings keep counting through the last point while progress stays at 0%
+        var road = space.__road || (space.__road = space.querySelector('.sp-road'));
+        if (road) {
+          var rp = map(u, S.ins[3] - 10, S.out), wkT = 'Week ' + (1 + Math.round(rp * 11)), mtT = String(3 + Math.round(rp * 33));
+          var wkE = road.querySelector('.sp-wk'), mtE = road.querySelector('.sp-mt');
+          if (wkE.textContent !== wkT) wkE.textContent = wkT; if (mtE.textContent !== mtT) mtE.textContent = mtT;
+          var still2 = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, lt = (performance.now() / 3000) % 1;
+          road.querySelector('.sp-here').style.transform = still2 ? '' : 'translateX(' + (Math.sin(lt * Math.PI) * Math.exp(-lt * 2.5) * 34).toFixed(1) + 'px)';
         }
         // the windows: placed around the statement in depth; they spread outward as they come closer, blur as they pass
         var objs2 = space.__objs || [];
