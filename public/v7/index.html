@@ -1069,6 +1069,13 @@ html,body{overflow-anchor:none}
 .sp-p{margin:2.4vh auto 0;max-width:30em;color:var(--atc-slate)}
 .sp-ic .dk{position:relative !important;left:auto !important;bottom:auto !important;width:8cqw;height:8cqw;flex:none;box-shadow:0 2cqw 4cqw -1.5cqw rgba(0,16,37,.35) !important}
 .sp-ic .dk::after{display:none}
+.sp-obj .sp-one{display:block !important;padding:0 !important;min-height:0 !important;height:auto !important}
+.sp-obj .sp-one .mlist,.sp-obj .sp-one .mcomments{display:block;margin:0}
+.sp-obj .sp-one .mmsg,.sp-obj .sp-one .mcomments>div{border-bottom:0 !important}
+.sp-obj .mtally,.sp-obj .minvite,.sp-obj .mlog{position:relative !important;left:auto !important;top:auto !important;right:auto !important;bottom:auto !important;transform:none !important;opacity:1 !important}
+.sp-obj .minvite{width:78%;zoom:1.35}
+.sp-log{display:flex;justify-content:center}.sp-log .mlog{display:inline-block !important;white-space:nowrap;padding:1.6cqw 2.6cqw;border-radius:999px;background:#fff;font-size:2.6cqw;color:var(--atc-slate);box-shadow:0 0 0 .5px rgba(0,16,37,.10),0 2cqw 4cqw -1.5cqw rgba(0,16,37,.25)}
+.sp-log .mlog svg{width:2.6cqw;height:2.6cqw;margin-right:1cqw;vertical-align:-.4cqw}.sp-log .mlog b{color:var(--atc-navy);font-weight:600}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2313,28 +2320,61 @@ class Component extends DCLogic {
         if (!space.__built) {
           space.__built = true;
           var scenes = mac.querySelectorAll('.mac-sc'), Wm = Math.round(Math.min(H * 0.56, 600, W * (narrow ? 0.9 : 0.5)));
-          var SLOTS = [[-0.34, -0.25, 0.18], [0.33, -0.29, -0.22], [-0.37, 0.27, -0.05], [0.36, 0.25, 0.32], [-0.06, -0.4, 0.5], [0.1, 0.41, -0.38]];
+          var SLOTS = [[-0.34, -0.25, 0.18], [0.33, -0.29, -0.22], [-0.37, 0.27, -0.05], [0.36, 0.25, 0.32], [-0.06, -0.4, 0.5], [0.1, 0.41, -0.38], [0.44, 0.0, 0.62], [-0.44, 0.02, -0.5]];
           var objs = [];
+          // a finished copy of a piece of the desktop: every step shown, typed lines filled in, typing dots left out
+          var done = function (n) {
+            var c = n.cloneNode(true);
+            c.classList.remove('mw-open'); c.classList.add('is-shown');
+            Array.prototype.forEach.call(c.querySelectorAll('.mtyping'), function (e) { e.parentNode.removeChild(e); });
+            Array.prototype.forEach.call(c.querySelectorAll('.st'), function (e) { e.classList.add('is-shown'); });
+            Array.prototype.forEach.call(c.querySelectorAll('[data-type]'), function (e) { e.textContent = e.getAttribute('data-type'); });
+            Array.prototype.forEach.call(c.querySelectorAll('[data-atc]'), function (e) { e.removeAttribute('data-atc'); });
+            c.removeAttribute('data-atc');
+            return c;
+          };
+          // a small window around one piece, so a single message or comment floats as its own card
+          var card = function (title, cls, inner, w) {
+            var m = document.createElement('div'); m.className = 'mw is-shown sp-card'; m.style.setProperty('--w', w);
+            m.innerHTML = '<div class="mw-bar"><i></i><i></i><i></i><span>' + title + '</span></div><div class="mw-b ' + cls + '"></div>';
+            var b = m.lastChild; inner.forEach(function (x) { b.appendChild(x); });
+            return m;
+          };
+          var wrapIn = function (cls, node) { var d = document.createElement('div'); d.className = cls; d.appendChild(node); return d; };
           for (var k = 0; k < scenes.length && k < 4; k++) {
-            var wins = Array.prototype.filter.call(scenes[k].querySelectorAll('.mw'), function (w) { return w.parentElement.closest('.mw') === null; }).slice(0, 5);
-            if (k === 0) { var dock = mac.querySelector('.mac-dock'); if (dock) wins.push(dock); }
-            // single app icons from the dock float between the windows (in place of superplay's coins)
-            var dks = mac.querySelectorAll('.mac-dock .dk');
-            for (var di = 0; di < 3 && dks.length; di++) {
-              var ib = document.createElement('div'); ib.className = 'mac sp-obj sp-ic'; ib.style.width = Wm + 'px';
-              var icl = dks[(k * 3 + di * 2) % dks.length].cloneNode(true); icl.removeAttribute('data-atc'); ib.appendChild(icl); space.appendChild(ib);
-              var IS = [[-0.2, -0.36, 0.4], [0.24, 0.36, -0.3], [0.44, -0.04, 0.12]][di];
-              objs.push({ el: ib, k: k, x: IS[0] * (k % 2 ? -1 : 1), y: IS[1], z: IS[2], ic: true });
+            var sc = scenes[k], pieces = [];
+            var top = Array.prototype.filter.call(sc.querySelectorAll('.mw'), function (w) { return w.parentElement.closest('.mw') === null; });
+            if (k === 0) {
+              pieces = top.slice(0, 5).map(done);
+              var dock = mac.querySelector('.mac-dock'); if (dock) pieces.push(done(dock));
+            } else if (k === 1) {
+              // three vendors, three separate promises
+              var inbox = done(top[0]); inbox.style.setProperty('--w', '72%'); pieces.push(inbox);
+              Array.prototype.forEach.call(sc.querySelectorAll('.mmsg'), function (msg) {
+                var who = msg.querySelector('strong'); pieces.push(card('Mail · ' + (who ? who.textContent : 'Vendor'), 'minbox sp-one', [wrapIn('mlist', done(msg))], '62%'));
+              });
+              var tally = sc.querySelector('.mtally'); if (tally) pieces.push(done(tally));
+            } else if (k === 2) {
+              // every team blames the next one
+              var task = done(top[0]); task.style.setProperty('--w', '70%');
+              Array.prototype.forEach.call(task.querySelectorAll('.mcomments'), function (e) { e.parentNode.removeChild(e); });
+              pieces.push(task);
+              Array.prototype.forEach.call(sc.querySelectorAll('.mcomments > div.st:not(.mtyping)'), function (cm) {
+                var who = cm.querySelector('strong'); pieces.push(card('Comment · ' + (who ? who.textContent : 'Team'), 'mtask sp-one', [wrapIn('mcomments', done(cm))], '58%'));
+              });
+              Array.prototype.slice.call(sc.querySelectorAll('.mlog'), 0, 2).forEach(function (lg) { pieces.push(wrapIn('sp-log', done(lg))); });
+            } else {
+              // meeting after meeting
+              top.forEach(function (w) { pieces.push(done(w)); });
+              var inv = sc.querySelector('.minvite');
+              if (inv) ['Kickoff · Mon 09:00', 'Sync · Wed 14:00', 'Alignment · Fri 10:00'].forEach(function (t) {
+                var c = done(inv), tx = c.querySelector('[data-k="invt"]') || c.querySelectorAll('p')[1]; if (tx) tx.textContent = t; pieces.push(c);
+              });
             }
-            for (var wi = 0; wi < wins.length && wi < SLOTS.length; wi++) {
+            for (var wi = 0; wi < pieces.length && wi < SLOTS.length; wi++) {
               var box = document.createElement('div'); box.className = 'mac sp-obj'; box.style.width = Wm + 'px';
-              var cl = wins[wi].cloneNode(true);
-              cl.classList.remove('mw-open'); cl.classList.add('is-shown');
-              Array.prototype.forEach.call(cl.querySelectorAll('.st'), function (e) { e.classList.add('is-shown'); });
-              Array.prototype.forEach.call(cl.querySelectorAll('[data-atc]'), function (e) { e.removeAttribute('data-atc'); });
-              cl.removeAttribute('data-atc');
-              box.appendChild(cl); space.appendChild(box);
-              var sl = SLOTS[(wi + k * 2) % SLOTS.length];
+              box.appendChild(pieces[wi]); space.appendChild(box);
+              var sl = SLOTS[(wi + k * 3) % SLOTS.length];
               objs.push({ el: box, k: k, x: sl[0], y: sl[1], z: sl[2] });
             }
           }
