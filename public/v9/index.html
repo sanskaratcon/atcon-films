@@ -1208,14 +1208,15 @@ html,body{overflow-anchor:none}
 .atc-sol-bar{display:none !important}
 .atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none !important}
 /* v9: the problem room (after wlt.design), drawn with three.js; words and pieces are placed in it with CSS3D */
-.sp{background:#F7F8FA}
+.sp{background:#D7E2F7}
 .sp-space{overflow:hidden}
 .r3,.r3-gl,.r3-css{position:absolute;inset:0;width:100%;height:100%}
 .r3-css{pointer-events:none}
 .r3-st{position:absolute !important;left:0 !important;top:0 !important;width:900px !important;text-align:left !important;visibility:visible}
-.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-family:var(--atc-font);font-weight:400 !important;font-size:96px !important;line-height:1.04 !important;letter-spacing:-.045em;color:var(--atc-navy);text-shadow:none}
-.r3-st .sp-t .ds-mute{color:var(--atc-mute)}
-.r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;line-height:1.5;color:var(--atc-slate);text-shadow:none}
+.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-size:96px !important;line-height:1.02 !important;color:#0F2147;
+  text-shadow:1px 1px 0 #9FB6E6,2px 2px 0 #92ABE0,3px 3px 0 #86A0DA,4px 4px 0 #7A95D3,5px 5px 0 #6F8BCC,8px 14px 22px rgba(0,16,37,.3)}
+.r3-st .sp-t .ds-mute{color:#5875AE}
+.r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;color:#2B4170;text-shadow:none}
 .r3-o{position:absolute !important;left:0 !important;top:0 !important}
 </style>
 </helmet>
@@ -2546,7 +2547,7 @@ class Component extends DCLogic {
           };
           var SETS = [
             [ // too many tools
-              [bubble('crm', 'CRM', 0, 'More tools, more complexity.'), -0.4, -0.4, 0.12], [bubble('mail', 'Emails'), 0.36, -0.3, -0.18], [bubble('chat', 'Chat', 6), -0.42, 0.06, 0.3],
+              [bubble('crm', 'CRM', 0, 'More tools, more complexity.'), -0.37, -0.28, 0.12], [bubble('mail', 'Emails'), 0.36, -0.3, -0.18], [bubble('chat', 'Chat', 6), -0.42, 0.06, 0.3],
               [bubble('cal', 'Calendar', 12), 0.42, 0.04, -0.3], [bubble('sheet', 'Sheets'), -0.28, 0.33, -0.1], [bubble('files', 'Files', 2), 0.29, 0.34, 0.22],
               [mini('Software subscriptions', '€3,160<em> / month</em>', '14 tools · none connected'), 0.0, 0.36, 0.04]
             ],
@@ -2558,8 +2559,8 @@ class Component extends DCLogic {
               ['<div class="vd-brief"><small>Your brief</small><strong>Customer portal</strong></div>', 0.0, 0.34, -0.05]
             ],
             [ // no clear ownership: three teams, three pieces that never fit, and no one owning the integration
-              [piece('NS', 'Northfield Studio', 'Design', 'design', '42 screens are done', 'k-r k-b'), -0.36, -0.36, 0.1, -1],
-              [piece('BF', 'Bitforge Labs', 'Development', 'dev', 'Our part only', 'k-bs'), 0.38, -0.34, -0.12, -1],
+              [piece('NS', 'Northfield Studio', 'Design', 'design', '42 screens are done', 'k-r k-b'), -0.2, -0.31, 0.1, -1],
+              [piece('BF', 'Bitforge Labs', 'Development', 'dev', 'Our part only', 'k-bs'), 0.21, -0.32, -0.12, -1],
               [piece('CL', 'Cloudline', 'Infrastructure', 'infra', 'After everyone else…', 'k-rt'), -0.32, 0.29, -0.04, -1],
               [missing, 0.3, 0.31, 0.2]
             ],
@@ -2602,132 +2603,90 @@ class Component extends DCLogic {
         if (!R) {
           R = space.__r3 = { ready: false };
           var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
-          Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js')]).then(function (m) {
-            var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry, RoomEnv = m[3].RoomEnvironment;
-            var scene = new THREE.Scene(); scene.background = new THREE.Color('#F7F8FA');
+          Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js')]).then(function (m) {
+            var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry;
+            var scene = new THREE.Scene(); scene.background = new THREE.Color('#D7E2F7');
             var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
             var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.08;
+            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.22;
             gl.outputColorSpace = THREE.SRGBColorSpace; gl.domElement.className = 'r3-gl'; holder.appendChild(gl.domElement);
             var css = new CSS3DRenderer(); css.domElement.className = 'r3-css'; holder.appendChild(css.domElement);
             var mat = function (c, o) { return new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.85, metalness: 0 }, o || {})); };
             var add = function (geo, m2, x, y, z, ry, cast) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = cast !== false; me.receiveShadow = true; scene.add(me); return me; };
             var box = function (w, h, d, m2, x, y, z, r) { return add(new RBox(w, h, d, 3, r == null ? Math.min(w, h, d) * 0.12 : r), m2, x, y, z); };
-            // the room: a Brussels office - light oak floor, warm white plaster, a whitewashed brick wall, two steel-framed
-            // windows onto the city (stepped gables, a spire, a faint Atomium), white beams, a solid oak table, linen and navy
-            var pm = new THREE.PMREMGenerator(gl); scene.environment = pm.fromScene(new RoomEnv(), 0.04).texture;
-            var cv = function (w, h, draw) { var c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); var t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
-            var rnd2 = function (i) { var v = Math.sin(i * 12.9898) * 43758.5453; return v - Math.floor(v); };
-            // light oak planks
-            var oakT = cv(1024, 1024, function (x, w, h) {
-              for (var r = 0; r < 8; r++) for (var c = 0; c < 3; c++) {
-                var off = (r % 2) * 170, base = 196 + Math.floor(rnd2(r * 7 + c) * 22);
-                x.fillStyle = 'rgb(' + (base + 18) + ',' + (base + 6) + ',' + (base - 12) + ')'; x.fillRect(c * 341 - off, r * 128, 341, 128); x.fillRect(c * 341 - off + 1024, r * 128, 341, 128);
-                for (var g = 0; g < 14; g++) { x.strokeStyle = 'rgba(150,120,90,' + (0.05 + rnd2(r * 31 + c * 7 + g) * 0.07) + ')'; x.beginPath(); var gy = r * 128 + 8 + g * 8.5; x.moveTo(c * 341 - off, gy); x.bezierCurveTo(c * 341 - off + 120, gy + 3, c * 341 - off + 220, gy - 3, c * 341 - off + 341, gy + 1); x.stroke(); }
-              }
-              x.strokeStyle = 'rgba(120,95,70,.18)'; x.lineWidth = 1.5;
-              for (var r2 = 0; r2 <= 8; r2++) { x.beginPath(); x.moveTo(0, r2 * 128); x.lineTo(w, r2 * 128); x.stroke(); }
+            // the room: 20 wide, 7 high, 16 deep; a big window on the left, stairs on the right, a lit cove in the ceiling
+            var wallM = mat('#D3DFF6'), floorM = mat('#BFD0EE', { roughness: 0.55 }), ceilM = mat('#E2EAF9');
+            add(new THREE.PlaneGeometry(20, 16), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
+            var ceil = add(new THREE.PlaneGeometry(20, 16), ceilM, 0, 7, 0, 0, false); ceil.rotation.x = Math.PI / 2;
+            add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, -8, 0, false);
+            add(new THREE.PlaneGeometry(16, 7), wallM, 10, 3.5, 0, -Math.PI / 2, false);
+            add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, 8, Math.PI, false);
+            // left wall with the window: wall around an opening, a soft sky behind, white mullions
+            var skyC = document.createElement('canvas'); skyC.width = 8; skyC.height = 256; var sx = skyC.getContext('2d');
+            var sg = sx.createLinearGradient(0, 0, 0, 256); sg.addColorStop(0, '#9DB8F2'); sg.addColorStop(0.55, '#D9E6FB'); sg.addColorStop(0.75, '#F3F7FD'); sg.addColorStop(1, '#BFD3C8');
+            sx.fillStyle = sg; sx.fillRect(0, 0, 8, 256); var skyT = new THREE.CanvasTexture(skyC); skyT.colorSpace = THREE.SRGBColorSpace;
+            var sky = add(new THREE.PlaneGeometry(13, 5.2), new THREE.MeshBasicMaterial({ map: skyT }), -10.4, 3.3, -0.5, Math.PI / 2, false); sky.receiveShadow = false;
+            [[16, 0.7, 0, 0.35], [16, 1.1, 0, 6.45], [1.5, 5.2, -7.25, 3.3], [1.5, 5.2, 6.75, 3.3]].forEach(function (p) { add(new THREE.PlaneGeometry(p[0], p[1]), wallM, -10, p[3], p[2] || 0, Math.PI / 2, false); });
+            var frameM = mat('#FFFFFF', { roughness: 0.4 });
+            for (var mz = -6.5; mz <= 6.01; mz += 1.3) box(0.12, 5.2, 0.12, frameM, -9.95, 3.3, mz, 0.02);
+            for (var my = 0.7; my <= 5.91; my += 1.3) box(0.12, 0.12, 13, frameM, -9.95, my, -0.5, 0.02);
+            // ceiling cove and its light strip
+            var stripM = new THREE.MeshBasicMaterial({ color: '#7FA3F2' });
+            var bandM = mat('#2D63E6', { roughness: 0.7 }); box(19.6, 0.5, 0.9, bandM, 0, 6.75, -7.5, 0.05); box(0.9, 0.5, 15.2, bandM, 9.5, 6.75, 0, 0.05); box(0.9, 0.5, 15.2, bandM, -9.5, 6.75, 0, 0.05);
+            add(new THREE.BoxGeometry(19.4, 0.05, 0.08), stripM, 0, 6.48, -7.25, 0, false); add(new THREE.BoxGeometry(0.08, 0.05, 15), stripM, 9.25, 6.48, 0, 0, false);
+            // three ring pendants that glow
+            var ringM = new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#DCE6FB', emissiveIntensity: 1.6, roughness: 0.3 });
+            var cableM = new THREE.MeshBasicMaterial({ color: '#2B3A55' });
+            [[-1.6, 5.1, -2.2, 1.1], [1.4, 5.3, -1.4, 1.35], [0, 4.75, -0.2, 1.5]].forEach(function (r) {
+              var ring = add(new THREE.TorusGeometry(r[3], 0.07, 16, 96), ringM, r[0], r[1], r[2], 0, false); ring.rotation.x = Math.PI / 2;
+              [-1, 1].forEach(function (sd) { add(new THREE.CylinderGeometry(0.008, 0.008, 7 - r[1]), cableM, r[0] + sd * r[3] * 0.7, r[1] + (7 - r[1]) / 2, r[2], 0, false); });
+              var pl = new THREE.PointLight('#E3EBFF', 4, 9, 2); pl.position.set(r[0], r[1] - 0.3, r[2]); scene.add(pl); var gl2 = new THREE.PointLight('#FFE7C2', 3, 6, 2); gl2.position.set(-1.0, 2.1, -6.3); if (!R.lamp) { R.lamp = gl2; scene.add(gl2); }
             });
-            oakT.wrapS = oakT.wrapT = THREE.RepeatWrapping; oakT.repeat.set(4, 3);
-            // whitewashed brick
-            var brickT = cv(512, 512, function (x, w, h) {
-              x.fillStyle = '#DCD8D2'; x.fillRect(0, 0, w, h);
-              for (var r = 0; r < 16; r++) for (var c = -1; c < 5; c++) { var t2 = 238 + Math.floor(rnd2(r * 9 + c) * 12); x.fillStyle = 'rgb(' + t2 + ',' + (t2 - 2) + ',' + (t2 - 6) + ')'; x.fillRect(c * 128 + (r % 2) * 64 + 3, r * 32 + 3, 122, 26); }
-            });
-            brickT.wrapS = brickT.wrapT = THREE.RepeatWrapping; brickT.repeat.set(5, 2);
-            // the city through the windows, in soft blues
-            var cityT = cv(2048, 700, function (x, w, h) {
-              var g2 = x.createLinearGradient(0, 0, 0, h); g2.addColorStop(0, '#D4E0F8'); g2.addColorStop(0.7, '#F1F5FD'); g2.addColorStop(1, '#E8EEF8'); x.fillStyle = g2; x.fillRect(0, 0, w, h);
-              // far: a spire and the Atomium, faint
-              x.fillStyle = '#C6D4F2'; x.fillRect(1180, 250, 26, 300); x.beginPath(); x.moveTo(1170, 255); x.lineTo(1193, 120); x.lineTo(1216, 255); x.fill();
-              var at = [[520, 300], [470, 350], [570, 350], [520, 400], [470, 450], [570, 450], [520, 500], [520, 350], [520, 450]];
-              x.strokeStyle = '#C9D6F3'; x.lineWidth = 7; [[0, 3], [1, 3], [2, 3], [3, 6], [4, 6], [5, 6], [0, 1], [0, 2], [4, 1], [5, 2]].forEach(function (e) { x.beginPath(); x.moveTo(at[e[0]][0], at[e[0]][1]); x.lineTo(at[e[1]][0], at[e[1]][1]); x.stroke(); });
-              x.fillStyle = '#C3D1F2'; at.slice(0, 7).forEach(function (p3) { x.beginPath(); x.arc(p3[0], p3[1], 17, 0, Math.PI * 2); x.fill(); });
-              // near: a row of stepped-gable townhouses
-              var hx2 = 0, hi = 0; x.fillStyle = '#AFC2EE';
-              while (hx2 < w) { var hw = 110 + Math.floor(rnd2(hi) * 70), ht = 470 - Math.floor(rnd2(hi + 3) * 120); x.beginPath(); x.moveTo(hx2, h); x.lineTo(hx2, ht);
-                var steps = 4, sw3 = hw / (steps * 2); for (var s3 = 0; s3 < steps; s3++) { x.lineTo(hx2 + sw3 * (s3 * 2 + 1) - sw3, ht - s3 * 24); x.lineTo(hx2 + sw3 * (s3 * 2 + 1), ht - s3 * 24); }
-                x.lineTo(hx2 + hw / 2, ht - steps * 24); for (var s4 = steps - 1; s4 >= 0; s4--) { x.lineTo(hx2 + hw - sw3 * (s4 * 2 + 1), ht - s4 * 24); x.lineTo(hx2 + hw - sw3 * (s4 * 2 + 1) + sw3, ht - s4 * 24); }
-                x.lineTo(hx2 + hw, ht); x.lineTo(hx2 + hw, h); x.fill(); hx2 += hw + 6; hi++; }
-              x.fillStyle = 'rgba(255,255,255,.55)'; for (var wi4 = 0; wi4 < 160; wi4++) x.fillRect(rnd2(wi4) * w, 500 + rnd2(wi4 + 50) * 150, 12, 18);
-            });
-            var plasterM = mat('#F6F5F2', { roughness: 0.95 }), ceilM = mat('#FBFBFA', { roughness: 0.9 });
-            var floorM = new THREE.MeshStandardMaterial({ map: oakT, roughness: 0.55, envMapIntensity: 0.7 });
-            add(new THREE.PlaneGeometry(22, 18), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
-            var ceil = add(new THREE.PlaneGeometry(22, 18), ceilM, 0, 6.2, 0, 0, false); ceil.rotation.x = Math.PI / 2;
-            add(new THREE.PlaneGeometry(18, 6.2), plasterM, 11, 3.1, 0, -Math.PI / 2, false);
-            add(new THREE.PlaneGeometry(18, 6.2), new THREE.MeshStandardMaterial({ map: brickT, roughness: 0.95 }), -11, 3.1, 0, Math.PI / 2, false);
-            add(new THREE.PlaneGeometry(22, 6.2), plasterM, 0, 3.1, 9, Math.PI, false);
-            // the back wall: plaster in the middle where the words sit, a tall steel-framed window at each end
-            add(new THREE.PlaneGeometry(10.6, 6.2), plasterM, 0, 3.1, -8, 0, true);
-            add(new THREE.PlaneGeometry(5.7, 0.5), plasterM, -8.15, 0.25, -8, 0, true); add(new THREE.PlaneGeometry(5.7, 0.5), plasterM, 8.15, 0.25, -8, 0, true);
-            add(new THREE.PlaneGeometry(5.7, 0.6), plasterM, -8.15, 5.9, -8, 0, true); add(new THREE.PlaneGeometry(5.7, 0.6), plasterM, 8.15, 5.9, -8, 0, true);
-            add(new THREE.PlaneGeometry(40, 13.5), new THREE.MeshBasicMaterial({ map: cityT }), 0, 3.6, -15, 0, false).receiveShadow = false;
-            var steelM = mat('#1A2C4A', { roughness: 0.45, metalness: 0.5 });
-            [-8.15, 8.15].forEach(function (wx) {
-              for (var gx = -2.85; gx <= 2.86; gx += 1.425) box(0.05, 5.1, 0.06, steelM, wx + gx, 3.05, -8, 0.005);
-              for (var gy = 0.5; gy <= 5.61; gy += 1.275) box(5.7, 0.05, 0.06, steelM, wx, gy, -8, 0.005);
-            });
-            // white beams and two slim linear lights over the table
-            var beamM = mat('#FFFFFF', { roughness: 0.8 });
-            [-4.5, 0.5, 5.5].forEach(function (bz) { box(22, 0.42, 0.42, beamM, 0, 6.0, bz, 0.02); });
-            [-0.7, 0.7].forEach(function (lx) {
-              box(0.1, 0.06, 2.6, steelM, lx - 0.3, 4.2, -3.6, 0.02);
-              add(new THREE.BoxGeometry(0.06, 0.01, 2.5), new THREE.MeshBasicMaterial({ color: '#FFFFFF' }), lx - 0.3, 4.165, -3.6, 0, false);
-              [-1.1, 1.1].forEach(function (cz) { add(new THREE.CylinderGeometry(0.004, 0.004, 1.8), new THREE.MeshBasicMaterial({ color: '#8C95A6' }), lx - 0.3, 5.1, -3.6 + cz, 0, false); });
-            });
-            var tl = new THREE.PointLight('#FFFFFF', 2.2, 6, 2); tl.position.set(-0.3, 3.9, -3.6); scene.add(tl);
-            // the solid oak table on two slab legs, a laptop, cups and a notebook
-            var oakM = new THREE.MeshStandardMaterial({ map: oakT, color: '#F4EADB', roughness: 0.5 });
-            box(4.4, 0.08, 1.4, oakM, -0.3, 0.76, -3.6, 0.02);
-            box(0.08, 0.72, 1.1, oakM, -2.1, 0.36, -3.6, 0.01); box(0.08, 0.72, 1.1, oakM, 1.5, 0.36, -3.6, 0.01);
-            var alu = mat('#D2D6DC', { roughness: 0.3, metalness: 0.7 });
-            box(0.62, 0.02, 0.44, alu, -0.2, 0.81, -3.7, 0.01); var lapS = box(0.62, 0.42, 0.015, alu, -0.2, 1.01, -3.93, 0.01); lapS.rotation.x = -0.25;
-            [[-1.4, -3.3], [0.9, -3.3]].forEach(function (cp2) { add(new THREE.CylinderGeometry(0.055, 0.045, 0.09, 24), mat('#FFFFFF', { roughness: 0.3 }), cp2[0], 0.85, cp2[1]); });
-            box(0.42, 0.02, 0.3, mat('#1A2C4A', { roughness: 0.8 }), 1.0, 0.81, -3.85, 0.01);
-            // six chairs: navy seats on oak frames
-            var navyF = mat('#1A2C4A', { roughness: 0.85 });
-            [[-1.6, -2.55, 0], [-0.3, -2.55, 0], [1.0, -2.55, 0], [-1.6, -4.65, Math.PI], [-0.3, -4.65, Math.PI], [1.0, -4.65, Math.PI]].forEach(function (c4) {
-              var gC = new THREE.Group(); gC.position.set(c4[0], 0, c4[1]); gC.rotation.y = c4[2]; scene.add(gC);
-              var st4 = new THREE.Mesh(new RBox(0.5, 0.07, 0.48, 6, 0.03), navyF); st4.position.y = 0.47; st4.castShadow = true; gC.add(st4);
-              var bk4 = new THREE.Mesh(new RBox(0.5, 0.36, 0.05, 6, 0.02), navyF); bk4.position.set(0, 0.78, 0.22); bk4.rotation.x = 0.08; bk4.castShadow = true; gC.add(bk4);
-              [[-0.21, -0.2], [0.21, -0.2], [-0.21, 0.2], [0.21, 0.2]].forEach(function (l4) { var lm = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.45, 0.035), oakM); lm.position.set(l4[0], 0.225, l4[1]); lm.castShadow = true; gC.add(lm); });
-            });
-            // a low linen sofa against the brick wall, with one navy cushion
-            var linenM = mat('#DCDDDF', { roughness: 1 });
-            var gSo = new THREE.Group(); gSo.position.set(-9.9, 0, 1.0); gSo.rotation.y = Math.PI / 2; scene.add(gSo);
-            [[0, 0.24, 0, 3.6, 0.36, 1.05], [0, 0.66, -0.42, 3.6, 0.58, 0.22], [-1.68, 0.48, 0, 0.24, 0.5, 1.05], [1.68, 0.48, 0, 0.24, 0.5, 1.05]].forEach(function (q2) {
-              var m5 = new THREE.Mesh(new RBox(q2[3], q2[4], q2[5], 6, 0.1), linenM); m5.position.set(q2[0], q2[1], q2[2]); m5.castShadow = true; m5.receiveShadow = true; gSo.add(m5); });
-            var cush = new THREE.Mesh(new RBox(0.5, 0.42, 0.14, 6, 0.07), navyF); cush.position.set(-1.1, 0.75, -0.25); cush.rotation.z = 0.15; gSo.add(cush);
-            // a large plant in a white pot by the window
-            var leafM = mat('#3FB27E', { roughness: 0.75 }), leaf2M = mat('#2E8A60', { roughness: 0.75 });
-            add(new THREE.CylinderGeometry(0.5, 0.42, 0.9, 48), mat('#FBFBFA', { roughness: 0.4 }), 5.0, 0.45, -6.9);
-            for (var pl2 = 0; pl2 < 36; pl2++) { var pa3 = pl2 * 2.4, pr3 = 0.14 + (pl2 % 5) * 0.09; var pf = add(new THREE.SphereGeometry(0.16, 12, 8), pl2 % 2 ? leafM : leaf2M, 5.0 + Math.cos(pa3) * pr3, 1.15 + (pl2 % 7) * 0.16, -6.9 + Math.sin(pa3) * pr3);
-              pf.scale.set(0.42, 1.8, 0.42); pf.rotation.set(Math.cos(pa3) * 0.8, 0, Math.sin(pa3) * 0.8); }
-            // a raw concrete column in the foreground
-            var conT = cv(256, 512, function (x, w, h) { x.fillStyle = '#C5C8CC'; x.fillRect(0, 0, w, h); for (var n = 0; n < 4000; n++) { var v2 = 170 + Math.floor(rnd2(n) * 60); x.fillStyle = 'rgba(' + v2 + ',' + v2 + ',' + (v2 + 3) + ',.5)'; x.fillRect(rnd2(n + 1) * w, rnd2(n + 2) * h, 2, 2); } });
-            box(0.8, 6.2, 0.8, new THREE.MeshStandardMaterial({ map: conT, roughness: 0.9 }), -7.6, 3.1, 3.4, 0.01);
-            // daylight from the windows, soft fill from the room
-            scene.add(new THREE.HemisphereLight('#FFFFFF', '#E9E4DC', 0.85));
-            var sun = new THREE.DirectionalLight('#FFFFFF', 1.9); sun.position.set(-5, 9, -16); sun.target.position.set(0, 0, 0); sun.castShadow = true;
-            sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 12; sun.shadow.camera.bottom = -12; sun.shadow.bias = -0.0004;
-            scene.add(sun); scene.add(sun.target);
-            // light: a soft sky light and a low sun through the slits, its shadows blurred
-            scene.add(new THREE.HemisphereLight('#FFFFFF', '#E3E7EE', 1.7));
-            var sun = new THREE.DirectionalLight('#FFF1DC', 2.4); sun.position.set(-16, 7, 1); sun.target.position.set(0, 0, -2); sun.castShadow = true;
-            sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10;
-            sun.shadow.bias = -0.0005; sun.shadow.radius = 6; sun.shadow.blurSamples = 8;
+            // the rug and the coffee table
+            add(new THREE.CylinderGeometry(3.0, 3.0, 0.03, 64), mat('#EEF3FC'), -0.6, 0.016, -2.4, 0, false);
+            var navyM = mat('#1A2C4A', { roughness: 0.5 });
+            box(2.4, 0.16, 1.1, navyM, -0.8, 0.58, -2.4); box(2.2, 0.08, 0.9, navyM, -0.8, 0.28, -2.4);
+            [[-1.8, -2.85], [0.2, -2.85], [-1.8, -1.95], [0.2, -1.95]].forEach(function (lg) { add(new THREE.CylinderGeometry(0.035, 0.02, 0.56), navyM, lg[0], 0.28, lg[1]); });
+            // the sofa against the back wall
+            var sofaM = mat('#3FB27E', { roughness: 0.9 });
+            box(4.6, 0.55, 1.4, sofaM, -3.6, 0.45, -6.4); box(4.6, 1.05, 0.4, sofaM, -3.6, 1.15, -7.05);
+            box(0.4, 0.95, 1.4, sofaM, -5.9, 0.75, -6.4); box(0.4, 0.95, 1.4, sofaM, -1.3, 0.75, -6.4);
+            for (var cu = 0; cu < 3; cu++) box(1.25, 0.25, 1.05, mat('#5CC394', { roughness: 0.9 }), -5.0 + cu * 1.38, 0.86, -6.25, 0.1);
+            // the armchair by the window, a floor lamp, and a plant
+            var chairM = mat('#2D63E6', { roughness: 0.85 });
+            box(1.3, 0.45, 1.25, chairM, -6.2, 0.75, -1.4, 0.22).rotation.y = 0.6;
+            box(1.3, 1.1, 0.32, chairM, -6.55, 1.2, -1.85, 0.16).rotation.y = 0.6;
+            add(new THREE.CylinderGeometry(0.05, 0.05, 0.55), navyM, -6.2, 0.27, -1.4);
+            add(new THREE.CylinderGeometry(0.02, 0.02, 2.1), navyM, -1.0, 1.05, -6.6);
+            var shade = add(new THREE.CylinderGeometry(0.28, 0.32, 0.4, 32, 1, true), new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#F4F7FF', emissiveIntensity: 0.6, side: THREE.DoubleSide }), -1.0, 2.2, -6.6);
+            add(new THREE.CylinderGeometry(0.32, 0.26, 0.55, 24), mat('#FFFFFF'), 8.4, 0.28, -6.8);
+            for (var lf = 0; lf < 7; lf++) { var leaf = add(new THREE.ConeGeometry(0.12, 1.1, 6), mat('#3FB27E'), 8.4, 0.95, -6.8); leaf.rotation.z = Math.sin(lf * 0.9) * 0.6; leaf.rotation.x = Math.cos(lf * 1.3) * 0.5; leaf.position.y = 1.0 + (lf % 3) * 0.12; }
+            // the curved desk, a laptop and an office chair
+            var deskM = mat('#FFFFFF', { roughness: 0.35 });
+            box(4.2, 0.18, 1.5, deskM, 4.6, 1.5, -5.9, 0.08); box(0.22, 1.5, 1.5, deskM, 2.6, 0.75, -5.9, 0.1); box(0.22, 1.5, 1.5, deskM, 6.6, 0.75, -5.9, 0.1);
+            box(1.2, 0.05, 0.8, mat('#3A4D63', { roughness: 0.4 }), 4.4, 1.62, -6.05, 0.02);
+            var scrM = new THREE.MeshStandardMaterial({ color: '#2D63E6', emissive: '#2D63E6', emissiveIntensity: 0.5, roughness: 0.3 });
+            var scr = box(1.2, 0.78, 0.04, scrM, 4.4, 2.0, -6.45, 0.02); scr.rotation.x = -0.2;
+            box(1.0, 0.18, 0.95, mat('#1A2C4A'), 4.6, 0.95, -4.7, 0.08); box(1.0, 0.95, 0.16, mat('#1A2C4A'), 4.6, 1.45, -4.3, 0.08);
+            add(new THREE.CylinderGeometry(0.05, 0.05, 0.85), navyM, 4.6, 0.43, -4.7);
+            // the stairs along the right wall
+            var stepM = mat('#E6EEFB', { roughness: 0.6 });
+            for (var stp = 0; stp < 9; stp++) box(1.7, 0.4 + stp * 0.38, 0.6, stepM, 9.1, (0.4 + stp * 0.38) / 2, 3.6 - stp * 0.6, 0.03);
+            // light: soft sky light, sun through the window, and a fill
+            scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.55));
+            var sun = new THREE.DirectionalLight('#FFE9C8', 2.6); sun.position.set(-16, 9, 2); sun.target.position.set(0, 0, -2); sun.castShadow = true;
+            sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
             scene.add(sun); scene.add(sun.target);
             // the statements as lettering on the walls, and each point's pieces in front of its view
-            var WALL = [[-2.6, 3.9, -7.94, 0], [2.6, 3.9, -7.94, 0], [10.95, 3.6, -3.2, -Math.PI / 2], [-10.94, 3.9, -3.6, Math.PI / 2]];
+            var WALL = [[-3.4, 3.85, -7.96, 0], [4.6, 4.15, -7.96, 0], [9.96, 3.9, -3.2, -Math.PI / 2], [0, 5.55, -7.96, 0]];
             var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
             Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el); var wv = WALL[k];
-              o3.position.set(wv[0], wv[1], wv[2]); o3.rotation.y = wv[3]; o3.scale.setScalar(0.006); scene.add(o3); R.st.push(o3); });
+              o3.position.set(wv[0], wv[1], wv[2]); o3.rotation.y = wv[3]; o3.scale.setScalar(0.0058); scene.add(o3); R.st.push(o3); });
             // where the camera stands and looks for each view, and where its pieces float
             R.views = [
-              { p: [1.8, 2.4, 4.8], t: [-2.6, 2.8, -8] }, { p: [-1.2, 2.5, 2.6], t: [2.6, 3.0, -8] },
-              { p: [3.0, 2.5, 2.2], t: [11, 3.0, -3.0] }, { p: [2.6, 2.5, 2.0], t: [-11, 3.0, -3.4] }];
-            R.pre = { p: [2.2, 2.6, 6.8], t: [-2.6, 2.9, -8] }; R.post = { p: [1.2, 2.5, 1.2], t: [-11, 3.1, -3.4] };
+              { p: [3.6, 2.6, 7.2], t: [-2.6, 3.0, -8] }, { p: [3.4, 2.7, 0.6], t: [4.4, 3.3, -8] },
+              { p: [2.4, 2.7, 1.4], t: [10, 3.2, -3.0] }, { p: [0.2, 2.2, 4.6], t: [0, 4.7, -8] }];
+            R.pre = { p: [3.8, 2.9, 7.8], t: [-2.6, 3.1, -8] }; R.post = { p: [0.2, 2.6, 2.6], t: [0, 4.9, -8] };
             R.objs = [];
             (space.__objs || []).forEach(function (o) {
               var o3 = new CSS3DObject(o.el); o.el.classList.add('r3-o'); var v = R.views[o.k], P = v.p, T = v.t;
