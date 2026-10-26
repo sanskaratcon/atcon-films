@@ -2682,7 +2682,10 @@ class Component extends DCLogic {
     // already there inside the O's opening; it grows with the opening until it fills the window.
     var zr = ease(map(u, S.pop[0], S.swap[1])), bodyEl = box.querySelector('.atc-sol-body');
     var Oel = Tw ? Tw.querySelectorAll('.sol-ltr')[2] : null;
-    sw = zr;
+    // the window (bar, tabs, frame) stays on Business-led technology and fades away as the camera starts to move in;
+    // the tab never switches, and What we offer arrives without the window around it
+    sw = 0;
+    if (win) win.style.setProperty('--wo', (side * (1 - ease(map(zr, 0, 0.22)))).toFixed(3));
     if (bodyEl && Oel && mapEl) {
       var bR = bodyEl.getBoundingClientRect();
       // the O (its centre and the radius of its opening) and the map, measured while nothing is zoomed
@@ -2698,7 +2701,6 @@ class Component extends DCLogic {
       // the camera also glides toward the O while it zooms, so it flies straight through the middle of it
       var pan = ease(map(zr, 0, 0.6)), ox = oc.x + (bR.width / 2 - oc.x) * pan, oy = oc.y + (bR.height / 2 - oc.y) * pan;
       var mid = zr > 0 && zr < 1;
-      bodyEl.style.overflow = mid ? 'hidden' : '';
       mapEl.style.transformOrigin = (oc.x - oc.mx).toFixed(1) + 'px ' + (oc.y - oc.my).toFixed(1) + 'px';
       mapEl.style.transform = zr > 0 ? 'translate(' + (ox - oc.x).toFixed(1) + 'px,' + (oy - oc.y).toFixed(1) + 'px) scale(' + s.toFixed(4) + ')' : '';
       mapEl.style.opacity = (1 - ease(map(zr, 0.9, 1))).toFixed(3);
