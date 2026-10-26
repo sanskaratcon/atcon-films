@@ -1124,6 +1124,15 @@ html,body{overflow-anchor:none}
 .sp-here span{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;color:#fff;background:#001025}
 .sp-road-f{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sp-road-f p{margin:0;padding:10px 12px;border-radius:12px;background:#F7F9FC}
 .sp-road-f strong{display:block;margin-top:2px;font-size:20px;font-weight:500;letter-spacing:-.02em}
+/* v7 problem 2: four proposals for one brief */
+.sp-offer{position:relative;width:296px;padding:18px 20px 16px;overflow:hidden}
+.sp-offer::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:var(--c)}
+.sp-what{margin:16px 0 0;font-size:21px;font-weight:500;letter-spacing:-.02em;color:var(--atc-navy)}
+.sp-stack{display:flex;gap:6px;margin:10px 0 0}.sp-stack em{padding:4px 10px;border-radius:999px;font-style:normal;font-size:12px;font-weight:500;color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff)}
+.sp-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 0}.sp-meta span{padding:9px 12px;border-radius:12px;background:#F7F9FC}
+.sp-meta b{display:block;margin-top:2px;font-size:17px;font-weight:600}
+.sp-brief{width:300px;padding:16px 20px;text-align:center;border:1.5px dashed #C9D2DE;box-shadow:0 24px 44px -28px rgba(0,16,37,.25)}
+.sp-brief strong{display:block;margin:3px 0 2px;font-size:18px;font-weight:600}.sp-brief span{font-size:13px;color:var(--atc-slate)}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2402,6 +2411,12 @@ class Component extends DCLogic {
             return '<div class="sp-card sp-week"><div class="sp-week-h"><strong>This week</strong><em>24 meetings</em></div><div class="sp-week-d"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div><div class="sp-week-g">'
               + cols.map(function (col, ci) { return col.map(function (e) { return '<i style="grid-column:' + (ci + 1) + ';grid-row:' + (e[0] + 1) + ' / span ' + e[1] + ';--c:' + tints[e[2]] + '"></i>'; }).join(''); }).join('') + '</div></div>';
           };
+          var offer = function (t, name, role, what, stackL, time, price, c, ang) {
+            return '<div class="sp-card sp-offer" style="--c:' + c + '"><div class="sp-row">' + av(t, c) + '<div><strong>' + name + '</strong><small>Proposal · ' + role + '</small></div>'
+              + '<span class="sp-pull" style="--a:' + ang + 'deg">' + svg('arrow') + '</span></div>'
+              + '<p class="sp-what">' + what + '</p><p class="sp-stack">' + stackL.map(function (x) { return '<em>' + x + '</em>'; }).join('') + '</p>'
+              + '<p class="sp-meta"><span><small>Timeline</small><b>' + time + '</b></span><span><small>Price</small><b>' + price + '</b></span></p></div>';
+          };
           var B = '#2D63E6', GR = '#3FB27E', LB = '#5A86EE', OL = '#9BBA2A', NV = '#0C1E3B';
           var SETS = [
             [ // too many tools
@@ -2410,11 +2425,12 @@ class Component extends DCLogic {
               [tool('cal', 'Calendar', LB), -0.1, -0.39, 0.46], [tool('folder', 'Files', OL), 0.2, -0.42, -0.42],
               ['<div class="sp-card sp-subs"><small>Software subscriptions</small><strong>€3,160<em>/ month</em></strong><span>14 tools · 0 talking to each other</span></div>', 0.0, 0.37, 0.04]
             ],
-            [ // every vendor pulls a different way
-              [vendor('NS', 'Northfield Studio', 'Design agency', 'Build it in Webflow', B, -145), -0.34, -0.27, 0.1],
-              [vendor('BF', 'Bitforge Labs', 'Development', 'Build it in React', GR, -35), 0.35, -0.26, -0.18],
-              [vendor('CL', 'Cloudline', 'Infrastructure', 'Host it on our servers', OL, 145), -0.35, 0.29, -0.06],
-              [vendor('PX', 'Pixelhaus', 'Marketing', 'Start with a campaign', LB, 35), 0.36, 0.3, 0.24]
+            [ // one brief, four vendors, four different answers that pull it apart
+              [offer('NS', 'Northfield Studio', 'Design agency', 'A Webflow website', ['Webflow', 'CMS'], '6 weeks', '€18k', B, -145), -0.33, -0.26, 0.1, -1],
+              [offer('BF', 'Bitforge Labs', 'Development', 'A custom React app', ['React', 'Node', 'AWS'], '5 months', '€64k', GR, -35), 0.33, -0.27, -0.12, -1],
+              [offer('CL', 'Cloudline', 'Infrastructure', 'Cloud hosting first', ['Azure', 'Kubernetes'], '8 weeks', '€26k', OL, 145), -0.34, 0.27, -0.04, -1],
+              [offer('PX', 'Pixelhaus', 'Marketing', 'A marketing campaign', ['Ads', 'Landing page'], '3 weeks', '€9k', LB, 35), 0.34, 0.28, 0.2, -1],
+              ['<div class="sp-card sp-brief"><small>Your brief</small><strong>Customer portal</strong><span>Launch in Q2 · one platform for every customer</span></div>', 0.0, 0.36, -0.05]
             ],
             [ // many people, no owner
               [say('MK', 'Marketing', 'It’s an IT issue.', B), -0.36, -0.28, 0.12],
@@ -2437,7 +2453,7 @@ class Component extends DCLogic {
             set.forEach(function (it) {
               var d = document.createElement('div'); d.className = 'sp-o'; d.innerHTML = it[0]; space.appendChild(d);
               // depth kept close around the statement, so every piece is there while the point is read
-              objs.push({ el: d, k: k, x: it[1], y: it[2], z: 0.08 + it[3] * 0.4 });
+              objs.push({ el: d, k: k, x: it[1], y: it[2], z: 0.08 + it[3] * 0.4, pull: it[4] === -1 });
             });
           });
           space.__objs = objs;
@@ -2474,12 +2490,14 @@ class Component extends DCLogic {
           if (rel > 1.7 || rel < -0.55) { es.visibility = 'hidden'; continue; }
           es.visibility = 'visible';
           var os = Math.pow(3.4, -rel), spread = narrow ? 0.85 : 1;
-          var push = 0.62 + 0.38 * Math.min(os, 3), px = W / 2 + o.x * W * spread * push * Math.max(1, os * 0.7), py = H / 2 + o.y * H * push * Math.max(1, os * 0.7);
+          // the vendors' proposals drift apart and lean outward through their point, as if pulling the brief their own way
+          var pa = o.pull ? map(u, S.ins[1] - 10, S.ins[2] - 12) : 0, pr = o.pull ? 1 + 0.07 * ease(pa) : 1;
+          var push = (0.62 + 0.38 * Math.min(os, 3)) * pr, px = W / 2 + o.x * W * spread * push * Math.max(1, os * 0.7), py = H / 2 + o.y * H * push * Math.max(1, os * 0.7);
           var oo = Math.max(0, Math.min(1, (0.98 - rel) / 0.4)) * (rel < 0 ? Math.max(0, 1 + rel / 0.55) : 1);
           // anything drifting behind the words steps out of the way, so the statement always reads clearly
           if (rel > -0.05 && Math.abs(px - W / 2) < W * 0.34 && Math.abs(py - H / 2) < H * 0.2) oo *= 0.12;
           var ob = rel < -0.04 ? -rel * 18 : (rel > 0.9 ? (rel - 0.9) * 3 : 0);
-          es.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-50%) scale(' + (os * (narrow ? 0.62 : 1)).toFixed(4) + ')';
+          es.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-50%) scale(' + (os * (narrow ? 0.62 : Math.min(1, W / 1180))).toFixed(4) + ')' + (o.pull ? ' rotate(' + ((o.x < 0 ? -1 : 1) * (o.y < 0 ? -1 : 1) * 3 * ease(pa)).toFixed(2) + 'deg)' : '');
           es.opacity = oo.toFixed(3);
           es.filter = ob > 0.4 ? 'blur(' + ob.toFixed(1) + 'px)' : '';
           es.zIndex = String(Math.round((2 - rel) * 100));
