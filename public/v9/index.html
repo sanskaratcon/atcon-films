@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ATCON GLOBAL</title>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script src="../vendor/react.js"></script>
 <script src="../vendor/react-dom.js"></script>
 <script src="../support.js"></script>
@@ -1206,18 +1207,17 @@ html,body{overflow-anchor:none}
 /* v8: More than a supplier sits straight on the page, without the browser-window frame (bar, dots, tabs, panel, gradient edge) */
 .atc-sol-bar{display:none !important}
 .atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none !important}
-/* v9: the problem rooms (after wlt.design) - a soft white corridor seen in true perspective */
-.sp{background:#EEF1F5}
-.sp-space{perspective:1000px;perspective-origin:50% 46%;overflow:hidden}
-.rm-world{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;will-change:transform}
-.rm-world .sp-st{left:0;top:0;width:min(62vw,860px);will-change:transform,opacity}
-.rm-s{position:absolute;left:0;top:0;display:block;backface-visibility:visible}
-.rm-floor{background:linear-gradient(180deg,#E6EAF0 0%,#EEF1F5 40%,#F2F4F8 100%)}
-.rm-ceil{background:#FAFBFC}
-.rm-wall{background:linear-gradient(180deg,#FBFCFD 0%,#F4F6F9 70%,#ECEFF4 100%)}
-.rm-door{background:linear-gradient(180deg,#FFFFFF,#F7F8FA);box-shadow:inset 0 0 0 1px rgba(0,16,37,.04)}
-.rm-lintel{background:#FFFFFF}
-.rm-sh{position:absolute;left:0;top:0;display:block;width:320px;height:120px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,16,37,.20),rgba(0,16,37,0));pointer-events:none}
+/* v9: the problem room (after wlt.design), drawn with three.js; words and pieces are placed in it with CSS3D */
+.sp{background:#D7E2F7}
+.sp-space{overflow:hidden}
+.r3,.r3-gl,.r3-css{position:absolute;inset:0;width:100%;height:100%}
+.r3-css{pointer-events:none}
+.r3-st{position:absolute !important;left:0 !important;top:0 !important;width:900px !important;text-align:left !important;visibility:visible}
+.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-size:96px !important;line-height:1.02 !important;color:#0F2147;
+  text-shadow:1px 1px 0 #9FB6E6,2px 2px 0 #92ABE0,3px 3px 0 #86A0DA,4px 4px 0 #7A95D3,5px 5px 0 #6F8BCC,8px 14px 22px rgba(0,16,37,.3)}
+.r3-st .sp-t .ds-mute{color:#5875AE}
+.r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;color:#2B4170;text-shadow:none}
+.r3-o{position:absolute !important;left:0 !important;top:0 !important}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2552,11 +2552,11 @@ class Component extends DCLogic {
               [mini('Software subscriptions', '€3,160<em> / month</em>', '14 tools · none connected'), 0.0, 0.36, 0.04]
             ],
             [ // one brief, four vendors, four different answers that pull it apart
-              [vend(0, 'Alex', 'Northfield Studio', 'Design', 'A Webflow website', '6 weeks · €18k'), -0.17, -0.3, 0.1, -1],
-              [vend(2, 'Sam', 'Bitforge Labs', 'Development', 'A custom React app', '5 months · €64k'), 0.31, -0.1, -0.12, -1],
-              [vend(1, 'Noa', 'Cloudline', 'Infrastructure', 'Cloud hosting first', '8 weeks · €26k'), -0.31, 0.15, -0.04, -1],
-              [vend(4, 'Jordan', 'Pixelhaus', 'Marketing', 'A marketing campaign', '3 weeks · €9k'), 0.17, 0.37, 0.2, -1],
-              ['<div class="vd-brief"><small>Your brief</small><strong>Customer portal</strong></div>', -0.17, 0.3, -0.05]
+              [vend(0, 'Alex', 'Northfield Studio', 'Design', 'A Webflow website', '6 weeks · €18k'), -0.4, -0.06, 0.1, -1],
+              [vend(2, 'Sam', 'Bitforge Labs', 'Development', 'A custom React app', '5 months · €64k'), 0.4, -0.04, -0.12, -1],
+              [vend(1, 'Noa', 'Cloudline', 'Infrastructure', 'Cloud hosting first', '8 weeks · €26k'), -0.3, 0.3, -0.04, -1],
+              [vend(4, 'Jordan', 'Pixelhaus', 'Marketing', 'A marketing campaign', '3 weeks · €9k'), 0.3, 0.32, 0.2, -1],
+              ['<div class="vd-brief"><small>Your brief</small><strong>Customer portal</strong></div>', 0.0, 0.34, -0.05]
             ],
             [ // no clear ownership: three teams, three pieces that never fit, and no one owning the integration
               [piece('NS', 'Northfield Studio', 'Design', 'design', '42 screens are done', 'k-r k-b'), -0.2, -0.31, 0.1, -1],
@@ -2582,57 +2582,12 @@ class Component extends DCLogic {
           space.__objs = objs;
         }
         var f = 0; for (var kk = 1; kk < 4; kk++) f += ease(map(u, S.ins[kk] - 10, S.ins[kk] + 40));
-        // the camera's place along the corridor: -1 before the first room, 0..3 through the rooms, 4 after the last
+        // the camera's place through the room: -1 before the first view, 0..3 through the four views, 4 after the last
         var F = f + (inE - 1) + (1 - outE);
-        // v9: the problems live in rooms along one corridor (after wlt.design). The camera walks forward room by room;
-        // each statement stands in the middle of its room, and its pieces stand around it in depth with a soft shadow on
-        // the floor. Distances are in px; widths and heights follow the screen.
-        var D = 2400, AT = 1500, RW = W * 2.6, RH = H * 1.75, L = 4 * D + 3600, zc = (600 - (4 * D + 3000)) / 2;
-        if (!space.__room || space.__roomKey !== W + 'x' + H) {
-          if (space.__room) space.__room.parentNode.removeChild(space.__room);
-          var wr = document.createElement('div'); wr.className = 'rm-world'; space.appendChild(wr);
-          space.__room = wr; space.__roomKey = W + 'x' + H;
-          var plane = function (cls, w, h, t) { var e = document.createElement('i'); e.className = 'rm-s ' + cls; e.style.width = w + 'px'; e.style.height = h + 'px';
-            e.style.transform = 'translate3d(' + (-w / 2) + 'px,' + (-h / 2) + 'px,0) ' + t; wr.appendChild(e); return e; };
-          plane('rm-floor', RW, L, 'translate3d(0,' + (RH / 2) + 'px,' + zc + 'px) rotateX(90deg)');
-          plane('rm-ceil', RW, L, 'translate3d(0,' + (-RH / 2) + 'px,' + zc + 'px) rotateX(-90deg)');
-          plane('rm-wall rm-wl', L, RH, 'translate3d(' + (-RW / 2) + 'px,0,' + zc + 'px) rotateY(90deg)');
-          plane('rm-wall rm-wr', L, RH, 'translate3d(' + (RW / 2) + 'px,0,' + zc + 'px) rotateY(-90deg)');
-          // a doorway before the first room, between the rooms, and after the last: a white wall with an opening
-          var OW = W * 1.5, OH = RH * 0.78, side = (RW - OW) / 2;
-          for (var dw = -1; dw < 4; dw++) {
-            var zd = -(dw * D + AT + 1200);
-            plane('rm-door', side, RH, 'translate3d(' + (-(OW / 2 + side / 2)) + 'px,0,' + zd + 'px)');
-            plane('rm-door', side, RH, 'translate3d(' + (OW / 2 + side / 2) + 'px,0,' + zd + 'px)');
-            plane('rm-door rm-lintel', OW, RH - OH, 'translate3d(0,' + (-RH / 2 + (RH - OH) / 2) + 'px,' + zd + 'px)');
-          }
-          // the statements and the pieces move into the room
-          Array.prototype.forEach.call(sp.querySelectorAll('.sp-st'), function (st) { wr.appendChild(st); });
-          (space.__objs || []).forEach(function (o) {
-            wr.appendChild(o.el);
-            if (!o.sh) { o.sh = document.createElement('i'); o.sh.className = 'rm-sh'; }
-            wr.appendChild(o.sh);
-          });
-        }
-        var world = space.__room, camZ = F * D;
-        if (!this._spPtr) { var selfP = this; this._spPtr = { x: 0, y: 0, sx: 0, sy: 0 };
-          window.addEventListener('pointermove', function (ev) { selfP._spPtr.x = ev.clientX / (window.innerWidth || 1) - 0.5; selfP._spPtr.y = ev.clientY / (window.innerHeight || 1) - 0.5; }, { passive: true }); }
-        var sp3 = this._spPtr; sp3.sx += (sp3.x - sp3.sx) * 0.05; sp3.sy += (sp3.y - sp3.sy) * 0.05;
-        world.style.transform = 'rotateY(' + (sp3.sx * 4).toFixed(2) + 'deg) rotateX(' + (-sp3.sy * 3).toFixed(2) + 'deg) translateZ(' + camZ.toFixed(1) + 'px)';
-        // near the camera things fade so it never walks into them; far away they sink into the light
-        var seen = function (z) { var d = -(z + camZ); return Math.max(0, Math.min(1, (d - 160) / 520)) * Math.max(0, Math.min(1, (3300 - d) / 900)); };
-        var sts = world.querySelectorAll('.sp-st');
-        for (var si = 0; si < sts.length; si++) {
-          var zs = -(si * D + AT), vs = seen(zs), st = sts[si].style;
-          st.visibility = vs > 0.003 ? 'visible' : 'hidden';
-          st.opacity = vs.toFixed(3);
-          st.filter = '';
-          st.transform = 'translate3d(0,' + (-H * 0.04).toFixed(1) + 'px,' + zs + 'px) translate(-50%,-50%) scale(1.85)';
-        }
-        // the cursor's line on CRM opens once the first room has arrived
+        // the cursor's line on CRM opens once the first view has arrived
         var tip = space.__tip || (space.__tip = space.querySelector('.sp-tip'));
         if (tip) { var tk2 = ease(map(u, S.ins[0] - 4, S.ins[0] + 26)); tip.style.opacity = tk2.toFixed(3); tip.style.transform = 'translateY(' + ((1 - tk2) * 8).toFixed(1) + 'px)'; }
-        // the stuck roadmap: time and meetings keep counting through the last room while progress stays at 0%
+        // the stuck roadmap: time and meetings keep counting through the last view while progress stays at 0%
         var road = space.__road || (space.__road = space.querySelector('.sp-road'));
         if (road) {
           var rp = map(u, S.ins[3] - 10, S.out), wkT = 'Week ' + (1 + Math.round(rp * 11)), mtT = String(3 + Math.round(rp * 33));
@@ -2641,17 +2596,130 @@ class Component extends DCLogic {
           var still2 = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, lt = (performance.now() / 3000) % 1;
           road.querySelector('.sp-here').style.transform = still2 ? '' : 'translateX(' + (Math.sin(lt * Math.PI) * Math.exp(-lt * 2.5) * 34).toFixed(1) + 'px)';
         }
-        // the pieces stand in the room around their statement, turned a little toward it, with a shadow on the floor
-        var objs2 = space.__objs || [], spread = narrow ? 0.8 : 1, base = narrow ? 1.05 : Math.min(1.8, Math.max(1.45, W / 800));
-        for (var bj = 0; bj < objs2.length; bj++) {
-          var o = objs2[bj], es = o.el.style, depth = (o.z - 0.08) / 0.4;
-          var pa = o.pull ? map(u, S.ins[o.k] - 10, o.k < 3 ? S.ins[o.k + 1] - 12 : S.out) : 0, pr = o.pull ? 1 + 0.08 * ease(pa) : 1;
-          var X = o.x * W * 1.85 * spread * pr, Y = o.y * H * 1.6 * pr, Z = -(o.k * D + AT + depth * 520);
-          var v = seen(Z);
-          es.visibility = v > 0.003 ? 'visible' : 'hidden'; es.opacity = v.toFixed(3); es.filter = ''; es.zIndex = '';
-          es.transform = 'translate3d(' + X.toFixed(1) + 'px,' + Y.toFixed(1) + 'px,' + Z.toFixed(1) + 'px) translate(-50%,-50%) rotateY(' + (-o.x * 22).toFixed(2) + 'deg) rotateX(' + (o.y * 10).toFixed(2) + 'deg) scale(' + base.toFixed(3) + ')';
-          if (o.sh) { var ss = o.sh.style; ss.visibility = es.visibility; ss.opacity = (v * 0.55).toFixed(3);
-            ss.transform = 'translate3d(' + X.toFixed(1) + 'px,' + (RH / 2 - 2).toFixed(1) + 'px,' + Z.toFixed(1) + 'px) translate(-50%,-50%) rotateX(90deg)'; }
+        // v9: the problems are told in one furnished room, drawn with three.js (after wlt.design, in ATCON's colours).
+        // Each statement is lettering on a wall; the camera moves to a new view of the room for each point, and that
+        // point's pieces float in the room in front of it.
+        var R = space.__r3;
+        if (!R) {
+          R = space.__r3 = { ready: false };
+          var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
+          Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js')]).then(function (m) {
+            var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry;
+            var scene = new THREE.Scene(); scene.background = new THREE.Color('#D7E2F7');
+            var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
+            var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.22;
+            gl.outputColorSpace = THREE.SRGBColorSpace; gl.domElement.className = 'r3-gl'; holder.appendChild(gl.domElement);
+            var css = new CSS3DRenderer(); css.domElement.className = 'r3-css'; holder.appendChild(css.domElement);
+            var mat = function (c, o) { return new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.85, metalness: 0 }, o || {})); };
+            var add = function (geo, m2, x, y, z, ry, cast) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = cast !== false; me.receiveShadow = true; scene.add(me); return me; };
+            var box = function (w, h, d, m2, x, y, z, r) { return add(new RBox(w, h, d, 3, r == null ? Math.min(w, h, d) * 0.12 : r), m2, x, y, z); };
+            // the room: 20 wide, 7 high, 16 deep; a big window on the left, stairs on the right, a lit cove in the ceiling
+            var wallM = mat('#D3DFF6'), floorM = mat('#BFD0EE', { roughness: 0.55 }), ceilM = mat('#E2EAF9');
+            add(new THREE.PlaneGeometry(20, 16), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
+            var ceil = add(new THREE.PlaneGeometry(20, 16), ceilM, 0, 7, 0, 0, false); ceil.rotation.x = Math.PI / 2;
+            add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, -8, 0, false);
+            add(new THREE.PlaneGeometry(16, 7), wallM, 10, 3.5, 0, -Math.PI / 2, false);
+            add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, 8, Math.PI, false);
+            // left wall with the window: wall around an opening, a soft sky behind, white mullions
+            var skyC = document.createElement('canvas'); skyC.width = 8; skyC.height = 256; var sx = skyC.getContext('2d');
+            var sg = sx.createLinearGradient(0, 0, 0, 256); sg.addColorStop(0, '#9DB8F2'); sg.addColorStop(0.55, '#D9E6FB'); sg.addColorStop(0.75, '#F3F7FD'); sg.addColorStop(1, '#BFD3C8');
+            sx.fillStyle = sg; sx.fillRect(0, 0, 8, 256); var skyT = new THREE.CanvasTexture(skyC); skyT.colorSpace = THREE.SRGBColorSpace;
+            var sky = add(new THREE.PlaneGeometry(13, 5.2), new THREE.MeshBasicMaterial({ map: skyT }), -10.4, 3.3, -0.5, Math.PI / 2, false); sky.receiveShadow = false;
+            [[16, 0.7, 0, 0.35], [16, 1.1, 0, 6.45], [1.5, 5.2, -7.25, 3.3], [1.5, 5.2, 6.75, 3.3]].forEach(function (p) { add(new THREE.PlaneGeometry(p[0], p[1]), wallM, -10, p[3], p[2] || 0, Math.PI / 2, false); });
+            var frameM = mat('#FFFFFF', { roughness: 0.4 });
+            for (var mz = -6.5; mz <= 6.01; mz += 1.3) box(0.12, 5.2, 0.12, frameM, -9.95, 3.3, mz, 0.02);
+            for (var my = 0.7; my <= 5.91; my += 1.3) box(0.12, 0.12, 13, frameM, -9.95, my, -0.5, 0.02);
+            // ceiling cove and its light strip
+            var stripM = new THREE.MeshBasicMaterial({ color: '#7FA3F2' });
+            var bandM = mat('#2D63E6', { roughness: 0.7 }); box(19.6, 0.5, 0.9, bandM, 0, 6.75, -7.5, 0.05); box(0.9, 0.5, 15.2, bandM, 9.5, 6.75, 0, 0.05); box(0.9, 0.5, 15.2, bandM, -9.5, 6.75, 0, 0.05);
+            add(new THREE.BoxGeometry(19.4, 0.05, 0.08), stripM, 0, 6.48, -7.25, 0, false); add(new THREE.BoxGeometry(0.08, 0.05, 15), stripM, 9.25, 6.48, 0, 0, false);
+            // three ring pendants that glow
+            var ringM = new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#DCE6FB', emissiveIntensity: 1.6, roughness: 0.3 });
+            var cableM = new THREE.MeshBasicMaterial({ color: '#2B3A55' });
+            [[-1.6, 5.1, -2.2, 1.1], [1.4, 5.3, -1.4, 1.35], [0, 4.75, -0.2, 1.5]].forEach(function (r) {
+              var ring = add(new THREE.TorusGeometry(r[3], 0.07, 16, 96), ringM, r[0], r[1], r[2], 0, false); ring.rotation.x = Math.PI / 2;
+              [-1, 1].forEach(function (sd) { add(new THREE.CylinderGeometry(0.008, 0.008, 7 - r[1]), cableM, r[0] + sd * r[3] * 0.7, r[1] + (7 - r[1]) / 2, r[2], 0, false); });
+              var pl = new THREE.PointLight('#E3EBFF', 4, 9, 2); pl.position.set(r[0], r[1] - 0.3, r[2]); scene.add(pl); var gl2 = new THREE.PointLight('#FFE7C2', 3, 6, 2); gl2.position.set(-1.0, 2.1, -6.3); if (!R.lamp) { R.lamp = gl2; scene.add(gl2); }
+            });
+            // the rug and the coffee table
+            add(new THREE.CylinderGeometry(3.0, 3.0, 0.03, 64), mat('#EEF3FC'), -0.6, 0.016, -2.4, 0, false);
+            var navyM = mat('#1A2C4A', { roughness: 0.5 });
+            box(2.4, 0.16, 1.1, navyM, -0.8, 0.58, -2.4); box(2.2, 0.08, 0.9, navyM, -0.8, 0.28, -2.4);
+            [[-1.8, -2.85], [0.2, -2.85], [-1.8, -1.95], [0.2, -1.95]].forEach(function (lg) { add(new THREE.CylinderGeometry(0.035, 0.02, 0.56), navyM, lg[0], 0.28, lg[1]); });
+            // the sofa against the back wall
+            var sofaM = mat('#3FB27E', { roughness: 0.9 });
+            box(4.6, 0.55, 1.4, sofaM, -3.6, 0.45, -6.4); box(4.6, 1.05, 0.4, sofaM, -3.6, 1.15, -7.05);
+            box(0.4, 0.95, 1.4, sofaM, -5.9, 0.75, -6.4); box(0.4, 0.95, 1.4, sofaM, -1.3, 0.75, -6.4);
+            for (var cu = 0; cu < 3; cu++) box(1.25, 0.25, 1.05, mat('#5CC394', { roughness: 0.9 }), -5.0 + cu * 1.38, 0.86, -6.25, 0.1);
+            // the armchair by the window, a floor lamp, and a plant
+            var chairM = mat('#2D63E6', { roughness: 0.85 });
+            box(1.3, 0.45, 1.25, chairM, -6.2, 0.75, -1.4, 0.22).rotation.y = 0.6;
+            box(1.3, 1.1, 0.32, chairM, -6.55, 1.2, -1.85, 0.16).rotation.y = 0.6;
+            add(new THREE.CylinderGeometry(0.05, 0.05, 0.55), navyM, -6.2, 0.27, -1.4);
+            add(new THREE.CylinderGeometry(0.02, 0.02, 2.1), navyM, -1.0, 1.05, -6.6);
+            var shade = add(new THREE.CylinderGeometry(0.28, 0.32, 0.4, 32, 1, true), new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#F4F7FF', emissiveIntensity: 0.6, side: THREE.DoubleSide }), -1.0, 2.2, -6.6);
+            add(new THREE.CylinderGeometry(0.32, 0.26, 0.55, 24), mat('#FFFFFF'), 8.4, 0.28, -6.8);
+            for (var lf = 0; lf < 7; lf++) { var leaf = add(new THREE.ConeGeometry(0.12, 1.1, 6), mat('#3FB27E'), 8.4, 0.95, -6.8); leaf.rotation.z = Math.sin(lf * 0.9) * 0.6; leaf.rotation.x = Math.cos(lf * 1.3) * 0.5; leaf.position.y = 1.0 + (lf % 3) * 0.12; }
+            // the curved desk, a laptop and an office chair
+            var deskM = mat('#FFFFFF', { roughness: 0.35 });
+            box(4.2, 0.18, 1.5, deskM, 4.6, 1.5, -5.9, 0.08); box(0.22, 1.5, 1.5, deskM, 2.6, 0.75, -5.9, 0.1); box(0.22, 1.5, 1.5, deskM, 6.6, 0.75, -5.9, 0.1);
+            box(1.2, 0.05, 0.8, mat('#3A4D63', { roughness: 0.4 }), 4.4, 1.62, -6.05, 0.02);
+            var scrM = new THREE.MeshStandardMaterial({ color: '#2D63E6', emissive: '#2D63E6', emissiveIntensity: 0.5, roughness: 0.3 });
+            var scr = box(1.2, 0.78, 0.04, scrM, 4.4, 2.0, -6.45, 0.02); scr.rotation.x = -0.2;
+            box(1.0, 0.18, 0.95, mat('#1A2C4A'), 4.6, 0.95, -4.7, 0.08); box(1.0, 0.95, 0.16, mat('#1A2C4A'), 4.6, 1.45, -4.3, 0.08);
+            add(new THREE.CylinderGeometry(0.05, 0.05, 0.85), navyM, 4.6, 0.43, -4.7);
+            // the stairs along the right wall
+            var stepM = mat('#E6EEFB', { roughness: 0.6 });
+            for (var stp = 0; stp < 9; stp++) box(1.7, 0.4 + stp * 0.38, 0.6, stepM, 9.1, (0.4 + stp * 0.38) / 2, 3.6 - stp * 0.6, 0.03);
+            // light: soft sky light, sun through the window, and a fill
+            scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.55));
+            var sun = new THREE.DirectionalLight('#FFE9C8', 2.6); sun.position.set(-16, 9, 2); sun.target.position.set(0, 0, -2); sun.castShadow = true;
+            sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
+            scene.add(sun); scene.add(sun.target);
+            // the statements as lettering on the walls, and each point's pieces in front of its view
+            var WALL = [[-3.4, 3.85, -7.96, 0], [4.6, 4.15, -7.96, 0], [9.96, 3.9, -3.2, -Math.PI / 2], [0, 5.55, -7.96, 0]];
+            var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
+            Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el); var wv = WALL[k];
+              o3.position.set(wv[0], wv[1], wv[2]); o3.rotation.y = wv[3]; o3.scale.setScalar(0.0058); scene.add(o3); R.st.push(o3); });
+            // where the camera stands and looks for each view, and where its pieces float
+            R.views = [
+              { p: [3.6, 2.6, 7.2], t: [-2.6, 3.0, -8] }, { p: [3.4, 2.7, 0.6], t: [4.4, 3.3, -8] },
+              { p: [2.4, 2.7, 1.4], t: [10, 3.2, -3.0] }, { p: [0.2, 2.2, 4.6], t: [0, 4.7, -8] }];
+            R.pre = { p: [3.8, 2.9, 7.8], t: [-2.6, 3.1, -8] }; R.post = { p: [0.2, 2.6, 2.6], t: [0, 4.9, -8] };
+            R.objs = [];
+            (space.__objs || []).forEach(function (o) {
+              var o3 = new CSS3DObject(o.el); o.el.classList.add('r3-o'); var v = R.views[o.k], P = v.p, T = v.t;
+              // a spot in front of the view: between the camera and its wall, spread across the frame
+              var dir = new THREE.Vector3(T[0] - P[0], T[1] - P[1], T[2] - P[2]).normalize();
+              var right = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).normalize(), up = new THREE.Vector3().crossVectors(right, dir).normalize();
+              var dd = 5.2 + ((o.z - 0.08) / 0.4) * 0.8, pos = new THREE.Vector3(P[0], P[1], P[2]).addScaledVector(dir, dd).addScaledVector(right, o.x * dd * 1.05).addScaledVector(up, -o.y * dd * 0.62);
+              o3.position.copy(pos); o3.lookAt(new THREE.Vector3(P[0], P[1], P[2])); o3.scale.setScalar(0.0036); scene.add(o3); R.objs.push({ o: o, o3: o3, base: pos.clone(), right: right, up: up });
+            });
+            R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
+          }).catch(function () { R.failed = true; });
+        }
+        if (R.ready) {
+          var THREE3 = R.THREE, Wv = space.clientWidth || W, Hv = space.clientHeight || H;
+          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
+          // the camera eases from view to view
+          var fc = Math.max(-1, Math.min(4, F)), a0 = Math.floor(fc), tt = fc - a0, st3 = tt * tt * (3 - 2 * tt);
+          var vw = function (i) { return i < 0 ? R.pre : i > 3 ? R.post : R.views[i]; };
+          var A = vw(a0), B = vw(Math.min(4, a0 + 1));
+          if (!this._spPtr) { var selfP = this; this._spPtr = { x: 0, y: 0, sx: 0, sy: 0 };
+            window.addEventListener('pointermove', function (ev) { selfP._spPtr.x = ev.clientX / (window.innerWidth || 1) - 0.5; selfP._spPtr.y = ev.clientY / (window.innerHeight || 1) - 0.5; }, { passive: true }); }
+          var sp3 = this._spPtr; sp3.sx += (sp3.x - sp3.sx) * 0.05; sp3.sy += (sp3.y - sp3.sy) * 0.05;
+          var lerp3 = function (a, b) { return [a[0] + (b[0] - a[0]) * st3, a[1] + (b[1] - a[1]) * st3, a[2] + (b[2] - a[2]) * st3]; };
+          var cp = lerp3(A.p, B.p), ct = lerp3(A.t, B.t);
+          R.cam.position.set(cp[0] + sp3.sx * 0.35, cp[1] - sp3.sy * 0.2, cp[2]); R.cam.lookAt(ct[0], ct[1], ct[2]);
+          // each point's words and pieces show while its view is near
+          for (var rk = 0; rk < R.st.length; rk++) { var wk = Math.max(0, 1 - Math.abs(F - rk) * 1.7); R.st[rk].element.style.opacity = wk.toFixed(3); R.st[rk].visible = wk > 0.002; }
+          for (var ro = 0; ro < R.objs.length; ro++) {
+            var q = R.objs[ro], wo = Math.max(0, 1 - Math.abs(F - q.o.k) * 1.6), pa2 = q.o.pull ? ease(map(u, S.ins[q.o.k] - 10, q.o.k < 3 ? S.ins[q.o.k + 1] - 12 : S.out)) : 0;
+            q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.5).addScaledVector(q.up, -q.o.y * pa2 * 0.3);
+            q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
+          }
+          R.gl.render(R.scene, R.cam); R.css.render(R.scene, R.cam);
         }
       }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
