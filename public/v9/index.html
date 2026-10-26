@@ -1208,15 +1208,15 @@ html,body{overflow-anchor:none}
 .atc-sol-bar{display:none !important}
 .atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none !important}
 /* v9: the problem room (after wlt.design), drawn with three.js; words and pieces are placed in it with CSS3D */
-.sp{background:#D7E2F7}
+.sp{background:#F1F3F6}
 .sp-space{overflow:hidden}
 .r3,.r3-gl,.r3-css{position:absolute;inset:0;width:100%;height:100%}
 .r3-css{pointer-events:none}
 .r3-st{position:absolute !important;left:0 !important;top:0 !important;width:900px !important;text-align:left !important;visibility:visible}
-.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-size:96px !important;line-height:1.02 !important;color:#0F2147;
-  text-shadow:1px 1px 0 #9FB6E6,2px 2px 0 #92ABE0,3px 3px 0 #86A0DA,4px 4px 0 #7A95D3,5px 5px 0 #6F8BCC,8px 14px 22px rgba(0,16,37,.3)}
-.r3-st .sp-t .ds-mute{color:#5875AE}
-.r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;color:#2B4170;text-shadow:none}
+.r3-st .sp-t{margin:0 !important;max-width:9.5em;font-size:96px !important;line-height:1.02 !important;color:#0B1C38;
+  text-shadow:1px 1px 0 #D5DAE2,2px 2px 0 #CCD2DC,3px 4px 10px rgba(0,16,37,.16)}
+.r3-st .sp-t .ds-mute{color:#8A94A6}
+.r3-st .sp-p{margin:26px 0 0 !important;font-size:30px !important;color:#4A5A6E;text-shadow:none}
 .r3-o{position:absolute !important;left:0 !important;top:0 !important}
 </style>
 </helmet>
@@ -2605,83 +2605,57 @@ class Component extends DCLogic {
           var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
           Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js')]).then(function (m) {
             var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry;
-            var scene = new THREE.Scene(); scene.background = new THREE.Color('#D7E2F7');
+            var scene = new THREE.Scene(); scene.background = new THREE.Color('#F8F9FB');
             var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
             var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.22;
+            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.6;
             gl.outputColorSpace = THREE.SRGBColorSpace; gl.domElement.className = 'r3-gl'; holder.appendChild(gl.domElement);
             var css = new CSS3DRenderer(); css.domElement.className = 'r3-css'; holder.appendChild(css.domElement);
             var mat = function (c, o) { return new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.85, metalness: 0 }, o || {})); };
             var add = function (geo, m2, x, y, z, ry, cast) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = cast !== false; me.receiveShadow = true; scene.add(me); return me; };
             var box = function (w, h, d, m2, x, y, z, r) { return add(new RBox(w, h, d, 3, r == null ? Math.min(w, h, d) * 0.12 : r), m2, x, y, z); };
-            // the room: 20 wide, 7 high, 16 deep; a big window on the left, stairs on the right, a lit cove in the ceiling
-            var wallM = mat('#D3DFF6'), floorM = mat('#BFD0EE', { roughness: 0.55 }), ceilM = mat('#E2EAF9');
+            // the room, kept to architecture and light: soft off-white surfaces, three tall window slits on the left, one thin
+            // glowing ring, a light slit on the right, a fine brand-blue line along the back wall, a recessed panel and a plinth
+            var wallM = mat('#F8F9FB', { roughness: 0.95 }), floorM = mat('#ECEEF2', { roughness: 0.3, metalness: 0.04 }), ceilM = mat('#FCFCFD');
             add(new THREE.PlaneGeometry(20, 16), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
             var ceil = add(new THREE.PlaneGeometry(20, 16), ceilM, 0, 7, 0, 0, false); ceil.rotation.x = Math.PI / 2;
             add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, -8, 0, false);
             add(new THREE.PlaneGeometry(16, 7), wallM, 10, 3.5, 0, -Math.PI / 2, false);
             add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, 8, Math.PI, false);
-            // left wall with the window: wall around an opening, a soft sky behind, white mullions
-            var skyC = document.createElement('canvas'); skyC.width = 8; skyC.height = 256; var sx = skyC.getContext('2d');
-            var sg = sx.createLinearGradient(0, 0, 0, 256); sg.addColorStop(0, '#9DB8F2'); sg.addColorStop(0.55, '#D9E6FB'); sg.addColorStop(0.75, '#F3F7FD'); sg.addColorStop(1, '#BFD3C8');
-            sx.fillStyle = sg; sx.fillRect(0, 0, 8, 256); var skyT = new THREE.CanvasTexture(skyC); skyT.colorSpace = THREE.SRGBColorSpace;
-            var sky = add(new THREE.PlaneGeometry(13, 5.2), new THREE.MeshBasicMaterial({ map: skyT }), -10.4, 3.3, -0.5, Math.PI / 2, false); sky.receiveShadow = false;
-            [[16, 0.7, 0, 0.35], [16, 1.1, 0, 6.45], [1.5, 5.2, -7.25, 3.3], [1.5, 5.2, 6.75, 3.3]].forEach(function (p) { add(new THREE.PlaneGeometry(p[0], p[1]), wallM, -10, p[3], p[2] || 0, Math.PI / 2, false); });
-            var frameM = mat('#FFFFFF', { roughness: 0.4 });
-            for (var mz = -6.5; mz <= 6.01; mz += 1.3) box(0.12, 5.2, 0.12, frameM, -9.95, 3.3, mz, 0.02);
-            for (var my = 0.7; my <= 5.91; my += 1.3) box(0.12, 0.12, 13, frameM, -9.95, my, -0.5, 0.02);
-            // ceiling cove and its light strip
-            var stripM = new THREE.MeshBasicMaterial({ color: '#7FA3F2' });
-            var bandM = mat('#2D63E6', { roughness: 0.7 }); box(19.6, 0.5, 0.9, bandM, 0, 6.75, -7.5, 0.05); box(0.9, 0.5, 15.2, bandM, 9.5, 6.75, 0, 0.05); box(0.9, 0.5, 15.2, bandM, -9.5, 6.75, 0, 0.05);
-            add(new THREE.BoxGeometry(19.4, 0.05, 0.08), stripM, 0, 6.48, -7.25, 0, false); add(new THREE.BoxGeometry(0.08, 0.05, 15), stripM, 9.25, 6.48, 0, 0, false);
-            // three ring pendants that glow
-            var ringM = new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#DCE6FB', emissiveIntensity: 1.6, roughness: 0.3 });
-            var cableM = new THREE.MeshBasicMaterial({ color: '#2B3A55' });
-            [[-1.6, 5.1, -2.2, 1.1], [1.4, 5.3, -1.4, 1.35], [0, 4.75, -0.2, 1.5]].forEach(function (r) {
-              var ring = add(new THREE.TorusGeometry(r[3], 0.07, 16, 96), ringM, r[0], r[1], r[2], 0, false); ring.rotation.x = Math.PI / 2;
-              [-1, 1].forEach(function (sd) { add(new THREE.CylinderGeometry(0.008, 0.008, 7 - r[1]), cableM, r[0] + sd * r[3] * 0.7, r[1] + (7 - r[1]) / 2, r[2], 0, false); });
-              var pl = new THREE.PointLight('#E3EBFF', 4, 9, 2); pl.position.set(r[0], r[1] - 0.3, r[2]); scene.add(pl); var gl2 = new THREE.PointLight('#FFE7C2', 3, 6, 2); gl2.position.set(-1.0, 2.1, -6.3); if (!R.lamp) { R.lamp = gl2; scene.add(gl2); }
+            // left wall: three tall slits of daylight, the wall around them in strips
+            var glowM = new THREE.MeshBasicMaterial({ color: '#FFFFFF' });
+            var slits = [-4.6, -1.2, 2.2], sw2 = 0.9, edges = [-8];
+            slits.forEach(function (zc2) { edges.push(zc2 - sw2 / 2, zc2 + sw2 / 2); }); edges.push(8);
+            for (var se = 0; se < edges.length; se += 2) { var z0 = edges[se], z1 = edges[se + 1]; add(new THREE.PlaneGeometry(z1 - z0, 7), wallM, -10, 3.5, (z0 + z1) / 2, Math.PI / 2, true); }
+            slits.forEach(function (zc2) {
+              add(new THREE.PlaneGeometry(sw2, 0.9), wallM, -10, 0.45, zc2, Math.PI / 2, true);
+              add(new THREE.PlaneGeometry(sw2, 0.8), wallM, -10, 6.6, zc2, Math.PI / 2, true);
+              add(new THREE.PlaneGeometry(sw2, 5.3), glowM, -10.3, 3.55, zc2, Math.PI / 2, false).receiveShadow = false;
             });
-            // the rug and the coffee table
-            add(new THREE.CylinderGeometry(3.0, 3.0, 0.03, 64), mat('#EEF3FC'), -0.6, 0.016, -2.4, 0, false);
-            var navyM = mat('#1A2C4A', { roughness: 0.5 });
-            box(2.4, 0.16, 1.1, navyM, -0.8, 0.58, -2.4); box(2.2, 0.08, 0.9, navyM, -0.8, 0.28, -2.4);
-            [[-1.8, -2.85], [0.2, -2.85], [-1.8, -1.95], [0.2, -1.95]].forEach(function (lg) { add(new THREE.CylinderGeometry(0.035, 0.02, 0.56), navyM, lg[0], 0.28, lg[1]); });
-            // the sofa against the back wall
-            var sofaM = mat('#3FB27E', { roughness: 0.9 });
-            box(4.6, 0.55, 1.4, sofaM, -3.6, 0.45, -6.4); box(4.6, 1.05, 0.4, sofaM, -3.6, 1.15, -7.05);
-            box(0.4, 0.95, 1.4, sofaM, -5.9, 0.75, -6.4); box(0.4, 0.95, 1.4, sofaM, -1.3, 0.75, -6.4);
-            for (var cu = 0; cu < 3; cu++) box(1.25, 0.25, 1.05, mat('#5CC394', { roughness: 0.9 }), -5.0 + cu * 1.38, 0.86, -6.25, 0.1);
-            // the armchair by the window, a floor lamp, and a plant
-            var chairM = mat('#2D63E6', { roughness: 0.85 });
-            box(1.3, 0.45, 1.25, chairM, -6.2, 0.75, -1.4, 0.22).rotation.y = 0.6;
-            box(1.3, 1.1, 0.32, chairM, -6.55, 1.2, -1.85, 0.16).rotation.y = 0.6;
-            add(new THREE.CylinderGeometry(0.05, 0.05, 0.55), navyM, -6.2, 0.27, -1.4);
-            add(new THREE.CylinderGeometry(0.02, 0.02, 2.1), navyM, -1.0, 1.05, -6.6);
-            var shade = add(new THREE.CylinderGeometry(0.28, 0.32, 0.4, 32, 1, true), new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#F4F7FF', emissiveIntensity: 0.6, side: THREE.DoubleSide }), -1.0, 2.2, -6.6);
-            add(new THREE.CylinderGeometry(0.32, 0.26, 0.55, 24), mat('#FFFFFF'), 8.4, 0.28, -6.8);
-            for (var lf = 0; lf < 7; lf++) { var leaf = add(new THREE.ConeGeometry(0.12, 1.1, 6), mat('#3FB27E'), 8.4, 0.95, -6.8); leaf.rotation.z = Math.sin(lf * 0.9) * 0.6; leaf.rotation.x = Math.cos(lf * 1.3) * 0.5; leaf.position.y = 1.0 + (lf % 3) * 0.12; }
-            // the curved desk, a laptop and an office chair
-            var deskM = mat('#FFFFFF', { roughness: 0.35 });
-            box(4.2, 0.18, 1.5, deskM, 4.6, 1.5, -5.9, 0.08); box(0.22, 1.5, 1.5, deskM, 2.6, 0.75, -5.9, 0.1); box(0.22, 1.5, 1.5, deskM, 6.6, 0.75, -5.9, 0.1);
-            box(1.2, 0.05, 0.8, mat('#3A4D63', { roughness: 0.4 }), 4.4, 1.62, -6.05, 0.02);
-            var scrM = new THREE.MeshStandardMaterial({ color: '#2D63E6', emissive: '#2D63E6', emissiveIntensity: 0.5, roughness: 0.3 });
-            var scr = box(1.2, 0.78, 0.04, scrM, 4.4, 2.0, -6.45, 0.02); scr.rotation.x = -0.2;
-            box(1.0, 0.18, 0.95, mat('#1A2C4A'), 4.6, 0.95, -4.7, 0.08); box(1.0, 0.95, 0.16, mat('#1A2C4A'), 4.6, 1.45, -4.3, 0.08);
-            add(new THREE.CylinderGeometry(0.05, 0.05, 0.85), navyM, 4.6, 0.43, -4.7);
-            // the stairs along the right wall
-            var stepM = mat('#E6EEFB', { roughness: 0.6 });
-            for (var stp = 0; stp < 9; stp++) box(1.7, 0.4 + stp * 0.38, 0.6, stepM, 9.1, (0.4 + stp * 0.38) / 2, 3.6 - stp * 0.6, 0.03);
-            // light: soft sky light, sun through the window, and a fill
-            scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.55));
-            var sun = new THREE.DirectionalLight('#FFE9C8', 2.6); sun.position.set(-16, 9, 2); sun.target.position.set(0, 0, -2); sun.castShadow = true;
-            sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
+            // a recessed panel on the back wall that frames the words, with a fine brand-blue line of light below it
+            box(9.2, 3.6, 0.12, mat('#F2F4F7', { roughness: 0.95 }), -1.2, 4.2, -8.02, 0.04);
+            add(new THREE.BoxGeometry(18.6, 0.025, 0.04), new THREE.MeshBasicMaterial({ color: '#5A86EE' }), 0, 1.15, -7.97, 0, false);
+            // a light slit on the right wall
+            add(new THREE.BoxGeometry(0.03, 4.6, 0.12), glowM, 9.98, 3.6, -4.6, 0, false);
+            // one large thin ring of light
+            var ringM = new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#EEF3FF', emissiveIntensity: 2.2, roughness: 0.25 });
+            var ring = add(new THREE.TorusGeometry(2.4, 0.035, 16, 160), ringM, -0.4, 5.6, -2.8, 0, false); ring.rotation.x = Math.PI / 2;
+            var cableM = new THREE.MeshBasicMaterial({ color: '#B8C0CC' });
+            [-1, 1].forEach(function (sd) { add(new THREE.CylinderGeometry(0.005, 0.005, 1.4), cableM, -0.4 + sd * 1.7, 6.3, -2.8, 0, false); });
+            var rl = new THREE.PointLight('#F2F6FF', 3.2, 10, 2); rl.position.set(-0.4, 5.2, -2.8); scene.add(rl);
+            // a single low plinth that anchors the space
+            box(2.6, 0.5, 1.2, mat('#FFFFFF', { roughness: 0.6 }), -0.4, 0.25, -4.6, 0.04);
+            // light: a soft sky light and a low sun through the slits, its shadows blurred
+            scene.add(new THREE.HemisphereLight('#FFFFFF', '#E3E7EE', 1.7));
+            var sun = new THREE.DirectionalLight('#FFF1DC', 2.4); sun.position.set(-16, 7, 1); sun.target.position.set(0, 0, -2); sun.castShadow = true;
+            sun.shadow.mapSize.set(1024, 1024); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10;
+            sun.shadow.bias = -0.0005; sun.shadow.radius = 6; sun.shadow.blurSamples = 8;
             scene.add(sun); scene.add(sun.target);
             // the statements as lettering on the walls, and each point's pieces in front of its view
-            var WALL = [[-3.4, 3.85, -7.96, 0], [4.6, 4.15, -7.96, 0], [9.96, 3.9, -3.2, -Math.PI / 2], [0, 5.55, -7.96, 0]];
+            var WALL = [[-3.4, 4.1, -7.9, 0], [4.6, 4.2, -7.9, 0], [9.96, 3.9, -3.2, -Math.PI / 2], [-0.6, 4.6, -7.9, 0]];
             var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
             Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el); var wv = WALL[k];
-              o3.position.set(wv[0], wv[1], wv[2]); o3.rotation.y = wv[3]; o3.scale.setScalar(0.0058); scene.add(o3); R.st.push(o3); });
+              o3.position.set(wv[0], wv[1], wv[2]); o3.rotation.y = wv[3]; o3.scale.setScalar(0.006); scene.add(o3); R.st.push(o3); });
             // where the camera stands and looks for each view, and where its pieces float
             R.views = [
               { p: [3.6, 2.6, 7.2], t: [-2.6, 3.0, -8] }, { p: [3.4, 2.7, 0.6], t: [4.4, 3.3, -8] },
