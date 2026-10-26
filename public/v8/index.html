@@ -1164,6 +1164,31 @@ html,body{overflow-anchor:none}
   font-size:16px;font-weight:500;color:var(--atc-navy);white-space:nowrap;box-shadow:0 16px 32px -20px rgba(45,99,230,.55)}
 .sp-tip i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#EAF0FD}
 .sp-bubt .sp-tip svg{width:17px;height:17px;fill:none;stroke:#2D63E6;stroke-width:1.7;stroke-linecap:round}
+/* v8 problem 2: vendor puzzle pieces and the missing integration piece */
+.pz{position:relative;width:236px;filter:drop-shadow(0 26px 30px rgba(0,16,37,.13)) drop-shadow(0 0 .6px rgba(0,16,37,.22))}
+.pz-in{position:relative;z-index:1;padding:18px 18px 16px;border-radius:22px;background:#fff;white-space:normal}
+.pz-h{display:flex;align-items:center;gap:12px}.pz-h b{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:50%;background:#EAF0FD;color:#2D63E6;font-size:15px;font-weight:600}
+.pz-h strong{display:block;font-size:15px;font-weight:600;color:var(--atc-navy)}.pz-h small{display:block;margin-top:2px;font-size:13px;color:var(--atc-slate)}
+.pz-ui{position:relative;margin:16px 0 0;height:88px;border-radius:12px}
+.pz-design{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:26px 1fr;gap:8px}
+.pz-design i{border-radius:9px;border:1px solid #D8E2F6;background:linear-gradient(180deg,#F4F7FE,#E6EDFB)}.pz-design i.w{grid-column:1/-1}
+.pz-dev{border:1px solid #D8E2F6;background:linear-gradient(180deg,#F6F8FE,#ECF1FC)}
+.pz-dev i{position:absolute;left:16px;height:6px;border-radius:4px;background:#DCE5F8}.pz-dev .l1{top:12px;width:34%}.pz-dev .l2{top:24px;width:52%}.pz-dev .l3{top:36px;width:64%}
+.pz-dev::before{content:'';position:absolute;right:12px;top:12px;bottom:12px;width:1.5px;background:#C9D6F2}
+.pz-dev b{position:absolute;left:30px;height:7px;border-radius:4px;background:#2D63E6}.pz-dev .b1{top:54px;width:52%}.pz-dev .b2{top:68px;width:48%}
+.pz-dev em{position:absolute;top:-6px;font-style:normal;font-size:13px;font-weight:600;color:#2D63E6}.pz-dev .b1 em{left:-12px}.pz-dev .b2 em{right:-12px}
+.pz-infra{padding:12px;border:1px solid #D8E2F6;background:linear-gradient(180deg,#F6F8FE,#ECF1FC);display:flex;flex-direction:column;gap:8px}
+.pz-infra b{height:12px;border-radius:7px;background:#2D63E6}.pz-infra i{height:12px;border-radius:7px;background:#DCE5F8}
+.pz-q{display:inline-block;margin:16px 0 0;padding:5px 12px;border-radius:999px;border:1.5px solid #2D63E6;font-size:12px;font-weight:500;color:var(--atc-navy);background:#fff}
+.pz-k{position:absolute;display:none;background:#fff}
+.k-r .pz-k1{display:block;right:-26px;top:calc(50% - 26px);width:52px;height:52px;border-radius:50%}
+.k-b .pz-k2{display:block;left:calc(50% - 26px);bottom:-26px;width:52px;height:52px;border-radius:50%}
+.k-bs .pz-k1{display:block;left:calc(50% - 24px);bottom:-28px;width:48px;height:40px;border-radius:0 0 8px 8px}
+.k-rt .pz-k1{display:block;right:-16px;top:calc(50% - 14px);width:28px;height:28px;border-radius:4px;transform:rotate(45deg)}
+.pz-miss{display:flex;flex-direction:column;align-items:center;justify-content:center;width:196px;height:174px;box-sizing:border-box;border-radius:20px;
+  border:2px dashed #B9C2CE;background:#F3F5F8;text-align:center;white-space:normal}
+.pz-miss strong{font-size:40px;font-weight:400;line-height:1;color:var(--atc-navy)}.pz-miss span{margin-top:10px;font-size:14px;line-height:1.3;color:var(--atc-navy)}
+.pz-miss em{margin-top:6px;font-style:normal;font-size:14px;font-weight:600;letter-spacing:.02em;color:#E5251E}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2470,18 +2495,29 @@ class Component extends DCLogic {
           // Apple-quiet: few pieces, one small label and one clear value each, colour only in small accents
           var mini = function (label, value, sub, cls) { return '<div class="sp-card sp-min ' + (cls || '') + '"><small>' + label + '</small><strong>' + value + '</strong>' + (sub ? '<span>' + sub + '</span>' : '') + '</div>'; };
           var prop = function (name, what, meta, c) { return '<div class="sp-card sp-min sp-prop"><small><i style="--c:' + c + '"></i>' + name + '</small><strong>' + what + '</strong><span>' + meta + '</span></div>'; };
+          // problem 2, after the supplied illustration: each vendor is a puzzle piece holding only its own part, and the piece
+          // that would join them up (who owns the integration) is missing
+          var UI = {
+            design: '<div class="pz-ui pz-design"><i class="w"></i><i></i><i></i><i></i></div>',
+            dev: '<div class="pz-ui pz-dev"><i class="l1"></i><i class="l2"></i><i class="l3"></i><b class="b1"><em>‹</em></b><b class="b2"><em>›</em></b></div>',
+            infra: '<div class="pz-ui pz-infra"><b></b><i></i><i></i></div>'
+          };
+          var piece = function (t, name, role, ui, quote, knobs) {
+            return '<div class="pz ' + knobs + '"><div class="pz-in"><div class="pz-h"><b>' + t + '</b><div><strong>' + name + '</strong><small>' + role + '</small></div></div>' + UI[ui]
+              + '<p class="pz-q">“' + quote + '”</p></div><i class="pz-k pz-k1"></i><i class="pz-k pz-k2"></i></div>';
+          };
+          var missing = '<div class="pz-miss"><strong>?</strong><span>Owner of Integration</span><em>NONE</em></div>';
           var SETS = [
             [ // too many tools
               [bubble('crm', 'CRM', 0, 'More tools, more complexity.'), -0.37, -0.28, 0.12], [bubble('mail', 'Emails'), 0.36, -0.3, -0.18], [bubble('chat', 'Chat', 6), -0.42, 0.06, 0.3],
               [bubble('cal', 'Calendar', 12), 0.42, 0.04, -0.3], [bubble('sheet', 'Sheets'), -0.28, 0.33, -0.1], [bubble('files', 'Files', 2), 0.29, 0.34, 0.22],
               [mini('Software subscriptions', '€3,160<em> / month</em>', '14 tools · none connected'), 0.0, 0.36, 0.04]
             ],
-            [ // one brief, four vendors, four different answers that pull it apart
-              [prop('Northfield Studio', 'A Webflow website', '6 weeks · €18k', B), -0.32, -0.26, 0.1, -1],
-              [prop('Bitforge Labs', 'A custom React app', '5 months · €64k', GR), 0.32, -0.27, -0.12, -1],
-              [prop('Cloudline', 'Cloud hosting first', '8 weeks · €26k', OL), -0.33, 0.27, -0.04, -1],
-              [prop('Pixelhaus', 'A marketing campaign', '3 weeks · €9k', LB), 0.33, 0.28, 0.2, -1],
-              [mini('Your brief', 'Customer portal', '', 'sp-brief'), 0.0, 0.36, -0.05]
+            [ // three vendors, three pieces that never fit, and no one owning the integration
+              [piece('NS', 'Northfield Studio', 'Design', 'design', '42 screens are done', 'k-r k-b'), -0.32, -0.25, 0.1, -1],
+              [piece('BF', 'Bitforge Labs', 'Development', 'dev', 'Our part only', 'k-bs'), 0.32, -0.26, -0.12, -1],
+              [piece('CL', 'Cloudline', 'Infrastructure', 'infra', 'After everyone else…', 'k-rt'), -0.32, 0.28, -0.04, -1],
+              [missing, 0.32, 0.28, 0.2]
             ],
             [ // many people, no owner
               [say('MK', 'Marketing', 'It’s an IT issue.', B), -0.34, -0.27, 0.12],
