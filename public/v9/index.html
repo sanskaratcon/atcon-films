@@ -2673,25 +2673,37 @@ class Component extends DCLogic {
             sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
             scene.add(sun); scene.add(sun.target);
             // the statements as lettering on the walls, and each point's pieces in front of its view
-            // each point hangs on its own wall like an exhibit: the statement on top, its illustration grouped right below it
+            // each point floats in the room in front of its own wall: the statement on top, its illustration right below it,
+            // both standing about a metre off the wall, turned a little toward the camera, with a soft shadow on the wall
             var WALL = [[-3.6, -7.94, 0], [4.6, -7.94, 0], [9.94, -4.4, -Math.PI / 2], [0, 7.94, Math.PI]];
-            var axisY = new THREE.Vector3(0, 1, 0);
-            var spot = function (k, along, h) { var wv = WALL[k], rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, wv[2]), nrm = new THREE.Vector3(0, 0, 1).applyAxisAngle(axisY, wv[2]);
-              var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[2] === 0 || wv[2] === Math.PI ? wv[1] : wv[1];
-              return { pos: new THREE.Vector3(px, h, pz).addScaledVector(rgt, along).addScaledVector(nrm, 0.06), right: rgt, normal: nrm, rot: wv[2] }; };
-            var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
-            Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el), sp5 = spot(k, 0, 5.25);
-              o3.position.copy(sp5.pos); o3.rotation.y = sp5.rot; o3.scale.setScalar(0.0074); scene.add(o3); R.st.push(o3); });
-            // the camera faces each exhibit in turn
+            var axisY = new THREE.Vector3(0, 1, 0), LIFT = 1.0;
             R.views = [
               { p: [1.6, 3.0, 7.4], t: [-3.0, 3.5, -8] }, { p: [-1.2, 3.0, 7.4], t: [4.0, 3.5, -8] },
               { p: [-6.5, 3.0, 2.4], t: [10, 3.5, -4.4] }, { p: [1.6, 3.0, -7.2], t: [0, 3.5, 8] }];
             R.pre = { p: [2.6, 3.3, 8.6], t: [-3.0, 3.6, -8] }; R.post = { p: [1.2, 3.1, -4.6], t: [0, 3.5, 8] };
+            var ex = WALL.map(function (wv, k) {
+              var rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, wv[2]), nrm = new THREE.Vector3(0, 0, 1).applyAxisAngle(axisY, wv[2]);
+              var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[1], origin = new THREE.Vector3(px, 0, pz).addScaledVector(nrm, LIFT);
+              // turn part of the way toward where the camera stands for this exhibit
+              var cp = R.views[k].p, yaw = Math.atan2(cp[0] - origin.x, cp[2] - origin.z), d = yaw - wv[2];
+              while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2;
+              var rot = wv[2] + d * 0.45, r2 = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, rot);
+              return { origin: origin, right: r2, rot: rot, wallRight: rgt, normal: nrm, wall: new THREE.Vector3(px, 0, pz) };
+            });
+            // the soft shadow each floating exhibit casts on its wall
+            var shC = document.createElement('canvas'); shC.width = shC.height = 256; var shx = shC.getContext('2d');
+            var shg = shx.createRadialGradient(128, 128, 10, 128, 128, 128); shg.addColorStop(0, 'rgba(0,16,37,.28)'); shg.addColorStop(0.6, 'rgba(0,16,37,.12)'); shg.addColorStop(1, 'rgba(0,16,37,0)');
+            shx.fillStyle = shg; shx.fillRect(0, 0, 256, 256); var shT = new THREE.CanvasTexture(shC);
+            R.shadows = ex.map(function (e) { var shm = new THREE.Mesh(new THREE.PlaneGeometry(8.5, 5.6), new THREE.MeshBasicMaterial({ map: shT, transparent: true, depthWrite: false }));
+              shm.position.copy(e.wall).addScaledVector(e.normal, 0.03).addScaledVector(e.wallRight, 0.25); shm.position.y = 3.6; shm.rotation.y = WALL[ex.indexOf(e)][2]; scene.add(shm); return shm; });
+            var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
+            Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el), e = ex[k];
+              o3.position.copy(e.origin); o3.position.y = 5.2; o3.rotation.y = e.rot; o3.scale.setScalar(0.0072); scene.add(o3); o3.userData.base = o3.position.clone(); o3.userData.k = k; R.st.push(o3); });
             R.objs = [];
             (space.__objs || []).forEach(function (o) {
-              var o3 = new CSS3DObject(o.el); o.el.classList.add('r3-o'); var sp6 = spot(o.k, o.x * 7.6, 3.0 - o.y * 2.7);
-              o3.position.copy(sp6.pos).addScaledVector(sp6.normal, 0.12); o3.rotation.y = sp6.rot; o3.scale.setScalar(0.0085); scene.add(o3);
-              R.objs.push({ o: o, o3: o3, base: o3.position.clone(), right: sp6.right, up: new THREE.Vector3(0, 1, 0) });
+              var o3 = new CSS3DObject(o.el), e = ex[o.k]; o.el.classList.add('r3-o');
+              o3.position.copy(e.origin).addScaledVector(e.right, o.x * 7.4); o3.position.y = 3.0 - o.y * 2.7; o3.rotation.y = e.rot; o3.scale.setScalar(0.0084); scene.add(o3);
+              R.objs.push({ o: o, o3: o3, base: o3.position.clone(), right: e.right, up: new THREE.Vector3(0, 1, 0) });
             });
             R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
           }).catch(function () { R.failed = true; });
@@ -2710,10 +2722,13 @@ class Component extends DCLogic {
           var cp = lerp3(A.p, B.p), ct = lerp3(A.t, B.t);
           R.cam.position.set(cp[0] + sp3.sx * 0.35, cp[1] - sp3.sy * 0.2, cp[2]); R.cam.lookAt(ct[0], ct[1], ct[2]);
           // each point's words and pieces show while its view is near
-          for (var rk = 0; rk < R.st.length; rk++) { var wk = Math.max(0, 1 - Math.abs(F - rk) * 1.7); R.st[rk].element.style.opacity = wk.toFixed(3); R.st[rk].visible = wk > 0.002; }
+          var stillB = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, tb = performance.now() / 1000;
+          var bob = function (k) { return stillB ? 0 : Math.sin(tb * 0.9 + k * 1.7) * 0.07; };
+          for (var rk = 0; rk < R.st.length; rk++) { var wk = Math.max(0, 1 - Math.abs(F - rk) * 1.7); R.st[rk].element.style.opacity = wk.toFixed(3); R.st[rk].visible = wk > 0.002;
+            R.st[rk].position.y = R.st[rk].userData.base.y + bob(rk); if (R.shadows) { R.shadows[rk].material.opacity = wk; R.shadows[rk].visible = wk > 0.002; } }
           for (var ro = 0; ro < R.objs.length; ro++) {
             var q = R.objs[ro], wo = Math.max(0, 1 - Math.abs(F - q.o.k) * 1.6), pa2 = q.o.pull ? ease(map(u, S.ins[q.o.k] - 10, q.o.k < 3 ? S.ins[q.o.k + 1] - 12 : S.out)) : 0;
-            q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.35).addScaledVector(q.up, -q.o.y * pa2 * 0.2);
+            q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.35).addScaledVector(q.up, -q.o.y * pa2 * 0.2); q.o3.position.y += bob(q.o.k);
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
           R.gl.render(R.scene, R.cam); R.css.render(R.scene, R.cam);
