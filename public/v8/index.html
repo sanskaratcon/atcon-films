@@ -2561,7 +2561,7 @@ class Component extends DCLogic {
             set.forEach(function (it) {
               var d = document.createElement('div'); d.className = 'sp-o'; d.innerHTML = it[0]; space.appendChild(d);
               // depth kept close around the statement, so every piece is there while the point is read
-              objs.push({ el: d, k: k, x: it[1], y: it[2], z: 0.08 + it[3] * 0.4, pull: true   /* every piece drifts out and leans away through its point, like the vendors */ });
+              objs.push({ el: d, k: k, x: it[1], y: it[2], z: 0.08 + it[3] * 0.4, pull: it[4] === -1 });
             });
           });
           space.__objs = objs;
