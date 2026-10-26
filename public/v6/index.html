@@ -1054,8 +1054,6 @@ html,body{overflow-anchor:none}
   .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:8%;width:84%;top:8%;height:84%}
   .atc-offer .cvb{width:max(64%,250px);right:-12%}
 }
-.oz-dots{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:visible;visibility:hidden}
-.oz-dots i{position:absolute;left:0;top:0;width:var(--s);height:var(--s);border-radius:50%;opacity:0;will-change:transform,opacity}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2716,34 +2714,17 @@ class Component extends DCLogic {
       for (var hfi = 0; hfi < hubEls.length; hfi++) hubEls[hfi].style.opacity = hubFill < 1 ? hubFill.toFixed(3) : '';
       if (headEl) { var hz = ease(map(zr, 0, 0.22)); headEl.style.opacity = (1 - hz).toFixed(3); headEl.style.transform = hz > 0 ? 'translateY(' + (-hz * 24).toFixed(1) + 'px) scale(' + (1 + hz * 0.06).toFixed(4) + ')' : ''; }
       if (off) {
-        // far away and faint at first, it grows toward the camera and settles in its place
-        var dk = map(zr, 0.3, 1), dz = 1 - Math.pow(1 - dk, 3);
-        off.style.visibility = dk > 0 ? 'visible' : 'hidden';
-        off.style.opacity = ease(map(zr, 0.3, 0.56)).toFixed(3);
-        off.style.clipPath = '';
-        var fs = 0.28 + 0.72 * dz, Wb = bR.width, Hb = bR.height;
-        var fcx = ox + (Wb / 2 - ox) * dz, fcy = oy + (Hb / 2 - oy) * dz;
+        // it sits inside the O's opening: sized to fit the opening (never bigger), centred on it, and clipped to it,
+        // so nothing shows outside the ring; it comes up out of the distance as the opening grows around it
+        var Wb = bR.width, Hb = bR.height, Rs = oc.r * s * 0.96;
+        var fs = Math.min(1, 2 * Rs * 0.92 / Math.hypot(Wb * 0.86, Hb * 0.86));
+        off.style.visibility = zr > 0.2 ? 'visible' : 'hidden';
+        off.style.opacity = ease(map(zr, 0.2, 0.5)).toFixed(3);
+        var fcx = ox + (Wb / 2 - ox) * fs, fcy = oy + (Hb / 2 - oy) * fs, tx = fcx - Wb * fs / 2, ty = fcy - Hb * fs / 2;
         off.style.transformOrigin = '0 0';
-        off.style.transform = zr < 1 ? 'translate(' + (fcx - Wb * fs / 2).toFixed(1) + 'px,' + (fcy - Hb * fs / 2).toFixed(1) + 'px) scale(' + fs.toFixed(4) + ')' : '';
-      }
-      // small dots in the brand colours drift out of the O and past the camera while it flies through
-      var dots = bodyEl.querySelector('.oz-dots');
-      if (!dots) {
-        dots = document.createElement('div'); dots.className = 'oz-dots'; dots.setAttribute('aria-hidden', 'true');
-        var cols = ['#3FB27E', '#2D63E6', '#5A86EE', '#9BBA2A'], html = '';
-        for (var di = 0; di < 16; di++) {
-          var rnd = function (q) { var v = Math.sin(di * 12.9898 + q * 78.233) * 43758.5453; return v - Math.floor(v); };
-          html += '<i style="--a:' + (rnd(1) * 6.2832).toFixed(3) + ';--d:' + (0.35 + rnd(2) * 0.65).toFixed(3) + ';--t:' + (rnd(3) * 0.35).toFixed(3) + ';--s:' + (3 + rnd(4) * 5).toFixed(1) + 'px;background:' + cols[di % 4] + '"></i>';
-        }
-        dots.innerHTML = html; bodyEl.appendChild(dots);
-      }
-      var dl = dots.children, reach = Math.hypot(bR.width, bR.height) * 0.62;
-      dots.style.visibility = mid ? 'visible' : 'hidden';
-      for (var dj = 0; mid && dj < dl.length; dj++) {
-        var cs = dl[dj].style, a0 = parseFloat(cs.getPropertyValue('--a')), d0 = parseFloat(cs.getPropertyValue('--d')), t0 = parseFloat(cs.getPropertyValue('--t'));
-        var pd = Math.max(0, Math.min(1, (zr - 0.4 - t0 * 0.6) / 0.42)), far = pd * pd * reach * d0;
-        cs.transform = 'translate(' + (ox + Math.cos(a0) * far).toFixed(1) + 'px,' + (oy + Math.sin(a0) * far).toFixed(1) + 'px) translate(-50%,-50%) scale(' + (0.3 + pd * 2.4).toFixed(3) + ')';
-        cs.opacity = (Math.sin(Math.PI * pd) * 0.8).toFixed(3);
+        off.style.transform = zr < 1 ? 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + fs.toFixed(4) + ')' : '';
+        // the clip is drawn before the transform, so the opening is mapped back into the view's own coordinates
+        off.style.clipPath = mid ? 'circle(' + (Rs / fs).toFixed(1) + 'px at ' + ((ox - tx) / fs).toFixed(1) + 'px ' + ((oy - ty) / fs).toFixed(1) + 'px)' : '';
       }
     }
     var tabs = win ? win.querySelectorAll('.atc-sol-tab') : [];
