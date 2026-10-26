@@ -1203,6 +1203,8 @@ html,body{overflow-anchor:none}
 /* v8: the floating pieces carry a light 3D pose; a soft sheen sits on the cards so the turn reads */
 .sp-o{transform-style:preserve-3d;backface-visibility:hidden}
 .sp-min,.vd,.sp-week,.sp-road,.pz-in{background-image:linear-gradient(135deg,rgba(255,255,255,1) 0%,rgba(255,255,255,1) 55%,rgba(240,244,252,1) 100%)}
+/* v8: the floating pieces stay inside the frame - they slide under the header line and the left rail and leave the box there, never over it */
+.sp-space{clip-path:inset(calc(var(--ty,0px) + 1px) 0 0 calc(var(--lx,0px) + 1px))}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
