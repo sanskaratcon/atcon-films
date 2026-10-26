@@ -1095,6 +1095,24 @@ html,body{overflow-anchor:none}
 .sp-bar{height:8px;margin:14px 0 12px;border-radius:99px;background:#EEF1F5}.sp-bar i{display:block;width:2%;height:100%;border-radius:inherit;background:#9BBA2A}
 .sp-prog p{display:flex;justify-content:space-between;margin:6px 0 0;font-size:14px;color:var(--atc-slate)}.sp-prog p b{color:var(--atc-navy)}
 .sp-prog em{display:inline-block;margin-top:12px;padding:6px 12px;border-radius:999px;font-style:normal;font-size:13px;font-weight:500;color:#6E8520;background:#F3F7E4}
+/* v7 meetings */
+.sp-week{width:330px;padding:16px 16px 14px}
+.sp-week-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}.sp-week-h strong{font-size:16px;font-weight:600}
+.sp-week-h em{font-style:normal;font-size:12px;font-weight:600;color:#2D63E6;padding:4px 10px;border-radius:999px;background:#EAF0FD}
+.sp-week-d{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px}.sp-week-d span{font-size:11px;font-weight:500;color:var(--atc-mute);text-align:center}
+.sp-week-g{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(7,18px);gap:4px 6px}
+.sp-week-g i{border-radius:6px;background:color-mix(in srgb,var(--c) 16%,#fff);box-shadow:inset 2.5px 0 0 var(--c)}
+.sp-ev{position:relative;width:286px;padding:16px 18px 14px 22px;overflow:hidden}
+.sp-ev::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.sp-ev strong{display:block;font-size:17px;font-weight:600}
+.sp-when{display:block;margin-top:4px;font-size:13px;color:var(--atc-slate)}
+.sp-ev-f{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.sp-ppl{display:flex;align-items:center}.sp-ppl b{display:grid;place-items:center;width:28px;height:28px;margin-right:-7px;border-radius:50%;border:2px solid #fff;font-size:10px;font-weight:600;color:#fff;background:var(--c)}
+.sp-ppl em{margin-left:12px;font-style:normal;font-size:12px;font-weight:500;color:var(--atc-mute)}
+.sp-rep{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:500;color:var(--atc-slate);background:#F1F4F9}
+.sp-rep svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sp-toast{display:flex;align-items:center;gap:12px;padding:12px 16px 12px 12px;border-radius:16px}.sp-toast strong{display:block;font-size:15px;font-weight:600}
+.sp-prog-h{display:flex;align-items:center;justify-content:space-between;gap:12px}.sp-prog-h em{margin:0 !important}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2361,6 +2379,18 @@ class Component extends DCLogic {
           var invite = function (title, when) {
             return '<div class="sp-card sp-inv"><i class="sp-inv-ic">' + svg('cal') + '</i><div><small>Invitation</small><strong>' + title + '</strong><span>' + when + '</span></div><em>Accepted</em></div>';
           };
+          var stack = function (ps, more) { var c = { MK: '#2D63E6', IT: '#3FB27E', FN: '#9BBA2A', SL: '#5A86EE', BF: '#0C1E3B' };
+            return '<span class="sp-ppl">' + ps.map(function (p2) { return '<b style="--c:' + c[p2] + '">' + p2 + '</b>'; }).join('') + '<em>+' + more + '</em></span>'; };
+          var event = function (title, when, c, ps, more) {
+            return '<div class="sp-card sp-ev" style="--c:' + c + '"><strong>' + title + '</strong><span class="sp-when">' + when + '</span>'
+              + '<div class="sp-ev-f">' + stack(ps, more) + '<span class="sp-rep"><svg viewBox="0 0 24 24"><path d="M17 4.5l2.5 2.5L17 9.5"/><path d="M19.5 7H8a3.5 3.5 0 0 0-3.5 3.5V12"/><path d="M7 19.5L4.5 17 7 14.5"/><path d="M4.5 17H16a3.5 3.5 0 0 0 3.5-3.5V12"/></svg>Weekly</span></div></div>';
+          };
+          var week = function () {
+            var cols = [[[0, 2, 0], [3, 1, 1], [5, 2, 2]], [[1, 1, 1], [2, 2, 3], [5, 1, 0]], [[0, 1, 2], [1, 2, 0], [4, 2, 1]], [[0, 2, 3], [3, 2, 2], [6, 1, 1]], [[1, 2, 1], [3, 1, 0], [5, 2, 3]]];
+            var tints = ['#2D63E6', '#3FB27E', '#5A86EE', '#9BBA2A'];
+            return '<div class="sp-card sp-week"><div class="sp-week-h"><strong>This week</strong><em>24 meetings</em></div><div class="sp-week-d"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div><div class="sp-week-g">'
+              + cols.map(function (col, ci) { return col.map(function (e) { return '<i style="grid-column:' + (ci + 1) + ';grid-row:' + (e[0] + 1) + ' / span ' + e[1] + ';--c:' + tints[e[2]] + '"></i>'; }).join(''); }).join('') + '</div></div>';
+          };
           var B = '#2D63E6', GR = '#3FB27E', LB = '#5A86EE', OL = '#9BBA2A', NV = '#0C1E3B';
           var SETS = [
             [ // too many tools
@@ -2383,11 +2413,13 @@ class Component extends DCLogic {
               [say('BF', 'Bitforge Labs', 'We built what the brief said.', NV), -0.04, -0.4, 0.5],
               ['<div class="sp-card sp-task"><strong>Launch customer portal</strong><dl><dt>Owner</dt><dd><span class="sp-none">Unassigned</span></dd><dt>Status</dt><dd>Delayed 3 weeks</dd></dl></div>', 0.04, 0.33, -0.4]
             ],
-            [ // stuck in meetings
-              [invite('Kickoff', 'Mon 09:00'), -0.35, -0.29, 0.1], [invite('Alignment', 'Tue 14:00'), 0.35, -0.3, -0.2],
-              [invite('Sync', 'Wed 10:00'), -0.38, 0.28, -0.06], [invite('Review', 'Thu 16:00'), 0.37, 0.3, 0.3],
-              [invite('Steering', 'Fri 11:00'), -0.05, -0.4, 0.52],
-              ['<div class="sp-card sp-prog"><strong>Customer portal</strong><div class="sp-bar"><i></i></div><p><span>Progress</span><b>0%</b></p><p><span>Meetings</span><b>24</b></p><em>Still an idea</em></div>', 0.04, 0.33, -0.4]
+            [ // stuck in meetings: a week with no room left, recurring calls, an invitation about the last meeting, and 0% done
+              [week(), -0.29, -0.25, 0.05],
+              [event('Alignment call', 'Tue · 14:00 – 15:00', B, ['MK', 'IT', 'FN'], 6), 0.3, -0.28, -0.12],
+              [event('Status update', 'Wed · 10:00 – 10:30', GR, ['SL', 'BF', 'MK'], 4), -0.37, 0.3, 0.24],
+              [event('Steering committee', 'Fri · 11:00 – 12:30', OL, ['FN', 'IT', 'SL'], 9), 0.37, 0.27, 0.3],
+              ['<div class="sp-card sp-toast"><i class="sp-inv-ic">' + svg('cal') + '</i><div><small>New invitation</small><strong>Follow-up on last week’s sync</strong></div></div>', 0.1, -0.41, 0.42],
+              ['<div class="sp-card sp-prog"><div class="sp-prog-h"><strong>Customer portal</strong><em>Still an idea</em></div><div class="sp-bar"><i></i></div><p><span>Progress</span><b>0%</b></p><p><span>Meetings held</span><b>24</b></p></div>', 0.03, 0.34, -0.1]
             ]
           ];
           var objs = [];
