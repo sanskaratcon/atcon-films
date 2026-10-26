@@ -1030,6 +1030,30 @@ html,body{overscroll-behavior-y:none}
 .wv-rider .mac{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
 /* the story is driven by the scroll position, so the browser must never shift the page to 'anchor' content that changes size */
 html,body{overflow-anchor:none}
+/* v6 What we offer, composed for the O: everything is centred so it reads inside the circular opening. Label and title
+   on top, the live view in the middle on a soft disc that echoes the O, the four capabilities around it facing in. */
+@media (min-width:1101px),(min-width:761px) and (orientation:landscape){
+  .atc-offer{grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) minmax(0,.85fr);grid-template-rows:auto auto minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:'lab lab lab' 'ttl ttl ttl' 'c0 cv c1' 'c2 cv c3';align-items:center;column-gap:3.2vw;row-gap:0;padding:3.2vh 4vw 3vh}
+  .atc-offer-text,.atc-offer-list{display:contents}
+  .atc-offer-text .ds-label{grid-area:lab;justify-self:center;margin:0 0 1.4vh}
+  .atc-offer-title{grid-area:ttl;justify-self:center;text-align:center;max-width:22em;margin:0 0 1.6vh;text-wrap:balance;font-size:clamp(24px,2.3vw,40px);line-height:1.12}
+  .atc-offer-list li{max-width:15em;row-gap:0}
+  .atc-offer-list li[data-atc='offerL0']{grid-area:c0}.atc-offer-list li[data-atc='offerL1']{grid-area:c1}
+  .atc-offer-list li[data-atc='offerL2']{grid-area:c2}.atc-offer-list li[data-atc='offerL3']{grid-area:c3}
+  .atc-offer-list li[data-atc='offerL0'],.atc-offer-list li[data-atc='offerL2']{justify-self:end;text-align:right;grid-template-columns:minmax(0,1fr) 40px}
+  .atc-offer-list li[data-atc='offerL0'] .atc-offer-ic,.atc-offer-list li[data-atc='offerL2'] .atc-offer-ic{order:2}
+  .atc-offer-list li[data-atc='offerL1'],.atc-offer-list li[data-atc='offerL3']{justify-self:start}
+  .atc-offer-list li[data-atc='offerL0'],.atc-offer-list li[data-atc='offerL1']{align-self:end;margin-bottom:3.5vh}
+  .atc-offer-list li[data-atc='offerL2'],.atc-offer-list li[data-atc='offerL3']{align-self:start;margin-top:3.5vh}
+  .atc-offer-list strong{margin-bottom:3px}
+  .atc-offer .atc-canvas{grid-area:cv;position:relative;isolation:isolate;width:100%;max-width:560px;min-width:min(100%,340px);align-self:center}
+  .atc-offer .atc-canvas::before{content:'';position:absolute;left:50%;top:50%;z-index:-1;width:118%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+    background:radial-gradient(closest-side,#F1F5FD 0,#F1F5FD 64%,rgba(241,245,253,0) 100%)}
+  .atc-offer .cv-body{height:clamp(230px,36vh,380px)}
+  .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:8%;width:84%;top:8%;height:84%}
+  .atc-offer .cvb{width:max(64%,250px);right:-12%}
+}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2787,7 +2811,9 @@ class Component extends DCLogic {
       var on2 = li2 === active;
       if (li.classList.contains('is-on') !== on2) li.classList.toggle('is-on', on2);
       li.style.opacity = (le * (on2 ? 1 : 0.5)).toFixed(3);
-      li.style.transform = 'translateX(' + (-(1 - le) * 14 + (on2 ? 6 : 0)).toFixed(1) + 'px)';
+      // around the O the right-hand points come in from the right and lean left, toward the centre
+      var oDir = (li2 % 2 && !window.matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches) ? -1 : 1;
+      li.style.transform = 'translateX(' + (oDir * (-(1 - le) * 14 + (on2 ? 6 : 0))).toFixed(1) + 'px)';
       var ic = li.querySelector('.atc-offer-ic');
       if (ic) ic.style.filter = on2 ? 'none' : 'grayscale(1) opacity(.6)';
     }
