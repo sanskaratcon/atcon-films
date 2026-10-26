@@ -2680,17 +2680,17 @@ class Component extends DCLogic {
               var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[2] === 0 || wv[2] === Math.PI ? wv[1] : wv[1];
               return { pos: new THREE.Vector3(px, h, pz).addScaledVector(rgt, along).addScaledVector(nrm, 0.06), right: rgt, normal: nrm, rot: wv[2] }; };
             var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
-            Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el), sp5 = spot(k, 0, 5.3);
-              o3.position.copy(sp5.pos); o3.rotation.y = sp5.rot; o3.scale.setScalar(0.0045); scene.add(o3); R.st.push(o3); });
+            Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el), sp5 = spot(k, 0, 5.25);
+              o3.position.copy(sp5.pos); o3.rotation.y = sp5.rot; o3.scale.setScalar(0.0074); scene.add(o3); R.st.push(o3); });
             // the camera faces each exhibit in turn
             R.views = [
-              { p: [-2.4, 3.3, -0.6], t: [-3.6, 3.8, -8] }, { p: [3.4, 3.3, -0.6], t: [4.6, 3.8, -8] },
-              { p: [2.6, 3.3, -3.8], t: [10, 3.8, -4.4] }, { p: [0.6, 3.3, 0.6], t: [0, 3.8, 8] }];
-            R.pre = { p: [-1.2, 3.7, 4.6], t: [-3.6, 3.9, -8] }; R.post = { p: [0.4, 3.5, 3.6], t: [0, 3.85, 8] };
+              { p: [1.6, 3.0, 7.4], t: [-3.0, 3.5, -8] }, { p: [-1.2, 3.0, 7.4], t: [4.0, 3.5, -8] },
+              { p: [-6.5, 3.0, 2.4], t: [10, 3.5, -4.4] }, { p: [1.6, 3.0, -7.2], t: [0, 3.5, 8] }];
+            R.pre = { p: [2.6, 3.3, 8.6], t: [-3.0, 3.6, -8] }; R.post = { p: [1.2, 3.1, -4.6], t: [0, 3.5, 8] };
             R.objs = [];
             (space.__objs || []).forEach(function (o) {
-              var o3 = new CSS3DObject(o.el); o.el.classList.add('r3-o'); var sp6 = spot(o.k, o.x * 4.9, 2.95 - o.y * 2.5);
-              o3.position.copy(sp6.pos).addScaledVector(sp6.normal, 0.12); o3.rotation.y = sp6.rot; o3.scale.setScalar(0.0043); scene.add(o3);
+              var o3 = new CSS3DObject(o.el); o.el.classList.add('r3-o'); var sp6 = spot(o.k, o.x * 7.6, 3.0 - o.y * 2.7);
+              o3.position.copy(sp6.pos).addScaledVector(sp6.normal, 0.12); o3.rotation.y = sp6.rot; o3.scale.setScalar(0.0085); scene.add(o3);
               R.objs.push({ o: o, o3: o3, base: o3.position.clone(), right: sp6.right, up: new THREE.Vector3(0, 1, 0) });
             });
             R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
