@@ -2819,7 +2819,7 @@ class Component extends DCLogic {
         }
         if (R && R.ready && ride) {
           var THREE3 = R.THREE, Wv = space.clientWidth || W, Hv = space.clientHeight || H;
-          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); R.gl.shadowMap.needsUpdate = true; R.key = ''; R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
+          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); R.gl.shadowMap.needsUpdate = true; R.key = ''; R.laid = false; R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
           // the camera eases from view to view
           var fc = Math.max(-1, Math.min(4, F)), a0 = Math.floor(fc), tt = fc - a0, st3 = tt * tt * (3 - 2 * tt);
           var vw = function (i) { return i < 0 ? R.pre : i > 3 ? R.post : R.views[i]; };
@@ -2837,7 +2837,7 @@ class Component extends DCLogic {
             R.st[rk].position.y = R.st[rk].userData.base.y + bob(rk); if (R.shadows) { R.shadows[rk].material.opacity = wk * 0.45; R.shadows[rk].visible = wk > 0.002; } }
           for (var ro = 0; ro < R.objs.length; ro++) {
             var q = R.objs[ro], wo = Math.max(0, 1 - Math.abs(F - q.o.k) * 1.6), pa2 = q.o.pull ? ease(map(u, S.ins[q.o.k] - 10, q.o.k < 3 ? S.ins[q.o.k + 1] - 12 : S.out)) : 0;
-            q.o3.position.copy(q.base).addScaledVector(q.right, (q.lx || 0) * pa2 * 0.08); q.o3.position.y += bob(q.o.k);
+            q.o3.position.copy(q.base).addScaledVector(q.right, (q.lx || 0) * pa2 * 0.08); q.o3.position.y += bob(q.o.k + ro * 0.61);
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
           // the room itself only changes when the camera moves or a wall shadow fades; the floating words and pieces
@@ -2857,6 +2857,22 @@ class Component extends DCLogic {
               var top = stO.userData.base.y - stH / 2 - 0.35;
               var its = R.objs.filter(function (q2) { return q2.o.k === lk; }).map(function (q2) { return { q: q2, s: meas(q2.o.el) }; });
               if (!stH || its.some(function (it) { return !it.s[0]; })) { R.laid = false; continue; }
+              if (lk === 0) {
+                // too many tools: the words sit in the middle, the tools float loosely around them at different depths
+                stO.userData.base.y = 3.7;
+                var SPOT = [['CRM', -4.3, 1.95, 0.6], ['Emails', 4.1, 1.55, 0.2], ['Chat', -5.0, -0.35, 1.5], ['Calendar', 4.9, -0.05, 1.1],
+                  ['Sheets', -3.0, -2.05, 0.4], ['Files', 3.3, -2.2, 1.7], ['subscriptions', 0.2, -2.25, 0.9]];
+                // the spread follows the screen's shape, so narrow windows keep every tool in view
+                var kx = Math.max(0.68, Math.min(1.12, (R.w / Math.max(1, R.h)) / 1.5));
+                its.forEach(function (it) {
+                  var txt = it.q.o.el.textContent, sp0 = SPOT.filter(function (z) { return txt.indexOf(z[0]) >= 0; })[0];
+                  if (!sp0) return;
+                  var fwd = new THREE3.Vector3().crossVectors(it.q.right, it.q.up);
+                  it.q.base.copy(stO.userData.base).addScaledVector(it.q.right, sp0[1] * kx).addScaledVector(fwd, sp0[3]); it.q.base.y = stO.userData.base.y + sp0[2];
+                  it.q.lx = 0; it.q.o3.scale.setScalar(0.0084);
+                });
+                continue;
+              }
               // reading order: the original rows top to bottom, each left to right
               its.sort(function (a1, b1) { return Math.abs(a1.q.o.y - b1.q.o.y) < 0.15 ? a1.q.o.x - b1.q.o.x : a1.q.o.y - b1.q.o.y; });
               // try one, two and three rows and keep the one that shows the cards largest
