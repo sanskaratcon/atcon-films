@@ -2854,7 +2854,8 @@ class Component extends DCLogic {
               R.tv.copy(ud.base); R.tv.y += (ud.gapUp == null ? 0.5 : ud.gapUp);
               ud.delta.copy(R.cam.position).sub(R.tv).multiplyScalar(fly * 1.15);
               R.tv.add(ud.delta).sub(R.cam.position);
-              wk = R.tv.dot(R.fw) > 0.7 ? 1 : 0;
+              // once it has flown past it is gone for good, so it can never turn up again in front of a later view
+              wk = tF < 1 && R.tv.dot(R.fw) > 0.7 ? 1 : 0;
             } else wk = Math.max(0, 1 - Math.abs(dF) * 1.7);
             ud.fly = fly; ud.shown = wk;
             stR.position.copy(ud.base).add(ud.delta); stR.position.y += bob(rk) * (1 - fly);
@@ -2868,7 +2869,7 @@ class Component extends DCLogic {
             if (F > q.o.k && sU.delta) {
               // the cards ride along with their words past the camera, and drop out once they are beside or behind it
               q.o3.position.add(sU.delta);
-              R.tv.copy(q.o3.position).sub(R.cam.position); wo = R.tv.dot(R.fw) > 0.7 ? 1 : 0;
+              R.tv.copy(q.o3.position).sub(R.cam.position); wo = sU.fly < 1 && R.tv.dot(R.fw) > 0.7 ? 1 : 0;
             }
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
