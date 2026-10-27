@@ -2793,6 +2793,18 @@ class Component extends DCLogic {
               for (var q = 0; q < 6000; q++) { var v = 118 + hsh(q + 9) * 22; x.fillStyle = 'rgba(' + v + ',' + v + ',' + v + ',.4)'; x.fillRect(hsh(q + 4) * n, hsh(q + 5) * n, 2 + hsh(q + 6) * 10, 1 + hsh(q + 7) * 3); } }, 3);
             var mat = function (c, o) { return new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.85, metalness: 0 }, o || {})); };
             var add = function (geo, m2, x, y, z, ry, cast) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = cast !== false; me.receiveShadow = true; scene.add(me); return me; };
+            // a real plant: a white planter and curved snake-plant blades in two greens, each a little different
+            R.plant = function (x, z, potR, potH, h, into) {
+              var pot = add(new THREE.CylinderGeometry(potR, potR * 0.82, potH, 48), mat('#FFFFFF', { roughness: 0.45 }), x, potH / 2, z); if (into) into(pot);
+              var soil = add(new THREE.CylinderGeometry(potR * 0.92, potR * 0.92, 0.02, 40), mat('#4A3B30', { roughness: 1 }), x, potH - 0.03, z, 0, false); if (into) into(soil);
+              var shp = new THREE.Shape(); shp.moveTo(-0.055, 0); shp.bezierCurveTo(-0.095, 0.42, -0.065, 0.82, 0, 1); shp.bezierCurveTo(0.065, 0.82, 0.095, 0.42, 0.055, 0); shp.lineTo(-0.055, 0);
+              var bg = new THREE.ShapeGeometry(shp, 18);
+              var g1 = new THREE.MeshStandardMaterial({ color: '#3E6B45', roughness: 0.55, side: THREE.DoubleSide }), g2 = new THREE.MeshStandardMaterial({ color: '#5E8C55', roughness: 0.55, side: THREE.DoubleSide });
+              for (var b = 0; b < 16; b++) { var ang = b * 2.399963, rr2 = potR * (0.12 + (b % 5) * 0.14), bl = new THREE.Mesh(bg, b % 3 ? g1 : g2);
+                bl.position.set(x + Math.cos(ang) * rr2, potH - 0.02, z + Math.sin(ang) * rr2);
+                bl.rotation.set(Math.sin(ang) * (0.08 + rr2 * 0.5), ang, -Math.cos(ang) * (0.08 + rr2 * 0.5));
+                var sc = h * (0.62 + ((b * 7) % 6) * 0.075); bl.scale.set(1 + (b % 2) * 0.25, sc, 1); bl.castShadow = true; bl.receiveShadow = true; scene.add(bl); if (into) into(bl); }
+            };
             var box = function (w, h, d, m2, x, y, z, r) { return add(new RBox(w, h, d, 3, r == null ? Math.min(w, h, d) * 0.12 : r), m2, x, y, z); };
             // the room: 20 wide, 7 high, 16 deep; a big window on the left, stairs on the right, a lit cove in the ceiling
             var wallM = mat('#D3DFF6', { bumpMap: plasterT, bumpScale: 0.6 }), floorM = mat('#BFD0EE', { roughness: 0.42, roughnessMap: cementT, bumpMap: cementT, bumpScale: 0.3, envMapIntensity: 0.9 }), ceilM = new THREE.MeshBasicMaterial({ color: '#FFFFFF', toneMapped: false });
@@ -2824,13 +2836,7 @@ class Component extends DCLogic {
             var sideM = mat('#FBFBFA', { roughness: 0.45 });
             inFront(box(6.4, 0.62, 0.55, sideM, 0, 0.36, 7.6, 0.04));
             inFront(box(6.2, 0.04, 0.5, mat('#E9ECF1', { roughness: 0.6 }), 0, 0.69, 7.6, 0.01));
-            var potM = mat('#FFFFFF', { roughness: 0.5 }), lfM = mat('#3F8F6A', { roughness: 0.7 }), lf2M = mat('#5DA67F', { roughness: 0.7 });
-            [[-4.6, 1.0], [4.6, 0.75]].forEach(function (pp, pi) {
-              inFront(add(new THREE.CylinderGeometry(0.34, 0.27, 0.7, 40), potM, pp[0], 0.35, 7.45));
-              for (var q = 0; q < 14; q++) { var aa = q * 2.4, rr = 0.1 + (q % 4) * 0.08;
-                var lf = inFront(add(new THREE.SphereGeometry(0.16, 14, 10), q % 2 ? lfM : lf2M, pp[0] + Math.cos(aa) * rr, 0.85 + (q % 5) * 0.22 * pp[1], 7.45 + Math.sin(aa) * rr * 0.6));
-                lf.scale.set(0.45, 1.8, 0.45); lf.rotation.set(Math.cos(aa) * 0.7, 0, Math.sin(aa) * 0.7); }
-            });
+            [[-4.6, 1.15], [4.6, 0.9]].forEach(function (pp) { R.plant(pp[0], 7.45, 0.34, 0.7, pp[1], inFront); });
             var dayL = new THREE.PointLight('#F4F8FF', 2.0, 11, 2); dayL.position.set(0, 3.6, 6.2); scene.add(dayL);
             // a quiet coffered ceiling: slim white beams between the downlights, so a look upward reads as movement
             var beamM = mat('#F8F9FC', { roughness: 0.9, emissive: '#F4F6FA', emissiveIntensity: 0.72 });
@@ -2860,8 +2866,7 @@ class Component extends DCLogic {
             add(new THREE.CylinderGeometry(0.05, 0.05, 0.55), navyM, -6.2, 0.27, -1.4);
             add(new THREE.CylinderGeometry(0.02, 0.02, 2.1), navyM, -1.0, 1.05, -6.6);
             var shade = add(new THREE.CylinderGeometry(0.28, 0.32, 0.4, 32, 1, true), new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#F4F7FF', emissiveIntensity: 0.6, side: THREE.DoubleSide }), -1.0, 2.2, -6.6);
-            add(new THREE.CylinderGeometry(0.32, 0.26, 0.55, 24), mat('#FFFFFF'), 8.4, 0.28, -6.8);
-            for (var lf = 0; lf < 7; lf++) { var leaf = add(new THREE.ConeGeometry(0.12, 1.1, 6), mat('#3FB27E'), 8.4, 0.95, -6.8); leaf.rotation.z = Math.sin(lf * 0.9) * 0.6; leaf.rotation.x = Math.cos(lf * 1.3) * 0.5; leaf.position.y = 1.0 + (lf % 3) * 0.12; }
+            R.plant(8.4, -6.8, 0.32, 0.55, 1.25);
             // the curved desk, a laptop and an office chair
             var deskM = mat('#FFFFFF', { roughness: 0.35 });
             box(4.2, 0.18, 1.5, deskM, 4.6, 1.5, -5.9, 0.08); box(0.22, 1.5, 1.5, deskM, 2.6, 0.75, -5.9, 0.1); box(0.22, 1.5, 1.5, deskM, 6.6, 0.75, -5.9, 0.1);
