@@ -3386,8 +3386,11 @@ class Component extends DCLogic {
         + '<feDisplacementMap in="SourceGraphic" in2="m" scale="0" xChannelSelector="G" yChannelSelector="R" result="w"/>'
         + '<feGaussianBlur in="w" stdDeviation="0 0"/></filter>'
         // the text gets the same sideways smear, measured in pixels so it matches the card's
-        + '<filter id="crd-speed-t" x="-0.2" y="-0.2" width="1.4" height="1.4" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="0 0"/></filter>';
-      wrap.appendChild(svg); C.disp = svg.querySelector('feDisplacementMap'); C.blur = svg.querySelector('#crd-speed feGaussianBlur'); C.blurT = svg.querySelector('#crd-speed-t feGaussianBlur');
+        + '<filter id="crd-speed-t" x="-0.2" y="-0.3" width="1.4" height="1.6" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">'
+        + '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="m" href="' + mc.toDataURL() + '"/>'
+        + '<feDisplacementMap in="SourceGraphic" in2="m" scale="0" xChannelSelector="G" yChannelSelector="R" result="w"/>'
+        + '<feGaussianBlur in="w" stdDeviation="0 0"/></filter>';
+      wrap.appendChild(svg); C.disp = svg.querySelector('feDisplacementMap'); C.blur = svg.querySelector('#crd-speed feGaussianBlur'); C.blurT = svg.querySelector('#crd-speed-t feGaussianBlur'); C.dispT = svg.querySelector('#crd-speed-t feDisplacementMap');
       var COL = ['45,99,230', '63,178,126', '90,134,238', '155,186,42'];
       for (var k = 0; k < 4; k++) {
         var li = this.q('offerL' + k), src = this.q('cvW' + k), ill = src ? src.querySelector('.ix').cloneNode(true) : null;
@@ -3425,7 +3428,9 @@ class Component extends DCLogic {
     var st = C.sp, dir = dx < 0 ? -1 : 1;
     C.track.style.transform = 'translate(' + x.toFixed(1) + 'px,-50%)';
     var fx = st > 0.003;
-    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 0.35).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 5).toFixed(4) + ' 0'); C.blurT.setAttribute('stdDeviation', (st / 5 * C.cw).toFixed(2) + ' 0'); }
+    // a stronger smear and a little bend, on the cards and on their text alike
+    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 0.9).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 2.6).toFixed(4) + ' 0');
+      C.dispT.setAttribute('scale', (4 * st * st * 1.4).toFixed(4)); C.blurT.setAttribute('stdDeviation', (st / 2.6 * C.cw / C.tw).toFixed(4) + ' 0'); }
     for (var i = 0; i < 4; i++) {
       var d = i - fc;
       // the illustration drifts a little slower than its card; the cards lean into the move and ease back away from the middle
