@@ -1093,11 +1093,11 @@ html,body{overflow-anchor:none}
 @media (min-width:1101px),(min-width:761px) and (orientation:landscape){
   .atc-offer .atc-canvas,.atc-offer .atc-offer-list{visibility:hidden !important;opacity:0 !important}
   .atc-offer-text .ds-label,.atc-offer-title{z-index:2}
-  .crd{position:absolute;z-index:1;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
+  .crd{position:absolute;z-index:1;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;clip-path:inset(0 0 0 var(--rail))}
   .crd-track{position:absolute;left:0;top:50%;display:flex;gap:var(--gap);will-change:transform}
   .crd-c{position:relative;flex:none;width:var(--cw);height:var(--ch);border-radius:28px;overflow:hidden;
     background:radial-gradient(70% 90% at 78% 55%,rgba(var(--c),.16),rgba(var(--c),0) 70%),linear-gradient(160deg,#FFFFFF,#F6F8FC);
-    box-shadow:0 0 0 1px rgba(0,16,37,.05),0 40px 80px -50px rgba(0,16,37,.45)}
+    box-shadow:0 0 0 1px rgba(0,16,37,.05),1px 1px 0 #E9EDF3,2px 2px 0 #E5E9F0,3px 3px 0 #E1E6EE,4px 4px 0 #DDE2EB,5px 5px 0 #D9DFE8,6px 6px 0 #D5DBE5,7px 7px 0 #D2D8E3,0 50px 80px -46px rgba(0,16,37,.5)}
   .crd-it{position:relative;flex:none;display:flex;align-items:center;gap:var(--tg)}
   .crd-t{flex:none;width:var(--tw)}
   .crd-t b{display:block;font-weight:400;font-size:var(--fs-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);margin-bottom:1.6vh;color:var(--atc-navy)}
@@ -3439,7 +3439,8 @@ class Component extends DCLogic {
       var near = Math.abs(d) < 0.75;
       if (near && !C.on[i]) C.t0[i] = performance.now(); C.on[i] = near;
       if (Math.abs(d) < 1.2) this.playIllo(C.ills[i], ((performance.now() - (C.t0[i] || 0)) / 1000) % 5.2 / 3.4);
-      C.cards[i].style.transform = 'skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
+      var dd = Math.max(-1.4, Math.min(1.4, d));
+      C.cards[i].style.transform = 'perspective(1400px) rotateY(' + (-12 - dd * 22 - dir * st * 40).toFixed(2) + 'deg) rotateX(' + (5 - Math.abs(dd) * 2).toFixed(2) + 'deg) translateZ(' + (-Math.abs(dd) * 140).toFixed(1) + 'px) skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - st * 0.5).toFixed(4) + ')';
       var fv = fx ? 'url(#crd-speed)' : '';
       if (C.cards[i].style.filter !== fv) C.cards[i].style.filter = fv;
       var ft = fx ? 'url(#crd-speed-t)' : '';
