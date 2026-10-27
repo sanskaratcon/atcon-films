@@ -630,6 +630,8 @@ html,body{overscroll-behavior-y:none}
 .atc-splash.is-out .atc-splash-tint{opacity:0}
 .atc-splash.is-out .atc-splash-logo{opacity:0;transform:scale(1.04);filter:blur(8px);transition-duration:.5s}
 .atc-splash.is-gone{display:none}
+/* v9: no loader */
+.atc-splash{display:none !important}
 /* Through the A */
 .atc-splash{background:transparent !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
 .atc-splash .spl{position:absolute;inset:0;width:100%;height:100%}
@@ -2104,33 +2106,13 @@ class Component extends DCLogic {
     }
   }
 
-  splash(dt) {
+  // v9: no loader, the hero shows straight away
+  splash() {
     if (this._splash >= 2) return;
-    var el = this.q('splash'), root = this.q('root'), v1 = this.q('v1');
-    if (!el) return;
-    this.watchSplash(el);
-    this._waitT += dt;
-    var hidden = document.visibilityState && document.visibilityState !== 'visible';
-    if (hidden) return;
-    if (this._splash === 0) { el.classList.add('is-in'); this._splash = 1; this._splInAt = performance.now(); }
-
-    var bg = el.querySelector('.atc-splash-bg');
-    var media = (v1 && v1.readyState >= 2 && (!bg || bg.offsetParent === null || bg.complete)) || this._waitT > 4000;
-    var onScreen = this._sio ? !!this._sOn : true;
-    // Browsers that report occlusion: wait until nothing covers the page. Where the
-    // report stays false for other reasons (a scaled preview), give up after 2.5s on screen.
-    if (onScreen) this._onT = (this._onT || 0) + dt; else this._onT = 0;
-    var seen = onScreen && (this._sVis === null || this._sVis === true || this._onT > 2500);
-    if (!(media && seen) && this._waitT < 9000) return;
-
-    this._splashT += dt;
-    if (this._splashT >= 600 && performance.now() - (this._splInAt || 0) >= 1850) {
-      el.classList.add('is-out');
-      if (root) root.classList.add('is-ready');
-      this._splash = 2;
-      if (this._sio) { this._sio.disconnect(); this._sio = null; }
-      this._goneT = setTimeout(function () { el.classList.add('is-gone'); }, 1150);
-    }
+    var el = this.q('splash'), root = this.q('root');
+    if (el) el.classList.add('is-gone');
+    if (root) root.classList.add('is-ready');
+    this._splash = 2;
   }
 
   frame(now) {
