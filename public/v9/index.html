@@ -501,7 +501,7 @@ html,body{overscroll-behavior-y:none}
 .atc-vtrack{position:relative;background:#FFFFFF}
 .atc-vstage{position:sticky;top:0;height:100vh;height:100svh;width:100%;overflow:hidden;background:#FFFFFF}
 .atc-vstage .atc-video{background:#FFFFFF;transform-origin:50% 50%}
-.atc-vwhite{position:absolute;inset:0;background:#FFFFFF;pointer-events:none}
+.atc-vwhite{position:absolute;left:0;right:0;top:0;height:220%;background:linear-gradient(#FFFFFF 0%,#FFFFFF 45%,rgba(255,255,255,.75) 62%,rgba(255,255,255,.3) 82%,rgba(255,255,255,0) 100%);pointer-events:none;will-change:transform}
 .atc-who-head{display:grid;grid-template-columns:minmax(0,1fr)}
 .atc-who-head .ds-label{margin-bottom:var(--sp-5)}
 /* Pinned sections: the section fills the screen under the header, stays while you scroll a little,
@@ -2260,8 +2260,13 @@ class Component extends DCLogic {
       var clients = document.getElementById('results');
       if (clients) clients.style.opacity = (1 - ease(map(vr.top, vh * 0.95, vh * 0.2))).toFixed(3);
       var vwhite = this.q('vwhite'), v5 = this.q('v5');
-      // the video is already there as the section scrolls in under the logos, so no blank white screen sits between them
-      if (vwhite) vwhite.style.opacity = (1 - ease(map(vr.top, vh * 0.75, vh * 0.15))).toFixed(3);
+      // the video is already there as the section scrolls in under the logos: a long soft white veil lifts off it, so
+      // the white page melts into the grey of the video with no edge and no blank screen
+      if (vwhite) {
+        var wk2 = ease(map(vr.top, vh * 0.95, -vh * 0.2));
+        vwhite.style.transform = 'translateY(' + (-wk2 * 100).toFixed(2) + '%)';
+        vwhite.style.opacity = (1 - map(wk2, 0.85, 1)).toFixed(3);
+      }
       if (v5) {
         // A touch of zoom on the first frames keeps the laptop bezel out of view until the camera pulls back.
         v5.style.transform = 'scale(' + (1.06 - 0.06 * ease(map(vp, 0.0, 0.16))).toFixed(4) + ')';
