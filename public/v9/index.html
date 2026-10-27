@@ -2947,8 +2947,6 @@ class Component extends DCLogic {
               var rot = Math.atan2(-dir.x, -dir.z), r2 = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, rot);
               return { origin: origin, right: r2, rot: rot, wallRight: rgt, normal: nrm, wall: new THREE.Vector3(px, 0, pz) };
             });
-            // everything built so far is the room itself; a room built and lit in Blender (room.glb) replaces it when present
-            var proc = scene.children.slice(); sky.userData.keep = true;
             // the soft shadow each floating exhibit casts on its wall
             var shC = document.createElement('canvas'); shC.width = shC.height = 256; var shx = shC.getContext('2d');
             var shg = shx.createRadialGradient(128, 128, 10, 128, 128, 128); shg.addColorStop(0, 'rgba(0,16,37,.28)'); shg.addColorStop(0.6, 'rgba(0,16,37,.12)'); shg.addColorStop(1, 'rgba(0,16,37,0)');
@@ -2966,26 +2964,9 @@ class Component extends DCLogic {
             });
             R.bg = scene.background.clone(); R.white = new THREE.Color('#FFFFFF'); scene.fog = new THREE.Fog('#FFFFFF', 0, 0.01);
             // compile every material now, so the first frame of the room does not stall the scroll
-            var done = function () {
-              gl.compile(scene, cam);
-              cam.position.set(0, 3, 6); cam.lookAt(0, 3, -8); gl.setSize(64, 40, false); gl.render(scene, cam);
-              R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
-            };
-            // the Blender room: its light is baked into its pictures, so it is drawn without live lights or shadows
-            // (lit pieces, named EMIT_<colour>, are drawn in their plain colour); if the file is missing, the room above stays
-            import('three/addons/loaders/GLTFLoader.js').then(function (gm) {
-              new gm.GLTFLoader().load('room.glb', function (gt) {
-                proc.forEach(function (o) { if (o.userData.keep) return; scene.remove(o);
-                  o.traverse(function (c) { if (c.geometry) c.geometry.dispose(); }); });
-                gt.scene.traverse(function (o) {
-                  if (!o.isMesh) return; var nm = o.material.name || '';
-                  o.material = nm.indexOf('EMIT_') === 0 ? new THREE.MeshBasicMaterial({ color: '#' + nm.slice(5, 11), toneMapped: false, side: THREE.DoubleSide })
-                    : new THREE.MeshBasicMaterial({ map: o.material.map, toneMapped: false, side: THREE.DoubleSide });
-                  o.castShadow = o.receiveShadow = false;
-                });
-                scene.add(gt.scene); R.backWall = gt.scene.getObjectByName('FrontWall') || null; R.baked = true; done();
-              }, undefined, done);
-            }).catch(done);
+            gl.compile(scene, cam);
+            cam.position.set(0, 3, 6); cam.lookAt(0, 3, -8); gl.setSize(64, 40, false); gl.render(scene, cam);
+            R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
           }).catch(function () { R.failed = true; });
         }
         if (R && R.ready && ride) {

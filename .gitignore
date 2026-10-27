@@ -1,6 +1,3 @@
 .wrangler/
 node_modules/
 .DS_Store
-blender/bake/
-blender/*.blend
-blender/*.blend1
