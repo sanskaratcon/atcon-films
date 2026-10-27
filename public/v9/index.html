@@ -2152,6 +2152,10 @@ class Component extends DCLogic {
     });
     var sp = this.q('spSpace'), R = sp && sp.__r3;
     parts.push(R && (R.ready || R.failed) ? 1 : 0);
+    // the studio still behind What we offer is made here too, once the room's renderer exists
+    var off = this.q('offer');
+    if (off && R && R.ready && !(off.__room && off.__room.started)) this.offerRoom(off, 0, this.timeline().sol);
+    parts.push(R && R.failed ? 1 : (off && off.__room && off.__room.shot ? 1 : 0));
     return parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
   }
 
@@ -3362,6 +3366,9 @@ class Component extends DCLogic {
     var map = this._fx.map, ease = this._fx.ease, B = off.__room;
     if (!B) { B = off.__room = { el: document.createElement('div') }; B.el.className = 'ofr'; B.el.setAttribute('aria-hidden', 'true'); off.insertBefore(B.el, off.firstChild); }
     var stg = off.closest('.atc-stage') || document.body, sr = stg.getBoundingClientRect(), orr = off.getBoundingClientRect();
+    // the still is made as soon as the room's renderer exists (normally while the loader runs), never mid-scroll
+    var sp = this.q('spSpace'), R = sp && sp.__r3;
+    if (!B.started && R && R.ready) { B.started = true; this.studioShot(B, R, stg); }
     // it is already there inside the O as the camera flies in: the O's opening shows the room, and the room grows with
     // it (the section is scaled and clipped to the O while it zooms), so going through the O is going into the room
     var live = u > S.pop[0] - 10 && u < S.out + 4;
@@ -3370,86 +3377,115 @@ class Component extends DCLogic {
     var k = orr.width / Math.max(1, off.offsetWidth) || 1;
     B.el.style.left = ((sr.left - orr.left) / k).toFixed(1) + 'px'; B.el.style.top = ((sr.top - orr.top) / k).toFixed(1) + 'px';
     B.el.style.width = (sr.width / k).toFixed(0) + 'px'; B.el.style.height = (sr.height / k).toFixed(0) + 'px';
-    // the view is drawn once from the room that is already built (while it is not on screen itself)
-    var sp = this.q('spSpace'), R = sp && sp.__r3;
-    if (!B.shot && R && R.ready) {
-      // the stage's own layout size (never scaled), capped to what the GPU can draw
-      var W = Math.min(2400, stg.clientWidth || 1200), H = Math.round(W * (stg.clientHeight || 800) / (stg.clientWidth || 1200));
-      R.gl.setSize(W, H, false);
-      var ST = this.studioScene(R.THREE, W / H);
-      var pr = R.gl.shadowMap.autoUpdate; R.gl.shadowMap.needsUpdate = true;
-      R.gl.render(ST.scene, ST.cam);
-      B.el.style.backgroundImage = 'url(' + R.gl.domElement.toDataURL('image/jpeg', 0.92) + ')';
-      ST.dispose(); R.gl.shadowMap.autoUpdate = pr; R.gl.shadowMap.needsUpdate = true;
-      B.shot = true; R.w = R.h = null; R.key = '';
-    }
   }
 
-  // v9: the studio behind What we offer, after lutstudios.com but kept minimal: a warm plaster wall with openings to the
-  // sky, dark wood floor and a soft rug, a wall of wood slats, a freestanding wall with a dark screen, one desk, a shell
-  // chair, a floor lamp, a sideboard, a leather lounge chair, a sculptural pendant; low golden sun through a skylight.
-  // Drawn once, so it can afford large soft shadows.
-  studioScene(THREE, aspect) {
+  // renders the studio 12 times with the sun moved a little each time and blends them, for the soft shadows of real
+  // sunlight; done once, then the room's renderer is handed back
+  studioShot(B, R, stg) {
+    var self = this, THREE = R.THREE;
+    Promise.all([import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js')]).then(function (m) {
+      var W = Math.min(2200, stg.clientWidth || 1200), H = Math.round(W * (stg.clientHeight || 800) / (stg.clientWidth || 1200));
+      R.gl.setSize(W, H, false);
+      var ST = self.studioScene(THREE, W / H, m[0].RoundedBoxGeometry, m[1].RoomEnvironment, R.gl);
+      var acc = document.createElement('canvas'); acc.width = W; acc.height = H; var ax = acc.getContext('2d');
+      var N = 12, base = ST.sun.position.clone(), pr = R.gl.shadowMap.autoUpdate;
+      for (var i = 0; i < N; i++) {
+        var ang = i * 2.399963, rad = 0.9 * Math.sqrt((i + 0.5) / N);
+        ST.sun.position.set(base.x + Math.cos(ang) * rad, base.y, base.z + Math.sin(ang) * rad);
+        R.gl.shadowMap.needsUpdate = true; R.gl.render(ST.scene, ST.cam);
+        ax.globalAlpha = 1 / (i + 1); ax.drawImage(R.gl.domElement, 0, 0, W, H);
+      }
+      B.el.style.backgroundImage = 'url(' + acc.toDataURL('image/jpeg', 0.92) + ')';
+      ST.dispose(); R.gl.shadowMap.autoUpdate = pr; R.gl.shadowMap.needsUpdate = true;
+      B.shot = true; R.w = R.h = null; R.key = '';
+    }).catch(function () { B.started = false; });
+  }
+
+  // v9: the white studio behind What we offer, after lutstudios.com but minimal: real shapes (a moulded shell chair, a
+  // lounge chair on a swivel base, a thin oak desk, a monitor, a drum lamp, a sculpted pendant, a snake plant and an olive
+  // tree), rounded edges, plaster and weave textures, soft studio reflections and low daylight through a skylight
+  studioScene(THREE, aspect, RBox, RoomEnv, gl) {
     var scene = new THREE.Scene(); scene.background = new THREE.Color('#DCE8F4');
-    var cam = new THREE.PerspectiveCamera(52, aspect, 0.1, 80); cam.position.set(0.2, 1.75, 7.2); cam.lookAt(0, 2.25, -4);
-    var geos = [], mats = [];
-    var M = function (c, o) { var m = new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.85 }, o || {})); mats.push(m); return m; };
-    var box = function (w, h, d, m, x, y, z, ry) { var g = new THREE.BoxGeometry(w, h, d); geos.push(g); var me = new THREE.Mesh(g, m); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = me.receiveShadow = true; scene.add(me); return me; };
-    var cyl = function (rt, rb, h, m, x, y, z) { var g = new THREE.CylinderGeometry(rt, rb, h, 40); geos.push(g); var me = new THREE.Mesh(g, m); me.position.set(x, y, z); me.castShadow = me.receiveShadow = true; scene.add(me); return me; };
-    var sph = function (r, m, x, y, z, sx, sy, sz) { var g = new THREE.SphereGeometry(r, 40, 24); geos.push(g); var me = new THREE.Mesh(g, m); me.position.set(x, y, z); me.scale.set(sx || 1, sy || 1, sz || 1); me.castShadow = me.receiveShadow = true; scene.add(me); return me; };
-    // wood, drawn once: long planks with grain
-    var wc = document.createElement('canvas'); wc.width = 512; wc.height = 512; var wx = wc.getContext('2d');
-    wx.fillStyle = '#E8DED0'; wx.fillRect(0, 0, 512, 512);
-    for (var pk = 0; pk < 8; pk++) { wx.fillStyle = 'rgba(' + (pk % 2 ? '150,125,100' : '255,250,242') + ',.16)'; wx.fillRect(0, pk * 64, 512, 64); wx.fillStyle = 'rgba(120,100,80,.18)'; wx.fillRect(0, pk * 64, 512, 1.5); }
-    for (var gn = 0; gn < 220; gn++) { wx.strokeStyle = 'rgba(' + (Math.random() < .5 ? '140,115,90' : '255,252,246') + ',' + (0.04 + Math.random() * 0.07).toFixed(3) + ')'; wx.lineWidth = 0.6 + Math.random() * 1.6;
-      var gy = Math.random() * 512; wx.beginPath(); wx.moveTo(0, gy); for (var gx = 0; gx <= 512; gx += 32) wx.lineTo(gx, gy + Math.sin(gx * 0.02 + gn) * 2); wx.stroke(); }
-    var woodT = new THREE.CanvasTexture(wc); woodT.colorSpace = THREE.SRGBColorSpace; woodT.wrapS = woodT.wrapT = THREE.RepeatWrapping; woodT.repeat.set(3, 3); woodT.anisotropy = 8;
-    var floorM = M('#FFFFFF', { map: woodT, roughness: 0.5 }), plaster = M('#F4F3F1', { roughness: 0.95 }), plasterL = M('#F7F6F4', { roughness: 0.95 });
-    var oak = M('#E3D6C4', { roughness: 0.55 }), slat = M('#F1EFEC', { roughness: 0.7 }), whiteM = M('#FAFAF9', { roughness: 0.45 }), dark = M('#2A2D33', { roughness: 0.35, metalness: 0.2 });
-    var leather = M('#ECEAE6', { roughness: 0.7 }), tan = M('#F2F0EC', { roughness: 0.65 }), steel = M('#C9CCD1', { roughness: 0.3, metalness: 0.7 }), leaf = M('#6E8F55', { roughness: 0.8 }), rugM = M('#ECE9E4', { roughness: 1 });
-    var fl = box(26, 0.1, 22, floorM, 0, -0.05, 0);
-    box(8.6, 0.03, 5.6, rugM, 0.3, 0.015, -0.6);
-    // the warm centre wall, a lighter side wall on the right, and the open sky between them
-    box(7.2, 7, 0.4, plaster, 0, 3.5, -5.2);
-    box(0.4, 7, 11, plasterL, 7.4, 3.5, -1.5);
-    var skyG = new THREE.PlaneGeometry(40, 16); geos.push(skyG); var skyM = new THREE.MeshBasicMaterial({ color: '#BFD7EC' }); mats.push(skyM); var sky = new THREE.Mesh(skyG, skyM); sky.position.set(0, 6, -12); scene.add(sky);
-    // outside: calm light walls in the sun instead of greenery
-    box(6, 4.2, 0.3, M('#EFE6DA', { roughness: 0.95 }), -6.2, 2.1, -9.5); box(5, 5.2, 0.3, M('#E9DDCD', { roughness: 0.95 }), 6.0, 2.6, -10.5);
-    // the wood-slat wall on the right
-    for (var sx = -4.6; sx <= 3.4; sx += 0.18) box(0.06, 7, 0.1, slat, 7.15, 3.5, sx);
-    // the freestanding wall on the left, with a dark screen
-    box(0.5, 6.2, 6.4, plasterL, -5.4, 3.1, -1.2);
-    box(0.05, 1.5, 2.6, dark, -5.12, 2.5, -1.0);
-    box(2.2, 0.5, 0.6, M('#F4F2EF', { roughness: 0.55 }), -3.9, 0.25, -0.2);
-    // a ceiling slab with a long skylight above the left
-    box(9, 0.2, 9, M('#F6F5F3', { roughness: 0.9 }), 2.6, 7.1, -1.5);
-    box(4, 0.2, 2.5, M('#F6F5F3', { roughness: 0.9 }), -4.4, 7.1, 1.75);
-    // the desk at the wall, with a monitor, a plant and a mug
-    box(2.6, 0.05, 0.9, oak, 0, 0.76, -3.6);
-    [-1.2, 1.2].forEach(function (lx) { box(0.05, 0.74, 0.8, whiteM, lx, 0.37, -3.6); });
-    box(0.95, 0.55, 0.03, dark, -0.3, 1.18, -3.85); box(0.05, 0.3, 0.05, steel, -0.3, 0.92, -3.85);
-    cyl(0.1, 0.08, 0.18, whiteM, 0.75, 0.87, -3.7);
-    for (var lv = 0; lv < 14; lv++) { var a = lv * 2.4; var lf = sph(0.06, leaf, 0.75 + Math.cos(a) * 0.08, 1.05 + (lv % 5) * 0.06, -3.7 + Math.sin(a) * 0.08, 0.4, 2.4, 0.4); lf.rotation.set(Math.cos(a) * 0.6, 0, Math.sin(a) * 0.6); }
-    cyl(0.04, 0.035, 0.09, whiteM, 0.35, 0.83, -3.45);
-    // a tan shell chair beside it
-    sph(0.36, tan, -1.55, 0.72, -2.7, 1, 0.55, 1); sph(0.32, tan, -1.55, 0.98, -2.95, 1, 0.75, 0.5);
-    cyl(0.03, 0.03, 0.45, steel, -1.55, 0.3, -2.7); cyl(0.32, 0.32, 0.02, steel, -1.55, 0.05, -2.7);
-    // a slim floor lamp
-    cyl(0.015, 0.015, 1.7, steel, 2.0, 0.85, -4.1); cyl(0.16, 0.18, 0.4, whiteM, 2.0, 1.85, -4.1); cyl(0.18, 0.18, 0.02, steel, 2.0, 0.01, -4.1);
-    // a topiary on the right
-    cyl(0.32, 0.26, 0.6, M('#FAFAF9', { roughness: 0.5 }), 4.6, 0.3, -3.2); [0.85, 1.35, 1.8, 2.2].forEach(function (h, i) { sph(0.36 - i * 0.06, leaf, 4.6, h, -3.2); });
-    // the leather lounge chair in front
-    sph(0.5, leather, 3.3, 0.55, 0.4, 1.1, 0.42, 1); sph(0.48, leather, 3.3, 0.9, 0.78, 1.1, 0.75, 0.45);
-    cyl(0.035, 0.035, 0.36, steel, 3.3, 0.2, 0.4); cyl(0.3, 0.3, 0.02, steel, 3.3, 0.01, 0.4);
-    // the sculptural pendant
-    sph(0.95, whiteM, 0.4, 5.3, -2.2, 1.3, 0.22, 0.8).rotation.z = 0.25; cyl(0.006, 0.006, 1.8, steel, 0.4, 6.2, -2.2);
-    // light: low golden sun through the skylight, a warm room fill, soft reflections
-    scene.add(new THREE.HemisphereLight('#FFFFFF', '#E6E2DC', 1.6));
-    var sun = new THREE.DirectionalLight('#FFF4E6', 3.4); sun.position.set(-7.5, 10, 4.5); sun.target.position.set(0.5, 0, -3); sun.castShadow = true;
-    sun.shadow.mapSize.set(4096, 4096); sun.shadow.camera.left = -12; sun.shadow.camera.right = 12; sun.shadow.camera.top = 12; sun.shadow.camera.bottom = -12; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
+    var pm = new THREE.PMREMGenerator(gl), envT = pm.fromScene(new RoomEnv(), 0.03).texture; scene.environment = envT;
+    var cam = new THREE.PerspectiveCamera(50, aspect, 0.1, 80); cam.position.set(0.2, 1.7, 7.4); cam.lookAt(0, 2.15, -4);
+    var geos = [], mats = [], texs = [envT];
+    var keep = function (g) { geos.push(g); return g; };
+    var M = function (c, o) { var m = new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.8, envMapIntensity: 0.6 }, o || {})); mats.push(m); return m; };
+    var add = function (g, m, x, y, z) { var me = new THREE.Mesh(keep(g), m); me.position.set(x, y, z); me.castShadow = me.receiveShadow = true; scene.add(me); return me; };
+    var rb = function (w, h, d, r, m, x, y, z) { return add(new RBox(w, h, d, 4, r), m, x, y, z); };
+    var tex = function (fn, rep2) { var c = document.createElement('canvas'); c.width = c.height = 512; var x = c.getContext('2d'); fn(x); var t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; if (rep2) t.repeat.set(rep2, rep2); t.anisotropy = 8; texs.push(t); return t; };
+    var noise = function (x, base, amt, n) { x.fillStyle = base; x.fillRect(0, 0, 512, 512); for (var i = 0; i < n; i++) { var v = Math.random(); x.fillStyle = 'rgba(' + (v < .5 ? '0,0,0' : '255,255,255') + ',' + (Math.random() * amt).toFixed(3) + ')'; x.fillRect(Math.random() * 512, Math.random() * 512, 1 + Math.random() * 2, 1 + Math.random() * 2); } };
+    var plasterT = tex(function (x) { noise(x, '#808080', 0.12, 60000); }, 4);
+    var weaveT = tex(function (x) { x.fillStyle = '#808080'; x.fillRect(0, 0, 512, 512); for (var i = 0; i < 512; i += 4) { x.fillStyle = 'rgba(255,255,255,.08)'; x.fillRect(i, 0, 2, 512); x.fillStyle = 'rgba(0,0,0,.08)'; x.fillRect(0, i, 512, 2); } }, 6);
+    var woodT = tex(function (x) { x.fillStyle = '#E6DCCD'; x.fillRect(0, 0, 512, 512);
+      for (var pk = 0; pk < 8; pk++) { x.fillStyle = 'rgba(' + (pk % 2 ? '160,135,108' : '255,250,242') + ',.14)'; x.fillRect(0, pk * 64, 512, 64); x.fillStyle = 'rgba(120,100,80,.2)'; x.fillRect(0, pk * 64, 512, 1.5); }
+      for (var gn = 0; gn < 260; gn++) { x.strokeStyle = 'rgba(' + (Math.random() < .5 ? '140,115,90' : '255,252,246') + ',' + (0.03 + Math.random() * 0.07).toFixed(3) + ')'; x.lineWidth = 0.5 + Math.random() * 1.4;
+        var gy = Math.random() * 512; x.beginPath(); x.moveTo(0, gy); for (var gx = 0; gx <= 512; gx += 24) x.lineTo(gx, gy + Math.sin(gx * 0.02 + gn) * 2); x.stroke(); } }, 3);
+    woodT.colorSpace = THREE.SRGBColorSpace;
+    var wall = M('#F3F2EF', { roughness: 0.95, bumpMap: plasterT, bumpScale: 0.25, envMapIntensity: 0.25 }), wall2 = M('#F7F6F3', { roughness: 0.95, bumpMap: plasterT, bumpScale: 0.25, envMapIntensity: 0.25 });
+    var floorM = M('#FFFFFF', { map: woodT, roughness: 0.42, envMapIntensity: 0.5 }), oak = M('#D9C5A8', { map: woodT, roughness: 0.5 }), white = M('#FAFAF8', { roughness: 0.38 }), whiteMatte = M('#F4F2EE', { roughness: 0.75 });
+    var steel = M('#D4D6D9', { roughness: 0.25, metalness: 0.9, envMapIntensity: 1.2 }), black = M('#16181B', { roughness: 0.2, metalness: 0.3, envMapIntensity: 1 }), screen = M('#0E1116', { roughness: 0.08, metalness: 0.1, envMapIntensity: 1.4 });
+    var fabric = M('#ECE9E4', { roughness: 1, bumpMap: weaveT, bumpScale: 0.6 }), boucle = M('#EFEDE8', { roughness: 1, bumpMap: weaveT, bumpScale: 1.2 }), leafM = M('#4E6E3C', { roughness: 0.65, side: THREE.DoubleSide }), leaf2 = M('#6E8C4E', { roughness: 0.65, side: THREE.DoubleSide });
+    var clay = M('#F1EEE9', { roughness: 0.6 });
+    // room
+    add(new THREE.BoxGeometry(26, 0.1, 22), floorM, 0, -0.05, 0);
+    rb(8.4, 0.03, 5.4, 0.015, fabric, 0.3, 0.016, -0.6);
+    add(new THREE.BoxGeometry(7.2, 7, 0.4), wall, 0, 3.5, -5.2);
+    add(new THREE.BoxGeometry(0.4, 7, 11), wall2, 7.4, 3.5, -1.5);
+    var skyM = new THREE.MeshBasicMaterial({ color: '#C9DCEE' }); mats.push(skyM); var sky = new THREE.Mesh(keep(new THREE.PlaneGeometry(40, 16)), skyM); sky.position.set(0, 6, -12); scene.add(sky);
+    add(new THREE.BoxGeometry(6, 4.2, 0.3), M('#F1ECE4', { roughness: 0.95 }), -6.2, 2.1, -9.5); add(new THREE.BoxGeometry(5, 5.2, 0.3), M('#EDE6DC', { roughness: 0.95 }), 6.0, 2.6, -10.5);
+    for (var sx = -4.6; sx <= 3.4; sx += 0.16) rb(0.05, 7, 0.09, 0.015, whiteMatte, 7.16, 3.5, sx);
+    add(new THREE.BoxGeometry(0.5, 6.2, 6.4), wall2, -5.4, 3.1, -1.2);
+    rb(0.05, 1.42, 2.5, 0.02, screen, -5.12, 2.5, -1.0);
+    var ceil = M('#F6F5F3', { roughness: 0.9 }); add(new THREE.BoxGeometry(9, 0.2, 9), ceil, 2.6, 7.1, -1.5); add(new THREE.BoxGeometry(4, 0.2, 2.5), ceil, -4.4, 7.1, 1.75);
+    // low sideboard on slim legs
+    rb(2.2, 0.42, 0.55, 0.03, white, -3.9, 0.36, -0.2); [-0.95, 0.95].forEach(function (lx) { [-0.2, 0.2].forEach(function (lz) { add(new THREE.CylinderGeometry(0.012, 0.012, 0.15, 12), steel, -3.9 + lx, 0.075, -0.2 + lz); }); });
+    rb(0.36, 0.05, 0.26, 0.01, M('#2B3A55', { roughness: 0.6 }), -3.6, 0.6, -0.25); rb(0.34, 0.04, 0.24, 0.01, M('#E5DED2', { roughness: 0.7 }), -3.58, 0.645, -0.24);
+    // the desk: thin oak top on slim white legs, monitor, keyboard, mug
+    rb(2.6, 0.035, 0.85, 0.012, oak, 0, 0.75, -3.6);
+    [[-1.22, -0.38], [1.22, -0.38], [-1.22, 0.38], [1.22, 0.38]].forEach(function (l) { add(new THREE.CylinderGeometry(0.018, 0.018, 0.73, 16), white, l[0], 0.365, -3.6 + l[1]); });
+    rb(0.98, 0.58, 0.025, 0.012, black, -0.3, 1.2, -3.86); rb(0.94, 0.54, 0.004, 0.002, screen, -0.3, 1.2, -3.846);
+    add(new THREE.CylinderGeometry(0.018, 0.018, 0.3, 16), steel, -0.3, 0.92, -3.9); rb(0.24, 0.012, 0.16, 0.005, steel, -0.3, 0.775, -3.88);
+    rb(0.44, 0.012, 0.14, 0.004, whiteMatte, -0.3, 0.775, -3.42);
+    add(new THREE.CylinderGeometry(0.042, 0.038, 0.095, 32), white, 0.4, 0.815, -3.45);
+    var hl = add(new THREE.TorusGeometry(0.026, 0.007, 10, 24), white, 0.448, 0.815, -3.45); hl.rotation.y = Math.PI / 2;
+    // snake plant on the desk: real blades in a white pot
+    add(new THREE.CylinderGeometry(0.085, 0.07, 0.17, 32), clay, 0.85, 0.855, -3.7);
+    var blade = new THREE.Shape(); blade.moveTo(-0.025, 0); blade.quadraticCurveTo(-0.04, 0.2, 0, 0.42); blade.quadraticCurveTo(0.04, 0.2, 0.025, 0); blade.lineTo(-0.025, 0);
+    var bladeG = keep(new THREE.ShapeGeometry(blade, 8));
+    for (var bl = 0; bl < 9; bl++) { var bm = new THREE.Mesh(bladeG, bl % 2 ? leafM : leaf2); var ba = bl * 0.7; bm.position.set(0.85 + Math.cos(ba) * 0.03, 0.93, -3.7 + Math.sin(ba) * 0.03); bm.rotation.set(Math.cos(ba) * 0.18, ba, Math.sin(ba) * 0.18); bm.scale.setScalar(0.8 + (bl % 3) * 0.2); bm.castShadow = true; scene.add(bm); }
+    // a moulded shell chair on four slim legs
+    var shell = add(new THREE.SphereGeometry(0.34, 48, 24, 0, Math.PI * 2, Math.PI * 0.42, Math.PI * 0.46), M('#F5F3EF', { roughness: 0.45, side: THREE.DoubleSide }), -1.55, 0.86, -2.7);
+    shell.scale.set(1, 0.9, 1.05); shell.rotation.x = 0.18; shell.rotation.y = 0.5;
+    [[-0.18, -0.18], [0.18, -0.18], [-0.18, 0.18], [0.18, 0.18]].forEach(function (l) { var lg = add(new THREE.CylinderGeometry(0.012, 0.01, 0.62, 10), M('#C9A57A', { roughness: 0.5 }), -1.55 + l[0] * 1.3, 0.3, -2.7 + l[1] * 1.3); lg.rotation.z = -l[0] * 0.5; lg.rotation.x = l[1] * 0.5; });
+    // a drum-shade floor lamp
+    add(new THREE.CylinderGeometry(0.14, 0.15, 0.02, 40), black, 2.0, 0.01, -4.1); add(new THREE.CylinderGeometry(0.01, 0.01, 1.55, 12), black, 2.0, 0.79, -4.1);
+    var shade = add(new THREE.CylinderGeometry(0.2, 0.22, 0.34, 48, 1, true), M('#F7F3EA', { roughness: 0.9, side: THREE.DoubleSide, emissive: '#FFF3DC', emissiveIntensity: 0.25 }), 2.0, 1.72, -4.1);
+    // an olive tree in a tall white planter
+    add(new THREE.CylinderGeometry(0.34, 0.28, 0.72, 40), clay, 4.6, 0.36, -3.2);
+    var trunk = add(new THREE.CylinderGeometry(0.035, 0.05, 1.5, 12), M('#6B5A48', { roughness: 0.9 }), 4.6, 1.4, -3.2); trunk.rotation.z = 0.08;
+    var olive = keep(new THREE.SphereGeometry(0.05, 8, 6));
+    for (var ol = 0; ol < 160; ol++) { var oa = Math.random() * Math.PI * 2, orr2 = Math.random() * 0.6, oy = 1.8 + Math.random() * 0.9;
+      var om = new THREE.Mesh(olive, ol % 3 ? leafM : leaf2); om.position.set(4.6 + Math.cos(oa) * orr2, oy - orr2 * 0.4, -3.2 + Math.sin(oa) * orr2 * 0.8); om.scale.set(0.5, 0.25, 1.4); om.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3); om.castShadow = true; scene.add(om); }
+    // a lounge chair: rounded seat and curved back in boucle, on a swivel base
+    var lc = new THREE.Group(); lc.position.set(3.4, 0, 0.5); lc.rotation.y = -0.6; scene.add(lc);
+    var seat = new THREE.Mesh(keep(new RBox(0.82, 0.16, 0.76, 6, 0.07)), boucle); seat.position.y = 0.46; seat.castShadow = seat.receiveShadow = true; lc.add(seat);
+    var back = new THREE.Mesh(keep(new THREE.CylinderGeometry(0.46, 0.44, 0.6, 48, 1, true, Math.PI * 0.55, Math.PI * 0.9)), M('#EFEDE8', { roughness: 1, bumpMap: weaveT, bumpScale: 1.2, side: THREE.DoubleSide }));
+    back.position.set(0, 0.78, 0.05); back.castShadow = back.receiveShadow = true; lc.add(back);
+    var col = new THREE.Mesh(keep(new THREE.CylinderGeometry(0.035, 0.035, 0.36, 16)), steel); col.position.y = 0.2; col.castShadow = true; lc.add(col);
+    for (var ft = 0; ft < 4; ft++) { var fa = ft * Math.PI / 2 + 0.4, foot = new THREE.Mesh(keep(new THREE.BoxGeometry(0.4, 0.025, 0.04)), steel); foot.position.set(Math.cos(fa) * 0.2, 0.03, Math.sin(fa) * 0.2); foot.rotation.y = -fa; foot.castShadow = true; lc.add(foot); }
+    // a sculpted disc pendant
+    var pts = []; for (var pi2 = 0; pi2 <= 20; pi2++) { var t = pi2 / 20; pts.push(new THREE.Vector2(0.02 + t * 1.0, Math.sin(t * Math.PI) * 0.14 - t * 0.06)); }
+    var pend = add(new THREE.LatheGeometry(pts, 64), M('#F6F4F0', { roughness: 0.55, side: THREE.DoubleSide }), 0.4, 5.25, -2.2); pend.rotation.z = 0.18; pend.scale.set(1.2, 1, 0.75);
+    add(new THREE.CylinderGeometry(0.004, 0.004, 1.8, 6), black, 0.4, 6.2, -2.2);
+    // daylight through the skylight, a bright room fill
+    scene.add(new THREE.HemisphereLight('#FFFFFF', '#E6E2DC', 1.2));
+    var sun = new THREE.DirectionalLight('#FFF4E6', 3.6); sun.position.set(-7.5, 10, 4.5); sun.target.position.set(0.5, 0, -3); sun.castShadow = true;
+    sun.shadow.mapSize.set(4096, 4096); sun.shadow.camera.left = -12; sun.shadow.camera.right = 12; sun.shadow.camera.top = 12; sun.shadow.camera.bottom = -12; sun.shadow.bias = -0.0003; sun.shadow.normalBias = 0.02;
     scene.add(sun); scene.add(sun.target);
-    var fill = new THREE.PointLight('#FFFFFF', 2.4, 16, 2); fill.position.set(0.5, 3.2, 3.5); scene.add(fill);
-    return { scene: scene, cam: cam, dispose: function () { geos.forEach(function (g) { g.dispose(); }); mats.forEach(function (m) { m.dispose(); }); woodT.dispose(); sun.shadow.map && sun.shadow.map.dispose(); } };
+    var fill = new THREE.PointLight('#FFFFFF', 2.2, 16, 2); fill.position.set(0.5, 3.2, 3.5); scene.add(fill);
+    var glow = new THREE.PointLight('#FFE9C8', 0.9, 3, 2); glow.position.set(2.0, 1.72, -4.0); scene.add(glow);
+    return { scene: scene, cam: cam, sun: sun, dispose: function () { geos.forEach(function (g) { g.dispose(); }); mats.forEach(function (m) { m.dispose(); }); texs.forEach(function (t) { t.dispose(); }); pm.dispose(); if (sun.shadow.map) sun.shadow.map.dispose(); } };
   }
 
   // plays one illustration at progress r (0 empty .. 1 built; above 1 it holds), the same build-up as on the site
