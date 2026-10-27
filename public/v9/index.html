@@ -633,11 +633,11 @@ html,body{overscroll-behavior-y:none}
 /* v9 loader: a thin counter runs to 100 while a brand-gradient line fills along the bottom, then the white slides up */
 .atc-splash.ld{background:#FFFFFF !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;transition:transform .9s cubic-bezier(.7,0,.2,1)}
 .atc-splash.ld.is-out{transform:translateY(-100%)}
-.ld-k{position:absolute;left:calc(var(--rail) + 4vw);bottom:6vh;display:grid;overflow:hidden;padding-bottom:.12em;font-family:var(--atc-font);font-size:clamp(56px,9vw,168px);line-height:1;letter-spacing:-.05em;color:var(--atc-navy)}
+.ld-k{position:absolute;left:calc(var(--rail) + 4vw);bottom:6vh;display:grid;height:1.2em;overflow:hidden;font-family:var(--atc-font);font-size:clamp(56px,9vw,168px);line-height:1.2;letter-spacing:-.05em;color:var(--atc-navy)}
 .ld-w{grid-area:1/1;display:block;white-space:nowrap}
-/* the word changes by rolling: the old one rises out and fades, the new one rises in from below */
-.ld-w.is-in{animation:ld-in .7s cubic-bezier(.2,.7,.15,1) both}
-.ld-w.is-out{animation:ld-out .55s cubic-bezier(.6,0,.4,1) both}
+/* the word changes in turn, never overlapping: the old one rises out first, then the new one rises in from below */
+.ld-w.is-in{animation:ld-in .5s cubic-bezier(.2,.7,.15,1) .38s both}
+.ld-w.is-out{animation:ld-out .36s cubic-bezier(.6,0,.4,1) both}
 @keyframes ld-in{from{transform:translateY(105%);opacity:0;filter:blur(6px)}to{transform:none;opacity:1;filter:none}}
 @keyframes ld-out{to{transform:translateY(-105%);opacity:0;filter:blur(6px)}}
 .ld-n{position:absolute;right:4vw;bottom:7vh;font-family:var(--atc-font);font-size:clamp(28px,3vw,52px);line-height:1;letter-spacing:-.03em;color:var(--atc-mute);font-variant-numeric:tabular-nums}
@@ -2014,6 +2014,8 @@ class Component extends DCLogic {
     if (el) { el.classList.remove('is-out', 'is-gone', 'is-in'); }
     if (root) root.classList.remove('is-ready');
     this._splash = 0; this._splashT = 0; this._waitT = 0; this._onT = 0;
+    this._ldWi = null; this._ldWord = null; this._ldDone = 0;
+    var kEl = this.q('ldK'); if (kEl) kEl.innerHTML = '<span class="ld-w">Ideas</span>';
     try { window.scrollTo(0, 0); } catch (e) {}
   }
 
@@ -2143,22 +2145,26 @@ class Component extends DCLogic {
     var t = now - this._splInAt, kt = Math.min(1, t / 1400), et = 1 - Math.pow(1 - kt, 3);
     var pr = t > 9000 ? 1 : this.loadProgress();
     // the number never runs ahead of the real progress, and eases toward it
-    var want = Math.min(et, pr);
-    this._ldShow += (want - this._ldShow) * 0.12;
+    // the words move on one at a time, each held long enough to read; the number keeps pace with them
+    var WORDS = ['Ideas', 'Strategy', 'Creative', 'Development', 'Partner'];
+    if (this._ldWi == null) { this._ldWi = 0; this._ldSwapAt = now; }
+    var want = Math.min(et, pr, (this._ldWi + 1) / WORDS.length);
+    var dtL = now - (this._ldLast || now); this._ldLast = now;
+    this._ldShow += (want - this._ldShow) * (1 - Math.exp(-dtL / 110));
     if (want >= 1 && this._ldShow > 0.995) this._ldShow = 1;
     var n = this.q('ldN'), ln = this.q('ldLn'), txt = String(Math.floor(this._ldShow * 100));
-    // the word beside the counter moves on with the loading
-    var WORDS = ['Ideas', 'Strategy', 'Creative', 'Development', 'Partner'], kEl = this.q('ldK');
-    var wi = Math.min(WORDS.length - 1, Math.floor(this._ldShow * WORDS.length));
+    var kEl = this.q('ldK'), wt = Math.min(WORDS.length - 1, Math.floor(Math.min(et, pr) * WORDS.length + 0.001));
+    if (this._ldWi < wt && now - this._ldSwapAt > 750) { this._ldWi++; this._ldSwapAt = now; }
+    var wi = this._ldWi;
     if (kEl && this._ldWord !== WORDS[wi]) {
       this._ldWord = WORDS[wi];
       var olds = kEl.querySelectorAll('.ld-w:not(.is-out)'), nw = document.createElement('span');
-      for (var oi2 = 0; oi2 < olds.length; oi2++) { if (olds[oi2].textContent === WORDS[wi]) continue; olds[oi2].classList.add('is-out'); (function (o) { setTimeout(function () { o.remove(); }, 600); })(olds[oi2]); }
+      for (var oi2 = 0; oi2 < olds.length; oi2++) { if (olds[oi2].textContent === WORDS[wi]) continue; olds[oi2].classList.add('is-out'); (function (o) { setTimeout(function () { o.remove(); }, 400); })(olds[oi2]); }
       if (!olds.length || olds[0].textContent !== WORDS[wi]) { nw.className = 'ld-w is-in'; nw.textContent = WORDS[wi]; kEl.appendChild(nw); }
     }
     if (n && n.textContent !== txt) n.textContent = txt;
     if (ln) ln.style.width = (this._ldShow * 100).toFixed(2) + '%';
-    if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
+    if (this._ldShow >= 1 && wi === WORDS.length - 1 && now - this._ldSwapAt > 700 && !this._ldDone) this._ldDone = now;
     if (this._ldDone && now - this._ldDone > 250) {
       el.classList.add('is-out');
       if (root) root.classList.add('is-ready');
