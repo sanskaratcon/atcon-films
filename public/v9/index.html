@@ -2693,15 +2693,14 @@ class Component extends DCLogic {
         // v9: the problems are told in one furnished room, drawn with three.js (after wlt.design, in ATCON's colours).
         // Each statement is lettering on a wall; the camera moves to a new view of the room for each point, and that
         // point's pieces float in the room in front of it.
-        // the room is only built as the problems come near, and only drawn while they are on screen
+        // the room is built in the background a few seconds after the page opens (or as the problems come near), and
+        // only drawn while they are on screen
         var R = space.__r3;
-        if (!R && u > S.ins[0] - 400) {
+        if (!R && (u > S.ins[0] - 400 || performance.now() > 6000)) {
           R = space.__r3 = { ready: false };
           var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
-          Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js'),
-            import('three/addons/postprocessing/EffectComposer.js'), import('three/addons/postprocessing/RenderPass.js'), import('three/addons/postprocessing/GTAOPass.js'), import('three/addons/postprocessing/UnrealBloomPass.js'), import('three/addons/postprocessing/OutputPass.js')]).then(function (m) {
+          Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js')]).then(function (m) {
             var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry, RoomEnv = m[3].RoomEnvironment;
-            var EffectComposer = m[4].EffectComposer, RenderPass = m[5].RenderPass, GTAOPass = m[6].GTAOPass, UnrealBloomPass = m[7].UnrealBloomPass, OutputPass = m[8].OutputPass;
             var scene = new THREE.Scene(); scene.background = new THREE.Color('#D7E2F7');
             var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
             var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
@@ -2813,22 +2812,14 @@ class Component extends DCLogic {
               o3.position.copy(e.origin).addScaledVector(e.right, o.x * 7.4); o3.position.y = 3.0 - o.y * 2.7; o3.rotation.y = e.rot; o3.scale.setScalar(0.0084); scene.add(o3);
               R.objs.push({ o: o, o3: o3, base: o3.position.clone(), right: e.right, up: new THREE.Vector3(0, 1, 0) });
             });
-            // on capable screens: soft contact shadows (GTAO), a gentle bloom on the bright areas, smooth edges; phones keep the plain render
-            var rich = !window.matchMedia('(max-width:760px),(pointer:coarse)').matches;
-            if (rich) {
-              var rt = new THREE.WebGLRenderTarget(16, 16, { type: THREE.HalfFloatType, samples: 4 });
-              var comp = new EffectComposer(gl, rt); comp.addPass(new RenderPass(scene, cam));
-              var ao = new GTAOPass(scene, cam, 16, 16); ao.updateGtaoMaterial({ radius: 0.9, distanceExponent: 1.4, thickness: 1.2, scale: 1.2, samples: 8 });
-              ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 }); comp.addPass(ao);
-              comp.addPass(new UnrealBloomPass(new THREE.Vector2(16, 16), 0.22, 0.55, 0.92));
-              comp.addPass(new OutputPass()); comp.setPixelRatio(1); R.comp = comp;
-            }
+            // compile every material now, so the first frame of the room does not stall the scroll
+            gl.compile(scene, cam);
             R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
           }).catch(function () { R.failed = true; });
         }
         if (R && R.ready && ride) {
           var THREE3 = R.THREE, Wv = space.clientWidth || W, Hv = space.clientHeight || H;
-          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); R.gl.shadowMap.needsUpdate = true; if (R.comp) R.comp.setSize(Wv, Hv); R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
+          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); R.gl.shadowMap.needsUpdate = true; R.key = ''; R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
           // the camera eases from view to view
           var fc = Math.max(-1, Math.min(4, F)), a0 = Math.floor(fc), tt = fc - a0, st3 = tt * tt * (3 - 2 * tt);
           var vw = function (i) { return i < 0 ? R.pre : i > 3 ? R.post : R.views[i]; };
@@ -2849,7 +2840,11 @@ class Component extends DCLogic {
             q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.35).addScaledVector(q.up, -q.o.y * pa2 * 0.2); q.o3.position.y += bob(q.o.k);
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
-          if (R.comp) R.comp.render(); else R.gl.render(R.scene, R.cam); R.css.render(R.scene, R.cam);
+          // the room itself only changes when the camera moves or a wall shadow fades; the floating words and pieces
+          // (DOM) are placed every frame
+          var key = cp.join() + ct.join() + sp3.sx.toFixed(4) + sp3.sy.toFixed(4) + F.toFixed(3);
+          if (key !== R.key) { R.key = key; R.gl.render(R.scene, R.cam); }
+          R.css.render(R.scene, R.cam);
         }
       }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
