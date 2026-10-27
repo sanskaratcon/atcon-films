@@ -3421,11 +3421,13 @@ class Component extends DCLogic {
     for (var i = 0; i < 4; i++) {
       var d = i - fc;
       // the illustration drifts a little slower than its card; the cards lean into the move and ease back away from the middle
-      C.ills[i].style.transform = 'translate(-50%,-50%) translateX(' + (d * -70 + dir * st * -220).toFixed(1) + 'px)';
+      // never still: each card floats on its own slow rhythm, and its illustration drifts and breathes inside it
+      var tm = performance.now() / 1000 + i * 1.7, fy = Math.sin(tm * 0.9) * 9, fr = Math.sin(tm * 0.55) * 0.7, ix = Math.sin(tm * 0.7) * 14, iy = Math.cos(tm * 0.6) * 7, isc = 1 + Math.sin(tm * 0.8) * 0.018;
+      C.ills[i].style.transform = 'translate(-50%,-50%) translate(' + (d * -70 + dir * st * -220 + ix).toFixed(1) + 'px,' + iy.toFixed(1) + 'px) scale(' + isc.toFixed(4) + ')';
       var tw = Math.max(0, 1 - Math.abs(d) * 2.2);
       C.texts[i].style.opacity = tw.toFixed(3); C.texts[i].style.visibility = tw > 0.01 ? 'visible' : 'hidden';
       C.texts[i].style.transform = 'translateY(calc(-50% + ' + (d * 40).toFixed(1) + 'px))';
-      C.cards[i].style.transform = 'translateY(-50%) skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
+      C.cards[i].style.transform = 'translateY(calc(-50% + ' + fy.toFixed(1) + 'px)) rotate(' + fr.toFixed(2) + 'deg) skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
       var fv = fx ? 'url(#crd-speed)' : '';
       if (C.cards[i].style.filter !== fv) C.cards[i].style.filter = fv;
     }
