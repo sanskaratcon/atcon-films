@@ -3384,8 +3384,10 @@ class Component extends DCLogic {
       svg.innerHTML = '<filter id="crd-speed" x="-0.08" y="-0.12" width="1.16" height="1.24" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">'
         + '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="m" href="' + mc.toDataURL() + '"/>'
         + '<feDisplacementMap in="SourceGraphic" in2="m" scale="0" xChannelSelector="G" yChannelSelector="R" result="w"/>'
-        + '<feGaussianBlur in="w" stdDeviation="0 0"/></filter>';
-      wrap.appendChild(svg); C.disp = svg.querySelector('feDisplacementMap'); C.blur = svg.querySelector('feGaussianBlur');
+        + '<feGaussianBlur in="w" stdDeviation="0 0"/></filter>'
+        // the text gets the same sideways smear, measured in pixels so it matches the card's
+        + '<filter id="crd-speed-t" x="-0.2" y="-0.2" width="1.4" height="1.4" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="0 0"/></filter>';
+      wrap.appendChild(svg); C.disp = svg.querySelector('feDisplacementMap'); C.blur = svg.querySelector('#crd-speed feGaussianBlur'); C.blurT = svg.querySelector('#crd-speed-t feGaussianBlur');
       var COL = ['45,99,230', '63,178,126', '90,134,238', '155,186,42'];
       for (var k = 0; k < 4; k++) {
         var li = this.q('offerL' + k), src = this.q('cvW' + k), ill = src ? src.querySelector('.ix').cloneNode(true) : null;
@@ -3423,7 +3425,7 @@ class Component extends DCLogic {
     var st = C.sp, dir = dx < 0 ? -1 : 1;
     C.track.style.transform = 'translate(' + x.toFixed(1) + 'px,-50%)';
     var fx = st > 0.003;
-    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 0.35).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 5).toFixed(4) + ' 0'); }
+    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 0.35).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 5).toFixed(4) + ' 0'); C.blurT.setAttribute('stdDeviation', (st / 5 * C.cw).toFixed(2) + ' 0'); }
     for (var i = 0; i < 4; i++) {
       var d = i - fc;
       // the illustration drifts a little slower than its card; the cards lean into the move and ease back away from the middle
@@ -3435,6 +3437,8 @@ class Component extends DCLogic {
       C.cards[i].style.transform = 'skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
       var fv = fx ? 'url(#crd-speed)' : '';
       if (C.cards[i].style.filter !== fv) C.cards[i].style.filter = fv;
+      var ft = fx ? 'url(#crd-speed-t)' : '';
+      if (C.texts[i].style.filter !== ft) C.texts[i].style.filter = ft;
     }
   }
 
