@@ -1088,6 +1088,17 @@ html,body{overflow-anchor:none}
   .atc-offer .cv-body{height:100%}
   .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:0;top:0;width:100%;height:100%}
 }
+/* v9 What we offer, after illoca.unseen.co: one desk drawn in two tones (white in the light, brand blue in the shadows) on
+   the right; for each capability the camera finds a new angle, a new sketch slides onto the desk and its object rises */
+@media (min-width:1101px),(min-width:761px) and (orientation:landscape){
+  .atc-offer .atc-canvas{visibility:hidden !important}
+  .atc-desk{position:absolute;right:-2%;top:-4%;bottom:-4%;width:62%;opacity:0;visibility:hidden;pointer-events:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%),linear-gradient(180deg,transparent 0,#000 12%,#000 88%,transparent 100%);-webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent 0,#000 16%),linear-gradient(180deg,transparent 0,#000 12%,#000 88%,transparent 100%);mask-composite:intersect}
+  .atc-desk canvas{display:block;width:100%;height:100%}
+  .atc-desk::after{content:'';position:absolute;inset:0;opacity:.09;mix-blend-mode:multiply;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+}
 /* v9 What we offer: the four illustrations, drawn on a 557 x 376 board that scales with its slot */
 .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{container-type:size}
 .ix{position:absolute;left:50%;top:50%;width:min(100cqw,148.1cqh);aspect-ratio:557/376;transform:translate(-50%,-50%);container-type:inline-size;box-sizing:border-box;
@@ -3338,6 +3349,122 @@ class Component extends DCLogic {
   // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
   // The solution, played on scroll: tagline, both sides, the direct line that breaks, ATCON arriving in the middle,
   // then every side connected through it, with data flowing from business to technology.
+  // v9 What we offer: the desk. Built once (while the loader runs), drawn only while the section is on screen.
+  desk(off, fp, u, S) {
+    var map = this._fx.map, ease = this._fx.ease, D = off.__desk;
+    if (!D) {
+      D = off.__desk = { ready: false };
+      var holder = document.createElement('div'); holder.className = 'atc-desk'; holder.setAttribute('aria-hidden', 'true'); off.appendChild(holder); D.holder = holder;
+      import('three').then(function (THREE) { D.THREE = THREE; buildDesk(D, THREE); D.ready = true; }).catch(function () { D.failed = true; });
+    }
+    var show = ease(map(fp, -1, -0.2)), live = u > S.tiles[0] - 6 && u < S.out + 4 && show > 0.001;
+    D.holder.style.opacity = show.toFixed(3); D.holder.style.visibility = live ? 'visible' : 'hidden';
+    if (!D.ready || !live) return;
+    var THREE = D.THREE, W = D.holder.clientWidth, H = D.holder.clientHeight;
+    if (D.w !== W || D.h !== H) { D.w = W; D.h = H; D.gl.setSize(W, H, false); D.cam.aspect = W / Math.max(1, H); D.cam.updateProjectionMatrix(); D.gl.shadowMap.needsUpdate = true; }
+    var t = performance.now() / 1000, c = Math.max(0, Math.min(3, fp));
+    // the camera finds a new angle on the same desk for each capability, with a slow drift
+    var ang = -0.62 + c * 0.4 + Math.sin(t * 0.25) * 0.02, rad = 2.45 - Math.sin(c * 1.3) * 0.12;
+    D.cam.position.set(Math.sin(ang) * rad, 1.85 + Math.cos(c * 1.7) * 0.1, Math.cos(ang) * rad);
+    D.cam.lookAt(0.05, 0.16, 0.08);
+    // the sheets slide across the desk: in from the right, rest in the middle, out to the left
+    for (var k = 0; k < 4; k++) {
+      var d = k - fp, sh = D.sheets[k];
+      sh.visible = Math.abs(d) < 1.15;
+      sh.position.set(0.05 + d * 1.7, 0.004 + k * 0.0005, 0.1 + Math.abs(d) * 0.25); sh.rotation.z = d * 0.25;
+      var w = Math.max(0, 1 - Math.abs(fp - k) * 1.5), e = w * w * (3 - 2 * w), g = D.heroes[k];
+      g.visible = e > 0.01; g.scale.setScalar((0.001 + e) * 1.45); g.position.y = (e - 1) * 0.15;
+      if (k === 0) D.bars.forEach(function (b) { b.scale.y = Math.max(0.01, e); b.position.y = b.userData.h * e / 2; });
+    }
+    D.gears.forEach(function (gr, i) { gr.rotation.y = t * (i % 2 ? -0.9 : 0.9) * (1 + i * 0.3); });
+    D.layers.forEach(function (ly, i) { ly.position.y = ly.userData.y + Math.sin(t * 1.2 + i) * 0.012; });
+    D.gl.shadowMap.needsUpdate = true;
+    D.gl.render(D.scene, D.cam);
+
+    function buildDesk(D, THREE) {
+      var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
+      gl.setClearColor('#F5F7FB'); gl.outputColorSpace = THREE.SRGBColorSpace; gl.toneMapping = THREE.NoToneMapping;
+      gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.shadowMap.autoUpdate = false;
+      D.holder.appendChild(gl.domElement); D.gl = gl;
+      var scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 60); D.scene = scene; D.cam = cam;
+      // two tones: whatever the lamp does not reach takes the brand blue
+      scene.add(new THREE.AmbientLight('#2D63E6', 1.9));
+      var sun = new THREE.DirectionalLight('#FFFFFF', 7.0); sun.position.set(-3.4, 2.6, 1.1); sun.castShadow = true;
+      sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -4; sun.shadow.camera.right = 4; sun.shadow.camera.top = 4; sun.shadow.camera.bottom = -4;
+      sun.shadow.bias = -0.0006; sun.shadow.radius = 2; scene.add(sun);
+      var steps = new THREE.DataTexture(new Uint8Array([90, 90, 90, 255, 255, 255, 255, 255]), 2, 1); steps.minFilter = steps.magFilter = THREE.NearestFilter; steps.needsUpdate = true;
+      var M = function (col) { return new THREE.MeshToonMaterial({ color: col, gradientMap: steps }); };
+      var ink = new THREE.LineBasicMaterial({ color: '#1B2A4A', transparent: true, opacity: 0.32 });
+      var put = function (geo, m, x, y, z, edge) { var me = new THREE.Mesh(geo, m); me.position.set(x, y, z); me.castShadow = true; me.receiveShadow = true;
+        if (edge !== false) me.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 30), ink)); scene.add(me); return me; };
+      var white = M('#F4F6FA'), paper = M('#FBFCFE'), soft = M('#E7ECF5');
+      // a window frame the camera never sees, standing in the light: it throws long window-pane shadows across the desk
+      var ghost = new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
+      var win = new THREE.Group(); win.position.set(-2.1, 1.55, 0.7); win.lookAt(-3.4, 2.6, 1.1); scene.add(win);
+      [[-0.9, 0, 0.09, 1.9], [0, 0, 0.09, 1.9], [0.9, 0, 0.09, 1.9], [0, 0.95, 1.9, 0.09], [0, 0, 1.9, 0.09], [0, -0.95, 1.9, 0.09]].forEach(function (b) {
+        var fm = new THREE.Mesh(new THREE.BoxGeometry(b[2], b[3], 0.05), ghost); fm.position.set(b[0], b[1], 0); fm.castShadow = true; win.add(fm); });
+      // the desk, its legs and the floor
+      put(new THREE.BoxGeometry(3.7, 0.08, 2.1), white, 0, -0.04, 0);
+      [[-1.75, -0.95], [1.75, -0.95], [-1.75, 0.95], [1.75, 0.95]].forEach(function (l) { put(new THREE.BoxGeometry(0.07, 0.9, 0.07), white, l[0], -0.53, l[1]); });
+      var floor = put(new THREE.PlaneGeometry(30, 30), soft, 0, -0.98, 0, false); floor.rotation.x = -Math.PI / 2;
+      // the laptop
+      var lap = new THREE.Group(); lap.position.set(-1.12, 0, -0.5); lap.rotation.y = 0.55; scene.add(lap);
+      var lb = put(new THREE.BoxGeometry(0.64, 0.025, 0.44), white, 0, 0.0125, 0); lap.add(lb);
+      var ls = put(new THREE.BoxGeometry(0.64, 0.43, 0.018), white, 0, 0.22, -0.23); ls.rotation.x = -0.28; lap.add(ls);
+      // the desk lamp, whose long shadow crosses the desk
+      put(new THREE.CylinderGeometry(0.13, 0.15, 0.035, 40), white, 1.35, 0.018, -0.62);
+      var a1 = put(new THREE.CylinderGeometry(0.014, 0.014, 0.62, 12), white, 1.3, 0.31, -0.55); a1.rotation.z = 0.25; a1.rotation.x = 0.2;
+      var a2 = put(new THREE.CylinderGeometry(0.014, 0.014, 0.5, 12), white, 1.05, 0.68, -0.36); a2.rotation.z = 1.05; a2.rotation.x = -0.3;
+      var hd = put(new THREE.ConeGeometry(0.11, 0.18, 32, 1, true), white, 0.82, 0.74, -0.22); hd.rotation.z = 2.2;
+      // a mug, notebooks, a pen and a plant
+      put(new THREE.CylinderGeometry(0.06, 0.055, 0.11, 32), white, 1.08, 0.055, 0.5);
+      var hdl = put(new THREE.TorusGeometry(0.03, 0.009, 10, 24), white, 1.14, 0.06, 0.5, false); hdl.rotation.y = Math.PI / 2;
+      var nb1 = put(new THREE.BoxGeometry(0.52, 0.03, 0.37), white, -1.18, 0.015, 0.58); nb1.rotation.y = 0.2;
+      var nb2 = put(new THREE.BoxGeometry(0.48, 0.025, 0.34), paper, -1.15, 0.043, 0.56); nb2.rotation.y = 0.32;
+      var pen = put(new THREE.CylinderGeometry(0.008, 0.008, 0.32, 10), white, 0.78, 0.01, 0.66, false); pen.rotation.z = Math.PI / 2; pen.rotation.y = 0.6;
+      put(new THREE.CylinderGeometry(0.13, 0.1, 0.22, 32), white, -1.5, 0.11, -0.86);
+      for (var lf = 0; lf < 12; lf++) { var lv = put(new THREE.SphereGeometry(0.07, 12, 8), white, -1.5 + Math.cos(lf * 2.4) * 0.07, 0.3 + (lf % 4) * 0.07, -0.86 + Math.sin(lf * 2.4) * 0.07, false); lv.scale.set(0.5, 1.9, 0.5); lv.rotation.set(Math.cos(lf) * 0.6, 0, Math.sin(lf) * 0.6); }
+      // the sketch sheets, one per capability, drawn like a pen sketch
+      var sketch = function (k) {
+        var c = document.createElement('canvas'); c.width = 1024; c.height = 712; var x = c.getContext('2d');
+        x.fillStyle = '#FBFCFE'; x.fillRect(0, 0, 1024, 712);
+        x.strokeStyle = 'rgba(45,99,230,.12)'; x.lineWidth = 1; for (var gx = 0; gx <= 1024; gx += 32) { x.beginPath(); x.moveTo(gx, 0); x.lineTo(gx, 712); x.stroke(); } for (var gy = 0; gy <= 712; gy += 32) { x.beginPath(); x.moveTo(0, gy); x.lineTo(1024, gy); x.stroke(); }
+        x.strokeStyle = '#24324F'; x.fillStyle = '#24324F'; x.lineWidth = 4; x.lineCap = 'round'; x.lineJoin = 'round'; x.font = '40px Geist, sans-serif';
+        var L = function (pts) { x.beginPath(); x.moveTo(pts[0][0], pts[0][1]); for (var i = 1; i < pts.length; i++) x.lineTo(pts[i][0], pts[i][1]); x.stroke(); };
+        var R = function (a, b, w, h) { x.strokeRect(a, b, w, h); };
+        if (k === 0) { x.fillText('Revenue  €12M', 90, 110); L([[90, 600], [940, 600]]); L([[90, 600], [90, 160]]);
+          L([[110, 520], [230, 430], [330, 470], [450, 330], [560, 380], [690, 240], [820, 280], [920, 180]]); x.fillStyle = 'rgba(45,99,230,.18)'; x.fillRect(110, 540, 0, 0); }
+        if (k === 1) { [[130, 150], [130, 310], [130, 470]].forEach(function (r, i) { R(r[0], r[1], 560, 110); x.beginPath(); x.arc(r[0] + 640, r[1] + 55, 34, 0, Math.PI * 2); x.stroke(); x.fillText(['Invoice approvals', 'Order sync', 'Weekly reports'][i], r[0] + 40, r[1] + 70); });
+          L([[860, 205], [900, 205], [900, 365], [860, 365]]); }
+        if (k === 2) { R(452, 110, 120, 120); x.fillText('ATCON', 446, 270); [[200, 520], [400, 560], [620, 560], [820, 520]].forEach(function (pp) { x.beginPath(); x.arc(pp[0], pp[1], 50, 0, Math.PI * 2); x.stroke(); L([[512, 230], [pp[0], pp[1] - 50]]); }); }
+        if (k === 3) { R(110, 100, 800, 520); L([[110, 160], [910, 160]]); [[140, 130], [170, 130], [200, 130]].forEach(function (d) { x.beginPath(); x.arc(d[0], d[1], 9, 0, Math.PI * 2); x.stroke(); });
+          R(140, 200, 180, 390); R(350, 200, 530, 170); R(350, 400, 250, 190); R(630, 400, 250, 190); x.fillText('Client portal', 380, 300); }
+        var tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 4; return tx;
+      };
+      D.sheets = [0, 1, 2, 3].map(function (k) { var sh = put(new THREE.PlaneGeometry(1.2, 0.83), new THREE.MeshToonMaterial({ map: sketch(k), gradientMap: steps }), 0, 0.004, 0.1, false); sh.rotation.x = -Math.PI / 2; sh.scale.setScalar(1.3); sh.castShadow = false; return sh; });
+      // the object of each capability, rising from its sheet
+      D.heroes = [0, 1, 2, 3].map(function () { var g = new THREE.Group(); g.position.set(0, 0, 0); scene.add(g); return g; });
+      var inG = function (k, me) { scene.remove(me); D.heroes[k].add(me); return me; };
+      D.bars = [0.18, 0.3, 0.24, 0.42, 0.36, 0.56].map(function (h, i) { var b = inG(0, put(new THREE.BoxGeometry(0.1, h, 0.1), white, -0.32 + i * 0.13, h / 2, 0.12)); b.userData.h = h; b.geometry.translate(0, 0, 0); return b; });
+      D.gears = [[-0.15, 0.08, 0.17], [0.2, 0.0, 0.13], [0.02, 0.32, 0.1]].map(function (gq) {
+        var gr = new THREE.Group(); gr.position.set(gq[0], 0.04, gq[1]); D.heroes[1].add(gr);
+        var body = put(new THREE.CylinderGeometry(gq[2], gq[2], 0.05, 40), white, 0, 0, 0); scene.remove(body); gr.add(body);
+        for (var tt = 0; tt < 12; tt++) { var a = tt / 12 * Math.PI * 2, th = put(new THREE.BoxGeometry(0.035, 0.05, 0.04), white, Math.cos(a) * (gq[2] + 0.015), 0, Math.sin(a) * (gq[2] + 0.015)); th.rotation.y = -a; scene.remove(th); gr.add(th); }
+        return gr; });
+      [0, 1, 2].forEach(function (ci) { var cd = inG(1, put(new THREE.BoxGeometry(0.28, 0.012, 0.2), paper, 0.38, 0.008 + ci * 0.014, -0.15)); cd.rotation.y = ci * 0.18; });
+      var hub = inG(2, put(new THREE.BoxGeometry(0.16, 0.16, 0.035), white, 0.05, 0.32, 0.05)); hub.rotation.x = -0.6;
+      inG(2, put(new THREE.CylinderGeometry(0.008, 0.008, 0.3, 8), white, 0.05, 0.15, 0.05, false));
+      [[-0.32, 0.3], [-0.1, 0.38], [0.2, 0.38], [0.42, 0.3]].forEach(function (pp) {
+        inG(2, put(new THREE.ConeGeometry(0.055, 0.14, 24), white, pp[0], 0.07, pp[1]));
+        inG(2, put(new THREE.SphereGeometry(0.04, 20, 14), white, pp[0], 0.17, pp[1]));
+      });
+      D.layers = [0.06, 0.18, 0.3].map(function (y, i) { var ly = inG(3, put(new THREE.BoxGeometry(0.74 - i * 0.06, 0.012, 0.48 - i * 0.04), i === 2 ? paper : white, 0.05, y, 0.08)); ly.userData.y = y; ly.rotation.y = 0.08 * i;
+        if (i === 2) { [[-0.18, 0.03], [0.12, -0.08], [0.12, 0.1]].forEach(function (bk) { var b = put(new THREE.BoxGeometry(0.16, 0.03, 0.1), white, bk[0], 0.02, bk[1]); scene.remove(b); ly.add(b); }); }
+        return ly; });
+      gl.compile(scene, cam);
+    }
+  }
+
   sol(S, u) {
     var map = this._fx.map, ease = this._fx.ease;
     var box = this.q('sol');
@@ -3532,6 +3659,7 @@ class Component extends DCLogic {
       if (off) { off.style.setProperty('--hy', (-hk * 42).toFixed(2) + 'vh'); off.style.setProperty('--ho', (1 - hk).toFixed(3)); }
       fp = ease(map(u, S.tiles[0] + 8, S.tiles[0] + 36)) - 1;
       for (var fk = 1; fk < 4; fk++) fp += ease(map(u, S.tiles[0] + span4 * fk - 20, S.tiles[0] + span4 * fk + 6));
+      if (off) this.desk(off, fp, u, S);
     }
     for (var oi = 0; oi < 4; oi++) {
       var s0 = S.tiles[0] + oi * span4, r = map(u, s0, s0 + span4);
