@@ -2551,7 +2551,7 @@ class Component extends DCLogic {
         var inE = ease(map(u, E0, S.ins[0] - 2)), outE = 1 - ease(map(u, S.out + 2, S.out + 40));
         var ride = u > E0 && u < S.out + 56;
         sp.style.visibility = ride ? 'visible' : 'hidden';
-        sp.style.opacity = (Math.min(ease(map(u, E0, E0 + 4)), 1 - ease(map(u, S.out + 36, S.out + 56)))).toFixed(3);
+        sp.style.opacity = (Math.min(ease(map(u, E0, E0 + 4)), 1 - ease(map(u, S.out + 48, S.out + 56)))).toFixed(3);
         this._waveOn = ride;
         // the earlier layout steps aside while the flight plays
         var oldA = u >= S.out + 56 ? 1 : 1 - ease(map(u, E0, E0 + 4)), olds = [this.q('stack'), iso];
@@ -2729,9 +2729,15 @@ class Component extends DCLogic {
             var add = function (geo, m2, x, y, z, ry, cast) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = cast !== false; me.receiveShadow = true; scene.add(me); return me; };
             var box = function (w, h, d, m2, x, y, z, r) { return add(new RBox(w, h, d, 3, r == null ? Math.min(w, h, d) * 0.12 : r), m2, x, y, z); };
             // the room: 20 wide, 7 high, 16 deep; a big window on the left, stairs on the right, a lit cove in the ceiling
-            var wallM = mat('#D3DFF6', { bumpMap: plasterT, bumpScale: 0.6 }), floorM = mat('#BFD0EE', { roughness: 0.42, roughnessMap: cementT, bumpMap: cementT, bumpScale: 0.3, envMapIntensity: 0.9 }), ceilM = mat('#F6F6F4', { emissive: '#F3F3F1', emissiveIntensity: 0.6 });
+            var wallM = mat('#D3DFF6', { bumpMap: plasterT, bumpScale: 0.6 }), floorM = mat('#BFD0EE', { roughness: 0.42, roughnessMap: cementT, bumpMap: cementT, bumpScale: 0.3, envMapIntensity: 0.9 }), ceilM = new THREE.MeshBasicMaterial({ color: '#FFFFFF', toneMapped: false });
             add(new THREE.PlaneGeometry(20, 16), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
             var ceil = add(new THREE.PlaneGeometry(20, 16), ceilM, 0, 7, 0, 0, false); ceil.rotation.x = Math.PI / 2;
+            // the ceiling stays pure white; a quiet grid of slim round downlights gives it something to read as the camera looks up
+            var dlRing = new THREE.MeshBasicMaterial({ color: '#E3E7EE', toneMapped: false }), dlIn = new THREE.MeshBasicMaterial({ color: '#FFFFFF', toneMapped: false });
+            for (var dlx = -7.5; dlx <= 7.51; dlx += 3) for (var dlz = -6; dlz <= 6.01; dlz += 3) {
+              var dr0 = add(new THREE.CircleGeometry(0.2, 40), dlRing, dlx, 6.985, dlz, 0, false); dr0.rotation.x = Math.PI / 2; dr0.receiveShadow = false;
+              var dr1 = add(new THREE.CircleGeometry(0.15, 40), dlIn, dlx, 6.98, dlz, 0, false); dr1.rotation.x = Math.PI / 2; dr1.receiveShadow = false;
+            }
             add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, -8, 0, false);
             add(new THREE.PlaneGeometry(16, 7), wallM, 10, 3.5, 0, -Math.PI / 2, false);
             R.backWall = add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, 8, Math.PI, false);
@@ -2794,7 +2800,7 @@ class Component extends DCLogic {
             R.views = [
               { p: [1.6, 3.0, 7.4], t: [-3.0, 3.5, -8] }, { p: [-1.2, 3.0, 7.4], t: [4.0, 3.5, -8] },
               { p: [-6.5, 3.0, 2.4], t: [10, 3.5, -4.4] }, { p: [1.6, 3.0, -7.2], t: [0, 3.5, 8] }];
-            R.pre = { p: [0.8, 3.6, 13.5], t: [-2.4, 3.4, -8] }; R.post = { p: [0.8, 3.3, -2.2], t: [0.6, 14, 3.2] };
+            R.pre = { p: [0.8, 3.6, 13.5], t: [-2.4, 3.4, -8] }; R.post = { p: [0.6, 4.4, -1.0], t: [0.6, 40, 2.0] };
             var ex = WALL.map(function (wv, k) {
               var rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, wv[2]), nrm = new THREE.Vector3(0, 0, 1).applyAxisAngle(axisY, wv[2]);
               var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[1];
@@ -2832,7 +2838,7 @@ class Component extends DCLogic {
           // from a wide whoosh to its normal angle
           // on the way out the same in reverse: the camera tilts up to the white ceiling and the white closes in, so the
           // room hands over to the white of the next section
-          var en = ease(map(u, E0, S.ins[0] - 6)), exW = ease(map(u, S.out + 8, S.out + 42)), clr = Math.min(en, 1 - exW);
+          var en = ease(map(u, E0, S.ins[0] - 6)), exW = ease(map(u, S.out + 30, S.out + 52)), clr = Math.min(en, 1 - exW);
           var dR = 0.01 + Math.pow(clr, 1.15) * 60;
           // the back wall steps aside while the camera passes through it
           if (R.backWall) R.backWall.visible = en >= 1;
