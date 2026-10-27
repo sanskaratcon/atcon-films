@@ -1096,6 +1096,7 @@ html,body{overflow-anchor:none}
   /* the room behind What we offer: one still view of the same 3D room, under a soft white veil, never moving */
   .ofr{position:absolute;z-index:0;opacity:0;visibility:hidden;pointer-events:none;background:#F4F6FA center/cover no-repeat}
   .ofr::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 50%,rgba(255,255,255,.4),rgba(255,255,255,.22) 70%,rgba(255,255,255,.12))}
+  .ofr::before{content:'';position:absolute;inset:0;z-index:1;background:#FFFFFF;opacity:var(--veil,0)}
   .crd{position:absolute;z-index:1;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
   .crd-track{position:absolute;left:0;top:50%;display:flex;gap:var(--gap);will-change:transform}
   .crd-c{position:relative;flex:none;width:var(--cw);height:var(--ch);border-radius:28px;overflow:hidden;
@@ -3377,6 +3378,12 @@ class Component extends DCLogic {
     var k = orr.width / Math.max(1, off.offsetWidth) || 1;
     B.el.style.left = ((sr.left - orr.left) / k).toFixed(1) + 'px'; B.el.style.top = ((sr.top - orr.top) / k).toFixed(1) + 'px';
     B.el.style.width = (sr.width / k).toFixed(0) + 'px'; B.el.style.height = (sr.height / k).toFixed(0) + 'px';
+    // as you scroll on, the camera moves toward the plain white wall right of the window, so the cards and their text
+    // end up on a clean white background; it gets there as the first card arrives, then keeps creeping closer
+    var dz = 0.78 * ease(map(u, S.tiles[0] - 10, S.tiles[0] + 70)) + 0.22 * map(u, S.tiles[0] + 70, S.tiles[1]);
+    B.el.style.transformOrigin = '84% 22%';
+    B.el.style.transform = dz > 0.0005 ? 'scale(' + (1 + dz * 1.9).toFixed(4) + ')' : '';
+    B.el.style.setProperty('--veil', (dz * 0.45).toFixed(3));
   }
 
   // renders the studio 12 times with the sun moved a little each time and blends them, for the soft shadows of real
