@@ -3362,6 +3362,18 @@ class Component extends DCLogic {
       var wrap = document.createElement('div'); wrap.className = 'crd'; wrap.setAttribute('aria-hidden', 'true');
       var track = document.createElement('div'); track.className = 'crd-track'; wrap.appendChild(track); off.appendChild(wrap);
       C.wrap = wrap; C.track = track; C.cards = []; C.ills = [];
+      // after lusion.co: the faster the row moves, the more each card bends along a soft wave across its width and smears
+      // in the direction of travel (their screen shader: a cos wave offset of 2*s^2 and an 8-tap blur of s along the move)
+      var mc = document.createElement('canvas'); mc.width = 256; mc.height = 2; var mx = mc.getContext('2d'), md = mx.createImageData(256, 2);
+      for (var px = 0; px < 256; px++) { var cv = Math.round(127.5 + 127.5 * Math.cos(px / 255 * Math.PI * 2));
+        for (var py = 0; py < 2; py++) { var o = (py * 256 + px) * 4; md.data[o] = cv; md.data[o + 1] = 128; md.data[o + 2] = 128; md.data[o + 3] = 255; } }
+      mx.putImageData(md, 0, 0);
+      var ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'); svg.setAttribute('width', '0'); svg.setAttribute('height', '0'); svg.style.position = 'absolute';
+      svg.innerHTML = '<filter id="crd-speed" x="-0.08" y="-0.12" width="1.16" height="1.24" primitiveUnits="objectBoundingBox" color-interpolation-filters="sRGB">'
+        + '<feImage x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="m" href="' + mc.toDataURL() + '"/>'
+        + '<feDisplacementMap in="SourceGraphic" in2="m" scale="0" xChannelSelector="G" yChannelSelector="R" result="w"/>'
+        + '<feGaussianBlur in="w" stdDeviation="0 0"/></filter>';
+      wrap.appendChild(svg); C.disp = svg.querySelector('feDisplacementMap'); C.blur = svg.querySelector('feGaussianBlur');
       var COL = ['45,99,230', '63,178,126', '90,134,238', '155,186,42'];
       for (var k = 0; k < 4; k++) {
         var li = this.q('offerL' + k), src = this.q('cvW' + k), ill = src ? src.querySelector('.ix').cloneNode(true) : null;
@@ -3392,14 +3404,23 @@ class Component extends DCLogic {
       C.cw = Math.min(W * 0.72, H * 0.72 * 1.9); C.gap = W * 0.035;
       C.wrap.style.setProperty('--cw', C.cw.toFixed(0) + 'px'); C.wrap.style.setProperty('--ch', (C.cw / 1.9).toFixed(0) + 'px'); C.wrap.style.setProperty('--gap', C.gap.toFixed(0) + 'px');
     }
-    // one card per step; the row travels from the right, a card settles in the middle while it is read
-    var slot = C.cw + C.gap, pos = fp * slot, x = W / 2 - C.cw / 2 - pos;
+    // the row follows the scroll directly, like lusion.co: one long glide from the right, no stops between cards
+    var lin = -1 + 4.15 * map(u, S.tiles[0] + 6, S.tiles[1] - 4), fc = Math.min(3, lin);
+    var slot = C.cw + C.gap, x = W / 2 - C.cw / 2 - fc * slot;
+    var dx = C.lx == null ? 0 : x - C.lx; C.lx = x;
+    // speed as a share of the screen per frame, smoothed, capped like theirs at 0.15
+    var sp = Math.min(0.15, Math.abs(dx) / W * 2.2); C.sp = (C.sp || 0) + (sp - (C.sp || 0)) * 0.25; if (C.sp < 0.002) C.sp = 0;
+    var st = C.sp, dir = dx < 0 ? -1 : 1;
     C.track.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
+    var fx = st > 0.003;
+    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 4).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 5).toFixed(4) + ' 0'); }
     for (var i = 0; i < 4; i++) {
-      var d = i - fp;
-      // the illustration drifts a little slower than its card, and each card eases back slightly away from the middle
-      C.ills[i].style.transform = 'translateY(-50%) translateX(' + (d * -60).toFixed(1) + 'px)';
-      C.cards[i].style.transform = 'translateY(-50%) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.06).toFixed(4) + ')';
+      var d = i - fc;
+      // the illustration drifts a little slower than its card; the cards lean into the move and ease back away from the middle
+      C.ills[i].style.transform = 'translateY(-50%) translateX(' + (d * -70 + dir * st * -220).toFixed(1) + 'px)';
+      C.cards[i].style.transform = 'translateY(-50%) skewX(' + (dir * st * 22).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
+      var fv = fx ? 'url(#crd-speed)' : '';
+      if (C.cards[i].style.filter !== fv) C.cards[i].style.filter = fv;
     }
   }
 
@@ -3422,7 +3443,8 @@ class Component extends DCLogic {
     var stepLen = (S.tiles[1] - S.tiles[0]) / 4;
     for (var hs = 0; hs < 4; hs++) {
       var hu = S.tiles[0] + hs * stepLen + stepLen * 0.62;
-      if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
+      // (desktop: the card row glides without stops, after lusion.co)
+      if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0) && !window.matchMedia('(min-width:1101px),(min-width:761px) and (orientation:landscape)').matches) {
         this._offHeld[hs] = true;
         this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
       }
