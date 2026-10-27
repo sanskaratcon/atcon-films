@@ -2858,11 +2858,36 @@ class Component extends DCLogic {
           // each point's words and pieces show while its view is near
           var stillB = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, tb = performance.now() / 1000;
           var bob = function (k) { return stillB ? 0 : Math.sin(tb * 0.9 + k * 1.7) * 0.07; };
-          for (var rk = 0; rk < R.st.length; rk++) { var wk = Math.max(0, 1 - Math.abs(F - rk) * 1.7); R.st[rk].element.style.opacity = wk.toFixed(3); R.st[rk].visible = wk > 0.002;
-            R.st[rk].position.y = R.st[rk].userData.base.y + bob(rk); if (R.shadows) { R.shadows[rk].material.opacity = wk * 0.45; R.shadows[rk].visible = wk > 0.002; } }
+          // after superplay.co: a point never fades away; as you scroll on, its words and cards rush toward you and the
+          // camera flies through the gap between the title's first and second line, while the next point comes in from the distance
+          if (!R.tv) { R.tv = new THREE3.Vector3(); R.fw = new THREE3.Vector3(); }
+          R.cam.getWorldDirection(R.fw);
+          for (var rk = 0; rk < R.st.length; rk++) {
+            var stR = R.st[rk], ud = stR.userData, dF = F - rk, wk, fly = 0;
+            ud.delta = ud.delta || new THREE3.Vector3();
+            ud.delta.set(0, 0, 0);
+            if (dF > 0) {
+              var tF = Math.min(1, dF / 0.8); fly = tF * tF;
+              // the gap between the first two lines, and how far it must travel to pass just beyond the camera
+              R.tv.copy(ud.base); R.tv.y += (ud.gapUp == null ? 0.5 : ud.gapUp);
+              ud.delta.copy(R.cam.position).sub(R.tv).multiplyScalar(fly * 1.15);
+              R.tv.add(ud.delta).sub(R.cam.position);
+              wk = R.tv.dot(R.fw) > 0.7 ? 1 : 0;
+            } else wk = Math.max(0, 1 - Math.abs(dF) * 1.7);
+            ud.fly = fly; ud.shown = wk;
+            stR.position.copy(ud.base).add(ud.delta); stR.position.y += bob(rk) * (1 - fly);
+            stR.element.style.opacity = wk.toFixed(3); stR.visible = wk > 0.002;
+            if (R.shadows) { var sw0 = dF > 0 ? Math.max(0, 1 - dF * 2) : wk; R.shadows[rk].material.opacity = sw0 * 0.45; R.shadows[rk].visible = sw0 > 0.002; }
+          }
           for (var ro = 0; ro < R.objs.length; ro++) {
             var q = R.objs[ro], wo = Math.max(0, 1 - Math.abs(F - q.o.k) * 1.6), pa2 = q.o.pull ? ease(map(u, S.ins[q.o.k] - 10, q.o.k < 3 ? S.ins[q.o.k + 1] - 12 : S.out)) : 0;
             q.o3.position.copy(q.base).addScaledVector(q.right, (q.lx || 0) * pa2 * 0.08); q.o3.position.y += bob(q.o.k + ro * 0.61);
+            var sU = R.st[q.o.k].userData;
+            if (F > q.o.k && sU.delta) {
+              // the cards ride along with their words past the camera, and drop out once they are beside or behind it
+              q.o3.position.add(sU.delta);
+              R.tv.copy(q.o3.position).sub(R.cam.position); wo = R.tv.dot(R.fw) > 0.7 ? 1 : 0;
+            }
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
           // the room itself only changes when the camera moves or a wall shadow fades; the floating words and pieces
@@ -2883,12 +2908,13 @@ class Component extends DCLogic {
               // the words hang well below the ceiling and its light cove: their top edge stays at 5.6 m (the room is 7 m high)
               var stO = R.st[lk], stH = meas(stO.element)[1] * 0.0052;
               stO.userData.base.y = 5.6 - stH / 2;
+              stO.userData.gapUp = stH / 2 - 108 * 0.0052;
               var top = stO.userData.base.y - stH / 2 - 0.35;
               var its = R.objs.filter(function (q2) { return q2.o.k === lk; }).map(function (q2) { return { q: q2, s: meas(q2.o.el) }; });
               if (!stH || its.some(function (it) { return !it.s[0]; })) { R.laid = false; continue; }
               if (lk === 0) {
                 // too many tools: the words sit in the middle, the tools float loosely around them at different depths
-                stO.userData.base.y = 3.7;
+                stO.userData.base.y = 3.7; stO.userData.gapUp = stH / 2 - 108 * 0.0052;
                 var SPOT = [['CRM', -4.3, 1.95, 0.6], ['Emails', 4.1, 1.55, 0.2], ['Chat', -5.0, -0.35, 1.5], ['Calendar', 4.9, -0.05, 1.1],
                   ['Sheets', -3.0, -2.05, 0.4], ['Files', 3.3, -2.2, 1.7], ['subscriptions', 0.2, -2.25, 0.9]];
                 // the spread follows the screen's shape, so narrow windows keep every tool in view
