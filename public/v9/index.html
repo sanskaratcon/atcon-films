@@ -2805,7 +2805,7 @@ class Component extends DCLogic {
               shm.position.copy(e.wall).addScaledVector(e.normal, 0.03).addScaledVector(e.wallRight, 0.25); shm.position.y = 3.6; shm.rotation.y = WALL[ex.indexOf(e)][2]; scene.add(shm); return shm; });
             var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
             Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el), e = ex[k];
-              o3.position.copy(e.origin); o3.position.y = 5.55; o3.rotation.y = e.rot; o3.scale.setScalar(0.0066); scene.add(o3); o3.userData.base = o3.position.clone(); o3.userData.k = k; R.st.push(o3); });
+              o3.position.copy(e.origin); o3.position.y = 5.8; o3.rotation.y = e.rot; o3.scale.setScalar(0.0056); scene.add(o3); o3.userData.base = o3.position.clone(); o3.userData.k = k; R.st.push(o3); });
             R.objs = [];
             (space.__objs || []).forEach(function (o) {
               var o3 = new CSS3DObject(o.el), e = ex[o.k]; o.el.classList.add('r3-o');
@@ -2837,7 +2837,7 @@ class Component extends DCLogic {
             R.st[rk].position.y = R.st[rk].userData.base.y + bob(rk); if (R.shadows) { R.shadows[rk].material.opacity = wk; R.shadows[rk].visible = wk > 0.002; } }
           for (var ro = 0; ro < R.objs.length; ro++) {
             var q = R.objs[ro], wo = Math.max(0, 1 - Math.abs(F - q.o.k) * 1.6), pa2 = q.o.pull ? ease(map(u, S.ins[q.o.k] - 10, q.o.k < 3 ? S.ins[q.o.k + 1] - 12 : S.out)) : 0;
-            q.o3.position.copy(q.base).addScaledVector(q.right, q.o.x * pa2 * 0.35).addScaledVector(q.up, -q.o.y * pa2 * 0.2); q.o3.position.y += bob(q.o.k);
+            q.o3.position.copy(q.base).addScaledVector(q.right, Math.sign(q.o.x) * pa2 * 0.12); q.o3.position.y += bob(q.o.k);
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
           // the room itself only changes when the camera moves or a wall shadow fades; the floating words and pieces
@@ -2845,6 +2845,43 @@ class Component extends DCLogic {
           var key = cp.join() + ct.join() + sp3.sx.toFixed(4) + sp3.sy.toFixed(4) + F.toFixed(3);
           if (key !== R.key) { R.key = key; R.gl.render(R.scene, R.cam); }
           R.css.render(R.scene, R.cam);
+          // once everything has a size: each point is laid out like a page, the statement on top and its cards below it
+          // in centred rows with even gaps, scaled to fit the space between the words and the top of the furniture (no overlaps)
+          if (!R.laid) {
+            R.laid = true;
+            var meas = function (el) { var d0 = el.style.display; el.style.display = ''; var w0 = Math.max(el.offsetWidth, el.scrollWidth), h0 = Math.max(el.offsetHeight, el.scrollHeight); el.style.display = d0; return [w0, h0]; };
+            for (var lk = 0; lk < R.st.length; lk++) {
+              var stO = R.st[lk], stH = meas(stO.element)[1] * 0.0056, top = stO.userData.base.y - stH / 2 - 0.4;
+              var its = R.objs.filter(function (q2) { return q2.o.k === lk; }).map(function (q2) { return { q: q2, s: meas(q2.o.el) }; });
+              if (!stH || its.some(function (it) { return !it.s[0]; })) { R.laid = false; continue; }
+              // reading order: the original rows top to bottom, each left to right
+              its.sort(function (a1, b1) { return Math.abs(a1.q.o.y - b1.q.o.y) < 0.15 ? a1.q.o.x - b1.q.o.x : a1.q.o.y - b1.q.o.y; });
+              // try one, two and three rows and keep the one that shows the cards largest
+              var GAP = 44, best = null;
+              for (var nr = 1; nr <= Math.min(3, its.length); nr++) {
+                var per = Math.ceil(its.length / nr), rs = [];
+                for (var ri0 = 0; ri0 < its.length; ri0 += per) rs.push({ items: its.slice(ri0, ri0 + per) });
+                var mW = 0, tH = GAP * (rs.length - 1);
+                rs.forEach(function (rw) {
+                  rw.w = rw.items.reduce(function (t1, it) { return t1 + it.s[0]; }, 0) + GAP * (rw.items.length - 1);
+                  rw.h = Math.max.apply(null, rw.items.map(function (it) { return it.s[1]; }));
+                  mW = Math.max(mW, rw.w); tH += rw.h;
+                });
+                var sc0 = Math.min(0.0084, 7.4 / mW, (top - 1.45) / tH);
+                if (!best || sc0 > best.sc + 0.0002) best = { sc: sc0, rows: rs };
+              }
+              var rows = best.rows, sc = best.sc, yy = top;
+              rows.forEach(function (rw) {
+                var xx = -rw.w * sc / 2;
+                rw.items.forEach(function (it) {
+                  var w1 = it.s[0] * sc;
+                  it.q.base.copy(stO.userData.base).addScaledVector(it.q.right, xx + w1 / 2); it.q.base.y = yy - rw.h * sc / 2;
+                  it.q.o3.scale.setScalar(sc); xx += w1 + GAP * sc;
+                });
+                yy -= (rw.h + GAP) * sc;
+              });
+            }
+          }
         }
       }).call(this);
       // v6: the desktop moves like a camera between points: it leans back, a beam of brand light crosses it, and it
