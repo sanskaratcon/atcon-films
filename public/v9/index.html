@@ -1095,13 +1095,22 @@ html,body{overflow-anchor:none}
   .atc-offer-text .ds-label,.atc-offer-title{z-index:2}
   .crd{position:absolute;z-index:1;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
   .crd-track{position:absolute;left:0;top:50%;display:flex;gap:var(--gap);will-change:transform}
-  .crd-c{position:relative;flex:none;width:var(--cw);height:var(--ch);border-radius:28px;overflow:hidden;
-    background:radial-gradient(70% 90% at 78% 55%,rgba(var(--c),.16),rgba(var(--c),0) 70%),linear-gradient(160deg,#FFFFFF,#F6F8FC);
-    box-shadow:0 0 0 1px rgba(0,16,37,.05),0 40px 80px -50px rgba(0,16,37,.45)}
+  .crd-c{position:relative;flex:none;width:var(--cw);height:var(--ch);border-radius:34px;overflow:hidden;will-change:transform,opacity;
+    background:radial-gradient(60% 80% at 76% 38%,rgba(var(--c),.2),rgba(var(--c),0) 70%),radial-gradient(50% 60% at 14% 96%,rgba(var(--c),.1),rgba(var(--c),0) 70%),linear-gradient(165deg,#FFFFFF,#F5F7FB);
+    box-shadow:inset 0 1px 0 #FFFFFF,0 0 0 1px rgba(0,16,37,.045),0 60px 90px -60px rgba(var(--c),.6),0 30px 60px -44px rgba(0,16,37,.32)}
+  /* the section's air takes the tone of the capability in view */
+  .crd{background:radial-gradient(70% 70% at 62% 50%,rgba(var(--ac,45,99,230),.07),rgba(var(--ac,45,99,230),0) 70%);
+    clip-path:inset(0 0 0 var(--rail))}
+  .crd-lab{position:absolute;left:calc(var(--rail) + 6vw);top:calc(var(--rail) + 4vh);margin:0;font-family:var(--atc-font);font-size:var(--fs-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--atc-mute)}
+  .crd-dots{position:absolute;left:50%;bottom:7vh;display:flex;gap:8px;transform:translateX(-50%)}
+  .crd-dots i{width:7px;height:7px;border-radius:99px;background:rgba(0,16,37,.16);transition:width .5s cubic-bezier(.2,.7,.2,1),background .5s}
+  .crd-dots i.on{width:30px;background:rgb(var(--ac,45,99,230))}
   .crd-it{position:relative;flex:none;display:flex;align-items:center;gap:var(--tg)}
   .crd-t{flex:none;width:var(--tw)}
-  .crd-t b{display:block;font-weight:400;font-size:var(--fs-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);margin-bottom:1.6vh;color:var(--atc-navy)}
-  .crd-t span{display:block;font-size:var(--fs-h2);line-height:1.2;letter-spacing:var(--ls-h2);color:var(--atc-mute)}
+  .crd-t{will-change:transform,opacity}
+  .crd-t b{display:flex;align-items:center;gap:12px;font-weight:400;font-size:var(--fs-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);margin-bottom:2vh;color:var(--atc-navy)}
+  .crd-t b::before{content:'';flex:none;width:10px;height:10px;border-radius:50%;background:rgb(var(--c));box-shadow:0 0 14px rgba(var(--c),.7)}
+  .crd-t span{display:block;max-width:14em;font-size:var(--fs-h2);line-height:1.22;letter-spacing:var(--ls-h2);color:var(--atc-mute)}
   .crd-i{position:absolute;left:50%;top:50%;width:84%;aspect-ratio:557/376;transform:translate(-50%,-50%);container-type:size;will-change:transform}
 }
 /* v9 What we offer: the four illustrations, drawn on a 557 x 376 board that scales with its slot */
@@ -3371,9 +3380,12 @@ class Component extends DCLogic {
     var map = this._fx.map, ease = this._fx.ease, C = off.__crd;
     if (!C) {
       C = off.__crd = {};
+      var COL = ['45,99,230', '63,178,126', '90,134,238', '155,186,42'];
       var wrap = document.createElement('div'); wrap.className = 'crd'; wrap.setAttribute('aria-hidden', 'true');
       var track = document.createElement('div'); track.className = 'crd-track'; wrap.appendChild(track); off.appendChild(wrap);
-      C.wrap = wrap; C.track = track; C.cards = []; C.ills = []; C.texts = []; C.on = []; C.t0 = [];
+      C.wrap = wrap; C.track = track; C.cards = []; C.ills = []; C.texts = []; C.on = []; C.t0 = []; C.col = COL;
+      wrap.insertAdjacentHTML('beforeend', '<p class="crd-lab">What we offer</p><div class="crd-dots"><i></i><i></i><i></i><i></i></div>');
+      C.dots = wrap.querySelectorAll('.crd-dots i');
       // after lusion.co: the faster the row moves, the more each card bends along a soft wave across its width and smears
       // in the direction of travel (their screen shader: a cos wave offset of 2*s^2 and an 8-tap blur of s along the move)
       var mc = document.createElement('canvas'); mc.width = 256; mc.height = 2; var mx = mc.getContext('2d'), md = mx.createImageData(256, 2);
@@ -3391,12 +3403,11 @@ class Component extends DCLogic {
         + '<feDisplacementMap in="SourceGraphic" in2="m" scale="0" xChannelSelector="G" yChannelSelector="R" result="w"/>'
         + '<feGaussianBlur in="w" stdDeviation="0 0"/></filter>';
       wrap.appendChild(svg); C.disp = svg.querySelector('feDisplacementMap'); C.blur = svg.querySelector('#crd-speed feGaussianBlur'); C.blurT = svg.querySelector('#crd-speed-t feGaussianBlur'); C.dispT = svg.querySelector('#crd-speed-t feDisplacementMap');
-      var COL = ['45,99,230', '63,178,126', '90,134,238', '155,186,42'];
       for (var k = 0; k < 4; k++) {
         var li = this.q('offerL' + k), src = this.q('cvW' + k), ill = src ? src.querySelector('.ix').cloneNode(true) : null;
         var c = document.createElement('div'); c.className = 'crd-c'; c.style.setProperty('--c', COL[k]);
         c.innerHTML = '<div class="crd-i"></div>';
-        var tx = document.createElement('div'); tx.className = 'crd-t'; tx.innerHTML = '<b></b><span></span>';
+        var tx = document.createElement('div'); tx.className = 'crd-t'; tx.style.setProperty('--c', COL[k]); tx.innerHTML = '<b></b><span></span>';
         tx.querySelector('b').textContent = li ? li.querySelector('strong').textContent : '';
         tx.querySelector('span').textContent = li ? li.querySelector('div > span').textContent : '';
         var it = document.createElement('div'); it.className = 'crd-it'; it.appendChild(tx); C.texts.push(tx);
@@ -3427,6 +3438,8 @@ class Component extends DCLogic {
     var sp = Math.min(0.15, Math.abs(dx) / W * 2.2); C.sp = (C.sp || 0) + (sp - (C.sp || 0)) * 0.25; if (C.sp < 0.002) C.sp = 0;
     var st = C.sp, dir = dx < 0 ? -1 : 1;
     C.track.style.transform = 'translate(' + x.toFixed(1) + 'px,-50%)';
+    var ai = Math.max(0, Math.min(3, Math.round(fc)));
+    if (C.ai !== ai) { C.ai = ai; C.wrap.style.setProperty('--ac', C.col[ai]); for (var di = 0; di < 4; di++) C.dots[di].classList.toggle('on', di === ai); }
     var fx = st > 0.003;
     // a stronger smear and a little bend, on the cards and on their text alike
     if (fx) { C.disp.setAttribute('scale', (4 * st * st * 0.9).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 2.6).toFixed(4) + ' 0');
@@ -3442,6 +3455,9 @@ class Component extends DCLogic {
       C.cards[i].style.transform = 'skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
       var fv = fx ? 'url(#crd-speed)' : '';
       if (C.cards[i].style.filter !== fv) C.cards[i].style.filter = fv;
+      // focus: the capability in view at full strength, the ones arriving and leaving softly dimmed
+      var fo = (1 - Math.min(1, Math.abs(d)) * 0.6).toFixed(3);
+      if (C.cards[i].style.opacity !== fo) { C.cards[i].style.opacity = fo; C.texts[i].style.opacity = fo; }
       var ft = fx ? 'url(#crd-speed-t)' : '';
       if (C.texts[i].style.filter !== ft) C.texts[i].style.filter = ft;
     }
