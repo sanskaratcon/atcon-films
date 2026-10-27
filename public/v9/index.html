@@ -2849,32 +2849,61 @@ class Component extends DCLogic {
             // soft light from the ceiling (no pendants), and the warm glow of the floor lamp
             [[-3.6, -3.5], [4.6, -3.5], [0, 3.0], [0, 6.2], [7.5, -4.4]].forEach(function (cl) { var pl = new THREE.PointLight('#EEF3FF', 3.2, 11, 2); pl.position.set(cl[0], 6.2, cl[1]); scene.add(pl); });
             var gl2 = new THREE.PointLight('#FFE7C2', 3, 6, 2); gl2.position.set(-1.0, 2.1, -6.3); scene.add(gl2);
-            // the rug and the coffee table
-            add(new THREE.CylinderGeometry(3.0, 3.0, 0.03, 64), mat('#EEF3FC'), -0.6, 0.016, -2.4, 0, false);
-            var navyM = mat('#1A2C4A', { roughness: 0.5 });
-            box(2.4, 0.16, 1.1, navyM, -0.8, 0.58, -2.4); box(2.2, 0.08, 0.9, navyM, -0.8, 0.28, -2.4);
-            [[-1.8, -2.85], [0.2, -2.85], [-1.8, -1.95], [0.2, -1.95]].forEach(function (lg) { add(new THREE.CylinderGeometry(0.035, 0.02, 0.56), navyM, lg[0], 0.28, lg[1]); });
+            // furniture built the way real pieces are: frames on slim legs, separate cushions with soft rounded edges,
+            // woven fabric, thin tops, metal and oak details
+            var fab = function (c) { return mat(c, { roughness: 0.95, bumpMap: weaveT, bumpScale: 1.4, envMapIntensity: 0.35 }); };
+            var oakM = mat('#C9A57A', { roughness: 0.5 }), metalM = mat('#C9CED6', { roughness: 0.28, metalness: 0.85 }), navyM = mat('#1A2C4A', { roughness: 0.35 });
+            var grp = function (x, z, ry) { var g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = ry || 0; scene.add(g); return g; };
+            var gput = function (g, geo, m2, x, y, z) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); me.castShadow = me.receiveShadow = true; g.add(me); return me; };
+            var rbx = function (w, h, d, r) { return new RBox(w, h, d, 4, r); };
+            // the woven round rug
+            add(new THREE.CylinderGeometry(3.0, 3.0, 0.03, 96), mat('#EEF3FC', { roughness: 1, bumpMap: weaveT, bumpScale: 1 }), -0.6, 0.016, -2.4, 0, false);
+            // the coffee table: a thin navy top, slim legs, a lower shelf
+            var ct = grp(-0.8, -2.4);
+            gput(ct, rbx(2.3, 0.05, 1.05, 0.024), navyM, 0, 0.46, 0);
+            gput(ct, rbx(2.1, 0.03, 0.9, 0.012), navyM, 0, 0.16, 0);
+            [[-1.05, -0.45], [1.05, -0.45], [-1.05, 0.45], [1.05, 0.45]].forEach(function (lg) { gput(ct, new THREE.CylinderGeometry(0.018, 0.018, 0.44, 16), metalM, lg[0], 0.22, lg[1]); });
+            gput(ct, new THREE.CylinderGeometry(0.11, 0.1, 0.06, 32), mat('#FFFFFF', { roughness: 0.4 }), 0.55, 0.52, 0.1);
+            gput(ct, rbx(0.36, 0.05, 0.26, 0.01), mat('#2D63E6', { roughness: 0.7 }), -0.5, 0.51, -0.1).rotation.y = 0.3;
             // the sofa against the back wall
-            var sofaM = mat('#3FB27E', { roughness: 0.95, bumpMap: weaveT, bumpScale: 1.2, envMapIntensity: 0.4 });
-            box(4.6, 0.55, 1.4, sofaM, -3.6, 0.45, -6.4); box(4.6, 1.05, 0.4, sofaM, -3.6, 1.15, -7.05);
-            box(0.4, 0.95, 1.4, sofaM, -5.9, 0.75, -6.4); box(0.4, 0.95, 1.4, sofaM, -1.3, 0.75, -6.4);
-            for (var cu = 0; cu < 3; cu++) box(1.25, 0.25, 1.05, mat('#5CC394', { roughness: 0.95, bumpMap: weaveT, bumpScale: 1.2, envMapIntensity: 0.4 }), -5.0 + cu * 1.38, 0.86, -6.25, 0.1);
-            // the armchair by the window, a floor lamp, and a plant
-            var chairM = mat('#2D63E6', { roughness: 0.95, bumpMap: weaveT, bumpScale: 1.2, envMapIntensity: 0.4 });
-            box(1.3, 0.45, 1.25, chairM, -6.2, 0.75, -1.4, 0.22).rotation.y = 0.6;
-            box(1.3, 1.1, 0.32, chairM, -6.55, 1.2, -1.85, 0.16).rotation.y = 0.6;
-            add(new THREE.CylinderGeometry(0.05, 0.05, 0.55), navyM, -6.2, 0.27, -1.4);
-            add(new THREE.CylinderGeometry(0.02, 0.02, 2.1), navyM, -1.0, 1.05, -6.6);
-            var shade = add(new THREE.CylinderGeometry(0.28, 0.32, 0.4, 32, 1, true), new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#F4F7FF', emissiveIntensity: 0.6, side: THREE.DoubleSide }), -1.0, 2.2, -6.6);
+            var sf = grp(-3.6, -6.4), green = fab('#3FB27E'), green2 = fab('#4BBE89');
+            gput(sf, rbx(4.6, 0.3, 1.35, 0.06), green, 0, 0.36, 0);
+            [[-2.1, -0.55], [2.1, -0.55], [-2.1, 0.55], [2.1, 0.55], [-0.7, -0.55], [0.7, -0.55]].forEach(function (lg) { gput(sf, new THREE.CylinderGeometry(0.03, 0.022, 0.22, 16), oakM, lg[0], 0.11, lg[1]); });
+            [-1.43, 0, 1.43].forEach(function (cx) { gput(sf, rbx(1.4, 0.24, 1.02, 0.1), green2, cx, 0.63, 0.12);
+              var bc = gput(sf, rbx(1.4, 0.66, 0.3, 0.13), green2, cx, 1.02, -0.5); bc.rotation.x = -0.12; });
+            [-2.15, 2.15].forEach(function (ax) { gput(sf, rbx(0.3, 0.62, 1.35, 0.13), green, ax, 0.66, 0); });
+            gput(sf, rbx(4.6, 0.7, 0.18, 0.08), green, 0, 0.82, -0.6);
+            var pl1 = gput(sf, rbx(0.52, 0.5, 0.15, 0.08), fab('#1A2C4A'), -1.7, 0.98, -0.25); pl1.rotation.set(-0.25, 0.25, 0.08);
+            var pl2 = gput(sf, rbx(0.48, 0.46, 0.14, 0.08), fab('#F4F6FA'), 1.75, 0.96, -0.25); pl2.rotation.set(-0.25, -0.3, -0.06);
+            // the armchair by the window
+            var ac = grp(-6.2, -1.4, 0.6), blue = fab('#2D63E6'), blue2 = fab('#3A6EEA');
+            gput(ac, rbx(1.2, 0.26, 1.1, 0.06), blue, 0, 0.38, 0);
+            gput(ac, rbx(0.92, 0.2, 0.86, 0.09), blue2, 0, 0.6, 0.05);
+            var acb = gput(ac, rbx(1.2, 0.78, 0.26, 0.12), blue2, 0, 0.88, -0.44); acb.rotation.x = -0.14;
+            [-0.53, 0.53].forEach(function (ax) { gput(ac, rbx(0.16, 0.42, 1.06, 0.07), blue, ax, 0.62, 0); });
+            [[-0.48, -0.42], [0.48, -0.42], [-0.48, 0.42], [0.48, 0.42]].forEach(function (lg) { gput(ac, new THREE.CylinderGeometry(0.025, 0.018, 0.26, 16), oakM, lg[0], 0.13, lg[1]); });
+            // the floor lamp: a weighted base, a slim pole, a drum shade
+            add(new THREE.CylinderGeometry(0.16, 0.17, 0.03, 40), navyM, -1.0, 0.015, -6.6);
+            add(new THREE.CylinderGeometry(0.014, 0.014, 2.1, 12), navyM, -1.0, 1.06, -6.6);
+            var shade = add(new THREE.CylinderGeometry(0.28, 0.32, 0.4, 48, 1, true), new THREE.MeshStandardMaterial({ color: '#FFFFFF', emissive: '#F4F7FF', emissiveIntensity: 0.6, side: THREE.DoubleSide }), -1.0, 2.2, -6.6);
             R.plant(8.4, -6.8, 0.32, 0.55, 1.25);
-            // the curved desk, a laptop and an office chair
-            var deskM = mat('#FFFFFF', { roughness: 0.35 });
-            box(4.2, 0.18, 1.5, deskM, 4.6, 1.5, -5.9, 0.08); box(0.22, 1.5, 1.5, deskM, 2.6, 0.75, -5.9, 0.1); box(0.22, 1.5, 1.5, deskM, 6.6, 0.75, -5.9, 0.1);
-            box(1.2, 0.05, 0.8, mat('#3A4D63', { roughness: 0.4 }), 4.4, 1.62, -6.05, 0.02);
-            var scrM = new THREE.MeshStandardMaterial({ color: '#2D63E6', emissive: '#2D63E6', emissiveIntensity: 0.5, roughness: 0.3 });
-            var scr = box(1.2, 0.78, 0.04, scrM, 4.4, 2.0, -6.45, 0.02); scr.rotation.x = -0.2;
-            box(1.0, 0.18, 0.95, mat('#1A2C4A'), 4.6, 0.95, -4.7, 0.08); box(1.0, 0.95, 0.16, mat('#1A2C4A'), 4.6, 1.45, -4.3, 0.08);
-            add(new THREE.CylinderGeometry(0.05, 0.05, 0.85), navyM, 4.6, 0.43, -4.7);
+            // the desk at real desk height: a thin white top on slim frame legs, a laptop and an office chair
+            var dk = grp(4.6, -5.9), deskM = mat('#FFFFFF', { roughness: 0.35 });
+            gput(dk, rbx(3.2, 0.05, 1.05, 0.02), deskM, 0, 0.78, 0);
+            [-1.45, 1.45].forEach(function (lx) { gput(dk, rbx(0.05, 0.74, 0.05, 0.012), deskM, lx, 0.37, -0.42); gput(dk, rbx(0.05, 0.74, 0.05, 0.012), deskM, lx, 0.37, 0.42);
+              gput(dk, rbx(0.05, 0.04, 0.9, 0.012), deskM, lx, 0.02, 0); gput(dk, rbx(0.05, 0.04, 0.9, 0.012), deskM, lx, 0.72, 0); });
+            var alu = mat('#C9CED6', { roughness: 0.3, metalness: 0.8 });
+            gput(dk, rbx(0.66, 0.018, 0.46, 0.008), alu, -0.2, 0.815, 0.05);
+            var lid = gput(dk, rbx(0.66, 0.44, 0.012, 0.008), alu, -0.2, 1.03, -0.2); lid.rotation.x = -0.22;
+            var scrM = new THREE.MeshStandardMaterial({ color: '#2D63E6', emissive: '#2D63E6', emissiveIntensity: 0.5, roughness: 0.25 });
+            var scr = gput(dk, new THREE.PlaneGeometry(0.6, 0.38), scrM, -0.2, 1.03, -0.192); scr.rotation.x = -0.22;
+            gput(dk, new THREE.CylinderGeometry(0.045, 0.04, 0.1, 32), mat('#FFFFFF', { roughness: 0.4 }), 0.6, 0.86, -0.1);
+            var oc = grp(4.5, -4.85, 0.2), ocM = fab('#1A2C4A');
+            gput(oc, rbx(0.56, 0.08, 0.54, 0.035), ocM, 0, 0.5, 0);
+            var ocb = gput(oc, new THREE.CylinderGeometry(0.32, 0.32, 0.5, 40, 1, true, Math.PI * 0.68, Math.PI * 0.64), mat('#1A2C4A', { roughness: 0.9, bumpMap: weaveT, bumpScale: 1.2, side: THREE.DoubleSide }), 0, 0.86, 0.1);
+            gput(oc, new THREE.CylinderGeometry(0.025, 0.03, 0.34, 16), metalM, 0, 0.3, 0);
+            for (var s5 = 0; s5 < 5; s5++) { var a5 = s5 / 5 * Math.PI * 2, arm = gput(oc, new THREE.BoxGeometry(0.32, 0.025, 0.045), metalM, Math.cos(a5) * 0.16, 0.08, Math.sin(a5) * 0.16); arm.rotation.y = -a5;
+              gput(oc, new THREE.SphereGeometry(0.028, 14, 10), navyM, Math.cos(a5) * 0.32, 0.03, Math.sin(a5) * 0.32); }
             // the stairs along the right wall
             var stepM = mat('#E6EEFB', { roughness: 0.6 });
             for (var stp = 0; stp < 9; stp++) box(1.7, 0.4 + stp * 0.38, 0.6, stepM, 9.1, (0.4 + stp * 0.38) / 2, 3.6 - stp * 0.6, 0.03);
