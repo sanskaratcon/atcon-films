@@ -3413,12 +3413,12 @@ class Component extends DCLogic {
     var st = C.sp, dir = dx < 0 ? -1 : 1;
     C.track.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
     var fx = st > 0.003;
-    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 4).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 5).toFixed(4) + ' 0'); }
+    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 1.2).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 5).toFixed(4) + ' 0'); }
     for (var i = 0; i < 4; i++) {
       var d = i - fc;
       // the illustration drifts a little slower than its card; the cards lean into the move and ease back away from the middle
       C.ills[i].style.transform = 'translateY(-50%) translateX(' + (d * -70 + dir * st * -220).toFixed(1) + 'px)';
-      C.cards[i].style.transform = 'translateY(-50%) skewX(' + (dir * st * 22).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
+      C.cards[i].style.transform = 'translateY(-50%) skewX(' + (dir * st * 9).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
       var fv = fx ? 'url(#crd-speed)' : '';
       if (C.cards[i].style.filter !== fv) C.cards[i].style.filter = fv;
     }
