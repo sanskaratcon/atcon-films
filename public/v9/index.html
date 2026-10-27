@@ -1103,7 +1103,6 @@ html,body{overflow-anchor:none}
   .crd-t b{display:block;font-weight:400;font-size:var(--fs-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);margin-bottom:1.6vh;color:var(--atc-navy)}
   .crd-t span{display:block;font-size:var(--fs-h2);line-height:1.2;letter-spacing:var(--ls-h2);color:var(--atc-mute)}
   .crd-i{position:absolute;left:50%;top:50%;width:84%;aspect-ratio:557/376;transform:translate(-50%,-50%);container-type:size;will-change:transform}
-  .crd-i .an-rev{clip-path:none !important}.crd-i .dr{stroke-dashoffset:0 !important}
 }
 /* v9 What we offer: the four illustrations, drawn on a 557 x 376 board that scales with its slot */
 .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{container-type:size}
@@ -3355,6 +3354,18 @@ class Component extends DCLogic {
   // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
   // The solution, played on scroll: tagline, both sides, the direct line that breaks, ATCON arriving in the middle,
   // then every side connected through it, with data flowing from business to technology.
+  // plays one illustration at progress r (0 empty .. 1 built; above 1 it holds), the same build-up as on the site
+  playIllo(root, r) {
+    var map = this._fx.map, ease = this._fx.ease;
+    root.querySelectorAll('[data-in]').forEach(function (el) { var a0 = parseFloat(el.getAttribute('data-in')), k = ease(map(r, a0 + 0.04, a0 + 0.2));
+      el.style.opacity = k.toFixed(3); el.style.transform = 'translateY(' + ((1 - k) * 6).toFixed(1) + 'px)'; });
+    root.querySelectorAll('[data-count]').forEach(function (el) { var tg = parseFloat(el.getAttribute('data-count')), kc = ease(map(r, parseFloat(el.getAttribute('data-from')), parseFloat(el.getAttribute('data-to'))));
+      var tx = tg >= 1000 ? Math.round(tg * kc).toLocaleString('en') : String(Math.round(tg * kc)); if (el.textContent !== tx) el.textContent = tx; });
+    root.querySelectorAll('.cv-tg').forEach(function (el) { el.classList.toggle('on', r >= parseFloat(el.getAttribute('data-on'))); });
+    root.querySelectorAll('.an-rev').forEach(function (el) { el.style.clipPath = 'inset(0 ' + ((1 - ease(map(r, 0.12, 0.55))) * 100).toFixed(2) + '% 0 0)'; });
+    root.querySelectorAll('.dr').forEach(function (el) { el.style.strokeDashoffset = (1 - ease(map(r, 0.2, 0.6))).toFixed(3); });
+  }
+
   // v9 What we offer: the row of capability cards. Built once from the page's own text and illustrations.
   offerCards(off, fp, u, S) {
     var map = this._fx.map, ease = this._fx.ease, C = off.__crd;
@@ -3362,7 +3373,7 @@ class Component extends DCLogic {
       C = off.__crd = {};
       var wrap = document.createElement('div'); wrap.className = 'crd'; wrap.setAttribute('aria-hidden', 'true');
       var track = document.createElement('div'); track.className = 'crd-track'; wrap.appendChild(track); off.appendChild(wrap);
-      C.wrap = wrap; C.track = track; C.cards = []; C.ills = []; C.texts = [];
+      C.wrap = wrap; C.track = track; C.cards = []; C.ills = []; C.texts = []; C.on = []; C.t0 = [];
       C.txt = document.createElement('div'); C.txt.className = 'crd-txt'; wrap.appendChild(C.txt);
       // after lusion.co: the faster the row moves, the more each card bends along a soft wave across its width and smears
       // in the direction of travel (their screen shader: a cos wave offset of 2*s^2 and an 8-tap blur of s along the move)
@@ -3385,13 +3396,7 @@ class Component extends DCLogic {
         tx.querySelector('b').textContent = li ? li.querySelector('strong').textContent : '';
         tx.querySelector('span').textContent = li ? li.querySelector('div > span').textContent : '';
         C.txt.appendChild(tx); C.texts.push(tx);
-        if (ill) {
-          // the illustration in its finished state
-          ill.querySelectorAll('[data-in]').forEach(function (e) { e.style.opacity = '1'; e.style.transform = 'none'; });
-          ill.querySelectorAll('[data-count]').forEach(function (e) { var v = parseFloat(e.getAttribute('data-count')); e.textContent = v >= 1000 ? v.toLocaleString('en') : String(v); });
-          ill.querySelectorAll('.cv-tg').forEach(function (e) { e.classList.add('on'); });
-          c.querySelector('.crd-i').appendChild(ill);
-        }
+        if (ill) c.querySelector('.crd-i').appendChild(ill);
         track.appendChild(c); C.cards.push(c); C.ills.push(c.querySelector('.crd-i'));
       }
     }
@@ -3421,13 +3426,16 @@ class Component extends DCLogic {
     for (var i = 0; i < 4; i++) {
       var d = i - fc;
       // the illustration drifts a little slower than its card; the cards lean into the move and ease back away from the middle
-      // never still: each card floats on its own slow rhythm, and its illustration drifts and breathes inside it
-      var tm = performance.now() / 1000 + i * 1.7, fy = Math.sin(tm * 0.9) * 9, fr = Math.sin(tm * 0.55) * 0.7, ix = Math.sin(tm * 0.7) * 14, iy = Math.cos(tm * 0.6) * 7, isc = 1 + Math.sin(tm * 0.8) * 0.018;
-      C.ills[i].style.transform = 'translate(-50%,-50%) translate(' + (d * -70 + dir * st * -220 + ix).toFixed(1) + 'px,' + iy.toFixed(1) + 'px) scale(' + isc.toFixed(4) + ')';
+      C.ills[i].style.transform = 'translate(-50%,-50%) translateX(' + (d * -70 + dir * st * -220).toFixed(1) + 'px)';
+      // the illustration plays: it builds itself (chart draws, numbers count, switches flip, lines reach the team),
+      // holds, and plays again, for as long as its card is on screen; it starts over each time the card comes into view
+      var near = Math.abs(d) < 0.75;
+      if (near && !C.on[i]) C.t0[i] = performance.now(); C.on[i] = near;
+      if (Math.abs(d) < 1.2) this.playIllo(C.ills[i], ((performance.now() - (C.t0[i] || 0)) / 1000) % 5.2 / 3.4);
       var tw = Math.max(0, 1 - Math.abs(d) * 2.2);
       C.texts[i].style.opacity = tw.toFixed(3); C.texts[i].style.visibility = tw > 0.01 ? 'visible' : 'hidden';
       C.texts[i].style.transform = 'translateY(calc(-50% + ' + (d * 40).toFixed(1) + 'px))';
-      C.cards[i].style.transform = 'translateY(calc(-50% + ' + fy.toFixed(1) + 'px)) rotate(' + fr.toFixed(2) + 'deg) skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
+      C.cards[i].style.transform = 'translateY(-50%) skewX(' + (dir * st * 3).toFixed(2) + 'deg) scale(' + (1 - Math.min(1, Math.abs(d)) * 0.05 - st * 0.5).toFixed(4) + ')';
       var fv = fx ? 'url(#crd-speed)' : '';
       if (C.cards[i].style.filter !== fv) C.cards[i].style.filter = fv;
     }
