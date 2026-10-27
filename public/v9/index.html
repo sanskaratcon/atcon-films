@@ -2780,21 +2780,21 @@ class Component extends DCLogic {
             sun.shadow.mapSize.set(1536, 1536); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
             scene.add(sun); scene.add(sun.target);
             // the statements as lettering on the walls, and each point's pieces in front of its view
-            // each point floats in the room in front of its own wall: the statement on top, its illustration right below it,
-            // both standing about a metre off the wall, turned a little toward the camera, with a soft shadow on the wall
+            // each point floats in the air well out from its own wall, close to the camera: the statement on top, its cards
+            // below and a little nearer still, turned to face the camera, so the camera moves give real depth
             var WALL = [[-3.6, -7.94, 0], [4.6, -7.94, 0], [9.94, -4.4, -Math.PI / 2], [0, 7.94, Math.PI]];
-            var axisY = new THREE.Vector3(0, 1, 0), LIFT = 1.0;
+            var axisY = new THREE.Vector3(0, 1, 0), AHEAD = 8.0;
             R.views = [
               { p: [1.6, 3.0, 7.4], t: [-3.0, 3.5, -8] }, { p: [-1.2, 3.0, 7.4], t: [4.0, 3.5, -8] },
               { p: [-6.5, 3.0, 2.4], t: [10, 3.5, -4.4] }, { p: [1.6, 3.0, -7.2], t: [0, 3.5, 8] }];
             R.pre = { p: [2.6, 3.3, 8.6], t: [-3.0, 3.6, -8] }; R.post = { p: [1.2, 3.1, -4.6], t: [0, 3.5, 8] };
             var ex = WALL.map(function (wv, k) {
               var rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, wv[2]), nrm = new THREE.Vector3(0, 0, 1).applyAxisAngle(axisY, wv[2]);
-              var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[1], origin = new THREE.Vector3(px, 0, pz).addScaledVector(nrm, LIFT);
-              // turn part of the way toward where the camera stands for this exhibit
-              var cp = R.views[k].p, yaw = Math.atan2(cp[0] - origin.x, cp[2] - origin.z), d = yaw - wv[2];
-              while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2;
-              var rot = wv[2] + d * 0.45, r2 = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, rot);
+              var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[1];
+              // straight ahead of this point's camera, about 8 m out, facing it
+              var cp = R.views[k].p, tg = R.views[k].t, dir = new THREE.Vector3(tg[0] - cp[0], 0, tg[2] - cp[2]).normalize();
+              var origin = new THREE.Vector3(cp[0], 0, cp[2]).addScaledVector(dir, AHEAD);
+              var rot = Math.atan2(-dir.x, -dir.z), r2 = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, rot);
               return { origin: origin, right: r2, rot: rot, wallRight: rgt, normal: nrm, wall: new THREE.Vector3(px, 0, pz) };
             });
             // the soft shadow each floating exhibit casts on its wall
@@ -2834,10 +2834,10 @@ class Component extends DCLogic {
           var stillB = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, tb = performance.now() / 1000;
           var bob = function (k) { return stillB ? 0 : Math.sin(tb * 0.9 + k * 1.7) * 0.07; };
           for (var rk = 0; rk < R.st.length; rk++) { var wk = Math.max(0, 1 - Math.abs(F - rk) * 1.7); R.st[rk].element.style.opacity = wk.toFixed(3); R.st[rk].visible = wk > 0.002;
-            R.st[rk].position.y = R.st[rk].userData.base.y + bob(rk); if (R.shadows) { R.shadows[rk].material.opacity = wk; R.shadows[rk].visible = wk > 0.002; } }
+            R.st[rk].position.y = R.st[rk].userData.base.y + bob(rk); if (R.shadows) { R.shadows[rk].material.opacity = wk * 0.45; R.shadows[rk].visible = wk > 0.002; } }
           for (var ro = 0; ro < R.objs.length; ro++) {
             var q = R.objs[ro], wo = Math.max(0, 1 - Math.abs(F - q.o.k) * 1.6), pa2 = q.o.pull ? ease(map(u, S.ins[q.o.k] - 10, q.o.k < 3 ? S.ins[q.o.k + 1] - 12 : S.out)) : 0;
-            q.o3.position.copy(q.base).addScaledVector(q.right, Math.sign(q.o.x) * pa2 * 0.12); q.o3.position.y += bob(q.o.k);
+            q.o3.position.copy(q.base).addScaledVector(q.right, (q.lx || 0) * pa2 * 0.08); q.o3.position.y += bob(q.o.k);
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
           // the room itself only changes when the camera moves or a wall shadow fades; the floating words and pieces
@@ -2878,8 +2878,8 @@ class Component extends DCLogic {
                 var xx = -rw.w * sc / 2;
                 rw.items.forEach(function (it) {
                   var w1 = it.s[0] * sc;
-                  it.q.base.copy(stO.userData.base).addScaledVector(it.q.right, xx + w1 / 2); it.q.base.y = yy - rw.h * sc / 2;
-                  it.q.o3.scale.setScalar(sc); xx += w1 + GAP * sc;
+                  it.q.base.copy(stO.userData.base).addScaledVector(it.q.right, xx + w1 / 2).addScaledVector(new THREE3.Vector3().crossVectors(it.q.right, it.q.up), 0.6); it.q.base.y = yy - rw.h * sc / 2;
+                  it.q.lx = xx + w1 / 2; it.q.o3.scale.setScalar(sc); xx += w1 + GAP * sc;
                 });
                 yy -= (rw.h + GAP) * sc;
               });
