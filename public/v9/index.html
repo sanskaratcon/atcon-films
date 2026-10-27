@@ -1332,7 +1332,6 @@ html,body{overflow-anchor:none}
 .r3,.r3-gl,.r3-css{position:absolute;inset:0;width:100%;height:100%}
 .r3-css{pointer-events:none}
 /* focus on the words: while a point is read the room behind softens and a light haze gathers behind the words */
-.r3-gl{will-change:filter}
 .r3-haze{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(248,250,253,.86) 0,rgba(248,250,253,.62) 45%,rgba(248,250,253,.34) 80%,rgba(248,250,253,.24) 100%)}
 /* the titles float as solid 3D lettering in the room, no box (after wlt.design): a crisp extruded edge and a soft shadow */
 .r3-st{position:absolute !important;left:0 !important;top:0 !important;width:1100px !important;text-align:center !important;visibility:visible;background:none;box-shadow:none;padding:0}
@@ -2792,8 +2791,9 @@ class Component extends DCLogic {
             var THREE = m[0], CSS3DRenderer = m[1].CSS3DRenderer, CSS3DObject = m[1].CSS3DObject, RBox = m[2].RoundedBoxGeometry, RoomEnv = m[3].RoomEnvironment;
             var scene = new THREE.Scene(); scene.background = new THREE.Color('#D7E2F7');
             var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
-            var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
-            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.shadowMap.autoUpdate = false; gl.shadowMap.needsUpdate = true; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.08;
+            // drawn at normal resolution (the words and cards in the room are page elements and stay sharp on any screen)
+            var gl = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' }); gl.setPixelRatio(1);
+            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFShadowMap; gl.shadowMap.autoUpdate = false; gl.shadowMap.needsUpdate = true; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.08;
             gl.outputColorSpace = THREE.SRGBColorSpace; gl.domElement.className = 'r3-gl'; holder.appendChild(gl.domElement);
             var haze = document.createElement('div'); haze.className = 'r3-haze'; holder.appendChild(haze); R.haze = haze;
             var css = new CSS3DRenderer(); css.domElement.className = 'r3-css'; holder.appendChild(css.domElement);
@@ -2854,7 +2854,6 @@ class Component extends DCLogic {
             inFront(box(6.4, 0.62, 0.55, sideM, 0, 0.36, 7.6, 0.04));
             inFront(box(6.2, 0.04, 0.5, mat('#E9ECF1', { roughness: 0.6 }), 0, 0.69, 7.6, 0.01));
             [[-4.6, 1.15], [4.6, 0.9]].forEach(function (pp) { R.plant(pp[0], 7.45, 0.34, 0.7, pp[1], inFront); });
-            var dayL = new THREE.PointLight('#F4F8FF', 2.0, 11, 2); dayL.position.set(0, 3.6, 6.2); scene.add(dayL);
             // a quiet coffered ceiling: slim white beams between the downlights, so a look upward reads as movement
             var beamM = mat('#F8F9FC', { roughness: 0.9, emissive: '#F4F6FA', emissiveIntensity: 0.72 });
             [-7.5, -4.5, -1.5, 1.5, 4.5].forEach(function (bz) { box(19.6, 0.14, 0.16, beamM, 0, 6.9, bz, 0.02).castShadow = false; });
@@ -2864,7 +2863,8 @@ class Component extends DCLogic {
             var bandM = mat('#F3F4F6', { roughness: 0.8, emissive: '#EEEFF2', emissiveIntensity: 0.35 }); box(19.6, 0.5, 0.9, bandM, 0, 6.75, -7.5, 0.05); box(0.9, 0.5, 15.2, bandM, 9.5, 6.75, 0, 0.05); box(0.9, 0.5, 15.2, bandM, -9.5, 6.75, 0, 0.05);
             add(new THREE.BoxGeometry(19.4, 0.05, 0.08), stripM, 0, 6.48, -7.25, 0, false); add(new THREE.BoxGeometry(0.08, 0.05, 15), stripM, 9.25, 6.48, 0, 0, false);
             // soft light from the ceiling (no pendants), and the warm glow of the floor lamp
-            [[-3.6, -3.5], [4.6, -3.5], [0, 3.0], [0, 6.2], [7.5, -4.4]].forEach(function (cl) { var pl = new THREE.PointLight('#EEF3FF', 3.2, 11, 2); pl.position.set(cl[0], 6.2, cl[1]); scene.add(pl); });
+            // one soft ceiling light over the middle of the room (fewer lights: every light is work for every pixel)
+            var pl = new THREE.PointLight('#EEF3FF', 7, 22, 1.6); pl.position.set(0.5, 6.2, -1.0); scene.add(pl);
             var gl2 = new THREE.PointLight('#FFE7C2', 3, 6, 2); gl2.position.set(-1.0, 2.1, -6.3); scene.add(gl2);
             // furniture built the way real pieces are: frames on slim legs, separate cushions with soft rounded edges,
             // woven fabric, thin tops, metal and oak details
@@ -2925,7 +2925,7 @@ class Component extends DCLogic {
             var stepM = mat('#E6EEFB', { roughness: 0.6 });
             for (var stp = 0; stp < 9; stp++) box(1.7, 0.4 + stp * 0.38, 0.6, stepM, 9.1, (0.4 + stp * 0.38) / 2, 3.6 - stp * 0.6, 0.03);
             // light: soft sky light, sun through the window, and a fill
-            scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.15));
+            scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.6));
             var sun = new THREE.DirectionalLight('#FFE9C8', 2.6); sun.position.set(-16, 9, 2); sun.target.position.set(0, 0, -2); sun.castShadow = true;
             sun.shadow.mapSize.set(1536, 1536); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
             scene.add(sun); scene.add(sun.target);
@@ -3011,7 +3011,7 @@ class Component extends DCLogic {
               ud.delta.copy(R.cam.position).sub(R.tv).multiplyScalar(fly * 1.15);
               R.tv.add(ud.delta).sub(R.cam.position);
               // once it has flown past it is gone for good, so it can never turn up again in front of a later view
-              wk = tF < 1 && R.tv.dot(R.fw) > 0.7 ? 1 : 0;
+              wk = tF < 1 && R.tv.dot(R.fw) > 1.4 ? 1 : 0;
             } else wk = Math.max(0, 1 - Math.abs(dF) * 1.7);
             ud.fly = fly; ud.shown = wk;
             stR.position.copy(ud.base).add(ud.delta); stR.position.y += bob(rk) * (1 - fly);
@@ -3025,7 +3025,7 @@ class Component extends DCLogic {
             if (F > q.o.k && sU.delta) {
               // the cards ride along with their words past the camera, and drop out once they are beside or behind it
               q.o3.position.add(sU.delta);
-              R.tv.copy(q.o3.position).sub(R.cam.position); wo = sU.fly < 1 && R.tv.dot(R.fw) > 0.7 ? 1 : 0;
+              R.tv.copy(q.o3.position).sub(R.cam.position); wo = sU.fly < 1 && R.tv.dot(R.fw) > 1.4 ? 1 : 0;
             }
             q.o.el.style.opacity = wo.toFixed(3); q.o.el.style.visibility = wo > 0.002 ? 'visible' : 'hidden'; q.o3.visible = wo > 0.002;
           }
@@ -3034,9 +3034,17 @@ class Component extends DCLogic {
           // depth of field: sharp while the camera travels, a light softening (easy on the eye) and a brighter haze while a point holds
           var foc = Math.max(0, 1 - Math.abs(fc - Math.round(fc)) * 3.2) * (fc > -0.5 && fc < 3.5 ? 1 : 0);
           var fk = foc.toFixed(2);
-          if (R.fk !== fk) { R.fk = fk; R.gl.domElement.style.filter = foc > 0.01 ? 'blur(' + (foc * 1.1).toFixed(2) + 'px) saturate(' + (1 - foc * 0.2).toFixed(3) + ') brightness(' + (1 + foc * 0.05).toFixed(3) + ')' : ''; R.haze.style.opacity = fk; }
+          if (R.fk !== fk) { R.fk = fk; R.haze.style.opacity = fk; }
           var key = cp.join() + ct.join() + sp3.sx.toFixed(4) + sp3.sy.toFixed(4) + F.toFixed(3) + clr.toFixed(3);
-          if (key !== R.key) { R.key = key; R.gl.render(R.scene, R.cam); }
+          // while the camera moves the room is drawn at a lighter resolution (motion hides it); the moment it settles, one
+          // frame is drawn at full sharpness
+          var moving = key !== R.key;
+          if (moving) R.still = 0; else R.still = (R.still || 0) + 1;
+          var wantPr = moving ? 0.62 : 1;
+          if (moving || R.still === 2) {
+            if (R.pr !== wantPr) { R.pr = wantPr; R.gl.setPixelRatio(wantPr); R.gl.setSize(R.w, R.h); }
+            R.key = key; R.gl.render(R.scene, R.cam);
+          }
           R.css.render(R.scene, R.cam);
           // once everything has a size: each point is laid out like a page, the statement on top and its cards below it
           // in centred rows with even gaps, scaled to fit the space between the words and the top of the furniture (no overlaps)
