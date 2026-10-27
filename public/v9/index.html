@@ -1093,6 +1093,9 @@ html,body{overflow-anchor:none}
 @media (min-width:1101px),(min-width:761px) and (orientation:landscape){
   .atc-offer .atc-canvas,.atc-offer .atc-offer-list{visibility:hidden !important;opacity:0 !important}
   .atc-offer-text .ds-label,.atc-offer-title{z-index:2}
+  /* the room behind What we offer: one still view of the same 3D room, under a soft white veil, never moving */
+  .ofr{position:absolute;z-index:0;opacity:0;visibility:hidden;pointer-events:none;background:#F4F6FA center/cover no-repeat}
+  .ofr::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 50%,rgba(255,255,255,.62),rgba(255,255,255,.4) 70%,rgba(255,255,255,.3))}
   .crd{position:absolute;z-index:1;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
   .crd-track{position:absolute;left:0;top:50%;display:flex;gap:var(--gap);will-change:transform}
   .crd-c{position:relative;flex:none;width:var(--cw);height:var(--ch);border-radius:28px;overflow:hidden;
@@ -3354,6 +3357,32 @@ class Component extends DCLogic {
   // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
   // The solution, played on scroll: tagline, both sides, the direct line that breaks, ATCON arriving in the middle,
   // then every side connected through it, with data flowing from business to technology.
+  // v9 What we offer: a still view of the problem section's 3D room, taken once, as the section's backdrop
+  offerRoom(off, u, S) {
+    var map = this._fx.map, ease = this._fx.ease, B = off.__room;
+    if (!B) { B = off.__room = { el: document.createElement('div') }; B.el.className = 'ofr'; B.el.setAttribute('aria-hidden', 'true'); off.insertBefore(B.el, off.firstChild); }
+    var stg = off.closest('.atc-stage') || document.body, sr = stg.getBoundingClientRect(), orr = off.getBoundingClientRect();
+    // it comes in once the O fills the screen and stays, still, until the section ends
+    var o = ease(map(u, S.swap[1] - 30, S.swap[1] + 10)), live = o > 0.001 && u < S.out + 4;
+    B.el.style.opacity = o.toFixed(3); B.el.style.visibility = live ? 'visible' : 'hidden';
+    if (!live) return;
+    B.el.style.left = (sr.left - orr.left).toFixed(1) + 'px'; B.el.style.top = (sr.top - orr.top).toFixed(1) + 'px';
+    B.el.style.width = Math.round(sr.width) + 'px'; B.el.style.height = Math.round(sr.height) + 'px';
+    // the view is drawn once from the room that is already built (while it is not on screen itself)
+    var sp = this.q('spSpace'), R = sp && sp.__r3;
+    if (!B.shot && R && R.ready) {
+      var W = Math.round(sr.width), H = Math.round(sr.height);
+      R.gl.setSize(W, H, false); R.cam.aspect = W / H; R.cam.fov = 50; R.cam.updateProjectionMatrix();
+      R.cam.position.set(1.4, 2.7, 6.6); R.cam.lookAt(-1.6, 2.3, -8);
+      R.scene.fog.near = 900; R.scene.fog.far = 1000; R.scene.background.copy(R.bg);
+      if (R.backWall) R.backWall.visible = true;
+      (R.shadows || []).forEach(function (m) { m.visible = false; });
+      R.gl.render(R.scene, R.cam);
+      B.el.style.backgroundImage = 'url(' + R.gl.domElement.toDataURL('image/jpeg', 0.9) + ')';
+      B.shot = true; R.w = R.h = null; R.key = '';
+    }
+  }
+
   // plays one illustration at progress r (0 empty .. 1 built; above 1 it holds), the same build-up as on the site
   playIllo(root, r) {
     var map = this._fx.map, ease = this._fx.ease;
@@ -3642,7 +3671,7 @@ class Component extends DCLogic {
       if (off) { off.style.setProperty('--hy', (-hk * 42).toFixed(2) + 'vh'); off.style.setProperty('--ho', (1 - hk).toFixed(3)); }
       fp = ease(map(u, S.tiles[0] + 8, S.tiles[0] + 36)) - 1;
       for (var fk = 1; fk < 4; fk++) fp += ease(map(u, S.tiles[0] + span4 * fk - 20, S.tiles[0] + span4 * fk + 6));
-      if (off) this.offerCards(off, fp, u, S);
+      if (off) { this.offerRoom(off, u, S); this.offerCards(off, fp, u, S); }
     }
     for (var oi = 0; oi < 4; oi++) {
       var s0 = S.tiles[0] + oi * span4, r = map(u, s0, s0 + span4);
