@@ -3429,8 +3429,8 @@ class Component extends DCLogic {
     C.track.style.transform = 'translate(' + x.toFixed(1) + 'px,-50%)';
     var fx = st > 0.003;
     // a stronger smear and a little bend, on the cards and on their text alike
-    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 0.9).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 2.6).toFixed(4) + ' 0');
-      C.dispT.setAttribute('scale', (4 * st * st * 1.4).toFixed(4)); C.blurT.setAttribute('stdDeviation', (st / 2.6 * C.cw / C.tw).toFixed(4) + ' 0'); }
+    if (fx) { C.disp.setAttribute('scale', (4 * st * st * 0.4).toFixed(4)); C.blur.setAttribute('stdDeviation', (st / 2.6).toFixed(4) + ' 0');
+      C.dispT.setAttribute('scale', (4 * st * st * 0.6).toFixed(4)); C.blurT.setAttribute('stdDeviation', (st / 2.6 * C.cw / C.tw).toFixed(4) + ' 0'); }
     for (var i = 0; i < 4; i++) {
       var d = i - fc;
       // the illustration drifts a little slower than its card; the cards lean into the move and ease back away from the middle
