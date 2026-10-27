@@ -3430,14 +3430,24 @@ class Component extends DCLogic {
     // room
     add(new THREE.BoxGeometry(26, 0.1, 22), floorM, 0, -0.05, 0);
     rb(8.4, 0.03, 5.4, 0.015, fabric, 0.3, 0.016, -0.6);
-    add(new THREE.BoxGeometry(7.2, 7, 0.4), wall, 0, 3.5, -5.2);
+    // the back wall runs the full width of the room, with one tall window on the left (slim white frame, glass)
+    var WX0 = -9.6, WX1 = 7.4, wl = -4.9, wr = -2.3, wb = 0.5, wt = 6.0;
+    add(new THREE.BoxGeometry(wl - WX0, 7.2, 0.4), wall, (WX0 + wl) / 2, 3.6, -5.2);
+    add(new THREE.BoxGeometry(WX1 - wr, 7.2, 0.4), wall, (wr + WX1) / 2, 3.6, -5.2);
+    add(new THREE.BoxGeometry(wr - wl, wb, 0.4), wall, (wl + wr) / 2, wb / 2, -5.2);
+    add(new THREE.BoxGeometry(wr - wl, 7.2 - wt, 0.4), wall, (wl + wr) / 2, (wt + 7.2) / 2, -5.2);
+    var frameW = M('#FBFBFA', { roughness: 0.35 });
+    [wl + 0.03, (wl + wr) / 2, wr - 0.03].forEach(function (fx) { add(new THREE.BoxGeometry(0.06, wt - wb, 0.08), frameW, fx, (wb + wt) / 2, -5.02); });
+    [wb + 0.03, wt - 0.03, 2.6].forEach(function (fy) { add(new THREE.BoxGeometry(wr - wl, 0.06, 0.08), frameW, (wl + wr) / 2, fy, -5.02); });
+    var glassM = new THREE.MeshPhysicalMaterial({ color: '#FFFFFF', roughness: 0.05, transmission: 0.0, transparent: true, opacity: 0.12, envMapIntensity: 1.2 }); mats.push(glassM);
+    var glass = new THREE.Mesh(keep(new THREE.PlaneGeometry(wr - wl, wt - wb)), glassM); glass.position.set((wl + wr) / 2, (wb + wt) / 2, -5.05); scene.add(glass);
     add(new THREE.BoxGeometry(0.4, 7, 11), wall2, 7.4, 3.5, -1.5);
     var skyM = new THREE.MeshBasicMaterial({ color: '#C9DCEE' }); mats.push(skyM); var sky = new THREE.Mesh(keep(new THREE.PlaneGeometry(40, 16)), skyM); sky.position.set(0, 6, -12); scene.add(sky);
     add(new THREE.BoxGeometry(6, 4.2, 0.3), M('#F1ECE4', { roughness: 0.95 }), -6.2, 2.1, -9.5); add(new THREE.BoxGeometry(5, 5.2, 0.3), M('#EDE6DC', { roughness: 0.95 }), 6.0, 2.6, -10.5);
     for (var sx = -4.6; sx <= 3.4; sx += 0.16) rb(0.05, 7, 0.09, 0.015, whiteMatte, 7.16, 3.5, sx);
     add(new THREE.BoxGeometry(0.5, 6.2, 6.4), wall2, -5.4, 3.1, -1.2);
     rb(0.05, 1.42, 2.5, 0.02, screen, -5.12, 2.5, -1.0);
-    var ceil = M('#F6F5F3', { roughness: 0.9 }); add(new THREE.BoxGeometry(9, 0.2, 9), ceil, 2.6, 7.1, -1.5); add(new THREE.BoxGeometry(4, 0.2, 2.5), ceil, -4.4, 7.1, 1.75);
+    var ceil = M('#F6F5F3', { roughness: 0.9 }); add(new THREE.BoxGeometry(9.6, 0.2, 11), ceil, 2.6, 7.3, -0.5); add(new THREE.BoxGeometry(7.6, 0.2, 6.5), ceil, -5.8, 7.3, 2.75);
     // low sideboard on slim legs
     rb(2.2, 0.42, 0.55, 0.03, white, -3.9, 0.36, -0.2); [-0.95, 0.95].forEach(function (lx) { [-0.2, 0.2].forEach(function (lz) { add(new THREE.CylinderGeometry(0.012, 0.012, 0.15, 12), steel, -3.9 + lx, 0.075, -0.2 + lz); }); });
     rb(0.36, 0.05, 0.26, 0.01, M('#2B3A55', { roughness: 0.6 }), -3.6, 0.6, -0.25); rb(0.34, 0.04, 0.24, 0.01, M('#E5DED2', { roughness: 0.7 }), -3.58, 0.645, -0.24);
