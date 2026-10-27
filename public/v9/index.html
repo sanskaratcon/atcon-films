@@ -2805,7 +2805,7 @@ class Component extends DCLogic {
               shm.position.copy(e.wall).addScaledVector(e.normal, 0.03).addScaledVector(e.wallRight, 0.25); shm.position.y = 3.6; shm.rotation.y = WALL[ex.indexOf(e)][2]; scene.add(shm); return shm; });
             var stEls = sp.querySelectorAll('.sp-st'); R.st = [];
             Array.prototype.forEach.call(stEls, function (el, k) { el.classList.add('r3-st'); var o3 = new CSS3DObject(el), e = ex[k];
-              o3.position.copy(e.origin); o3.position.y = 5.8; o3.rotation.y = e.rot; o3.scale.setScalar(0.0056); scene.add(o3); o3.userData.base = o3.position.clone(); o3.userData.k = k; R.st.push(o3); });
+              o3.position.copy(e.origin); o3.position.y = 5.0; o3.rotation.y = e.rot; o3.scale.setScalar(0.0052); scene.add(o3); o3.userData.base = o3.position.clone(); o3.userData.k = k; R.st.push(o3); });
             R.objs = [];
             (space.__objs || []).forEach(function (o) {
               var o3 = new CSS3DObject(o.el), e = ex[o.k]; o.el.classList.add('r3-o');
@@ -2851,7 +2851,10 @@ class Component extends DCLogic {
             R.laid = true;
             var meas = function (el) { var d0 = el.style.display; el.style.display = ''; var w0 = Math.max(el.offsetWidth, el.scrollWidth), h0 = Math.max(el.offsetHeight, el.scrollHeight); el.style.display = d0; return [w0, h0]; };
             for (var lk = 0; lk < R.st.length; lk++) {
-              var stO = R.st[lk], stH = meas(stO.element)[1] * 0.0056, top = stO.userData.base.y - stH / 2 - 0.4;
+              // the words hang well below the ceiling and its light cove: their top edge stays at 5.6 m (the room is 7 m high)
+              var stO = R.st[lk], stH = meas(stO.element)[1] * 0.0052;
+              stO.userData.base.y = 5.6 - stH / 2;
+              var top = stO.userData.base.y - stH / 2 - 0.35;
               var its = R.objs.filter(function (q2) { return q2.o.k === lk; }).map(function (q2) { return { q: q2, s: meas(q2.o.el) }; });
               if (!stH || its.some(function (it) { return !it.s[0]; })) { R.laid = false; continue; }
               // reading order: the original rows top to bottom, each left to right
@@ -2867,7 +2870,7 @@ class Component extends DCLogic {
                   rw.h = Math.max.apply(null, rw.items.map(function (it) { return it.s[1]; }));
                   mW = Math.max(mW, rw.w); tH += rw.h;
                 });
-                var sc0 = Math.min(0.0084, 7.4 / mW, (top - 1.45) / tH);
+                var sc0 = Math.min(0.0084, 7.4 / mW, (top - 1.3) / tH);
                 if (!best || sc0 > best.sc + 0.0002) best = { sc: sc0, rows: rs };
               }
               var rows = best.rows, sc = best.sc, yy = top;
