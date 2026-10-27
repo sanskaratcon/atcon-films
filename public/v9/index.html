@@ -2722,7 +2722,7 @@ class Component extends DCLogic {
             var add = function (geo, m2, x, y, z, ry, cast) { var me = new THREE.Mesh(geo, m2); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = cast !== false; me.receiveShadow = true; scene.add(me); return me; };
             var box = function (w, h, d, m2, x, y, z, r) { return add(new RBox(w, h, d, 3, r == null ? Math.min(w, h, d) * 0.12 : r), m2, x, y, z); };
             // the room: 20 wide, 7 high, 16 deep; a big window on the left, stairs on the right, a lit cove in the ceiling
-            var wallM = mat('#D3DFF6', { bumpMap: plasterT, bumpScale: 0.6 }), floorM = mat('#BFD0EE', { roughness: 0.42, roughnessMap: cementT, bumpMap: cementT, bumpScale: 0.3, envMapIntensity: 0.9 }), ceilM = mat('#E2EAF9', { emissive: '#DCE5F7', emissiveIntensity: 0.45 });
+            var wallM = mat('#D3DFF6', { bumpMap: plasterT, bumpScale: 0.6 }), floorM = mat('#BFD0EE', { roughness: 0.42, roughnessMap: cementT, bumpMap: cementT, bumpScale: 0.3, envMapIntensity: 0.9 }), ceilM = mat('#F6F6F4', { emissive: '#F3F3F1', emissiveIntensity: 0.6 });
             add(new THREE.PlaneGeometry(20, 16), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
             var ceil = add(new THREE.PlaneGeometry(20, 16), ceilM, 0, 7, 0, 0, false); ceil.rotation.x = Math.PI / 2;
             add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, -8, 0, false);
@@ -2738,8 +2738,8 @@ class Component extends DCLogic {
             for (var mz = -6.5; mz <= 6.01; mz += 1.3) box(0.12, 5.2, 0.12, frameM, -9.95, 3.3, mz, 0.02);
             for (var my = 0.7; my <= 5.91; my += 1.3) box(0.12, 0.12, 13, frameM, -9.95, my, -0.5, 0.02);
             // ceiling cove and its light strip
-            var stripM = new THREE.MeshBasicMaterial({ color: '#7FA3F2' });
-            var bandM = mat('#2D63E6', { roughness: 0.7 }); box(19.6, 0.5, 0.9, bandM, 0, 6.75, -7.5, 0.05); box(0.9, 0.5, 15.2, bandM, 9.5, 6.75, 0, 0.05); box(0.9, 0.5, 15.2, bandM, -9.5, 6.75, 0, 0.05);
+            var stripM = new THREE.MeshBasicMaterial({ color: '#FFFFFF' });
+            var bandM = mat('#F3F4F6', { roughness: 0.8, emissive: '#EEEFF2', emissiveIntensity: 0.35 }); box(19.6, 0.5, 0.9, bandM, 0, 6.75, -7.5, 0.05); box(0.9, 0.5, 15.2, bandM, 9.5, 6.75, 0, 0.05); box(0.9, 0.5, 15.2, bandM, -9.5, 6.75, 0, 0.05);
             add(new THREE.BoxGeometry(19.4, 0.05, 0.08), stripM, 0, 6.48, -7.25, 0, false); add(new THREE.BoxGeometry(0.08, 0.05, 15), stripM, 9.25, 6.48, 0, 0, false);
             // soft light from the ceiling (no pendants), and the warm glow of the floor lamp
             [[-3.6, -3.5], [4.6, -3.5], [0, 3.0], [0, 6.2], [7.5, -4.4]].forEach(function (cl) { var pl = new THREE.PointLight('#EEF3FF', 3.2, 11, 2); pl.position.set(cl[0], 6.2, cl[1]); scene.add(pl); });
@@ -2783,7 +2783,7 @@ class Component extends DCLogic {
             // each point floats in the air well out from its own wall, close to the camera: the statement on top, its cards
             // below and a little nearer still, turned to face the camera, so the camera moves give real depth
             var WALL = [[-3.6, -7.94, 0], [4.6, -7.94, 0], [9.94, -4.4, -Math.PI / 2], [0, 7.94, Math.PI]];
-            var axisY = new THREE.Vector3(0, 1, 0), AHEAD = 8.0;
+            var axisY = new THREE.Vector3(0, 1, 0), AHEAD = 11.0;
             R.views = [
               { p: [1.6, 3.0, 7.4], t: [-3.0, 3.5, -8] }, { p: [-1.2, 3.0, 7.4], t: [4.0, 3.5, -8] },
               { p: [-6.5, 3.0, 2.4], t: [10, 3.5, -4.4] }, { p: [1.6, 3.0, -7.2], t: [0, 3.5, 8] }];
@@ -2791,7 +2791,7 @@ class Component extends DCLogic {
             var ex = WALL.map(function (wv, k) {
               var rgt = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, wv[2]), nrm = new THREE.Vector3(0, 0, 1).applyAxisAngle(axisY, wv[2]);
               var px = wv[2] === 0 || wv[2] === Math.PI ? wv[0] : 9.94, pz = wv[1];
-              // straight ahead of this point's camera, about 8 m out, facing it
+              // straight ahead of this point's camera, about 11 m out, facing it
               var cp = R.views[k].p, tg = R.views[k].t, dir = new THREE.Vector3(tg[0] - cp[0], 0, tg[2] - cp[2]).normalize();
               var origin = new THREE.Vector3(cp[0], 0, cp[2]).addScaledVector(dir, AHEAD);
               var rot = Math.atan2(-dir.x, -dir.z), r2 = new THREE.Vector3(1, 0, 0).applyAxisAngle(axisY, rot);
