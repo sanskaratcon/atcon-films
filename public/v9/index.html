@@ -2693,8 +2693,9 @@ class Component extends DCLogic {
         // v9: the problems are told in one furnished room, drawn with three.js (after wlt.design, in ATCON's colours).
         // Each statement is lettering on a wall; the camera moves to a new view of the room for each point, and that
         // point's pieces float in the room in front of it.
+        // the room is only built as the problems come near, and only drawn while they are on screen
         var R = space.__r3;
-        if (!R) {
+        if (!R && u > S.ins[0] - 400) {
           R = space.__r3 = { ready: false };
           var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
           Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js'),
@@ -2703,8 +2704,8 @@ class Component extends DCLogic {
             var EffectComposer = m[4].EffectComposer, RenderPass = m[5].RenderPass, GTAOPass = m[6].GTAOPass, UnrealBloomPass = m[7].UnrealBloomPass, OutputPass = m[8].OutputPass;
             var scene = new THREE.Scene(); scene.background = new THREE.Color('#D7E2F7');
             var cam = new THREE.PerspectiveCamera(46, 1, 0.1, 200);
-            var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.08;
+            var gl = new THREE.WebGLRenderer({ antialias: true }); gl.setPixelRatio(Math.min(1.5, window.devicePixelRatio || 1));
+            gl.shadowMap.enabled = true; gl.shadowMap.type = THREE.PCFSoftShadowMap; gl.shadowMap.autoUpdate = false; gl.shadowMap.needsUpdate = true; gl.toneMapping = THREE.ACESFilmicToneMapping; gl.toneMappingExposure = 1.08;
             gl.outputColorSpace = THREE.SRGBColorSpace; gl.domElement.className = 'r3-gl'; holder.appendChild(gl.domElement);
             var css = new CSS3DRenderer(); css.domElement.className = 'r3-css'; holder.appendChild(css.domElement);
             // the finish: a studio light environment for soft reflections, and surfaces with real texture instead of flat colour
@@ -2777,7 +2778,7 @@ class Component extends DCLogic {
             // light: soft sky light, sun through the window, and a fill
             scene.add(new THREE.HemisphereLight('#F4F8FF', '#9FB4DE', 1.15));
             var sun = new THREE.DirectionalLight('#FFE9C8', 2.6); sun.position.set(-16, 9, 2); sun.target.position.set(0, 0, -2); sun.castShadow = true;
-            sun.shadow.mapSize.set(2048, 2048); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
+            sun.shadow.mapSize.set(1536, 1536); sun.shadow.camera.left = -14; sun.shadow.camera.right = 14; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
             scene.add(sun); scene.add(sun.target);
             // the statements as lettering on the walls, and each point's pieces in front of its view
             // each point floats in the room in front of its own wall: the statement on top, its illustration right below it,
@@ -2817,17 +2818,17 @@ class Component extends DCLogic {
             if (rich) {
               var rt = new THREE.WebGLRenderTarget(16, 16, { type: THREE.HalfFloatType, samples: 4 });
               var comp = new EffectComposer(gl, rt); comp.addPass(new RenderPass(scene, cam));
-              var ao = new GTAOPass(scene, cam, 16, 16); ao.updateGtaoMaterial({ radius: 0.9, distanceExponent: 1.4, thickness: 1.2, scale: 1.2, samples: 12 });
+              var ao = new GTAOPass(scene, cam, 16, 16); ao.updateGtaoMaterial({ radius: 0.9, distanceExponent: 1.4, thickness: 1.2, scale: 1.2, samples: 8 });
               ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 }); comp.addPass(ao);
               comp.addPass(new UnrealBloomPass(new THREE.Vector2(16, 16), 0.22, 0.55, 0.92));
-              comp.addPass(new OutputPass()); R.comp = comp;
+              comp.addPass(new OutputPass()); comp.setPixelRatio(1); R.comp = comp;
             }
             R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
           }).catch(function () { R.failed = true; });
         }
-        if (R.ready) {
+        if (R && R.ready && ride) {
           var THREE3 = R.THREE, Wv = space.clientWidth || W, Hv = space.clientHeight || H;
-          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); if (R.comp) R.comp.setSize(Wv, Hv); R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
+          if (R.w !== Wv || R.h !== Hv) { R.w = Wv; R.h = Hv; R.gl.setSize(Wv, Hv); R.gl.shadowMap.needsUpdate = true; if (R.comp) R.comp.setSize(Wv, Hv); R.css.setSize(Wv, Hv); R.cam.aspect = Wv / Hv; R.cam.fov = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.updateProjectionMatrix(); }
           // the camera eases from view to view
           var fc = Math.max(-1, Math.min(4, F)), a0 = Math.floor(fc), tt = fc - a0, st3 = tt * tt * (3 - 2 * tt);
           var vw = function (i) { return i < 0 ? R.pre : i > 3 ? R.post : R.views[i]; };
