@@ -635,6 +635,9 @@ html,body{overscroll-behavior-y:none}
 .atc-splash.ld.is-out{transform:translateY(-100%)}
 .ld-k{position:absolute;left:calc(var(--rail) + 4vw);bottom:9vh;font-family:var(--atc-font);font-size:var(--fs-label);font-weight:var(--fw-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--atc-mute)}
 .ld-n{position:absolute;right:4vw;bottom:7vh;font-family:var(--atc-font);font-size:clamp(72px,9vw,160px);font-weight:300;line-height:1;letter-spacing:-.05em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
+/* the word beside the counter follows the loading: Ideas, Strategy, Creative, Development, Partner */
+.ld-k.is-swap{animation:ld-swap .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes ld-swap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
 /* Through the A */
 .atc-splash{background:transparent !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
@@ -1665,7 +1668,7 @@ with a vision.</h2>
 
       <!-- Splash: the ATCON A draws in, fills with its own colours as the page loads, then the navy stroke opens
            into a window and we fly through it into the site -->
-      <div class="atc-splash ld" data-atc="splash" aria-hidden="true"><span class="ld-k">ATCON Global</span><span class="ld-n" data-atc="ldN">0</span><span class="ld-ln" data-atc="ldLn"></span></div>
+      <div class="atc-splash ld" data-atc="splash" aria-hidden="true"><span class="ld-k" data-atc="ldK">Ideas</span><span class="ld-n" data-atc="ldN">0</span><span class="ld-ln" data-atc="ldLn"></span></div>
 
   <div class="atc-after" data-theme="light">
 
@@ -2140,6 +2143,10 @@ class Component extends DCLogic {
     this._ldShow += (want - this._ldShow) * 0.12;
     if (want >= 1 && this._ldShow > 0.995) this._ldShow = 1;
     var n = this.q('ldN'), ln = this.q('ldLn'), txt = String(Math.floor(this._ldShow * 100));
+    // the word beside the counter moves on with the loading
+    var WORDS = ['Ideas', 'Strategy', 'Creative', 'Development', 'Partner'], kEl = this.q('ldK');
+    var wi = Math.min(WORDS.length - 1, Math.floor(this._ldShow * WORDS.length));
+    if (kEl && kEl.textContent !== WORDS[wi]) { kEl.textContent = WORDS[wi]; kEl.classList.remove('is-swap'); void kEl.offsetWidth; kEl.classList.add('is-swap'); }
     if (n && n.textContent !== txt) n.textContent = txt;
     if (ln) ln.style.width = (this._ldShow * 100).toFixed(2) + '%';
     if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
