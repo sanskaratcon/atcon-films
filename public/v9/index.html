@@ -3676,7 +3676,7 @@ class Component extends DCLogic {
     this._solLastU = u;
     if (u < S.mark[0]) this._solHeld = false;
     var holdU = S.word[1] + 2;
-    if (!this._solHeld && lastU < holdU && u >= holdU && performance.now() > (this._jumpUntil || 0)) {
+    if (false && !this._solHeld && lastU < holdU && u >= holdU && performance.now() > (this._jumpUntil || 0)) {
       this._solHeld = true;
       this._lock = { top: this.unitTop(holdU), until: performance.now() + 1300, ease: true };
     }
@@ -3935,6 +3935,8 @@ class Component extends DCLogic {
   roomMoves() { return [[0, 0], [40, 50], [52, 62], [70, 80]]; }
 
   probDamp(y) {
+    // one even pace everywhere: the wheel is no longer softened at the problem points
+    return 1;
     // v9: a light slow-down in the middle of each point, where it is read; never at the start of a camera move
     var S = this.timeline().stack, vh = window.innerHeight || 800, B = vh * 0.4, k = 1;
     for (var ph = 0; ph < S.ins.length; ph++) {
@@ -3975,6 +3977,8 @@ class Component extends DCLogic {
   }
 
   settle() {
+    // the page follows the wheel exactly: nothing glides on by itself when scrolling stops
+    return;
     if (this._lock || this._touching || this._cine || (this._sw && this._sw.y != null)) return;
     var now = performance.now();
     if (now < (this._jumpUntil || 0)) return;
