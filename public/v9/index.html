@@ -1873,7 +1873,7 @@ class Component extends DCLogic {
     }
     return {
       trackHeight: 'calc(100vh + ' + Math.round(this.timeline().U * pace) + 'vh)',
-      vtrackHeight: 'calc(100vh + ' + Math.round(320 * pace) + 'vh)',
+      vtrackHeight: 'calc(100vh + ' + Math.round(260 * pace) + 'vh)',
       seeProblem: this._h.seeProblem,
       toggleMenu: this._h.toggleMenu,
       closeMenu: this._h.closeMenu,
@@ -2260,11 +2260,12 @@ class Component extends DCLogic {
       var clients = document.getElementById('results');
       if (clients) clients.style.opacity = (1 - ease(map(vr.top, vh * 0.95, vh * 0.2))).toFixed(3);
       var vwhite = this.q('vwhite'), v5 = this.q('v5');
-      if (vwhite) vwhite.style.opacity = (1 - ease(map(vp, 0.0, 0.14))).toFixed(3);
+      // the video is already there as the section scrolls in under the logos, so no blank white screen sits between them
+      if (vwhite) vwhite.style.opacity = (1 - ease(map(vr.top, vh * 0.75, vh * 0.15))).toFixed(3);
       if (v5) {
         // A touch of zoom on the first frames keeps the laptop bezel out of view until the camera pulls back.
-        v5.style.transform = 'scale(' + (1.06 - 0.06 * ease(map(vp, 0.08, 0.24))).toFixed(4) + ')';
-        if (vr.top < vh && vr.bottom > 0) this.seek(v5, map(vp, 0.06, 0.96));
+        v5.style.transform = 'scale(' + (1.06 - 0.06 * ease(map(vp, 0.0, 0.16))).toFixed(4) + ')';
+        if (vr.top < vh && vr.bottom > 0) this.seek(v5, map(vp, 0.0, 0.96));
       }
     }
 
