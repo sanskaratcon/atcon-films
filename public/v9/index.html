@@ -3442,7 +3442,10 @@ class Component extends DCLogic {
     var dz = 0.78 * ease(map(u, S.tiles[0] - 10, S.tiles[0] + 70)) + 0.22 * map(u, S.tiles[0] + 70, S.tiles[1]);
     B.el.style.transformOrigin = '84% 22%';
     B.el.style.transform = dz > 0.0005 ? 'scale(' + (1 + dz * 1.9).toFixed(4) + ')' : '';
-    B.el.style.setProperty('--veil', (dz * 0.45).toFixed(3));
+    // over the last card the studio slowly whitens to the plain white of Proven results, so the grey never meets the
+    // white with an edge: by the time the section scrolls away the two are the same colour
+    var wf = map(u, S.tiles[1] - 70, S.tiles[1] + 2); wf = wf * wf * (3 - 2 * wf);
+    B.el.style.setProperty('--veil', (dz * 0.45 + (1 - dz * 0.45) * wf).toFixed(3));
   }
 
   // renders the studio 12 times with the sun moved a little each time and blends them, for the soft shadows of real
