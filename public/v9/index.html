@@ -633,11 +633,15 @@ html,body{overscroll-behavior-y:none}
 /* v9 loader: a thin counter runs to 100 while a brand-gradient line fills along the bottom, then the white slides up */
 .atc-splash.ld{background:#FFFFFF !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;transition:transform .9s cubic-bezier(.7,0,.2,1)}
 .atc-splash.ld.is-out{transform:translateY(-100%)}
-.ld-k{position:absolute;left:calc(var(--rail) + 4vw);bottom:9vh;font-family:var(--atc-font);font-size:var(--fs-label);font-weight:var(--fw-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--atc-mute)}
-.ld-n{position:absolute;right:4vw;bottom:7vh;font-family:var(--atc-font);font-size:clamp(72px,9vw,160px);font-weight:300;line-height:1;letter-spacing:-.05em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
+.ld-k{position:absolute;left:calc(var(--rail) + 4vw);bottom:6vh;display:grid;overflow:hidden;padding-bottom:.12em;font-family:var(--atc-font);font-size:clamp(56px,9vw,168px);line-height:1;letter-spacing:-.05em;color:var(--atc-navy)}
+.ld-w{grid-area:1/1;display:block;white-space:nowrap}
+/* the word changes by rolling: the old one rises out and fades, the new one rises in from below */
+.ld-w.is-in{animation:ld-in .7s cubic-bezier(.2,.7,.15,1) both}
+.ld-w.is-out{animation:ld-out .55s cubic-bezier(.6,0,.4,1) both}
+@keyframes ld-in{from{transform:translateY(105%);opacity:0;filter:blur(6px)}to{transform:none;opacity:1;filter:none}}
+@keyframes ld-out{to{transform:translateY(-105%);opacity:0;filter:blur(6px)}}
+.ld-n{position:absolute;right:4vw;bottom:7vh;font-family:var(--atc-font);font-size:clamp(28px,3vw,52px);line-height:1;letter-spacing:-.03em;color:var(--atc-mute);font-variant-numeric:tabular-nums}
 /* the word beside the counter follows the loading: Ideas, Strategy, Creative, Development, Partner */
-.ld-k.is-swap{animation:ld-swap .45s cubic-bezier(.2,.7,.2,1)}
-@keyframes ld-swap{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
 /* Through the A */
 .atc-splash{background:transparent !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
@@ -1668,7 +1672,7 @@ with a vision.</h2>
 
       <!-- Splash: the ATCON A draws in, fills with its own colours as the page loads, then the navy stroke opens
            into a window and we fly through it into the site -->
-      <div class="atc-splash ld" data-atc="splash" aria-hidden="true"><span class="ld-k" data-atc="ldK">Ideas</span><span class="ld-n" data-atc="ldN">0</span><span class="ld-ln" data-atc="ldLn"></span></div>
+      <div class="atc-splash ld" data-atc="splash" aria-hidden="true"><span class="ld-k" data-atc="ldK"><span class="ld-w">Ideas</span></span><span class="ld-n" data-atc="ldN">0</span><span class="ld-ln" data-atc="ldLn"></span></div>
 
   <div class="atc-after" data-theme="light">
 
@@ -2146,7 +2150,12 @@ class Component extends DCLogic {
     // the word beside the counter moves on with the loading
     var WORDS = ['Ideas', 'Strategy', 'Creative', 'Development', 'Partner'], kEl = this.q('ldK');
     var wi = Math.min(WORDS.length - 1, Math.floor(this._ldShow * WORDS.length));
-    if (kEl && kEl.textContent !== WORDS[wi]) { kEl.textContent = WORDS[wi]; kEl.classList.remove('is-swap'); void kEl.offsetWidth; kEl.classList.add('is-swap'); }
+    if (kEl && this._ldWord !== WORDS[wi]) {
+      this._ldWord = WORDS[wi];
+      var olds = kEl.querySelectorAll('.ld-w:not(.is-out)'), nw = document.createElement('span');
+      for (var oi2 = 0; oi2 < olds.length; oi2++) { if (olds[oi2].textContent === WORDS[wi]) continue; olds[oi2].classList.add('is-out'); (function (o) { setTimeout(function () { o.remove(); }, 600); })(olds[oi2]); }
+      if (!olds.length || olds[0].textContent !== WORDS[wi]) { nw.className = 'ld-w is-in'; nw.textContent = WORDS[wi]; kEl.appendChild(nw); }
+    }
     if (n && n.textContent !== txt) n.textContent = txt;
     if (ln) ln.style.width = (this._ldShow * 100).toFixed(2) + '%';
     if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
