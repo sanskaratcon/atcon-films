@@ -1088,6 +1088,39 @@ html,body{overflow-anchor:none}
   .atc-offer .cv-body{height:100%}
   .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:0;top:0;width:100%;height:100%}
 }
+/* v9 What we offer, after lutstudios.com: past the O the camera comes down onto a desk covered with printed sheets, one per
+   capability (a big faded word, a dark card of text, the illustration printed below), and glides from sheet to sheet */
+@media (min-width:1101px),(min-width:761px) and (orientation:landscape){
+  .atc-offer .atc-canvas,.atc-offer .atc-offer-list{visibility:hidden !important}
+  .atc-offer-text .ds-label,.atc-offer-title{z-index:2}
+  .lut{z-index:1;position:absolute;overflow:hidden;perspective:1800px;opacity:0;visibility:hidden;pointer-events:none;
+    -webkit-mask-image:radial-gradient(120% 100% at 50% 50%,#000 62%,transparent 100%);mask-image:radial-gradient(120% 100% at 50% 50%,#000 62%,transparent 100%)}
+  .lut-desk{position:absolute;left:0;top:0;width:3400px;height:2200px;transform-origin:0 0;will-change:transform;
+    background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(255,255,255,0) 40%,rgba(0,16,37,.06)),var(--wood) center/1200px 1200px,#E9E1D6}
+  .lut-desk::after{content:'';position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 50% at 18% 20%,rgba(255,250,240,.55),rgba(255,250,240,0) 70%),radial-gradient(50% 45% at 85% 85%,rgba(0,16,37,.18),rgba(0,16,37,0) 70%)}
+  .lut-sheet{position:absolute;width:1000px;height:740px;background:linear-gradient(160deg,#FFFFFF,#F6F7F9);border-radius:3px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,.12),0 18px 34px -14px rgba(20,24,30,.38),0 50px 80px -40px rgba(20,24,30,.3)}
+  .lut-big{position:absolute;left:0;right:0;top:34px;text-align:center;font-family:var(--atc-font);font-size:150px;line-height:1;letter-spacing:.24em;text-indent:.24em;color:rgba(0,16,37,.07)}
+  .lut-card{position:absolute;left:70px;right:70px;top:150px;padding:20px 26px;border-radius:16px;background:rgba(0,16,37,.72);color:#fff;font-family:var(--atc-font)}
+  .lut-card b{display:block;font-weight:400;font-size:26px;letter-spacing:-.02em;margin-bottom:6px}
+  .lut-card span{display:block;font-size:19px;line-height:1.45;color:rgba(255,255,255,.78)}
+  .lut-ill{position:absolute;left:50%;top:330px;width:560px;height:378px;transform:translateX(-50%);container-type:size}
+  .lut-ill .an-rev{clip-path:none !important}.lut-ill .dr{stroke-dashoffset:0 !important}
+  .lut-n{position:absolute;right:28px;bottom:20px;font-family:var(--atc-font);font-size:15px;letter-spacing:.14em;color:rgba(0,16,37,.35)}
+  /* the props around the sheets */
+  .lut-kb{position:absolute;width:820px;height:280px;border-radius:26px;background:linear-gradient(170deg,#F7F8FA,#DCE0E6);padding:22px;display:grid;grid-template-columns:repeat(15,1fr);gap:9px;
+    box-shadow:0 2px 3px rgba(0,0,0,.15),0 26px 40px -18px rgba(20,24,30,.45)}
+  .lut-kb i{border-radius:9px;background:linear-gradient(180deg,#FFFFFF,#EEF1F5);box-shadow:0 3px 0 #C9CFD8,0 4px 6px -2px rgba(0,0,0,.2)}
+  .lut-kb i.b{background:linear-gradient(180deg,#5A86EE,#2D63E6);box-shadow:0 3px 0 #1D47B5,0 4px 6px -2px rgba(0,0,0,.25)}
+  .lut-kb i.w{grid-column:span 2}.lut-kb i.sp{grid-column:span 6}
+  .lut-mug{position:absolute;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 50% 50%,#4A3426 0 52%,#F6F7F9 53% 70%,#E3E7EC 71%);
+    box-shadow:0 30px 40px -18px rgba(20,24,30,.5)}
+  .lut-mug::after{content:'';position:absolute;right:-48px;top:62px;width:66px;height:66px;border-radius:50%;border:16px solid #EEF1F4;box-shadow:0 14px 16px -10px rgba(20,24,30,.4)}
+  .lut-nb{position:absolute;width:520px;height:700px;border-radius:14px;background:linear-gradient(150deg,#3D70EA,#2D63E6 60%,#2552C4);box-shadow:0 30px 50px -24px rgba(20,24,30,.55)}
+  .lut-nb::before{content:'ATCON';position:absolute;left:44px;bottom:44px;font-family:var(--atc-font);font-size:28px;letter-spacing:.3em;color:rgba(255,255,255,.75)}
+  .lut-pen{position:absolute;width:520px;height:18px;border-radius:9px;background:linear-gradient(180deg,#24324F,#001025);box-shadow:0 14px 14px -8px rgba(20,24,30,.5)}
+}
 /* v9 What we offer: the four illustrations, drawn on a 557 x 376 board that scales with its slot */
 .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{container-type:size}
 .ix{position:absolute;left:50%;top:50%;width:min(100cqw,148.1cqh);aspect-ratio:557/376;transform:translate(-50%,-50%);container-type:inline-size;box-sizing:border-box;
@@ -3338,6 +3371,70 @@ class Component extends DCLogic {
   // one, the page glides on to its end (or back to its start when scrolling up), so nothing is left half-shown.
   // The solution, played on scroll: tagline, both sides, the direct line that breaks, ATCON arriving in the middle,
   // then every side connected through it, with data flowing from business to technology.
+  // v9 What we offer: the desk of printed sheets. Built once from the page's own text and illustrations; the camera is a
+  // CSS 3D transform on the desk, so everything stays sharp and light to draw.
+  lutDesk(off, fp, u, S) {
+    var map = this._fx.map, ease = this._fx.ease, L = off.__lut;
+    var SH = [[880, 640, -4], [2020, 560, 3], [980, 1460, 2.5], [2140, 1400, -3]];
+    if (!L) {
+      L = off.__lut = {};
+      var wrap = document.createElement('div'); wrap.className = 'lut'; wrap.setAttribute('aria-hidden', 'true');
+      var desk = document.createElement('div'); desk.className = 'lut-desk'; wrap.appendChild(desk); off.appendChild(wrap); L.wrap = wrap; L.desk = desk;
+      // a pale ash wood, drawn once
+      var wc = document.createElement('canvas'); wc.width = wc.height = 600; var wx = wc.getContext('2d');
+      wx.fillStyle = '#E8DFD2'; wx.fillRect(0, 0, 600, 600);
+      for (var gi = 0; gi < 260; gi++) { var gy = Math.random() * 600, ga = 0.03 + Math.random() * 0.06; wx.strokeStyle = 'rgba(' + (Math.random() < 0.5 ? '150,120,90' : '255,250,240') + ',' + ga.toFixed(3) + ')';
+        wx.lineWidth = 0.6 + Math.random() * 2.2; wx.beginPath(); wx.moveTo(0, gy); for (var gx = 0; gx <= 600; gx += 30) wx.lineTo(gx, gy + Math.sin(gx * 0.012 + gi) * 3 + (Math.random() - 0.5)); wx.stroke(); }
+      desk.style.setProperty('--wood', 'url(' + wc.toDataURL('image/jpeg', 0.85) + ')');
+      // props
+      var kb = '<div class="lut-kb" style="left:230px;top:120px;transform:rotate(-8deg)">';
+      for (var ki = 0; ki < 66; ki++) kb += '<i class="' + (ki === 13 || ki === 28 ? 'w' : '') + (ki === 60 ? ' sp' : '') + ([14, 29, 44, 59].indexOf(ki) >= 0 ? ' b' : '') + '"></i>';
+      desk.insertAdjacentHTML('beforeend', kb + '</div>' +
+        '<div class="lut-nb" style="left:2740px;top:1180px;transform:rotate(9deg)"></div>' +
+        '<div class="lut-mug" style="left:2860px;top:300px"></div>' +
+        '<div class="lut-pen" style="left:1560px;top:1150px;transform:rotate(-22deg)"></div>');
+      // the sheets: big faded word, the dark card with the capability's own text, the illustration printed below
+      var BIG = ['DATA', 'PROCESS', 'TALENT', 'DIGITAL'];
+      for (var k = 0; k < 4; k++) {
+        var li = this.q('offerL' + k), name = li ? li.querySelector('strong').textContent : '', desc = li ? li.querySelector('div > span').textContent : '';
+        var src = this.q('cvW' + k), ill = src ? src.querySelector('.ix').cloneNode(true) : null;
+        var sh = document.createElement('div'); sh.className = 'lut-sheet';
+        sh.style.left = (SH[k][0] - 500) + 'px'; sh.style.top = (SH[k][1] - 370) + 'px'; sh.style.transform = 'rotate(' + SH[k][2] + 'deg)';
+        sh.innerHTML = '<div class="lut-big">' + BIG[k] + '</div><div class="lut-card"><b></b><span></span></div><div class="lut-ill"></div><div class="lut-n">0' + (k + 1) + '</div>';
+        sh.querySelector('.lut-card b').textContent = name; sh.querySelector('.lut-card span').textContent = desc;
+        if (ill) {
+          // printed in its finished state
+          ill.querySelectorAll('[data-in]').forEach(function (e) { e.style.opacity = '1'; e.style.transform = 'none'; });
+          ill.querySelectorAll('[data-count]').forEach(function (e) { var v = parseFloat(e.getAttribute('data-count')); e.textContent = v >= 1000 ? v.toLocaleString('en') : String(v); });
+          ill.querySelectorAll('.cv-tg').forEach(function (e) { e.classList.add('on'); });
+          sh.querySelector('.lut-ill').appendChild(ill);
+        }
+        desk.appendChild(sh);
+      }
+    }
+    var show = ease(map(u, S.tiles[0] - 6, S.tiles[0] + 22)), live = show > 0.001 && u < S.out + 4;
+    L.wrap.style.opacity = show.toFixed(3); L.wrap.style.visibility = live ? 'visible' : 'hidden';
+    if (!live) return;
+    // the desk fills the whole screen, whatever the size of the section's box
+    var stg = off.closest('.atc-stage') || document.body, sr = stg.getBoundingClientRect(), orr = off.getBoundingClientRect();
+    var lx = (sr.left - orr.left).toFixed(1) + 'px', ly = (sr.top - orr.top).toFixed(1) + 'px';
+    if (L.wrap.style.left !== lx || L.wrap.style.top !== ly) { L.wrap.style.left = lx; L.wrap.style.top = ly; }
+    if (L.wrap.style.width !== Math.round(sr.width) + 'px') { L.wrap.style.width = Math.round(sr.width) + 'px'; L.wrap.style.height = Math.round(sr.height) + 'px'; }
+    var W = sr.width, H = sr.height;
+    // camera views: -1 looking down on the whole desk from high up, then one view per sheet
+    var view = function (i) {
+      if (i < 0) return { x: 1700, y: 1050, r: 0, s: Math.min(W / 3400, H / 2200) * 1.25, tilt: 26 };
+      var q = SH[i]; return { x: q[0], y: q[1] + 10, r: -q[2] * 0.8, s: Math.min(W * 0.6 / 1000, H * 0.8 / 740), tilt: 9 };
+    };
+    var fc = Math.max(-1, Math.min(3, fp)), a = Math.floor(fc), t = fc - a, A = view(a), B = view(Math.min(3, a + 1));
+    var lerp = function (p, q) { return p + (q - p) * t; };
+    // the camera lifts a little between two sheets, like a hand moving the view across the desk
+    var lift = a >= 0 ? 1 - Math.sin(Math.PI * t) * 0.18 : 1;
+    var x = lerp(A.x, B.x), y = lerp(A.y, B.y), r = lerp(A.r, B.r), sc = lerp(A.s, B.s) * lift, tl = lerp(A.tilt, B.tilt);
+    var tm = performance.now() / 1000, dx = Math.sin(tm * 0.3) * 6, dy = Math.cos(tm * 0.23) * 5;
+    L.desk.style.transform = 'translate(' + (W / 2).toFixed(1) + 'px,' + (H / 2).toFixed(1) + 'px) rotateX(' + tl.toFixed(2) + 'deg) scale(' + sc.toFixed(4) + ') rotate(' + r.toFixed(2) + 'deg) translate(' + (-x + dx).toFixed(1) + 'px,' + (-y + dy).toFixed(1) + 'px)';
+  }
+
   sol(S, u) {
     var map = this._fx.map, ease = this._fx.ease;
     var box = this.q('sol');
@@ -3532,6 +3629,7 @@ class Component extends DCLogic {
       if (off) { off.style.setProperty('--hy', (-hk * 42).toFixed(2) + 'vh'); off.style.setProperty('--ho', (1 - hk).toFixed(3)); }
       fp = ease(map(u, S.tiles[0] + 8, S.tiles[0] + 36)) - 1;
       for (var fk = 1; fk < 4; fk++) fp += ease(map(u, S.tiles[0] + span4 * fk - 20, S.tiles[0] + span4 * fk + 6));
+      if (off) this.lutDesk(off, fp, u, S);
     }
     for (var oi = 0; oi < 4; oi++) {
       var s0 = S.tiles[0] + oi * span4, r = map(u, s0, s0 + span4);
