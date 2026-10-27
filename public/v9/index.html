@@ -1055,6 +1055,26 @@ html,body{overflow-anchor:none}
   .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:8%;width:84%;top:8%;height:84%}
   .atc-offer .cvb{width:max(64%,250px);right:-12%}
 }
+/* v9 What we offer, after terminal-industries.com: inside the O only the title shows; then it scrolls away, one
+   capability at a time reads large on the left and scrolls up into the next, while its illustration changes on the right */
+@media (min-width:1101px),(min-width:761px) and (orientation:landscape){
+  .atc-offer{display:block;padding:0}
+  .atc-offer-text{display:block}
+  .atc-offer-text .ds-label{position:absolute;left:0;right:0;top:50%;margin:0;text-align:center;
+    transform:translateY(calc(-50% - 9.5vh + var(--hy,0vh)));opacity:var(--ho,1)}
+  .atc-offer-title{position:absolute;left:50%;top:50%;width:min(18em,84%);margin:0;text-align:center;text-wrap:balance;
+    font-size:clamp(30px,3.3vw,60px);line-height:1.1;transform:translate(-50%,calc(-40% + var(--hy,0vh)));opacity:var(--ho,1)}
+  .atc-offer-list{display:block;position:absolute;left:7%;top:0;bottom:0;width:min(37%,640px)}
+  .atc-offer-list li,.atc-offer-list li[data-atc]{position:absolute;left:0;right:0;top:50%;display:flex;flex-direction:column;align-items:flex-start;
+    max-width:none;margin:0;text-align:left;will-change:transform,opacity}
+  .atc-offer-list li .atc-offer-ic,.atc-offer-list li[data-atc] .atc-offer-ic{order:0;margin-bottom:3vh}
+  .atc-offer-list strong{margin:0 0 2.4vh;font-size:clamp(20px,1.9vw,34px);font-weight:600;letter-spacing:-.02em}
+  .atc-offer-list li span,.atc-offer-list li.is-on span{display:block;font-size:clamp(20px,2.4vw,46px);line-height:1.16;letter-spacing:-.02em;color:var(--atc-navy)}
+  .atc-offer .atc-canvas{position:absolute;right:5%;top:50%;width:min(46%,900px);max-width:none;min-width:0;height:auto;aspect-ratio:557/376;transform:translateY(-50%)}
+  .atc-offer .atc-canvas::before{display:none}
+  .atc-offer .cv-body{height:100%}
+  .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:0;top:0;width:100%;height:100%}
+}
 /* v9 What we offer: the four illustrations, drawn on a 557 x 376 board that scales with its slot */
 .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{container-type:size}
 .ix{position:absolute;left:50%;top:50%;width:min(100cqw,148.1cqh);aspect-ratio:557/376;transform:translate(-50%,-50%);container-type:inline-size;box-sizing:border-box;
@@ -3159,7 +3179,7 @@ class Component extends DCLogic {
     this._offHeld = this._offHeld || [];
     var stepLen = (S.tiles[1] - S.tiles[0]) / 4;
     for (var hs = 0; hs < 4; hs++) {
-      var hu = S.tiles[0] + hs * stepLen + stepLen * 0.85;
+      var hu = S.tiles[0] + hs * stepLen + stepLen * 0.62;
       if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
         this._offHeld[hs] = true;
         this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
@@ -3328,6 +3348,14 @@ class Component extends DCLogic {
     }
     // One canvas, four layers: each capability adds its piece around ATCON and stays, linked back to the centre
     var span4 = (S.tiles[1] - S.tiles[0]) / 4, active = -1;
+    var desk = window.matchMedia('(min-width:1101px),(min-width:761px) and (orientation:landscape)').matches, fp = -1;
+    if (desk) {
+      // the title scrolls up and away, then each point holds and hands over to the next
+      var hk = ease(map(u, S.tiles[0], S.tiles[0] + 30));
+      if (off) { off.style.setProperty('--hy', (-hk * 42).toFixed(2) + 'vh'); off.style.setProperty('--ho', (1 - hk).toFixed(3)); }
+      fp = ease(map(u, S.tiles[0] + 8, S.tiles[0] + 36)) - 1;
+      for (var fk = 1; fk < 4; fk++) fp += ease(map(u, S.tiles[0] + span4 * fk - 20, S.tiles[0] + span4 * fk + 6));
+    }
     for (var oi = 0; oi < 4; oi++) {
       var s0 = S.tiles[0] + oi * span4, r = map(u, s0, s0 + span4);
       if (u >= s0 - 4) active = oi;
@@ -3336,9 +3364,16 @@ class Component extends DCLogic {
       if (!wv) continue;
       var wk = ease(map(r, 0.08, 0.3));
       var wout = oi < 3 ? ease(map(u, s0 + span4 - 8, s0 + span4 + 2)) : 0;
-      wv.style.opacity = (wk * (1 - wout)).toFixed(3);
-      wv.style.visibility = wk * (1 - wout) > 0.01 ? 'visible' : 'hidden';
-      wv.style.transform = 'translateY(' + ((1 - wk) * 10).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * wk).toFixed(4) + ')';
+      if (desk) {
+        var vd = oi - fp, vo = Math.max(0, 1 - Math.abs(vd) * 1.25);
+        wv.style.opacity = vo.toFixed(3);
+        wv.style.visibility = vo > 0.01 ? 'visible' : 'hidden';
+        wv.style.transform = 'translateY(' + (vd * 30).toFixed(1) + 'px) scale(' + (1 - Math.min(1, Math.abs(vd)) * 0.04).toFixed(4) + ')';
+      } else {
+        wv.style.opacity = (wk * (1 - wout)).toFixed(3);
+        wv.style.visibility = wk * (1 - wout) > 0.01 ? 'visible' : 'hidden';
+        wv.style.transform = 'translateY(' + ((1 - wk) * 10).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * wk).toFixed(4) + ')';
+      }
       var els = wv.querySelectorAll('[data-in]');
       for (var ei = 0; ei < els.length; ei++) {
         var el = els[ei], a0 = parseFloat(el.getAttribute('data-in')), k2 = ease(map(r, a0 + 0.1, a0 + 0.24));
@@ -3375,7 +3410,13 @@ class Component extends DCLogic {
       var oDir = (li2 % 2 && !window.matchMedia('(max-width:760px),(max-width:1100px) and (orientation:portrait)').matches) ? -1 : 1;
       li.style.transform = 'translateX(' + (oDir * (-(1 - le) * 14 + (on2 ? 6 : 0))).toFixed(1) + 'px)';
       var ic = li.querySelector('.atc-offer-ic');
-      if (ic) ic.style.filter = on2 ? 'none' : 'grayscale(1) opacity(.6)';
+      if (ic) ic.style.filter = on2 || desk ? 'none' : 'grayscale(1) opacity(.6)';
+      if (desk) {
+        // the text column scrolls: the point in view sits in the middle, the next waits below, the last leaves above
+        var td = li2 - fp;
+        li.style.opacity = Math.max(0, 1 - Math.abs(td) * 1.3).toFixed(3);
+        li.style.transform = 'translateY(calc(-50% + ' + (td * 58).toFixed(2) + 'vh))';
+      }
     }
     var P = this.q('solPulse');
     if (P) P.style.opacity = (ease(map(u, S.links[1] - 10, S.links[1] + 10)) * (1 - sink)).toFixed(3);
