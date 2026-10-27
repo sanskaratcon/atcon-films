@@ -606,7 +606,7 @@ html,body{overscroll-behavior-y:none}
 
 /* Focus statement */
 .atc-fam{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;padding:0 24px}
-.atc-fam-text{display:inline-block;text-align:center;max-width:min(22em,78vw)}
+.atc-fam-text{display:inline-block;text-align:center;max-width:min(22em,78vw);font-size:var(--fs-h1);line-height:var(--lh-h1);letter-spacing:var(--ls-h1)}
 .atc-fam-line{display:block}
 
 /* Splash: 1s over a blurred copy of the hero, then the blur clears and it vanishes.
@@ -1063,13 +1063,13 @@ html,body{overflow-anchor:none}
   .atc-offer-text .ds-label{position:absolute;left:0;right:0;top:50%;margin:0;text-align:center;
     transform:translateY(calc(-50% - 9.5vh + var(--hy,0vh)));opacity:var(--ho,1)}
   .atc-offer-title{position:absolute;left:50%;top:50%;width:min(18em,84%);margin:0;text-align:center;text-wrap:balance;
-    font-size:clamp(30px,3.3vw,60px);line-height:1.1;transform:translate(-50%,calc(-40% + var(--hy,0vh)));opacity:var(--ho,1)}
+    font-size:var(--fs-h1);line-height:var(--lh-h1);letter-spacing:var(--ls-h1);transform:translate(-50%,calc(-40% + var(--hy,0vh)));opacity:var(--ho,1)}
   .atc-offer-list{display:block;position:absolute;left:7%;top:0;bottom:0;width:min(37%,640px)}
   .atc-offer-list li,.atc-offer-list li[data-atc]{position:absolute;left:0;right:0;top:50%;display:flex;flex-direction:column;align-items:flex-start;
     max-width:none;margin:0;text-align:left;will-change:transform,opacity}
   .atc-offer-list li .atc-offer-ic,.atc-offer-list li[data-atc] .atc-offer-ic{display:none !important}
-  .atc-offer-list strong{margin:0 0 2.4vh;font-size:clamp(20px,1.9vw,34px);font-weight:600;letter-spacing:-.02em}
-  .atc-offer-list li span,.atc-offer-list li.is-on span{display:block;font-size:clamp(20px,2.4vw,46px);line-height:1.16;letter-spacing:-.02em;color:var(--atc-navy)}
+  .atc-offer-list strong{margin:0 0 1.8vh;font-size:var(--fs-h3);line-height:var(--lh-h3);font-weight:var(--fw-h3);letter-spacing:var(--ls-h3)}
+  .atc-offer-list li span,.atc-offer-list li.is-on span{display:block;max-width:15em;font-size:var(--fs-h2);line-height:1.2;letter-spacing:var(--ls-h2);font-weight:var(--fw-h2);color:var(--atc-navy)}
   .atc-offer .atc-canvas{position:absolute;right:5%;top:50%;width:min(46%,900px);max-width:none;min-width:0;height:auto;aspect-ratio:557/376;transform:translateY(-50%)}
   .atc-offer .atc-canvas::before{display:none}
   .atc-offer .cv-body{height:100%}
@@ -1301,10 +1301,10 @@ html,body{overflow-anchor:none}
 .r3-css{pointer-events:none}
 /* the titles float as solid 3D lettering in the room, no box (after wlt.design): a crisp extruded edge and a soft shadow */
 .r3-st{position:absolute !important;left:0 !important;top:0 !important;width:1100px !important;text-align:center !important;visibility:visible;background:none;box-shadow:none;padding:0}
-.r3-st .sp-t{margin:0 auto !important;max-width:11em;font-family:var(--atc-font);font-weight:500 !important;font-size:100px !important;line-height:1.04 !important;letter-spacing:-.04em;color:var(--atc-navy);
+.r3-st .sp-t{margin:0 auto !important;max-width:11em;font-family:var(--atc-font);font-weight:500 !important;font-size:100px !important;line-height:1.08 !important;letter-spacing:var(--ls-h1);color:var(--atc-navy);
   text-shadow:1px 1px 0 #33456A,2px 2px 0 #33456A,3px 3px 0 #33456A,4px 4px 0 #33456A,5px 5px 0 #33456A,6px 6px 0 #33456A,10px 22px 26px rgba(0,16,37,.28)}
 .r3-st .sp-t .ds-mute{color:#F7F9FD;text-shadow:1px 1px 0 #AEBBD3,2px 2px 0 #AEBBD3,3px 3px 0 #AEBBD3,4px 4px 0 #AEBBD3,5px 5px 0 #AEBBD3,6px 6px 0 #AEBBD3,10px 22px 26px rgba(0,16,37,.24)}
-.r3-st .sp-p{margin:30px 0 0 !important;font-size:32px !important;font-weight:500;line-height:1.5;color:var(--atc-slate);text-shadow:0 2px 0 rgba(255,255,255,.6),0 8px 16px rgba(0,16,37,.18)}
+.r3-st .sp-p{margin:30px 0 0 !important;font-size:32px !important;font-weight:400;line-height:var(--lh-lede);color:var(--atc-slate);text-shadow:0 2px 0 rgba(255,255,255,.6),0 8px 16px rgba(0,16,37,.18)}
 .r3-o{position:absolute !important;left:0 !important;top:0 !important}
 </style>
 </helmet>
@@ -1672,7 +1672,7 @@ with a vision.</h2>
       <div class="atc-trust-head atc-kpi-top">
         <div class="ds-rv" data-rv="">
           <p class="ds-label ds-grad-text">Proven results</p>
-          <h2 class="ds-display" id="kpi-title">Proof,<br><span class="ds-mute">not promises.</span></h2>
+          <h2 class="ds-h1" id="kpi-title">Proof,<br><span class="ds-mute">not promises.</span></h2>
         </div>
         <div class="atc-trust-side ds-rv" data-rv="">
           <p class="ds-lede">Behind every number is the same habit: we stay accountable until it works.</p>
