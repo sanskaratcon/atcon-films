@@ -1309,11 +1309,14 @@ html,body{overflow-anchor:none}
 .r3-haze{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(248,250,253,.86) 0,rgba(248,250,253,.62) 45%,rgba(248,250,253,.34) 80%,rgba(248,250,253,.24) 100%)}
 /* the titles float as solid 3D lettering in the room, no box (after wlt.design): a crisp extruded edge and a soft shadow */
 .r3-st{position:absolute !important;left:0 !important;top:0 !important;width:1100px !important;text-align:center !important;visibility:visible;background:none;box-shadow:none;padding:0}
-.r3-st .sp-t{margin:0 auto !important;max-width:11em;font-family:var(--atc-font);font-weight:500 !important;font-size:100px !important;line-height:1.08 !important;letter-spacing:var(--ls-h1);color:var(--atc-navy);
-  text-shadow:1px 1px 0 #33456A,2px 2px 0 #33456A,3px 3px 0 #33456A,4px 4px 0 #33456A,5px 5px 0 #33456A,6px 6px 0 #33456A,10px 22px 26px rgba(0,16,37,.28)}
-.r3-st .sp-t .ds-mute{color:#8D99AE;text-shadow:1px 1px 0 #C3CCDB,2px 2px 0 #C3CCDB,3px 3px 0 #C3CCDB,4px 4px 0 #C3CCDB,5px 5px 0 #C3CCDB,6px 6px 0 #C3CCDB,10px 22px 26px rgba(0,16,37,.18)}
+.r3-st .sp-t{margin:0 auto !important;max-width:11em;font-family:var(--atc-font);font-weight:400 !important;font-size:100px !important;line-height:1.08 !important;letter-spacing:var(--ls-h1);color:var(--atc-navy);
+  text-shadow:1px 1px 0 #B9C4D8,2px 2px 0 #C6CFDF,3px 3px 0 #D2D9E6,10px 20px 26px rgba(0,16,37,.16)}
+.r3-st .sp-t .ds-mute{color:#8D99AE;text-shadow:1px 1px 0 #D3DAE6,2px 2px 0 #DCE2EC,3px 3px 0 #E4E9F1,10px 20px 26px rgba(0,16,37,.12)}
 .r3-st .sp-p{margin:30px 0 0 !important;font-size:32px !important;font-weight:400;line-height:var(--lh-lede);color:var(--atc-slate);text-shadow:0 2px 0 rgba(255,255,255,.6),0 8px 16px rgba(0,16,37,.18)}
 .r3-o{position:absolute !important;left:0 !important;top:0 !important}
+/* No bold anywhere: every word is set in the regular weight, emphasis comes from colour (navy against grey).
+   The thin counter and the large menu links keep their lighter weight. */
+.atc,.atc *:not(.ld-n):not(.ds-nav-link),.atc-splash *:not(.ld-n){font-weight:400 !important}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">

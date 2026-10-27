@@ -1241,6 +1241,9 @@ html,body{overflow-anchor:none}
 /* More than a supplier sits straight on the page, without the browser-window frame (bar, dots, tabs, panel, gradient edge) */
 .atc-sol-bar{display:none !important}
 .atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none !important}
+/* No bold anywhere: every word is set in the regular weight, emphasis comes from colour (navy against grey).
+   The thin counter and the large menu links keep their lighter weight. */
+.atc,.atc *:not(.ld-n):not(.ds-nav-link),.atc-splash *:not(.ld-n){font-weight:400 !important}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
