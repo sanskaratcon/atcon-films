@@ -2733,10 +2733,10 @@ class Component extends DCLogic {
             add(new THREE.PlaneGeometry(20, 16), floorM, 0, 0, 0).rotation.x = -Math.PI / 2;
             var ceil = add(new THREE.PlaneGeometry(20, 16), ceilM, 0, 7, 0, 0, false); ceil.rotation.x = Math.PI / 2;
             // the ceiling stays pure white; a quiet grid of slim round downlights gives it something to read as the camera looks up
-            var dlRing = new THREE.MeshBasicMaterial({ color: '#E3E7EE', toneMapped: false }), dlIn = new THREE.MeshBasicMaterial({ color: '#FFFFFF', toneMapped: false });
+            var dlRing = new THREE.MeshBasicMaterial({ color: '#EEF1F5', toneMapped: false }), dlIn = new THREE.MeshBasicMaterial({ color: '#FFFFFF', toneMapped: false });
             for (var dlx = -7.5; dlx <= 7.51; dlx += 3) for (var dlz = -6; dlz <= 6.01; dlz += 3) {
-              var dr0 = add(new THREE.CircleGeometry(0.2, 40), dlRing, dlx, 6.985, dlz, 0, false); dr0.rotation.x = Math.PI / 2; dr0.receiveShadow = false;
-              var dr1 = add(new THREE.CircleGeometry(0.15, 40), dlIn, dlx, 6.98, dlz, 0, false); dr1.rotation.x = Math.PI / 2; dr1.receiveShadow = false;
+              var dr0 = add(new THREE.CircleGeometry(0.13, 40), dlRing, dlx, 6.985, dlz, 0, false); dr0.rotation.x = Math.PI / 2; dr0.receiveShadow = false;
+              var dr1 = add(new THREE.CircleGeometry(0.115, 40), dlIn, dlx, 6.98, dlz, 0, false); dr1.rotation.x = Math.PI / 2; dr1.receiveShadow = false;
             }
             add(new THREE.PlaneGeometry(20, 7), wallM, 0, 3.5, -8, 0, false);
             add(new THREE.PlaneGeometry(16, 7), wallM, 10, 3.5, 0, -Math.PI / 2, false);
