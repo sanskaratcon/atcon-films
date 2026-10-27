@@ -2102,20 +2102,44 @@ class Component extends DCLogic {
     }
   }
 
-  // v9 loader: a counter to 100 and a gradient line; it holds at 90 until the hero video can play (4 s at most)
+  // v9 loader: a counter to 100 and a gradient line that follow the real loading. While it runs the page gets ready
+  // in full: the fonts and images, the scroll videos downloaded, and the 3D room built and drawn once, so nothing
+  // stalls after it. At most 9 s; it never runs faster than 1.4 s.
+  loadProgress() {
+    var parts = [], self = this;
+    parts.push(!document.fonts || document.fonts.status === 'loaded' ? 1 : 0);
+    var imgs = document.images, ic = 0;
+    for (var i = 0; i < imgs.length; i++) if (imgs[i].complete) ic++;
+    parts.push(imgs.length ? ic / imgs.length : 1);
+    ['v1', 'v2', 'v4', 'v3', 'v5'].forEach(function (key) {
+      var v = self.q(key);
+      if (!v) return;
+      var d = v.duration, b = v.buffered, got = 0;
+      if (d && b && b.length) got = Math.min(1, b.end(b.length - 1) / d);
+      if (v.readyState >= 4) got = Math.max(got, 0.98);
+      parts.push(got >= 0.97 ? 1 : got);
+    });
+    var sp = this.q('spSpace'), R = sp && sp.__r3;
+    parts.push(R && (R.ready || R.failed) ? 1 : 0);
+    return parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
+  }
+
   splash() {
     if (this._splash >= 2) return;
-    var el = this.q('splash'), root = this.q('root'), v1 = this.q('v1');
+    var el = this.q('splash'), root = this.q('root');
     if (!el) return;
     var now = performance.now();
-    if (this._splash === 0) { this._splash = 1; this._splInAt = now; }
-    var t = now - this._splInAt, ready = (v1 && v1.readyState >= 2) || t > 4000;
-    var k = Math.min(1, t / 1400), e = 1 - Math.pow(1 - k, 3);
-    if (!ready) e = Math.min(e, 0.9);
-    var n = this.q('ldN'), ln = this.q('ldLn'), txt = String(Math.round(e * 100));
+    if (this._splash === 0) { this._splash = 1; this._splInAt = now; this._ldShow = 0; }
+    var t = now - this._splInAt, kt = Math.min(1, t / 1400), et = 1 - Math.pow(1 - kt, 3);
+    var pr = t > 9000 ? 1 : this.loadProgress();
+    // the number never runs ahead of the real progress, and eases toward it
+    var want = Math.min(et, pr);
+    this._ldShow += (want - this._ldShow) * 0.12;
+    if (want >= 1 && this._ldShow > 0.995) this._ldShow = 1;
+    var n = this.q('ldN'), ln = this.q('ldLn'), txt = String(Math.floor(this._ldShow * 100));
     if (n && n.textContent !== txt) n.textContent = txt;
-    if (ln) ln.style.width = (e * 100).toFixed(2) + '%';
-    if (e >= 1 && !this._ldDone) this._ldDone = now;
+    if (ln) ln.style.width = (this._ldShow * 100).toFixed(2) + '%';
+    if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
     if (this._ldDone && now - this._ldDone > 250) {
       el.classList.add('is-out');
       if (root) root.classList.add('is-ready');
@@ -2690,10 +2714,10 @@ class Component extends DCLogic {
         // v9: the problems are told in one furnished room, drawn with three.js (after wlt.design, in ATCON's colours).
         // Each statement is lettering on a wall; the camera moves to a new view of the room for each point, and that
         // point's pieces float in the room in front of it.
-        // the room is built in the background a few seconds after the page opens (or as the problems come near), and
+        // the room is built while the loader runs (or as the problems come near), and
         // only drawn while they are on screen
         var R = space.__r3;
-        if (!R && (u > S.ins[0] - 400 || performance.now() > 6000)) {
+        if (!R && (this._splash < 2 || u > S.ins[0] - 400 || performance.now() > 6000)) {
           R = space.__r3 = { ready: false };
           var holder = document.createElement('div'); holder.className = 'r3'; space.appendChild(holder); R.holder = holder;
           Promise.all([import('three'), import('three/addons/renderers/CSS3DRenderer.js'), import('three/addons/geometries/RoundedBoxGeometry.js'), import('three/addons/environments/RoomEnvironment.js')]).then(function (m) {
@@ -2819,6 +2843,7 @@ class Component extends DCLogic {
             R.bg = scene.background.clone(); R.white = new THREE.Color('#FFFFFF'); scene.fog = new THREE.Fog('#FFFFFF', 0, 0.01);
             // compile every material now, so the first frame of the room does not stall the scroll
             gl.compile(scene, cam);
+            cam.position.set(0, 3, 6); cam.lookAt(0, 3, -8); gl.setSize(64, 40, false); gl.render(scene, cam);
             R.THREE = THREE; R.scene = scene; R.cam = cam; R.gl = gl; R.css = css; R.ready = true;
           }).catch(function () { R.failed = true; });
         }
