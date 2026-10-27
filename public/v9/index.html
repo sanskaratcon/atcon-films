@@ -630,8 +630,12 @@ html,body{overscroll-behavior-y:none}
 .atc-splash.is-out .atc-splash-tint{opacity:0}
 .atc-splash.is-out .atc-splash-logo{opacity:0;transform:scale(1.04);filter:blur(8px);transition-duration:.5s}
 .atc-splash.is-gone{display:none}
-/* v9: no loader */
-.atc-splash{display:none !important}
+/* v9 loader: a thin counter runs to 100 while a brand-gradient line fills along the bottom, then the white slides up */
+.atc-splash.ld{background:#FFFFFF !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;transition:transform .9s cubic-bezier(.7,0,.2,1)}
+.atc-splash.ld.is-out{transform:translateY(-100%)}
+.ld-k{position:absolute;left:calc(var(--rail) + 4vw);bottom:9vh;font-family:var(--atc-font);font-size:var(--fs-label);font-weight:var(--fw-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--atc-mute)}
+.ld-n{position:absolute;right:4vw;bottom:7vh;font-family:var(--atc-font);font-size:clamp(72px,9vw,160px);font-weight:300;line-height:1;letter-spacing:-.05em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
+.ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
 /* Through the A */
 .atc-splash{background:transparent !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
 .atc-splash .spl{position:absolute;inset:0;width:100%;height:100%}
@@ -1658,14 +1662,7 @@ with a vision.</h2>
 
       <!-- Splash: the ATCON A draws in, fills with its own colours as the page loads, then the navy stroke opens
            into a window and we fly through it into the site -->
-      <div class="atc-splash" data-atc="splash" aria-hidden="true">
-        <svg class="spl" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="spl-amark" x1="84.5321" y1="37.5117" x2="117.043" y2="111.535" gradientUnits="userSpaceOnUse">
-<stop offset="0.00480769" stop-color="#D3FFE4"></stop>
-<stop offset="0.3" stop-color="#EBFF39"></stop>
-<stop offset="0.7" stop-color="#0065ED"></stop>
-<stop offset="1" stop-color="#00112A"></stop>
-</linearGradient><clipPath id="spl-c"><rect class="spl-rise" x="0" y="0" width="120" height="114"></rect></clipPath><mask id="spl-m" maskUnits="userSpaceOnUse" x="-3000" y="-3000" width="6400" height="6250"><rect x="-3000" y="-3000" width="6400" height="6250" fill="#fff"></rect><g class="spl-zoom"><g transform="translate(175.5 101.5) scale(.42)"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" class="spl-hole"></path></g></g></mask></defs><rect class="spl-wall" x="-3000" y="-3000" width="6400" height="6250" mask="url(#spl-m)"></rect><g transform="translate(175.5 101.5) scale(.42)"><g clip-path="url(#spl-c)"><path class="spl-l" d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path class="spl-r" d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#spl-amark)"></path></g><path class="spl-ol" pathLength="1" d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z"></path><path class="spl-ol" pathLength="1" d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z"></path></g></svg>
-      </div>
+      <div class="atc-splash ld" data-atc="splash" aria-hidden="true"><span class="ld-k">ATCON Global</span><span class="ld-n" data-atc="ldN">0</span><span class="ld-ln" data-atc="ldLn"></span></div>
 
   <div class="atc-after" data-theme="light">
 
@@ -2105,13 +2102,26 @@ class Component extends DCLogic {
     }
   }
 
-  // v9: no loader, the hero shows straight away
+  // v9 loader: a counter to 100 and a gradient line; it holds at 90 until the hero video can play (4 s at most)
   splash() {
     if (this._splash >= 2) return;
-    var el = this.q('splash'), root = this.q('root');
-    if (el) el.classList.add('is-gone');
-    if (root) root.classList.add('is-ready');
-    this._splash = 2;
+    var el = this.q('splash'), root = this.q('root'), v1 = this.q('v1');
+    if (!el) return;
+    var now = performance.now();
+    if (this._splash === 0) { this._splash = 1; this._splInAt = now; }
+    var t = now - this._splInAt, ready = (v1 && v1.readyState >= 2) || t > 4000;
+    var k = Math.min(1, t / 1400), e = 1 - Math.pow(1 - k, 3);
+    if (!ready) e = Math.min(e, 0.9);
+    var n = this.q('ldN'), ln = this.q('ldLn'), txt = String(Math.round(e * 100));
+    if (n && n.textContent !== txt) n.textContent = txt;
+    if (ln) ln.style.width = (e * 100).toFixed(2) + '%';
+    if (e >= 1 && !this._ldDone) this._ldDone = now;
+    if (this._ldDone && now - this._ldDone > 250) {
+      el.classList.add('is-out');
+      if (root) root.classList.add('is-ready');
+      this._splash = 2; this._ldDone = 0;
+      this._goneT = setTimeout(function () { el.classList.add('is-gone'); }, 950);
+    }
   }
 
   frame(now) {
