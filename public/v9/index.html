@@ -2157,6 +2157,20 @@ class Component extends DCLogic {
     var off = this.q('offer');
     if (off && R && R.ready && !(off.__room && off.__room.started)) this.offerRoom(off, 0, this.timeline().sol);
     parts.push(R && R.failed ? 1 : (off && off.__room && off.__room.shot ? 1 : 0));
+    // the What we offer card row is built here too, not on first arrival
+    if (off && !off.__crd) this.offerCards(off, -1, 0, this.timeline().sol);
+    // and the problem room is drawn once at full size (shadows, every floating word and card laid out), so its first
+    // frame on screen is not its first frame ever
+    if (R && R.ready && !R.warm && off && off.__room && off.__room.shot) {
+      var Wv = sp.clientWidth || window.innerWidth, Hv = sp.clientHeight || window.innerHeight;
+      R.gl.setSize(Wv, Hv); R.css.setSize(Wv, Hv); R.w = Wv; R.h = Hv;
+      R.cam.aspect = Wv / Hv; R.fov0 = Wv / Hv < 0.8 ? 66 : (Wv / Hv < 1.3 ? 58 : 48); R.cam.fov = R.fov0; R.cam.updateProjectionMatrix();
+      R.cam.position.set(R.pre.p[0], R.pre.p[1], R.pre.p[2]); R.cam.lookAt(R.pre.t[0], R.pre.t[1], R.pre.t[2]);
+      (R.st || []).forEach(function (o) { o.visible = true; }); (R.objs || []).forEach(function (q) { q.o3.visible = true; });
+      R.gl.shadowMap.needsUpdate = true; R.gl.render(R.scene, R.cam); R.css.render(R.scene, R.cam);
+      R.warm = true; R.key = '';
+    }
+    parts.push(R && R.failed ? 1 : (R && R.warm ? 1 : 0));
     return parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
   }
 
@@ -2198,6 +2212,9 @@ class Component extends DCLogic {
   }
 
   frame(now) {
+    // the small motion helpers exist from the very first frame (the loader uses them too)
+    if (!this._fx) { var c0 = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
+      this._fx = { clamp: c0, map: function (x, a, b) { return c0((x - a) / (b - a), 0, 1); }, ease: function (t) { return t * t * (3 - 2 * t); } }; }
     if (!this._primed) this.prime();
     var dt = this._last ? Math.min(64, now - this._last) : 16;
     this._last = now;
