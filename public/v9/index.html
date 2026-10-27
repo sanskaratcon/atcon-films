@@ -1095,7 +1095,7 @@ html,body{overflow-anchor:none}
   .atc-offer-text .ds-label,.atc-offer-title{z-index:2}
   /* the room behind What we offer: one still view of the same 3D room, under a soft white veil, never moving */
   .ofr{position:absolute;z-index:0;opacity:0;visibility:hidden;pointer-events:none;background:#F4F6FA center/cover no-repeat}
-  .ofr::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 50%,rgba(255,255,255,.62),rgba(255,255,255,.4) 70%,rgba(255,255,255,.3))}
+  .ofr::after{content:'';position:absolute;inset:0;background:radial-gradient(80% 70% at 50% 50%,rgba(255,255,255,.4),rgba(255,255,255,.22) 70%,rgba(255,255,255,.12))}
   .crd{position:absolute;z-index:1;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
   .crd-track{position:absolute;left:0;top:50%;display:flex;gap:var(--gap);will-change:transform}
   .crd-c{position:relative;flex:none;width:var(--cw);height:var(--ch);border-radius:28px;overflow:hidden;
@@ -3375,15 +3375,81 @@ class Component extends DCLogic {
     if (!B.shot && R && R.ready) {
       // the stage's own layout size (never scaled), capped to what the GPU can draw
       var W = Math.min(2400, stg.clientWidth || 1200), H = Math.round(W * (stg.clientHeight || 800) / (stg.clientWidth || 1200));
-      R.gl.setSize(W, H, false); R.cam.aspect = W / H; R.cam.fov = 50; R.cam.updateProjectionMatrix();
-      R.cam.position.set(1.4, 2.7, 6.6); R.cam.lookAt(-1.6, 2.3, -8);
-      R.scene.fog.near = 900; R.scene.fog.far = 1000; R.scene.background.copy(R.bg);
-      if (R.backWall) R.backWall.visible = true;
-      (R.shadows || []).forEach(function (m) { m.visible = false; });
-      R.gl.render(R.scene, R.cam);
-      B.el.style.backgroundImage = 'url(' + R.gl.domElement.toDataURL('image/jpeg', 0.9) + ')';
+      R.gl.setSize(W, H, false);
+      var ST = this.studioScene(R.THREE, W / H);
+      var pr = R.gl.shadowMap.autoUpdate; R.gl.shadowMap.needsUpdate = true;
+      R.gl.render(ST.scene, ST.cam);
+      B.el.style.backgroundImage = 'url(' + R.gl.domElement.toDataURL('image/jpeg', 0.92) + ')';
+      ST.dispose(); R.gl.shadowMap.autoUpdate = pr; R.gl.shadowMap.needsUpdate = true;
       B.shot = true; R.w = R.h = null; R.key = '';
     }
+  }
+
+  // v9: the studio behind What we offer, after lutstudios.com but kept minimal: a warm plaster wall with openings to the
+  // sky, dark wood floor and a soft rug, a wall of wood slats, a freestanding wall with a dark screen, one desk, a shell
+  // chair, a floor lamp, a sideboard, a leather lounge chair, a sculptural pendant; low golden sun through a skylight.
+  // Drawn once, so it can afford large soft shadows.
+  studioScene(THREE, aspect) {
+    var scene = new THREE.Scene(); scene.background = new THREE.Color('#C9DDEE');
+    var cam = new THREE.PerspectiveCamera(52, aspect, 0.1, 80); cam.position.set(0.2, 1.75, 7.2); cam.lookAt(0, 2.25, -4);
+    var geos = [], mats = [];
+    var M = function (c, o) { var m = new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.85 }, o || {})); mats.push(m); return m; };
+    var box = function (w, h, d, m, x, y, z, ry) { var g = new THREE.BoxGeometry(w, h, d); geos.push(g); var me = new THREE.Mesh(g, m); me.position.set(x, y, z); if (ry) me.rotation.y = ry; me.castShadow = me.receiveShadow = true; scene.add(me); return me; };
+    var cyl = function (rt, rb, h, m, x, y, z) { var g = new THREE.CylinderGeometry(rt, rb, h, 40); geos.push(g); var me = new THREE.Mesh(g, m); me.position.set(x, y, z); me.castShadow = me.receiveShadow = true; scene.add(me); return me; };
+    var sph = function (r, m, x, y, z, sx, sy, sz) { var g = new THREE.SphereGeometry(r, 40, 24); geos.push(g); var me = new THREE.Mesh(g, m); me.position.set(x, y, z); me.scale.set(sx || 1, sy || 1, sz || 1); me.castShadow = me.receiveShadow = true; scene.add(me); return me; };
+    // wood, drawn once: long planks with grain
+    var wc = document.createElement('canvas'); wc.width = 512; wc.height = 512; var wx = wc.getContext('2d');
+    wx.fillStyle = '#5E412D'; wx.fillRect(0, 0, 512, 512);
+    for (var pk = 0; pk < 8; pk++) { wx.fillStyle = 'rgba(' + (pk % 2 ? '40,26,16' : '120,84,56') + ',.18)'; wx.fillRect(0, pk * 64, 512, 64); wx.fillStyle = 'rgba(0,0,0,.25)'; wx.fillRect(0, pk * 64, 512, 1.5); }
+    for (var gn = 0; gn < 220; gn++) { wx.strokeStyle = 'rgba(' + (Math.random() < .5 ? '30,18,10' : '150,110,78') + ',' + (0.04 + Math.random() * 0.08).toFixed(3) + ')'; wx.lineWidth = 0.6 + Math.random() * 1.6;
+      var gy = Math.random() * 512; wx.beginPath(); wx.moveTo(0, gy); for (var gx = 0; gx <= 512; gx += 32) wx.lineTo(gx, gy + Math.sin(gx * 0.02 + gn) * 2); wx.stroke(); }
+    var woodT = new THREE.CanvasTexture(wc); woodT.colorSpace = THREE.SRGBColorSpace; woodT.wrapS = woodT.wrapT = THREE.RepeatWrapping; woodT.repeat.set(3, 3); woodT.anisotropy = 8;
+    var floorM = M('#FFFFFF', { map: woodT, roughness: 0.45 }), plaster = M('#D9C6AD', { roughness: 0.95 }), plasterL = M('#E6D7C3', { roughness: 0.95 });
+    var oak = M('#B78756', { roughness: 0.55 }), slat = M('#8C5A35', { roughness: 0.6 }), whiteM = M('#F2EEE8', { roughness: 0.5 }), dark = M('#1E1D1C', { roughness: 0.35, metalness: 0.2 });
+    var leather = M('#6B3F28', { roughness: 0.55 }), tan = M('#B8642F', { roughness: 0.6 }), steel = M('#B9BCBF', { roughness: 0.3, metalness: 0.8 }), leaf = M('#5E7A3A', { roughness: 0.8 }), rugM = M('#7D6E62', { roughness: 1 });
+    var fl = box(26, 0.1, 22, floorM, 0, -0.05, 0);
+    box(8.6, 0.03, 5.6, rugM, 0.3, 0.015, -0.6);
+    // the warm centre wall, a lighter side wall on the right, and the open sky between them
+    box(7.2, 7, 0.4, plaster, 0, 3.5, -5.2);
+    box(0.4, 7, 11, plasterL, 7.4, 3.5, -1.5);
+    var skyG = new THREE.PlaneGeometry(40, 16); geos.push(skyG); var skyM = new THREE.MeshBasicMaterial({ color: '#BFD7EC' }); mats.push(skyM); var sky = new THREE.Mesh(skyG, skyM); sky.position.set(0, 6, -12); scene.add(sky);
+    // outside: calm light walls in the sun instead of greenery
+    box(6, 4.2, 0.3, M('#EFE6DA', { roughness: 0.95 }), -6.2, 2.1, -9.5); box(5, 5.2, 0.3, M('#E9DDCD', { roughness: 0.95 }), 6.0, 2.6, -10.5);
+    // the wood-slat wall on the right
+    for (var sx = -4.6; sx <= 3.4; sx += 0.18) box(0.06, 7, 0.1, slat, 7.15, 3.5, sx);
+    // the freestanding wall on the left, with a dark screen
+    box(0.5, 6.2, 6.4, plasterL, -5.4, 3.1, -1.2);
+    box(0.05, 1.5, 2.6, dark, -5.12, 2.5, -1.0);
+    box(2.2, 0.5, 0.6, M('#7A5638', { roughness: 0.55 }), -3.9, 0.25, -0.2);
+    // a ceiling slab with a long skylight above the left
+    box(9, 0.2, 9, M('#3B2A1E', { roughness: 0.8 }), 2.6, 7.1, -1.5);
+    box(4, 0.2, 2.5, M('#3B2A1E', { roughness: 0.8 }), -4.4, 7.1, 1.75);
+    // the desk at the wall, with a monitor, a plant and a mug
+    box(2.6, 0.05, 0.9, oak, 0, 0.76, -3.6);
+    [-1.2, 1.2].forEach(function (lx) { box(0.05, 0.74, 0.8, whiteM, lx, 0.37, -3.6); });
+    box(0.95, 0.55, 0.03, dark, -0.3, 1.18, -3.85); box(0.05, 0.3, 0.05, steel, -0.3, 0.92, -3.85);
+    cyl(0.1, 0.08, 0.18, whiteM, 0.75, 0.87, -3.7);
+    for (var lv = 0; lv < 14; lv++) { var a = lv * 2.4; var lf = sph(0.06, leaf, 0.75 + Math.cos(a) * 0.08, 1.05 + (lv % 5) * 0.06, -3.7 + Math.sin(a) * 0.08, 0.4, 2.4, 0.4); lf.rotation.set(Math.cos(a) * 0.6, 0, Math.sin(a) * 0.6); }
+    cyl(0.04, 0.035, 0.09, whiteM, 0.35, 0.83, -3.45);
+    // a tan shell chair beside it
+    sph(0.36, tan, -1.55, 0.72, -2.7, 1, 0.55, 1); sph(0.32, tan, -1.55, 0.98, -2.95, 1, 0.75, 0.5);
+    cyl(0.03, 0.03, 0.45, steel, -1.55, 0.3, -2.7); cyl(0.32, 0.32, 0.02, steel, -1.55, 0.05, -2.7);
+    // a slim floor lamp
+    cyl(0.015, 0.015, 1.7, steel, 2.0, 0.85, -4.1); cyl(0.16, 0.18, 0.4, whiteM, 2.0, 1.85, -4.1); cyl(0.18, 0.18, 0.02, steel, 2.0, 0.01, -4.1);
+    // a topiary on the right
+    cyl(0.32, 0.26, 0.6, M('#4A4642', { roughness: 0.6 }), 4.6, 0.3, -3.2); [0.85, 1.35, 1.8, 2.2].forEach(function (h, i) { sph(0.36 - i * 0.06, leaf, 4.6, h, -3.2); });
+    // the leather lounge chair in front
+    sph(0.5, leather, 3.3, 0.55, 0.4, 1.1, 0.42, 1); sph(0.48, leather, 3.3, 0.9, 0.78, 1.1, 0.75, 0.45);
+    cyl(0.035, 0.035, 0.36, steel, 3.3, 0.2, 0.4); cyl(0.3, 0.3, 0.02, steel, 3.3, 0.01, 0.4);
+    // the sculptural pendant
+    sph(0.95, whiteM, 0.4, 5.3, -2.2, 1.3, 0.22, 0.8).rotation.z = 0.25; cyl(0.006, 0.006, 1.8, steel, 0.4, 6.2, -2.2);
+    // light: low golden sun through the skylight, a warm room fill, soft reflections
+    scene.add(new THREE.HemisphereLight('#FFF1DE', '#5A3E2B', 0.55));
+    var sun = new THREE.DirectionalLight('#FFD3A0', 4.2); sun.position.set(-7.5, 10, 4.5); sun.target.position.set(0.5, 0, -3); sun.castShadow = true;
+    sun.shadow.mapSize.set(4096, 4096); sun.shadow.camera.left = -12; sun.shadow.camera.right = 12; sun.shadow.camera.top = 12; sun.shadow.camera.bottom = -12; sun.shadow.bias = -0.0004; sun.shadow.radius = 4;
+    scene.add(sun); scene.add(sun.target);
+    var fill = new THREE.PointLight('#FFE3C2', 1.6, 14, 2); fill.position.set(0.5, 3.2, 3.5); scene.add(fill);
+    return { scene: scene, cam: cam, dispose: function () { geos.forEach(function (g) { g.dispose(); }); mats.forEach(function (m) { m.dispose(); }); woodT.dispose(); sun.shadow.map && sun.shadow.map.dispose(); } };
   }
 
   // plays one illustration at progress r (0 empty .. 1 built; above 1 it holds), the same build-up as on the site
