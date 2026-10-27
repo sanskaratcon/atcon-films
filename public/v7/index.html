@@ -1239,6 +1239,9 @@ html,body{overflow-anchor:none}
 .sp-road{width:400px;padding:22px 24px 20px}.sp-road>small{font-size:12px}
 .sp-road .sp-steps{margin:42px 0 16px}.sp-road .sp-steps b{background:#F5F7FA;color:#B6BEC9}.sp-road .sp-steps b.on{color:#fff;background:linear-gradient(180deg,#5F88EC,#2D63E6);box-shadow:0 12px 22px -14px #2D63E6}
 .sp-road-l{margin:0;font-size:14px;color:var(--atc-slate)}
+/* More than a supplier sits straight on the page, without the browser-window frame (bar, dots, tabs, panel, gradient edge) */
+.atc-sol-bar{display:none !important}
+.atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none !important}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
