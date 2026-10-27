@@ -2721,7 +2721,9 @@ class Component extends DCLogic {
           });
           space.__objs = objs;
         }
-        var f = 0; for (var kk = 1; kk < 4; kk++) f += ease(map(u, S.ins[kk] - 10, S.ins[kk] + 40));
+        // each camera move is spread over a long stretch of scroll, so the room glides from point to point
+        // longer moves get more scroll (the last one crosses the room and turns around)
+        var MV = this.roomMoves(), f = 0; for (var kk = 1; kk < 4; kk++) f += ease(map(u, S.ins[kk] - MV[kk][0], S.ins[kk] + MV[kk][1]));
         // the camera's place through the room: -1 before the first view, 0..3 through the four views, 4 after the last
         var F = f + (inE - 1) + (1 - outE);
         // the cursor's line on CRM opens once the first view has arrived
@@ -3598,12 +3600,16 @@ class Component extends DCLogic {
   }
 
   // How much of a wheel move to keep near a problem's resting point: 1 far from it, easing down to about a third on it
+  // v9: how far before and after each point the camera move into it runs (in timeline units)
+  roomMoves() { return [[0, 0], [40, 50], [52, 62], [70, 80]]; }
+
   probDamp(y) {
-    var S = this.timeline().stack, vh = window.innerHeight || 800, B = vh * 0.5, k = 1;
+    // v9: a light slow-down in the middle of each point, where it is read; never at the start of a camera move
+    var S = this.timeline().stack, vh = window.innerHeight || 800, B = vh * 0.4, k = 1;
     for (var ph = 0; ph < S.ins.length; ph++) {
-      var pe = ph < S.ins.length - 1 ? S.ins[ph + 1] - 12 : S.out - 30;
+      var MV = this.roomMoves(), pe = ph < S.ins.length - 1 ? (S.ins[ph] + MV[ph][1] + S.ins[ph + 1] - MV[ph + 1][0]) / 2 : S.ins[ph] + 90;
       var d = Math.abs(y - this.unitTop(pe)) / B;
-      if (d < 1) { var sm = d * d * (3 - 2 * d); k = Math.min(k, 0.32 + 0.68 * sm); }
+      if (d < 1) { var sm = d * d * (3 - 2 * d); k = Math.min(k, 0.62 + 0.38 * sm); }
     }
     return k;
   }
