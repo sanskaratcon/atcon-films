@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About us · ATCON GLOBAL</title>
+<meta name="description" content="The story behind ATCON: senior experts, builders and problem solvers working together to deliver real outcomes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../atcon-ds.css">
+<style>
+/* About us: a light page in the landing page's language. Same tokens, type, cards, buttons, header and footer.
+   This is a skeleton: [bracketed] text marks a photo, logo or name still to come. */
+html{scroll-behavior:smooth}
+body{margin:0;background:#FFFFFF;color:var(--atc-navy);font-family:var(--atc-font);-webkit-font-smoothing:antialiased}
+.ab{--fg:var(--atc-navy);--fg-soft:var(--atc-slate);--fg-muted:#5B6B78;--atc-paper:#FFFFFF;overflow-x:clip}
+.ab a:not(.ds-btn){color:inherit}
+.ab img{max-width:100%}
+
+/* Header: the A mark on the left (as on the landing page), the page links in a quiet pill, the call to action right */
+.ab-head{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:var(--rail) 1fr auto;align-items:center;height:var(--rail);padding-right:var(--gutter);
+  background:rgba(255,255,255,.86);backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);transition:box-shadow .4s ease}
+.ab-head.is-scrolled{box-shadow:0 1px 0 rgba(0,16,37,.06)}
+.ab-logo{display:flex;align-items:center;justify-content:center;width:var(--rail);height:var(--rail);color:var(--atc-navy)}
+.ab-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
+.ab-links{justify-self:center;display:flex;gap:2px;padding:4px;border-radius:var(--r-pill);background:rgba(0,16,37,.05);list-style:none;margin:0}
+.ab-links a{display:inline-flex;align-items:center;min-height:36px;padding:0 16px;border-radius:var(--r-pill);font-size:14px;font-weight:400;letter-spacing:-.005em;color:var(--atc-slate);text-decoration:none;transition:background-color .25s ease,color .25s ease}
+.ab-links a:hover,.ab-links a:focus-visible{color:var(--atc-navy);background:rgba(0,16,37,.06);outline:none}
+.ab-links a[aria-current="page"]{background:var(--atc-navy);color:#FFFFFF}
+.ab-head .ds-btn{box-shadow:0 6px 18px -10px rgba(0,16,37,.35)}
+
+/* Sections share the landing page's side margins and rhythm */
+.ab-sec{padding:clamp(72px,10vh,128px) var(--content-x)}
+.ab-sec + .ab-sec{padding-top:0}
+.ab-label{margin-bottom:var(--sp-5)}
+.ab-row-head{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--sp-6);margin-bottom:clamp(28px,4.5vh,56px)}
+.ab-row-head .ds-label{margin:0}
+.ab-ph{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:var(--atc-mute);text-align:center}
+
+/* 1. Hero */
+.ab-hero{text-align:center;padding-top:clamp(64px,10vh,120px)}
+.ab-hero .ds-pill{margin-bottom:var(--sp-6)}
+.ab-hero h1{margin:0 auto;max-width:12em}
+.ab-hero .ds-lede{max-width:34em;margin:var(--sp-6) auto 0;color:var(--atc-slate);font-weight:400}
+
+/* 2. Photo and where we operate */
+.ab-intro{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(16px,2.2vw,40px)}
+.ab-photo{position:relative;min-height:clamp(300px,46vh,500px);border-radius:22px;background:#EEF1F6;overflow:hidden}
+.ab-photo .ab-ph{position:absolute;inset:0}
+.ab-pin{position:absolute;left:clamp(16px,1.8vw,28px);top:clamp(16px,1.8vw,28px);width:44px;height:96px;border-radius:var(--r-pill);background:var(--atc-aurora);box-shadow:0 14px 30px -16px rgba(0,16,37,.45)}
+.ab-pin span{position:absolute;left:6px;top:6px;width:32px;height:32px;border-radius:50%;background:var(--atc-navy);display:flex;align-items:center;justify-content:center}
+.ab-pin svg{width:14px;height:14px}
+.ab-where{display:flex;flex-direction:column;justify-content:space-between;gap:var(--sp-6);padding:clamp(24px,2.6vw,40px);border-radius:22px;color:#FFFFFF;
+  background:radial-gradient(120% 90% at 100% 0%,rgba(90,134,238,.55),rgba(90,134,238,0) 60%),linear-gradient(160deg,#2D63E6,#1D4FD0)}
+.ab-where .ds-label{color:rgba(255,255,255,.72)}
+.ab-where p.ab-where-t{margin:0;font-size:clamp(22px,1.9vw,34px);line-height:1.18;letter-spacing:-.025em;font-weight:400}
+.ab-where-t em{font-style:normal;color:rgba(255,255,255,.62)}
+.ab-chip{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 14px;border-radius:var(--r-pill);background:#FFFFFF;color:var(--atc-navy);font-size:13px;white-space:nowrap}
+
+/* 3. Why ATCON: five reasons and the numbers, as cards like the landing page's results */
+.ab-why{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.4vw,24px)}
+.ab-card{display:flex;flex-direction:column;gap:var(--sp-6);min-height:clamp(180px,24vh,240px);padding:clamp(20px,2vw,30px);border-radius:22px;border:1.5px solid #E7ECF5;background:#FFFFFF;box-sizing:border-box;
+  transition:border-color .3s ease,transform .5s var(--ease-out),box-shadow .5s var(--ease-out)}
+.ab-card:hover{border-color:#D6DEEC;transform:translateY(-2px);box-shadow:0 24px 48px -36px rgba(0,16,37,.35)}
+.ab-ic{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--atc-tile);color:var(--atc-icon)}
+.ab-ic svg{width:18px;height:18px;display:block}
+.ab-card h3{margin:auto 0 0;font-size:clamp(17px,1.25vw,21px);line-height:1.3;letter-spacing:-.015em;font-weight:400;color:var(--atc-navy)}
+.ab-card h3 span{display:block;color:var(--atc-mute)}
+.ab-stat{background:var(--atc-navy);border-color:var(--atc-navy);color:#FFFFFF;justify-content:space-between}
+.ab-stat:hover{border-color:var(--atc-navy)}
+.ab-stat .ds-label{color:rgba(255,255,255,.6)}
+.ab-stat-n{margin:0;font-size:clamp(40px,3.4vw,60px);line-height:1;letter-spacing:-.05em;font-weight:400;font-variant-numeric:tabular-nums}
+.ab-stat-n i{font-style:normal;background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ab-stat small{display:block;margin-top:6px;font-size:13px;color:rgba(255,255,255,.6)}
+
+/* 4. Leadership and team: a navy panel, portraits as circles and name pills */
+.ab-team{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(28px,4vw,72px);align-items:center;padding:clamp(28px,3.4vw,56px);border-radius:28px;background:var(--atc-navy);color:#FFFFFF}
+.ab-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(8px,.9vw,14px)}
+.ab-dot{aspect-ratio:1;border-radius:50%;background:#0B2348}
+.ab-face{aspect-ratio:1;border-radius:50%;background:#DCE5F7;color:#6A7891}
+.ab-face,.ab-name{display:flex;align-items:center;justify-content:center;font-size:12px}
+.ab-name{grid-column:span 2;flex-direction:column;align-items:flex-start;justify-content:center;padding:0 clamp(14px,1.4vw,22px);border-radius:var(--r-pill);background:#C7EDD5;color:var(--atc-navy);font-size:13px;line-height:1.35}
+.ab-name small{font-size:11px;color:#4A6B5A}
+.ab-team .ds-label{color:rgba(255,255,255,.6)}
+.ab-team h2{margin:var(--sp-5) 0 var(--sp-5);color:#FFFFFF}
+.ab-team h2 span{color:rgba(255,255,255,.55)}
+.ab-team p{margin:0 0 var(--sp-6);max-width:28em;color:rgba(255,255,255,.7);font-weight:400}
+.ab-team .ds-btn{--btn-bg:#FFFFFF;--btn-fg:var(--atc-navy);--btn-bg-hover:var(--atc-cloud);--btn-ic-line:rgba(0,16,37,.22)}
+
+/* 5. Technology partners */
+.ab-logos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,1.2vw,20px)}
+.ab-logo-cell{min-height:clamp(72px,10vh,104px);border-radius:16px;background:var(--atc-tile)}
+
+/* 6. Insights and news */
+.ab-news{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.2vw,40px)}
+.ab-post{display:flex;flex-direction:column;gap:var(--sp-4);text-decoration:none}
+.ab-post-img{aspect-ratio:16 / 10;border-radius:18px;background:#EEF1F6;transition:transform .7s var(--ease-out)}
+.ab-post:hover .ab-post-img{transform:scale(.985)}
+.ab-post .ds-label{color:var(--atc-blue)}
+.ab-post h3{margin:0;font-size:clamp(18px,1.4vw,24px);line-height:1.25;letter-spacing:-.015em;font-weight:400;color:var(--atc-navy)}
+.ab-all{font-size:14px;color:var(--atc-slate);text-decoration:underline;text-underline-offset:5px;text-decoration-color:rgba(0,16,37,.25)}
+.ab-all:hover{color:var(--atc-navy);text-decoration-color:currentColor}
+
+/* 7. Closing call */
+.ab-cta{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-6);padding:clamp(32px,3.6vw,64px);border-radius:28px;color:#FFFFFF;
+  background:radial-gradient(80% 140% at 100% 100%,rgba(45,99,230,.4),rgba(45,99,230,0) 60%),var(--atc-navy)}
+.ab-cta h2{margin:0;color:#FFFFFF;max-width:14em}
+.ab-cta h2 span{color:rgba(255,255,255,.55)}
+.ab-cta .ds-btn{--btn-bg:#FFFFFF;--btn-fg:var(--atc-navy);--btn-bg-hover:var(--atc-cloud);--btn-ic-line:rgba(0,16,37,.22);flex:none}
+
+/* Footer: as on the landing page */
+.atc-foot{padding:clamp(64px,9vh,112px) var(--content-x) 0;background:#FFFFFF}
+.atc-foot-top{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,auto));gap:var(--sp-7) clamp(40px,7vw,140px);align-items:start}
+.atc-foot-claim{font-weight:400;margin-bottom:var(--sp-6);max-width:16em}
+.atc-foot-addr{font-style:normal;color:var(--atc-slate)}
+.atc-foot-legal{display:flex;flex-direction:column;gap:var(--sp-2);margin-top:var(--sp-6)}
+.atc-foot-legal .ds-small,.atc-foot-links a,.atc-foot-links span{color:#5B6B78}
+.atc-foot-links{display:flex;gap:var(--sp-3);align-items:center}
+.atc-foot-links a{text-decoration:none}
+.atc-foot-col{display:flex;flex-direction:column;gap:var(--sp-4);min-width:0}
+.atc-foot-col h3{margin:0 0 var(--sp-2);font-size:16px;font-weight:500;color:var(--atc-navy)}
+.atc-foot-col a,.atc-foot-col span{font-size:var(--fs-body);color:var(--atc-slate);text-decoration:none;white-space:nowrap}
+.atc-foot-col a:hover,.atc-foot-links a:hover{color:var(--atc-navy);text-decoration:underline;text-underline-offset:4px}
+.atc-wm{margin-top:clamp(28px,4vh,64px);aspect-ratio:673 / 104;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 30%,rgba(0,0,0,.7) 62%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 30%,rgba(0,0,0,.7) 62%,transparent 100%)}
+.atc-wordmark{display:block;width:100%;height:auto;margin:0}
+
+@media (max-width:1100px){
+  .ab-why{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ab-logos{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ab-team{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .ab-head{grid-template-columns:var(--rail) 1fr auto}
+  .ab-links{display:none}
+  .ab-intro,.ab-news{grid-template-columns:minmax(0,1fr)}
+  .ab-why{grid-template-columns:minmax(0,1fr)}
+  .ab-cta{flex-direction:column;align-items:flex-start}
+  .ab-row-head{flex-direction:column;align-items:flex-start}
+  .ab-face{font-size:0}.ab-name{font-size:11px;padding:0 10px}.ab-name small{font-size:10px}
+  .atc-foot-top{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .atc-foot-top > :first-child{grid-column:1 / -1}
+}
+@media (prefers-reduced-motion:reduce){.ds-rv{opacity:1;transform:none;transition:none}.ab-card,.ab-post-img{transition:none}}
+</style>
+</head>
+<body>
+<div class="ab" data-theme="light">
+
+  <header class="ab-head" data-ab="head">
+    <a class="ab-logo" href="./" aria-label="ATCON GLOBAL home">
+      <svg viewBox="0 8 506 490" fill="currentColor" aria-hidden="true"><path d="M215 11H304L92 494H0Z"></path><path d="M365 173L506 493H417L320 272Z"></path></svg>
+    </a>
+    <nav aria-label="Main">
+      <ul class="ab-links">
+        <li><a href="./#offer">What we do</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="about.html" aria-current="page">About us</a></li>
+        <li><a href="./#career">Career</a></li>
+      </ul>
+    </nav>
+    <a class="ds-btn ds-btn--sm ds-btn--grad" href="mailto:hello@atconglobal.com">Let’s talk<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+  </header>
+
+  <main>
+    <!-- 1. The story -->
+    <section class="ab-sec ab-hero" aria-labelledby="ab-title">
+      <span class="ds-pill ds-rv" data-rv>About us</span>
+      <h1 class="ds-display ds-rv" data-rv id="ab-title">The story <span class="ds-mute">behind</span> ATCON</h1>
+      <p class="ds-lede ds-rv" data-rv>A collective of senior experts, builders and problem solvers working together to deliver real outcomes for our clients.</p>
+    </section>
+
+    <!-- 2. Who we are and where we operate -->
+    <section class="ab-sec" aria-label="Where we operate">
+      <div class="ab-intro">
+        <figure class="ab-photo ds-rv" data-rv>
+          <span class="ab-pin" aria-hidden="true"><span><svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z"/><circle cx="12" cy="10" r="2.2"/></svg></span></span>
+          <figcaption class="ab-ph"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>[Team photo, Brussels office]</figcaption>
+        </figure>
+        <article class="ab-where ds-rv" data-rv>
+          <p class="ds-label">Where we operate</p>
+          <p class="ab-where-t">Too technical for business consultants. Too strategic for dev teams. <em>That’s where we work.</em></p>
+          <span class="ab-chip">Based in Brussels · Trusted across Europe</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Why ATCON -->
+    <section class="ab-sec" aria-labelledby="ab-why">
+      <div class="ab-row-head">
+        <h2 class="ds-h1 ds-rv" data-rv id="ab-why">Why ATCON. <span class="ds-mute">We stay accountable until it works.</span></h2>
+        <p class="ds-label ds-grad-text ds-rv" data-rv>Why us</p>
+      </div>
+      <div class="ab-why">
+        <article class="ab-card ds-rv" data-rv><span class="ab-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+          <h3>End-to-end ownership. <span>One partner for the whole result.</span></h3></article>
+        <article class="ab-card ds-rv" data-rv><span class="ab-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.4 2.4M15.3 15.3l2.4 2.4M6.3 17.7l2.4-2.4M15.3 8.7l2.4-2.4"/></svg></span>
+          <h3>Clarity over complexity. <span>Fewer tools, clearer direction.</span></h3></article>
+        <article class="ab-card ab-stat ds-rv" data-rv>
+          <p class="ds-label">Proven results</p>
+          <div><p class="ab-stat-n">100<i>+</i></p><small>Outcomes co-delivered</small></div>
+          <div><p class="ab-stat-n">95<i>%</i></p><small>Repeat customers</small></div>
+        </article>
+        <article class="ab-card ds-rv" data-rv><span class="ab-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l7 3v5.5c0 4.6-3 8-7 9.5-4-1.5-7-4.9-7-9.5V6l7-3Z"/><path d="M9 12l2 2 4-4" stroke-linecap="round"/></svg></span>
+          <h3>Security by design. <span>Built into every layer, from day one.</span></h3></article>
+        <article class="ab-card ds-rv" data-rv><span class="ab-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="9" cy="9" r="3.2"/><circle cx="16.5" cy="10.5" r="2.5"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6M14.5 15.2c2.5-.3 4.6 1 5.5 3.8"/></svg></span>
+          <h3>Deep partnerships. <span>Built on trust and shared success.</span></h3></article>
+        <article class="ab-card ds-rv" data-rv><span class="ab-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span>
+          <h3>20+ years of expertise. <span>Senior people on every project.</span></h3></article>
+      </div>
+    </section>
+
+    <!-- 4. Leadership and team -->
+    <section class="ab-sec" aria-labelledby="ab-team">
+      <div class="ab-team ds-rv" data-rv>
+        <div class="ab-grid" aria-hidden="true">
+          <span class="ab-dot"></span><span class="ab-face">[Photo]</span><span class="ab-name">[Name]<small>[Role]</small></span>
+          <span class="ab-dot"></span><span class="ab-dot"></span><span class="ab-face">[Photo]</span><span class="ab-name">[Name]<small>[Role]</small></span>
+          <span class="ab-face">[Photo]</span><span class="ab-name">[Name]<small>[Role]</small></span><span class="ab-dot"></span><span class="ab-dot"></span>
+        </div>
+        <div>
+          <p class="ds-label">Leadership and team</p>
+          <h2 class="ds-h1" id="ab-team">Meet the minds <span>behind ATCON</span></h2>
+          <p class="ds-body">Senior experts in strategy, engineering, data and operations, working as one team.</p>
+          <a class="ds-btn ds-btn--sm" href="#team">Meet the team<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Technology partners -->
+    <section class="ab-sec" aria-labelledby="ab-partners">
+      <div class="ab-row-head">
+        <h2 class="ds-h2 ds-rv" data-rv id="ab-partners">Technology partners</h2>
+        <p class="ds-label ds-grad-text ds-rv" data-rv>Network</p>
+      </div>
+      <div class="ab-logos ds-rv" data-rv>
+        <div class="ab-logo-cell ab-ph">[Partner logo]</div><div class="ab-logo-cell ab-ph">[Partner logo]</div><div class="ab-logo-cell ab-ph">[Partner logo]</div>
+        <div class="ab-logo-cell ab-ph">[Partner logo]</div><div class="ab-logo-cell ab-ph">[Partner logo]</div><div class="ab-logo-cell ab-ph">[Partner logo]</div>
+      </div>
+    </section>
+
+    <!-- 6. Insights and news -->
+    <section class="ab-sec" id="insights" aria-labelledby="ab-news">
+      <div class="ab-row-head">
+        <h2 class="ds-h2 ds-rv" data-rv id="ab-news">Insights <span class="ds-mute">&amp; news</span></h2>
+        <a class="ab-all ds-rv" data-rv href="#insights">All insights</a>
+      </div>
+      <div class="ab-news">
+        <a class="ab-post ds-rv" data-rv href="#insights"><span class="ab-post-img ab-ph">[Article image]</span><span class="ds-label">Article · [Date]</span><h3>[Article title]</h3></a>
+        <a class="ab-post ds-rv" data-rv href="#insights"><span class="ab-post-img ab-ph">[Article image]</span><span class="ds-label">News · [Date]</span><h3>[News title]</h3></a>
+        <a class="ab-post ds-rv" data-rv href="#insights"><span class="ab-post-img ab-ph">[Article image]</span><span class="ds-label">Article · [Date]</span><h3>[Article title]</h3></a>
+      </div>
+    </section>
+
+    <!-- 7. Closing call -->
+    <section class="ab-sec" aria-label="Let’s talk">
+      <div class="ab-cta ds-rv" data-rv>
+        <h2 class="ds-h1">The partner that finally <span>works</span> for your business.</h2>
+        <a class="ds-btn" href="mailto:hello@atconglobal.com">Let’s talk<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="atc-sec atc-foot">
+      <div class="atc-foot-top ds-rv" data-rv>
+        <div>
+          <p class="ds-h3 atc-foot-claim">The partner that finally works for your business.</p>
+          <address class="ds-body atc-foot-addr">Avenue Louise 523<br>1050 Brussels, Belgium</address>
+          <div class="atc-foot-legal">
+            <span class="ds-small">© 2026 ATCON. All rights reserved.</span>
+            <span class="atc-foot-links ds-small"><a href="#privacy">Privacy Policy</a><span aria-hidden="true">·</span><a href="#cookies">Cookie Policy</a></span>
+          </div>
+        </div>
+        <nav class="atc-foot-col" aria-label="Explore">
+          <h3>Explore</h3>
+          <a href="./#how">How we work</a>
+          <a href="./#clients">Clients</a>
+        </nav>
+        <div class="atc-foot-col">
+          <h3>Contact</h3>
+          <a href="mailto:hello@atconglobal.com">hello@atconglobal.com</a>
+          <a href="tel:+32470204512">+32 470 20 45 12</a>
+          <a href="#linkedin">LinkedIn</a>
+        </div>
+        <div class="atc-foot-col">
+          <h3>Our values</h3>
+          <span>Integrity</span>
+          <span>Ownership</span>
+          <span>Delivery</span>
+        </div>
+      </div>
+      <div class="atc-wm" aria-hidden="true">
+      <svg class="atc-wordmark" viewBox="0 -10 673 134">
+        <defs>
+          <!-- Aurora gradient: mint, periwinkle blue, lime, back to blue -->
+          <linearGradient id="wm" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="673" y2="0"><stop offset="0" stop-color="#93DEB5"></stop><stop offset="0.3" stop-color="#5E8FEC"></stop><stop offset="0.52" stop-color="#8FB0F3"></stop><stop offset="0.76" stop-color="#D6EC5F"></stop><stop offset="1" stop-color="#7FA2EE"></stop></linearGradient>
+        </defs>
+        <g id="wmg" fill="url(#wm)" opacity="0.55">
+          <path d="M180.834 111.953V25.1359C180.834 25.0933 180.799 25.0588 180.756 25.0588L145.011 25.0588C144.968 25.0588 144.934 25.0243 144.934 24.9817V8.17755C144.934 8.13499 144.968 8.10049 145.011 8.10049L237.888 8.10049C237.93 8.10049 237.965 8.13499 237.965 8.17755V24.9817C237.965 25.0243 237.93 25.0588 237.888 25.0588H201.716C201.673 25.0588 201.639 25.0933 201.639 25.1359V111.89C201.639 111.932 201.604 111.967 201.562 111.967H180.847C180.84 111.967 180.834 111.961 180.834 111.953ZM323.934 113.231C323.937 113.237 323.933 113.245 323.926 113.245C311.966 113.243 301.668 111.06 293.033 106.696C284.394 102.236 277.738 96.0068 273.093 88.0335C268.434 80.0602 266.118 70.7025 266.118 59.9738C266.118 49.245 268.447 40.0338 273.093 32.0471C277.738 24.0605 284.394 17.8974 293.033 13.5314C301.671 9.0722 311.974 6.83594 323.941 6.83594C334.004 6.83594 342.843 8.3534 350.443 11.3883C358.137 14.4233 364.313 18.6961 368.959 24.2069C373.599 29.6956 376.443 36.0689 377.492 43.3533C377.499 43.3997 377.463 43.4414 377.416 43.4414H356.481C356.445 43.4414 356.414 43.4167 356.406 43.382C354.971 37.4197 351.275 32.6475 345.305 29.0521C339.422 25.4448 332.3 23.6345 323.941 23.6345C312.733 23.6345 303.801 26.8159 297.159 33.1786C290.61 39.4481 287.335 48.3798 287.335 59.9604C287.335 71.5411 290.61 80.6592 297.159 87.0219C303.801 93.2914 312.733 96.4195 323.941 96.4195C332.487 96.4195 339.701 94.6092 345.598 91.0019C351.568 87.3137 355.211 82.4356 356.553 76.3938C356.561 76.3584 356.592 76.3331 356.628 76.3331L377.417 76.3331C377.464 76.3331 377.499 76.374 377.494 76.42C376.537 83.8907 373.639 90.3576 368.812 95.8471C363.967 101.358 357.698 105.631 350.004 108.666C342.314 111.699 333.627 113.216 323.942 113.218C323.936 113.218 323.931 113.225 323.934 113.231ZM470.789 113.245C458.729 113.245 448.373 111.062 439.734 106.696C431.095 102.236 424.439 96.0068 419.794 88.0335C415.242 80.0602 412.952 70.7025 412.952 59.9738C412.952 49.245 415.281 40.0338 419.927 32.0471C424.586 24.0738 431.188 17.8974 439.734 13.5314C448.373 9.0722 458.729 6.83594 470.789 6.83594C482.848 6.83594 493.018 9.0722 501.564 13.5314C510.203 17.8974 516.805 24.0738 521.371 32.0471C526.03 40.0204 528.346 49.3382 528.346 59.9738C528.346 70.6093 526.016 80.0602 521.371 88.0335C516.712 96.0068 510.07 102.236 501.431 106.696C492.885 111.062 482.675 113.245 470.802 113.245H470.789ZM470.789 96.4328C481.903 96.4328 490.729 93.3047 497.291 87.0352C503.84 80.6725 507.115 71.6476 507.115 59.9738C507.115 48.2999 503.787 39.4614 497.144 33.1919C490.595 26.8292 481.81 23.6478 470.789 23.6478C459.767 23.6478 450.649 26.8292 444.007 33.1919C437.458 39.4614 434.183 48.3931 434.183 59.9738C434.183 71.5544 437.458 80.6725 444.007 87.0352C450.649 93.3047 459.581 96.4328 470.789 96.4328ZM568.359 111.953C568.373 111.953 568.385 111.942 568.385 111.927V8.17754C568.385 8.13499 568.42 8.10049 568.462 8.10049L593.984 8.10049C594.008 8.10049 594.031 8.11188 594.046 8.13124L651.836 84.9945C651.851 85.0138 651.873 85.0252 651.898 85.0252H652.632C652.675 85.0252 652.71 84.9897 652.709 84.9464L651.992 52.3997V8.17755C651.992 8.13499 652.027 8.10049 652.069 8.10049L672.72 8.10049C672.763 8.10049 672.797 8.13499 672.797 8.17755V111.876C672.797 111.919 672.763 111.953 672.72 111.953L647.625 111.953C647.6 111.953 647.578 111.942 647.563 111.923L589.906 35.6185C589.891 35.5992 589.869 35.5879 589.844 35.5879H588.817C588.774 35.5879 588.739 35.6236 588.74 35.667L589.59 66.9354V111.876C589.59 111.919 589.555 111.953 589.513 111.953H568.359Z"></path>
+          <path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z"></path>
+          <path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z"></path>
+        </g>
+      </svg>
+      </div>
+    </footer>
+</div>
+<script>
+// sections rise in as they come into view (as on the landing page); the header gains a hairline once scrolled
+(function () {
+  var els = document.querySelectorAll('[data-rv]');
+  if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('is-in'); }); }
+  else {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e, i) { e.style.transitionDelay = (i % 4) * 0.06 + 's'; io.observe(e); });
+  }
+  var head = document.querySelector('[data-ab="head"]');
+  var onS = function () { head.classList.toggle('is-scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', onS, { passive: true }); onS();
+})();
+</script>
+</body>
+</html>
