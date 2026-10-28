@@ -1112,6 +1112,8 @@ html,body{overflow-anchor:none}
   .cv-w.cv-w0,.cv-w.cv-w1,.cv-w.cv-w2,.cv-w.cv-w3{left:8%;width:84%;top:8%;height:84%}
   .atc-offer .cvb{width:max(64%,250px);right:-12%}
 }
+.atc-calface{position:absolute;inset:0;display:grid;place-items:center;background:#FFFFFF;opacity:0;pointer-events:none}
+.atc-calface svg{width:68%;height:68%;fill:none;stroke-linecap:round;stroke-linejoin:round}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2004,20 +2006,25 @@ class Component extends DCLogic {
     // Scrubbed videos
     this.seek(this.q('v2'), map(u, T.v2[0], T.v2[1]));
     this.seek(this.q('v4'), map(u, T.v4[0], T.v4[1]));
-    // v3 only moves in while both of them are still at the table (to frame 24 of 97); then the shot itself flies into the dock
-    this.seek(this.q('v3'), map(u, T.v3[0], 400) * 0.25);
+    // v3 moves in slowly while both of them are at the table (to frame 24 of 97), then, while the shot shrinks into a card,
+    // carries on into the laptop until its white screen fills the card
+    this.seek(this.q('v3'), u < 400 ? map(u, T.v3[0], 400) * 0.25 : 0.25 + 0.75 * map(u, 400, 487));
     var l4 = this.q('l4'), l3 = this.q('l3'), white = this.q('white');
     if (l4) l4.style.opacity = String(ease(map(u, T.v4[0] - 3, T.v4[0] + 4)));
     if (l3) l3.style.opacity = String(ease(map(u, T.v3[0] - 3, T.v3[0] + 4)));
     if (white) white.style.opacity = String(ease(map(u, T.white[0], T.white[1])));
-    // The two of them at the table: the whole shot tilts back, shrinks into a card that turns from landscape to a square,
-    // and flies into the Files icon of the dock as the desktop appears; the icon takes it with a small bounce
+    // The two of them at the table: the whole shot tilts back and shrinks into a card that turns from landscape to a square,
+    // the camera still moving into the laptop; its white screen fills the card, the calendar's blue band and date
+    // appear on that white, and the card lands on the calendar in the dock, which takes it with a small bounce
     if (l3) {
-      var mo = map(u, 400, 524), dkF = this._dkF && this._dkF.isConnected ? this._dkF : (this._dkF = document.querySelector('.mac-dock .dk'));
+      var mo = map(u, 400, 524), dkF = this._dkF && this._dkF.isConnected ? this._dkF : (this._dkF = document.querySelector('.mac-dock .dk[data-app="3"]'));
+      var face = this._calFace;
+      if (!face && dkF) { face = this._calFace = document.createElement('div'); face.className = 'atc-calface'; face.innerHTML = dkF.innerHTML; l3.appendChild(face); }
       if (mo <= 0 || mo >= 1) {
         if (l3.__m) { l3.__m = 0; ['left', 'top', 'width', 'height', 'inset', 'borderRadius', 'transform', 'zIndex', 'overflow', 'boxShadow', 'visibility'].forEach(function (pp) { l3.style[pp] = ''; }); }
         if (mo >= 1) { l3.style.opacity = '0'; l3.style.visibility = 'hidden'; }
         if (dkF && dkF.__pop) { dkF.__pop = 0; dkF.style.transform = ''; }
+        if (face) face.style.opacity = '0';
       } else {
         l3.__m = 1;
         var vw3 = window.innerWidth || 1200, e3 = mo < 0.5 ? 4 * mo * mo * mo : 1 - Math.pow(-2 * mo + 2, 3) / 2, arc3 = Math.sin(Math.PI * e3);
@@ -2031,8 +2038,9 @@ class Component extends DCLogic {
         l3.style.borderRadius = ((Math.min(1, mo * 8) * 30 * (1 - e3)) + tr.width * 0.24 * e3).toFixed(1) + 'px';
         l3.style.transform = 'perspective(1400px) rotateX(' + (arc3 * 20).toFixed(2) + 'deg) rotateZ(' + (-arc3 * 15).toFixed(2) + 'deg)';
         l3.style.boxShadow = '0 ' + (arc3 * 40).toFixed(0) + 'px ' + (arc3 * 90).toFixed(0) + 'px -' + (arc3 * 30).toFixed(0) + 'px rgba(0,16,37,' + (arc3 * 0.45).toFixed(3) + ')';
-        l3.style.opacity = (1 - map(mo, 0.9, 1)).toFixed(3);
-        if (dkF) { var pq = map(mo, 0.88, 1); dkF.__pop = 1; dkF.style.transform = pq > 0 ? 'scale(' + (1 + 0.28 * Math.sin(Math.PI * pq)).toFixed(3) + ')' : ''; }
+        l3.style.opacity = (1 - map(mo, 0.94, 1)).toFixed(3);
+        if (face) face.style.opacity = ease(map(mo, 0.7, 0.86)).toFixed(3);
+        if (dkF) { var pq = map(mo, 0.9, 1); dkF.__pop = 1; dkF.style.transform = pq > 0 ? 'scale(' + (1 + 0.28 * Math.sin(Math.PI * pq)).toFixed(3) + ')' : ''; }
       }
     }
 
