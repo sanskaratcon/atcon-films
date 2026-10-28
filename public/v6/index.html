@@ -2008,39 +2008,58 @@ class Component extends DCLogic {
     this.seek(this.q('v4'), map(u, T.v4[0], T.v4[1]));
     // v3 moves in slowly while both of them are at the table (to frame 24 of 97), then, while the shot shrinks into a card,
     // carries on into the laptop until its white screen fills the card
-    this.seek(this.q('v3'), u < 400 ? map(u, T.v3[0], 400) * 0.25 : 0.25 + 0.75 * map(u, 400, 487));
+    this.seek(this.q('v3'), u < 400 ? map(u, T.v3[0], 400) * 0.25 : 0.25 + 0.75 * map(u, 400, 480));
     var l4 = this.q('l4'), l3 = this.q('l3'), white = this.q('white');
     if (l4) l4.style.opacity = String(ease(map(u, T.v4[0] - 3, T.v4[0] + 4)));
     if (l3) l3.style.opacity = String(ease(map(u, T.v3[0] - 3, T.v3[0] + 4)));
     if (white) white.style.opacity = String(ease(map(u, T.white[0], T.white[1])));
-    // The two of them at the table: the whole shot tilts back and shrinks into a card that turns from landscape to a square,
-    // the camera still moving into the laptop; its white screen fills the card, the calendar's blue band and date
-    // appear on that white, and the card lands on the calendar in the dock, which takes it with a small bounce
+    // The two of them at the table: the whole shot tilts back and shrinks into a card in the middle, turning from landscape
+    // to a square, the camera still moving into the laptop until its white screen fills the card; the calendar's blue band
+    // and date appear on that white. The dock arrives with its first two apps; it opens a place at the end, and the card
+    // glides down into it and becomes the calendar, which settles with a small bounce.
     if (l3) {
-      var mo = map(u, 400, 524), dkF = this._dkF && this._dkF.isConnected ? this._dkF : (this._dkF = document.querySelector('.mac-dock .dk[data-app="3"]'));
+      var dkC = this._dkC && this._dkC.isConnected ? this._dkC : (this._dkC = document.querySelector('.mac-dock .dk[data-app="3"]'));
+      var dk0 = this._dk0 && this._dk0.isConnected ? this._dk0 : (this._dk0 = document.querySelector('.mac-dock .dk'));
       var face = this._calFace;
-      if (!face && dkF) { face = this._calFace = document.createElement('div'); face.className = 'atc-calface'; face.innerHTML = dkF.innerHTML; l3.appendChild(face); }
-      if (mo <= 0 || mo >= 1) {
+      if (!face && dkC) { face = this._calFace = document.createElement('div'); face.className = 'atc-calface'; face.innerHTML = dkC.innerHTML; l3.appendChild(face); }
+      var LA = [400, 500], LB = [512, 548], LAND = 549;
+      // the calendar's place in the dock: closed while the card is on its way, opening just before it arrives
+      if (dkC && dk0) {
+        if (u <= LA[0] || u >= LAND) {
+          if (dkC.__slot) { dkC.__slot = 0; dkC.style.width = dkC.style.marginLeft = dkC.style.marginRight = dkC.style.opacity = ''; }
+        } else {
+          var full = dk0.offsetWidth, mg = parseFloat(getComputedStyle(dk0).marginLeft) || 0, sl = ease(map(u, 522, 546));
+          dkC.__slot = 1; dkC.style.width = (full * sl).toFixed(2) + 'px'; dkC.style.marginLeft = dkC.style.marginRight = (mg * sl).toFixed(2) + 'px';
+          dkC.style.opacity = map(u, LAND - 4, LAND).toFixed(3);
+        }
+        var bq = map(u, LAND - 2, LAND + 14);
+        dkC.style.transform = bq > 0 && bq < 1 ? 'translateY(' + (-Math.sin(Math.PI * bq) * 18).toFixed(1) + '%) scale(' + (1 + 0.16 * Math.sin(Math.PI * bq)).toFixed(3) + ')' : '';
+      }
+      if (u <= LA[0] || u >= LAND) {
         if (l3.__m) { l3.__m = 0; ['left', 'top', 'width', 'height', 'inset', 'borderRadius', 'transform', 'zIndex', 'overflow', 'boxShadow', 'visibility'].forEach(function (pp) { l3.style[pp] = ''; }); }
-        if (mo >= 1) { l3.style.opacity = '0'; l3.style.visibility = 'hidden'; }
-        if (dkF && dkF.__pop) { dkF.__pop = 0; dkF.style.transform = ''; }
+        if (u >= LAND) { l3.style.opacity = '0'; l3.style.visibility = 'hidden'; }
         if (face) face.style.opacity = '0';
       } else {
         l3.__m = 1;
-        var vw3 = window.innerWidth || 1200, e3 = mo < 0.5 ? 4 * mo * mo * mo : 1 - Math.pow(-2 * mo + 2, 3) / 2, arc3 = Math.sin(Math.PI * e3);
-        var tr = dkF ? dkF.getBoundingClientRect() : null;
-        if (!tr || tr.width < 2) tr = { left: vw3 / 2 - 20, top: vh * 0.86, width: 40, height: 40 };
-        var w3 = Math.exp(Math.log(vw3) + (Math.log(tr.width) - Math.log(vw3)) * e3), h3 = Math.exp(Math.log(vh) + (Math.log(tr.height) - Math.log(vh)) * e3);
-        var cx3 = vw3 / 2 + (tr.left + tr.width / 2 - vw3 / 2) * e3, cy3 = vh / 2 + (tr.top + tr.height / 2 - vh / 2) * e3 - arc3 * vh * 0.05;
+        var vw3 = window.innerWidth || 1200, io = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+        var eA = io(map(u, LA[0], LA[1])), eB = io(map(u, LB[0], LB[1])), arcA = Math.sin(Math.PI * eA), arcB = Math.sin(Math.PI * eB);
+        // where it waits: a square card a little above the middle
+        var S3 = Math.min(vw3, vh) * 0.3, mx = vw3 / 2, my = vh * 0.46;
+        var tr = dkC ? dkC.getBoundingClientRect() : null, ts = dk0 ? dk0.getBoundingClientRect().width : 40;
+        var tx3 = tr ? tr.left + tr.width / 2 : vw3 / 2, ty3 = tr ? tr.top + tr.height / 2 : vh * 0.86;
+        if (!ts || ts < 2) ts = 40;
+        var lg = function (a, b, t) { return Math.exp(Math.log(a) + (Math.log(b) - Math.log(a)) * t); };
+        var w3 = lg(lg(vw3, S3, eA), ts, eB), h3 = lg(lg(vh, S3, eA), ts, eB);
+        var cx3 = (vw3 / 2 + (mx - vw3 / 2) * eA) * (1 - eB) + tx3 * eB, cy3 = (vh / 2 + (my - vh / 2) * eA) * (1 - eB) + ty3 * eB - arcB * vh * 0.06;
         l3.style.inset = 'auto'; l3.style.left = (cx3 - w3 / 2).toFixed(1) + 'px'; l3.style.top = (cy3 - h3 / 2).toFixed(1) + 'px';
         l3.style.width = w3.toFixed(1) + 'px'; l3.style.height = h3.toFixed(1) + 'px';
         l3.style.zIndex = '7'; l3.style.overflow = 'hidden'; l3.style.visibility = '';
-        l3.style.borderRadius = ((Math.min(1, mo * 8) * 30 * (1 - e3)) + tr.width * 0.24 * e3).toFixed(1) + 'px';
-        l3.style.transform = 'perspective(1400px) rotateX(' + (arc3 * 20).toFixed(2) + 'deg) rotateZ(' + (-arc3 * 15).toFixed(2) + 'deg)';
-        l3.style.boxShadow = '0 ' + (arc3 * 40).toFixed(0) + 'px ' + (arc3 * 90).toFixed(0) + 'px -' + (arc3 * 30).toFixed(0) + 'px rgba(0,16,37,' + (arc3 * 0.45).toFixed(3) + ')';
-        l3.style.opacity = (1 - map(mo, 0.94, 1)).toFixed(3);
-        if (face) face.style.opacity = ease(map(mo, 0.7, 0.86)).toFixed(3);
-        if (dkF) { var pq = map(mo, 0.9, 1); dkF.__pop = 1; dkF.style.transform = pq > 0 ? 'scale(' + (1 + 0.28 * Math.sin(Math.PI * pq)).toFixed(3) + ')' : ''; }
+        l3.style.borderRadius = (Math.min(w3, h3) * 0.24 * Math.min(1, eA * 1.6)).toFixed(1) + 'px';
+        l3.style.transform = 'perspective(1400px) rotateX(' + (arcA * 20 + arcB * 10).toFixed(2) + 'deg) rotateZ(' + (-arcA * 15 + arcB * 8).toFixed(2) + 'deg)';
+        var sh = Math.max(arcA, eA * (1 - eB) * 0.6, arcB * 0.5);
+        l3.style.boxShadow = '0 ' + (sh * 40).toFixed(0) + 'px ' + (sh * 90).toFixed(0) + 'px -' + (sh * 30).toFixed(0) + 'px rgba(0,16,37,' + (sh * 0.42).toFixed(3) + ')';
+        l3.style.opacity = (1 - map(u, LAND - 4, LAND)).toFixed(3);
+        if (face) face.style.opacity = ease(map(u, 482, 500)).toFixed(3);
       }
     }
 
@@ -2954,7 +2973,7 @@ class Component extends DCLogic {
   motionRanges() {
     if (this._ranges) return this._ranges;
     var T = this.timeline(), S = T.stack, G = T.gap, r = [];
-    r.push(T.heroGrow, T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white, [400, 524]);  // the shot's flight into the dock never rests half-way
+    r.push(T.heroGrow, T.heroOut, [T.ch1[0], T.ch1[1]], [T.ch1[2], T.ch1[3]], T.frame, T.white, [400, 562]);  // the shot's flight into the dock never rests half-way
     r.push([S.title, S.title + 46], S.titleMove, S.isoIn);
     // the scenes themselves follow the scroll exactly (no glide inside them); only the point's text settles
     // the problem section follows the scroll exactly: no auto-glide between its points
