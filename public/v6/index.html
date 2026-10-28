@@ -937,6 +937,38 @@ html,body{overscroll-behavior-y:none}
 /* Problem scenes use the brand palette only: navy, the four gradient colours and their light tints */
 .mac .dk{background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0) 50%),linear-gradient(180deg,color-mix(in srgb,var(--c) 76%,#fff),var(--c));box-shadow:inset 0 0 0 .5px rgba(0,16,37,.10),0 .4cqw 1cqw -.3cqw rgba(0,16,37,.25)}
 .mac .dk[data-app="3"]{background:#fff}
+/* v6: real workplace apps. Each window carries its app's mark; Slack's tile is white, as in the dock */
+.mac .dk.dk-w{background:#fff}
+.mw-ap{flex:none;display:grid;place-items:center;width:2.9cqw;height:2.9cqw;margin-left:1.1cqw;border-radius:.75cqw;background:var(--c);box-shadow:inset 0 0 0 .5px rgba(0,16,37,.12)}
+.mw-ap svg{width:78%;height:78%;display:block}
+.mw-ap.is-w{background:#fff}
+.mw-bar .mw-ap + span{margin-left:.8cqw}
+.minv .mw-ap{margin-left:0;width:3.1cqw;height:3.1cqw}
+.minv .mw-ap.is-more{background:#EDF0F5;color:#5B6B78;font-size:1.4cqw;font-weight:600;box-shadow:none}
+.mslack{display:flex;flex-direction:column;gap:1.3cqw;font-size:1.9cqw;line-height:1.35;color:#3A4D55}
+.mslack p{display:flex;align-items:flex-start;gap:1.3cqw}
+.mslack .av-t{width:3.8cqw;height:3.8cqw;border-radius:1cqw;font-size:1.35cqw}
+.mslack strong{display:block;font-weight:600;color:var(--atc-navy)}
+.mtoast{position:absolute;right:1%;top:35.5%;width:46%;display:flex;align-items:center;gap:1.5cqw;padding:1.5cqw 1.7cqw;border-radius:2cqw;background:rgba(255,255,255,.97);
+  box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 2.4cqw 5cqw -2cqw rgba(0,16,37,.35);z-index:25}
+.mac .mtoast.st{transform:translateX(6cqw)}
+.mac .mtoast.st.is-shown{transform:none}
+.mtoast .mw-ap{margin:0;width:5cqw;height:5cqw;border-radius:1.3cqw}
+.mtoast>div{flex:1;min-width:0}
+.mtoast p{font-size:1.8cqw;color:#3A4D55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtoast p:first-child{display:flex;gap:1cqw;font-size:1.9cqw;color:var(--atc-navy)}
+.mtoast strong{font-weight:600}
+.mtoast time{margin-left:auto;color:#8C95A6;font-size:1.5cqw}
+.mt-join{flex:none;padding:.6cqw 1.5cqw;border-radius:.9cqw;background:#5B5FC7;color:#fff;font-size:1.7cqw;font-weight:500}
+/* Outlook: its blue ribbon and folders */
+.olbar{display:flex;align-items:center;gap:1.8cqw;padding:1.1cqw 2cqw;background:#F3F7FC;border-bottom:1px solid rgba(0,16,37,.06);font-size:1.75cqw;color:#3A4D55;white-space:nowrap}
+.olnew{padding:.55cqw 1.5cqw;border-radius:.8cqw;background:#0F6CBD;color:#fff;font-weight:500}
+.olsearch{margin-left:auto;min-width:18%;padding:.5cqw 1.4cqw;border-radius:.8cqw;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,16,37,.1);color:#8C95A6}
+.mw-ol .mside small{padding:0 1.1cqw .4cqw;font-size:1.5cqw;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#8C95A6}
+.mw-ol .mside .is-on{background:#DCEBFA;color:#0F4C8F}
+.mw-ol .mside b,.mw-ol .mmsg .dot{color:#0F6CBD}
+.mw-ol .mmsg .dot{background:#0F6CBD}
+.mw-ol .mmsg{background:#F4F8FD}
 .mw-bar i,.mw-bar i:nth-child(2),.mw-bar i:nth-child(3),.cvm-bar i,.cvm-bar i:nth-child(2),.cvm-bar i:nth-child(3){background:#D5D9E0}
 .mplus,.pill-red,.owner.is-none{background:#E9EFFC;color:#2D63E6}
 .msheet span:nth-child(10),.mtally .is-zero,.mtally .is-zero b,.mcomments small{color:#2D63E6}
@@ -1159,36 +1191,36 @@ with a vision.</h2>
         <div class="mac" data-atc="mac" data-scene="-1">
           <i class="mac-glint" data-atc="macGlint"></i>
 
-          <!-- 01 You have the tools: apps keep arriving, each one adds to the monthly bill -->
+          <!-- 01 You have the tools: Slack, Jira, Teams, Excel keep arriving; nobody knows where the plan lives, and the bill grows -->
           <div class="mac-sc">
             <div class="mw st mw-open" data-k="w1" style="--x:2%;--y:3%;--w:47%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>CRM · Pipeline</span></div>
-              <div class="mw-b">
-                <div class="mrow"><b class="av" style="--c:#5A86EE"></b><span class="ln" style="--l:58%"></span><em class="amt">€12.4k</em></div>
-                <div class="mrow"><b class="av" style="--c:#3FB27E"></b><span class="ln" style="--l:44%"></span><em class="amt">€8.1k</em></div>
-                <div class="mrow"><b class="av" style="--c:#9BBA2A"></b><span class="ln" style="--l:64%"></span><em class="amt">€21k</em></div>
+              <div class="mw-bar"><i></i><i></i><i></i><b class="mw-ap is-w" style="--c:#FFFFFF"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="11" height="3.2" rx="1.6" style="fill:#36C5F0;stroke:none"/><rect x="12.8" y="3" width="3.2" height="11" rx="1.6" style="fill:#2EB67D;stroke:none"/><rect x="10" y="12.8" width="11" height="3.2" rx="1.6" style="fill:#ECB22E;stroke:none"/><rect x="8" y="10" width="3.2" height="11" rx="1.6" style="fill:#E01E5A;stroke:none"/></svg></b><span>Slack · #launch</span></div>
+              <div class="mw-b mslack">
+                <p><b class="av av-t" style="--c:#E01E5A">MK</b><span><strong>Marketing</strong>Is the launch plan in Jira or Teams?</span></p>
+                <p><b class="av av-t" style="--c:#2EB67D">IT</b><span><strong>IT</strong>Neither. It’s in the Excel sheet.</span></p>
+                <p><b class="av av-t" style="--c:#ECB22E">FN</b><span><strong>Finance</strong>Which one? I have v7_final.</span></p>
               </div>
             </div>
             <div class="mw st mw-open" data-k="w2" style="--x:51%;--y:7%;--w:47%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Board</span></div>
+              <div class="mw-bar"><i></i><i></i><i></i><b class="mw-ap" style="--c:#2684FF"><svg viewBox="0 0 24 24"><path d="M12 3.6l8.4 8.4-8.4 8.4-8.4-8.4z" style="fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round"/><path d="M12 8.9l3.1 3.1-3.1 3.1-3.1-3.1z" style="fill:#fff;stroke:none"/></svg></b><span>Jira · Launch board</span></div>
               <div class="mw-b mboard">
                 <div><small>To do</small><p></p><p></p><p></p></div>
-                <div><small>Doing</small><p></p><p class="is-b"></p></div>
+                <div><small>In progress</small><p></p><p class="is-b"></p></div>
                 <div><small>Done</small><p class="is-g"></p></div>
               </div>
             </div>
             <div class="mw st mw-open" data-k="w3" style="--x:3%;--y:40%;--w:47%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Billing · Renewals</span></div>
               <div class="mw-b minv">
-                <p class="st" data-k="r0"><span>Other tools ×3</span><small>Renewed</small><em>€1,240</em></p>
-                <p class="st" data-k="r1"><span>CRM Pro</span><small>Renewed</small><em>€890</em></p>
-                <p class="st" data-k="r2"><span>Project boards</span><small>Renewed</small><em>€420</em></p>
-                <p class="st" data-k="r3"><span>Team chat</span><small>Renewed</small><em>€610</em></p>
-                <p class="st" data-k="r4"><span>Budget sheets</span><small>Renewed</small><em>€820</em></p>
+                <p class="st" data-k="r0"><b class="mw-ap is-w" style="--c:#FFFFFF"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="11" height="3.2" rx="1.6" style="fill:#36C5F0;stroke:none"/><rect x="12.8" y="3" width="3.2" height="11" rx="1.6" style="fill:#2EB67D;stroke:none"/><rect x="10" y="12.8" width="11" height="3.2" rx="1.6" style="fill:#ECB22E;stroke:none"/><rect x="8" y="10" width="3.2" height="11" rx="1.6" style="fill:#E01E5A;stroke:none"/></svg></b><span>Slack</span><small>Renewed</small><em>€610</em></p>
+                <p class="st" data-k="r1"><b class="mw-ap" style="--c:#5B5FC7"><svg viewBox="0 0 24 24"><circle cx="17.4" cy="7.4" r="2.5" style="fill:#fff;fill-opacity:.8;stroke:none"/><rect x="14.6" y="10.8" width="6.6" height="7.4" rx="3" style="fill:#fff;fill-opacity:.8;stroke:none"/><rect x="2.8" y="6.4" width="11.4" height="11.4" rx="2.2" style="fill:#fff;stroke:none"/><path d="M5.9 9.6h5.2M8.5 9.6v5.4" style="fill:none;stroke:#5B5FC7;stroke-width:1.9;stroke-linecap:round"/></svg></b><span>Microsoft Teams</span><small>Renewed</small><em>€540</em></p>
+                <p class="st" data-k="r2"><b class="mw-ap" style="--c:#2684FF"><svg viewBox="0 0 24 24"><path d="M12 3.6l8.4 8.4-8.4 8.4-8.4-8.4z" style="fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round"/><path d="M12 8.9l3.1 3.1-3.1 3.1-3.1-3.1z" style="fill:#fff;stroke:none"/></svg></b><span>Jira</span><small>Renewed</small><em>€420</em></p>
+                <p class="st" data-k="r3"><b class="mw-ap" style="--c:#2D8CFF"><svg viewBox="0 0 24 24"><rect x="3.4" y="7.6" width="11.4" height="8.8" rx="2.2" style="fill:#fff;stroke:none"/><path d="M15.6 11l5-3.2v8.4l-5-3.2z" style="fill:#fff;stroke:none"/></svg></b><span>Zoom</span><small>Renewed</small><em>€380</em></p>
+                <p class="st" data-k="r4"><b class="mw-ap is-more">+3</b><span>Other tools</span><small>Renewed</small><em>€1,240</em></p>
               </div>
             </div>
             <div class="mw st mw-open" data-k="w4" style="--x:52%;--y:46%;--w:46%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Budget_v7_final.xlsx</span></div>
+              <div class="mw-bar"><i></i><i></i><i></i><b class="mw-ap" style="--c:#107C41"><svg viewBox="0 0 24 24"><rect x="10.6" y="6.6" width="10.6" height="10.8" rx="1.6" style="fill:#fff;fill-opacity:.62;stroke:none"/><path d="M14 9.6h4.6M14 12h4.6M14 14.4h4.6" style="fill:none;stroke:#107C41;stroke-width:1;opacity:.7"/><rect x="2.8" y="5.4" width="10.4" height="13.2" rx="2.2" style="fill:#fff;stroke:none"/><path d="M5.8 9l4.4 6M10.2 9l-4.4 6" style="fill:none;stroke:#107C41;stroke-width:1.8;stroke-linecap:round"/></svg></b><span>Budget_v7_final.xlsx</span></div>
               <div class="mw-b msheet">
                 <span>Q1</span><span>Q2</span><span>Q3</span>
                 <span>12.4</span><span>14.0</span><span>9.8</span>
@@ -1196,6 +1228,7 @@ with a vision.</h2>
                 <span>#REF!</span><span>7.7</span><span>—</span>
               </div>
             </div>
+            <div class="mtoast st" data-k="tm"><b class="mw-ap" style="--c:#5B5FC7"><svg viewBox="0 0 24 24"><circle cx="17.4" cy="7.4" r="2.5" style="fill:#fff;fill-opacity:.8;stroke:none"/><rect x="14.6" y="10.8" width="6.6" height="7.4" rx="3" style="fill:#fff;fill-opacity:.8;stroke:none"/><rect x="2.8" y="6.4" width="11.4" height="11.4" rx="2.2" style="fill:#fff;stroke:none"/><path d="M5.9 9.6h5.2M8.5 9.6v5.4" style="fill:none;stroke:#5B5FC7;stroke-width:1.9;stroke-linecap:round"/></svg></b><div><p><strong>Microsoft Teams</strong><time>now</time></p><p>Weekly tool sync is starting</p></div><span class="mt-join">Join</span></div>
             <div class="mw mwidget st" data-k="wid" style="--x:20%;--y:77%;--w:60%">
               <small>Software subscriptions</small>
               <strong><span data-mac="eur">€1,240</span><em>/ month</em></strong>
@@ -1206,10 +1239,11 @@ with a vision.</h2>
 
           <!-- 02 You have the vendors: three replies land in the inbox, each promising only its own piece -->
           <div class="mac-sc">
-            <div class="mw st" data-k="inbox" style="--x:3%;--y:5%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Mail · Inbox</span></div>
+            <div class="mw mw-ol st" data-k="inbox" style="--x:3%;--y:5%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><b class="mw-ap" style="--c:#0F6CBD"><svg viewBox="0 0 24 24"><rect x="9" y="7" width="12.2" height="10.2" rx="1.6" style="fill:#fff;fill-opacity:.7;stroke:none"/><path d="M9.6 8.2l5.5 4.1 5.5-4.1" style="fill:none;stroke:#0F6CBD;stroke-width:1.2;stroke-linejoin:round"/><rect x="2.8" y="5.4" width="10.4" height="13.2" rx="2.2" style="fill:#fff;stroke:none"/><ellipse cx="8" cy="12" rx="2.6" ry="3.3" style="fill:none;stroke:#0F6CBD;stroke-width:1.8"/></svg></b><span>Outlook · Inbox</span></div>
+              <div class="olbar"><span class="olnew">New mail</span><span>Reply</span><span>Reply all</span><span>Forward</span><span class="olsearch">Search</span></div>
               <div class="mw-b minbox">
-                <div class="mside"><span class="is-on">Inbox <b data-k="unread">0</b></span><span>Vendors</span><span>Projects</span><span>Archive</span></div>
+                <div class="mside"><small>Folders</small><span class="is-on">Inbox <b data-k="unread">0</b></span><span>Vendors</span><span>Projects</span><span>Sent items</span><span>Archive</span></div>
                 <div class="mlist">
                   <div class="mmsg st" data-k="e1"><div class="mmsg-in"><b class="av av-t" style="--c:#2D63E6">NS</b><div><p><strong>Northfield Studio</strong><em>Design</em><time>09:12</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll deliver the design. The rest is up to the other teams.</p></div></div></div>
                   <div class="mmsg st" data-k="e2"><div class="mmsg-in"><b class="av av-t" style="--c:#3FB27E">BF</b><div><p><strong>Bitforge Labs</strong><em>Development</em><time>10:47</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll build our part. Integration is someone else’s job.</p></div></div></div>
@@ -1217,7 +1251,7 @@ with a vision.</h2>
                 </div>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:68%"><span><b>3</b> vendors</span><span><b>3</b> promises</span><span class="is-zero"><b>0</b> owning the whole</span></div>
+            <div class="mtally st" data-k="tally" style="top:75%"><span><b>3</b> vendors</span><span><b>3</b> promises</span><span class="is-zero"><b>0</b> owning the whole</span></div>
           </div>
 
           <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
@@ -1286,12 +1320,12 @@ with a vision.</h2>
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
           <div class="mac-dock">
             <span class="dk" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 7.2c0-.95.77-1.7 1.7-1.7h3.9l1.8 1.9h7.9c.94 0 1.7.76 1.7 1.7v.6H3.5z" style="fill:#fff;fill-opacity:.55;stroke:none"/><rect x="3.5" y="8.6" width="17" height="10.6" rx="1.8" style="fill:#fff;stroke:none"/><path d="M7 12.4h10" style="fill:none;stroke:var(--c);stroke-width:1.3;stroke-linecap:round;opacity:.45"/></svg></span>
-            <span class="dk" data-app="1" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12.6" rx="2.1" style="fill:#fff;stroke:none"/><path d="M4.4 7.3l7.6 5.9 7.6-5.9" style="fill:none;stroke:var(--c);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round"/></svg></span>
+            <span class="dk" data-app="1" style="--c:#0F6CBD"><svg viewBox="0 0 24 24"><rect x="9" y="7" width="12.2" height="10.2" rx="1.6" style="fill:#fff;fill-opacity:.7;stroke:none"/><path d="M9.6 8.2l5.5 4.1 5.5-4.1" style="fill:none;stroke:#0F6CBD;stroke-width:1.2;stroke-linejoin:round"/><rect x="2.8" y="5.4" width="10.4" height="13.2" rx="2.2" style="fill:#fff;stroke:none"/><ellipse cx="8" cy="12" rx="2.6" ry="3.3" style="fill:none;stroke:#0F6CBD;stroke-width:1.8"/></svg></span>
             <span class="dk" data-app="3" style="--c:#FFFFFF;--g:#2D63E6"><svg viewBox="0 0 24 24"><path d="M4 9V7.6A3.1 3.1 0 0 1 7.1 4.5h9.8A3.1 3.1 0 0 1 20 7.6V9z" style="fill:var(--g,#2D63E6);stroke:none"/><text x="12" y="18.2" text-anchor="middle" style="fill:#001025;stroke:none;font:600 8.6px var(--atc-font)">14</text></svg></span>
-            <span class="dk dk-x" data-dock="0" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><rect x="5" y="3.8" width="14" height="16.4" rx="2.3" style="fill:#fff;stroke:none"/><circle cx="12" cy="10.1" r="2.7" style="fill:var(--c);stroke:none"/><path d="M7.7 16.8c.6-2.1 2.3-3.3 4.3-3.3s3.7 1.2 4.3 3.3z" style="fill:var(--c);stroke:none"/></svg></span>
-            <span class="dk dk-x" data-dock="1" data-app="2" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><rect x="3.6" y="5" width="4.9" height="14" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/><rect x="9.55" y="5" width="4.9" height="10" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/><rect x="15.5" y="5" width="4.9" height="6.8" rx="1.4" style="fill:#fff;fill-opacity:.95;stroke:none"/></svg></span>
-            <span class="dk dk-x" data-dock="2" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><path d="M12 4.9c4.6 0 8.2 2.9 8.2 6.6s-3.6 6.6-8.2 6.6c-.9 0-1.8-.1-2.6-.3l-3.7 1.9.9-3.2C5 15.3 3.8 13.5 3.8 11.5c0-3.7 3.6-6.6 8.2-6.6z" style="fill:#fff;stroke:none"/><circle cx="8.7" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="12" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/><circle cx="15.3" cy="11.5" r="1.05" style="fill:var(--c);stroke:none"/></svg></span>
-            <span class="dk dk-x" data-dock="3" style="--c:#001025"><svg viewBox="0 0 24 24"><rect x="4.5" y="4" width="15" height="16" rx="2.1" style="fill:#fff;stroke:none"/><path d="M4.5 7.8V6.1A2.1 2.1 0 0 1 6.6 4h10.8a2.1 2.1 0 0 1 2.1 2.1v1.7z" style="fill:#3FB27E;stroke:none"/><path d="M4.5 11.9h15M4.5 15.9h15M10 7.8V20" style="fill:none;stroke:var(--c);stroke-width:1.1;opacity:.35"/></svg></span>
+            <span class="dk dk-x dk-w" data-dock="0" style="--c:#FFFFFF"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="11" height="3.2" rx="1.6" style="fill:#36C5F0;stroke:none"/><rect x="12.8" y="3" width="3.2" height="11" rx="1.6" style="fill:#2EB67D;stroke:none"/><rect x="10" y="12.8" width="11" height="3.2" rx="1.6" style="fill:#ECB22E;stroke:none"/><rect x="8" y="10" width="3.2" height="11" rx="1.6" style="fill:#E01E5A;stroke:none"/></svg></span>
+            <span class="dk dk-x" data-dock="1" data-app="2" style="--c:#2684FF"><svg viewBox="0 0 24 24"><path d="M12 3.6l8.4 8.4-8.4 8.4-8.4-8.4z" style="fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round"/><path d="M12 8.9l3.1 3.1-3.1 3.1-3.1-3.1z" style="fill:#fff;stroke:none"/></svg></span>
+            <span class="dk dk-x" data-dock="2" style="--c:#5B5FC7"><svg viewBox="0 0 24 24"><circle cx="17.4" cy="7.4" r="2.5" style="fill:#fff;fill-opacity:.8;stroke:none"/><rect x="14.6" y="10.8" width="6.6" height="7.4" rx="3" style="fill:#fff;fill-opacity:.8;stroke:none"/><rect x="2.8" y="6.4" width="11.4" height="11.4" rx="2.2" style="fill:#fff;stroke:none"/><path d="M5.9 9.6h5.2M8.5 9.6v5.4" style="fill:none;stroke:#5B5FC7;stroke-width:1.9;stroke-linecap:round"/></svg></span>
+            <span class="dk dk-x" data-dock="3" style="--c:#107C41"><svg viewBox="0 0 24 24"><rect x="10.6" y="6.6" width="10.6" height="10.8" rx="1.6" style="fill:#fff;fill-opacity:.62;stroke:none"/><path d="M14 9.6h4.6M14 12h4.6M14 14.4h4.6" style="fill:none;stroke:#107C41;stroke-width:1;opacity:.7"/><rect x="2.8" y="5.4" width="10.4" height="13.2" rx="2.2" style="fill:#fff;stroke:none"/><path d="M5.8 9l4.4 6M10.2 9l-4.4 6" style="fill:none;stroke:#107C41;stroke-width:1.8;stroke-linecap:round"/></svg></span>
           </div>
         </div>
       </div>
@@ -2415,7 +2449,9 @@ class Component extends DCLogic {
       });
       // The month's renewals land one row at a time; together they make up the bill
       for (var r = 0; r < 5; r++) (function (r) { at(2900 + r * 280, function () { show('r' + r); }); })(r);
-      var total = 2900 + 4 * 280 + 600;
+      // and on top of it all, another meeting about the tools
+      at(2900 + 5 * 280 + 200, function () { show('tm'); });
+      var total = 2900 + 5 * 280 + 900;
     } else if (i === 1) {
       // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
       var unread = $('unread');
