@@ -2013,16 +2013,16 @@ class Component extends DCLogic {
     if (l4) l4.style.opacity = String(ease(map(u, T.v4[0] - 3, T.v4[0] + 4)));
     if (l3) l3.style.opacity = String(ease(map(u, T.v3[0] - 3, T.v3[0] + 4)));
     if (white) white.style.opacity = String(ease(map(u, T.white[0], T.white[1])));
-    // The two of them at the table: the whole shot tilts back and shrinks into a card in the middle, turning from landscape
-    // to a square, the camera still moving into the laptop until its white screen fills the card; the calendar's blue band
-    // and date appear on that white. The dock arrives with its first two apps; it opens a place at the end, and the card
-    // glides down into it and becomes the calendar, which settles with a small bounce.
+    // The two of them at the table: the whole shot tilts back and, in one continuous move, shrinks into the dock, the camera
+    // still moving into the laptop until its white screen fills the frame; on the way the calendar's blue band and date
+    // appear on that white. The dock arrives with its first two apps and opens a place at its end just as the shot,
+    // now the calendar, lands there and settles with a small hop.
     if (l3) {
       var dkC = this._dkC && this._dkC.isConnected ? this._dkC : (this._dkC = document.querySelector('.mac-dock .dk[data-app="3"]'));
       var dk0 = this._dk0 && this._dk0.isConnected ? this._dk0 : (this._dk0 = document.querySelector('.mac-dock .dk'));
       var face = this._calFace;
       if (!face && dkC) { face = this._calFace = document.createElement('div'); face.className = 'atc-calface'; face.innerHTML = dkC.innerHTML; l3.appendChild(face); }
-      var LA = [400, 500], LB = [512, 548], LAND = 549;
+      var LA = [400, 500], LAND = 549;
       // the calendar's place in the dock: closed while the card is on its way, opening just before it arrives
       if (dkC && dk0) {
         if (u <= LA[0] || u >= LAND) {
@@ -2041,25 +2041,32 @@ class Component extends DCLogic {
         if (face) face.style.opacity = '0';
       } else {
         l3.__m = 1;
+        // one unbroken move from the full screen into the dock: it never stops to become an icon, it becomes one on the way.
+        // The size shrinks the whole time, the frame turns square early, the path bends down towards the dock once the dock
+        // is there, and the tilt rises and settles back to flat exactly as it lands
         var vw3 = window.innerWidth || 1200, io = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
-        var eA = io(map(u, LA[0], LA[1])), eB = io(map(u, LB[0], LB[1])), arcA = Math.sin(Math.PI * eA), arcB = Math.sin(Math.PI * eB);
-        // where it waits: a square card a little above the middle
-        var S3 = Math.min(vw3, vh) * 0.3, mx = vw3 / 2, my = vh * 0.46;
+        // one even pace with no stop: about half the way done when the dock appears, the rest of it carried on into the dock
+        var hm = function (t, k, v, m) { if (t <= k) { var s1 = t / k, L1 = k; return (-2 * s1 * s1 * s1 + 3 * s1 * s1) * v + (s1 * s1 * s1 - s1 * s1) * L1 * m; }
+          var s2 = (t - k) / (1 - k), L2 = 1 - k; return (2 * s2 * s2 * s2 - 3 * s2 * s2 + 1) * v + (s2 * s2 * s2 - 2 * s2 * s2 + s2) * L2 * m + (-2 * s2 * s2 * s2 + 3 * s2 * s2); };
+        var tq = map(u, LA[0], LAND), eS = hm(tq, 0.7, 0.5, 1.2), eP = hm(tq, 0.7, 0.42, 1.4), eQ = ease(map(u, LA[0], 470)), tilt = Math.sin(Math.PI * tq);
         var tr = dkC ? dkC.getBoundingClientRect() : null, ts = dk0 ? dk0.getBoundingClientRect().width : 40;
-        var tx3 = tr ? tr.left + tr.width / 2 : vw3 / 2, ty3 = tr ? tr.top + tr.height / 2 : vh * 0.86;
-        if (!ts || ts < 2) ts = 40;
-        var lg = function (a, b, t) { return Math.exp(Math.log(a) + (Math.log(b) - Math.log(a)) * t); };
-        var w3 = lg(lg(vw3, S3, eA), ts, eB), h3 = lg(lg(vh, S3, eA), ts, eB);
-        var cx3 = (vw3 / 2 + (mx - vw3 / 2) * eA) * (1 - eB) + tx3 * eB, cy3 = (vh / 2 + (my - vh / 2) * eA) * (1 - eB) + ty3 * eB - arcB * vh * 0.06;
+        if (!ts || ts < 2) ts = this._dkHome ? this._dkHome[2] : 40;
+        // until the dock has arrived, aim for where it will be; then follow the dock itself
+        var home = this._dkHome || [vw3 / 2, vh * 0.86, 40], live = u > 499 && tr && tr.width > 0;
+        if (live && u > 535) this._dkHome = [tr.left + tr.width / 2, tr.top + tr.height / 2, ts];
+        var wl = live ? ease(map(u, 499, 526)) : 0;
+        var tx3 = home[0] + ((live ? tr.left + tr.width / 2 : home[0]) - home[0]) * wl, ty3 = home[1] + ((live ? tr.top + tr.height / 2 : home[1]) - home[1]) * wl;
+        var h3 = Math.exp(Math.log(vh) + (Math.log(ts) - Math.log(vh)) * eS), w3 = h3 * (vw3 / vh + (1 - vw3 / vh) * eQ);
+        var cx3 = vw3 / 2 + (tx3 - vw3 / 2) * eP, cy3 = vh / 2 + (ty3 - vh / 2) * eP - Math.sin(Math.PI * eP) * vh * 0.05;
         l3.style.inset = 'auto'; l3.style.left = (cx3 - w3 / 2).toFixed(1) + 'px'; l3.style.top = (cy3 - h3 / 2).toFixed(1) + 'px';
         l3.style.width = w3.toFixed(1) + 'px'; l3.style.height = h3.toFixed(1) + 'px';
         l3.style.zIndex = '7'; l3.style.overflow = 'hidden'; l3.style.visibility = '';
-        l3.style.borderRadius = (Math.min(w3, h3) * 0.24 * Math.min(1, eA * 1.6)).toFixed(1) + 'px';
-        l3.style.transform = 'perspective(1400px) rotateX(' + (arcA * 20 + arcB * 10).toFixed(2) + 'deg) rotateZ(' + (-arcA * 15 + arcB * 8).toFixed(2) + 'deg)';
-        var sh = Math.max(arcA, eA * (1 - eB) * 0.6, arcB * 0.5);
+        l3.style.borderRadius = (Math.min(w3, h3) * 0.24 * Math.min(1, map(u, LA[0], 430))).toFixed(1) + 'px';
+        l3.style.transform = 'perspective(1400px) rotateX(' + (tilt * 20).toFixed(2) + 'deg) rotateZ(' + (-tilt * 13).toFixed(2) + 'deg)';
+        var sh = tilt * 0.9;
         l3.style.boxShadow = '0 ' + (sh * 40).toFixed(0) + 'px ' + (sh * 90).toFixed(0) + 'px -' + (sh * 30).toFixed(0) + 'px rgba(0,16,37,' + (sh * 0.42).toFixed(3) + ')';
         l3.style.opacity = (1 - map(u, LAND - 4, LAND)).toFixed(3);
-        if (face) face.style.opacity = ease(map(u, 482, 500)).toFixed(3);
+        if (face) face.style.opacity = ease(map(u, 476, 520)).toFixed(3);
       }
     }
 
