@@ -1121,6 +1121,9 @@ html,body{overflow-anchor:none}
 /* the line under the first point waits until the running words have settled into the title */
 .atc-ghosted ~ p{opacity:0 !important}
 .wv-card[data-k="0"] .wv-text p{transition:opacity .5s ease}
+/* v10: no browser window around the partner section: no frame, dots, tabs or border; the content keeps its place */
+.atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none}
+.atc-sol-bar{visibility:hidden}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
