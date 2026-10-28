@@ -2354,8 +2354,9 @@ class Component extends DCLogic {
         if (!wv || !world || !mac) return;
         var inE = ease(map(u, S.ins[0] - 40, S.ins[0] - 4)), outE = 1 - ease(map(u, S.out + 4, S.out + 40)), on = inE * outE;
         // the desktop rides from the moment the wave starts until the section has fully gone, so it is never handed over in sight
-        // v10: the desktop and its dock are already in place at the first point when the hero's shot starts to shrink
-        var ride = u > 396 && u < S.out + 50;
+        // v10: the desktop and its dock are already in place at the first point when the hero's shot starts to shrink;
+        // they only exist once the shot has been lifted in front of them (from unit 400), so they never show over the hero
+        var ride = u > 401 && u < S.out + 50;
         wv.style.opacity = ride ? '1' : '0'; wv.style.visibility = ride ? 'visible' : 'hidden';
         world.style.opacity = on.toFixed(3);
         var waveOn = ride;
