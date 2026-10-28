@@ -1114,6 +1114,13 @@ html,body{overflow-anchor:none}
 }
 .atc-calface{position:absolute;inset:0;display:grid;place-items:center;background:#FFFFFF;opacity:0;pointer-events:none}
 .atc-calface svg{width:68%;height:68%;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.atc-mq{position:absolute;left:0;top:0;z-index:6;pointer-events:none;font-family:var(--atc-font);font-weight:400;line-height:1.1;letter-spacing:-.035em;color:var(--atc-navy);white-space:nowrap;visibility:hidden}
+.atc-mq span{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.atc-mq.is-measure span{position:static}
+.atc-ghosted .wv-wi{visibility:hidden}
+/* the line under the first point waits until the running words have settled into the title */
+.atc-ghosted ~ p{opacity:0 !important}
+.wv-card[data-k="0"] .wv-text p{transition:opacity .5s ease}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2069,6 +2076,41 @@ class Component extends DCLogic {
         if (face) face.style.opacity = ease(map(u, 476, 520)).toFixed(3);
       }
     }
+
+    // Behind the shot, the first point's words run across the page in one long line, always moving to the left; as the
+    // shot lands in the dock each word carries on into its own place in the title on the left, which then takes over
+    (function () {
+      var stage = this.q('stage'), h3 = this._mqH || (this._mqH = document.querySelector('.wv-card[data-k="0"] .wv-text h3'));
+      if (!stage || !h3) return;
+      var LAND = 549, on = u > 396 && u < LAND;
+      var mq = this._mq, vw4 = window.innerWidth || 1200;
+      if (!mq && on) {
+        mq = this._mq = document.createElement('div'); mq.className = 'atc-mq'; mq.setAttribute('aria-hidden', 'true');
+        mq.innerHTML = Array.prototype.map.call(h3.querySelectorAll('.wv-wi'), function (w) { return '<span>' + w.textContent + '</span>'; }).join(' ');
+        stage.appendChild(mq);
+      }
+      if (!mq) return;
+      if (h3.classList.contains('atc-ghosted') !== on) h3.classList.toggle('atc-ghosted', on);
+      mq.style.visibility = on ? 'visible' : 'hidden';
+      if (!on) return;
+      var G = Math.round(Math.min(vh * 0.13, vw4 * 0.11)), words = mq.children, key = vw4 + 'x' + vh;
+      // lay the line out once per size: each word's place along it
+      if (this._mqKey !== key) {
+        this._mqKey = key; mq.style.fontSize = G + 'px'; mq.classList.add('is-measure');
+        this._mqOff = Array.prototype.map.call(words, function (w) { return w.offsetLeft; });
+        mq.classList.remove('is-measure');
+      }
+      var off = this._mqOff, hw = h3.querySelectorAll('.wv-w'), fs = parseFloat(getComputedStyle(h3).fontSize) || 30, sc = fs / G;
+      var io4 = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+      var lineX = vw4 * 1.05 - (u - 400) * (vw4 * 1.05 - 120) / 115, lineY = vh * 0.5 - G * 0.55;
+      mq.style.opacity = ease(map(u, 398, 424)).toFixed(3);
+      for (var wi = 0; wi < words.length; wi++) {
+        var sx = lineX + off[wi], sy = lineY, e4 = io4(map(u, 503 + wi * 2, LAND)), tx = sx, ty = sy, s4 = 1;
+        if (e4 > 0 && hw[wi]) { var tr4 = hw[wi].getBoundingClientRect(); tx = tr4.left; ty = tr4.top + tr4.height / 2 - G * sc * 0.55; }
+        var x4 = sx + (tx - sx) * e4, y4 = sy + (ty - sy) * e4; s4 = 1 + (sc - 1) * e4;
+        words[wi].style.transform = 'translate3d(' + x4.toFixed(1) + 'px,' + y4.toFixed(1) + 'px,0) scale(' + s4.toFixed(4) + ')';
+      }
+    }).call(this);
 
     // Progress rail covers the whole story
     // Closing video: the client section fades into white, the video rises out of the white
