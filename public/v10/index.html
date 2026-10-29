@@ -1128,7 +1128,7 @@ html,body{overflow-anchor:none}
 /* v10 What we offer: inside the O is a dark space with the offer's windows floating at different depths; the camera
    flies through it toward one card, which comes to the front, fills the screen and carries What we offer in white */
 .ospace{position:absolute;z-index:3;left:0;top:0;width:100%;height:100%;visibility:hidden;pointer-events:none;overflow:hidden;
-  background:radial-gradient(60% 55% at 50% 52%,#0A1830 0,#030914 58%,#000 100%)}
+  background:#000}
 .ospace .osc{position:absolute;left:0;top:0;transform-origin:50% 50%;will-change:transform,opacity,filter;opacity:0}
 .ospace .osc-w{width:440px;height:280px}
 .ospace .osc-w .cvm{position:absolute;inset:0;background:#fff;border-radius:22px;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
@@ -2925,7 +2925,7 @@ class Component extends DCLogic {
           [off, sp].forEach(function (el) { if (!el) return; el.style.inset = 'auto'; el.style.left = -gx + 'px'; el.style.top = -gy + 'px'; el.style.width = stg.clientWidth + 'px'; el.style.height = stg.clientHeight + 'px'; });
         }
         var G = this._osp || { x: 0, y: 0, w: bR.width, h: bR.height }, Rs = oc.r * s * 0.96, Ox = ox + G.x, Oy = oy + G.y;
-        var fly = ease(map(u, S.pop[0] + 10, S.plug[1])), cardP = ease(map(u, S.pop[0] + 24, S.plug[1]));
+        var fly = ease(map(u, S.pop[0] + 10, S.plug[1])), cardP = map(u, S.pop[0] + 44, S.plug[1]);
         if (sp) {
           var spOn = zr > 0.12;
           sp.style.visibility = spOn ? 'visible' : 'hidden';
@@ -2933,9 +2933,10 @@ class Component extends DCLogic {
           if (spOn) this.ospace(sp, fly, G);
         }
         // the card: far and small in the middle, then nearer until it is the whole screen
-        var csc = Math.exp(Math.log(0.12) * (1 - cardP)), cxs = G.w / 2, cys = G.h / 2;
+        // like the reference: it slides in at a moderate size among the others, settles in the middle, then grows to fill the screen
+        var csc = Math.exp(Math.log(0.42) * (1 - ease(map(cardP, 0.5, 1)))), cxs = G.w / 2, cys = G.h / 2;
         // like the camera gliding right and down: the card comes in from the bottom right and settles in the middle
-        var cin = 1 - ease(map(cardP, 0, 0.92)), cdx = cin * G.w * 0.42, cdy = cin * G.h * 0.38;
+        var cin = 1 - ease(map(cardP, 0, 0.55)), cdx = cin * G.w * 0.62, cdy = cin * G.h * 0.62;
         off.style.visibility = cardP > 0.001 ? 'visible' : 'hidden';
         off.style.opacity = ease(map(cardP, 0, 0.1)).toFixed(3);
         off.style.transformOrigin = '50% 50%';
@@ -3274,23 +3275,22 @@ class Component extends DCLogic {
   }
 
   // v10: the dark space inside the O. Copies of the offer's windows and notes float at different depths; f (0 to 1)
-  // moves the camera forward and to the right and down through them, so they grow, slide up and to the left past the
-  // edges and melt as they come near the lens.
+  // glides the camera right and down across them, so they slide up and to the left past the edges.
   ospace(sp, f, G) {
     if (!sp.__cards) {
-      // a composed scatter along the camera's way (it glides right and down): on both sides of its path, at different
-      // depths and sizes, so they come in from the bottom right one after another and leave at the top left
-      // [kind, source, x, y, depth, size]; p = a small pill
-      var defs = [['w', 0, -0.72, -0.18, 1.45, 1.0], ['p', 0, -0.18, 0.62, 1.7, 0.9], ['n', 0, 0.42, -0.78, 2.0, 0.85],
-                  ['w', 1, 1.28, 0.22, 2.35, 1.15], ['n', 1, 0.18, 1.42, 2.6, 0.95], ['p', 1, 2.08, 0.58, 2.85, 0.8],
-                  ['w', 2, 0.62, 2.05, 3.15, 0.85], ['n', 2, 2.02, 1.92, 3.3, 1.0], ['w', 3, 2.86, 1.12, 3.65, 0.95],
-                  ['p', 2, 1.36, 2.62, 3.45, 0.75], ['n', 3, 3.2, 2.42, 4.05, 0.85]];
+      // like the reference: a sparse layout, four to six on screen at once, one large and others medium and small, well
+      // apart; each is placed by when it passes (fi), where it is then (dx, dy, as parts of the screen), its depth and size
+      // [kind, source, fi, dx, dy, depth, size]; p = a small pill
+      var defs = [['w', 0, 0.04, -0.13, -0.17, 1.0, 1.0], ['p', 0, 0.0, -0.34, -0.36, 1.7, 0.6], ['n', 0, 0.1, 0.31, 0.12, 1.3, 0.75],
+                  ['w', 1, 0.24, -0.31, 0.24, 1.5, 0.72], ['p', 1, 0.3, 0.37, -0.27, 1.9, 0.55], ['w', 2, 0.42, 0.13, -0.1, 1.1, 0.88],
+                  ['n', 1, 0.5, -0.37, 0.04, 1.7, 0.62], ['w', 3, 0.62, 0.33, 0.27, 1.25, 0.8], ['n', 2, 0.7, -0.16, -0.33, 1.45, 0.66],
+                  ['p', 2, 0.78, 0.41, -0.06, 1.8, 0.55], ['n', 3, 0.86, -0.38, 0.3, 1.35, 0.7]];
       var pills = ['<i style="--c:#3FB27E"></i>Revenue <b>+18%</b>', '<i style="--c:#2D63E6"></i><b>1,284</b> tasks done', '<i style="--c:#9BBA2A"></i>Client portal <b>v1.0 live</b>'];
       sp.__cards = [];
       defs.forEach(function (d) {
         if (d[0] === 'p') {
           var pe = document.createElement('div'); pe.className = 'osc osc-p'; pe.innerHTML = pills[d[1]]; sp.appendChild(pe);
-          sp.__cards.push({ el: pe, x: d[2], y: d[3], z: d[4], s: d[5] }); return;
+          sp.__cards.push({ el: pe, fi: d[2], dx: d[3], dy: d[4], z: d[5], s: d[6] }); return;
         }
         var src = document.querySelector('[data-atc="cvW' + d[1] + '"]'), part = src && src.querySelector(d[0] === 'w' ? '.cvm' : '.cvb');
         if (!part) return;
@@ -3299,20 +3299,23 @@ class Component extends DCLogic {
         c.querySelectorAll('.cv-tg').forEach(function (n) { n.classList.add('on'); });
         c.querySelectorAll('[data-fill]').forEach(function (n) { n.style.width = '100%'; });
         var el = document.createElement('div'); el.className = 'osc osc-' + d[0]; el.appendChild(c); sp.appendChild(el);
-        sp.__cards.push({ el: el, x: d[2], y: d[3], z: d[4], s: d[5] });
+        sp.__cards.push({ el: el, fi: d[2], dx: d[3], dy: d[4], z: d[5], s: d[6] });
       });
     }
     var W = G.w, H = G.h, cx = W / 2, cy = H / 2, k = Math.min(W / 1440, H / 900);
+    // the camera glides right and down across the field, nearly level: the cards slide up and to the left, the far
+    // (small) ones slower than the near ones, and grow only a little as the camera moves on
+    var PX = 1.5, PY = 1.3;
     sp.__cards.forEach(function (c) {
-      var z = c.z - f * 2.9, camX = f * 2.1, camY = f * 1.75;
-      if (z < 0.22) { c.el.style.opacity = '0'; return; }
-      var sc = k * c.s / z, x = cx + (c.x - camX) * cx / z, y = cy + (c.y - camY) * cy / z;
-      // far ones come out of the dark, near ones melt as they pass the lens
-      var op = Math.min(1, Math.max(0, (4.6 - z) / 1.2)) * Math.min(1, Math.max(0, (z - 0.22) / 0.35));
-      var bl = z < 1 ? (1 - z) * 14 : (z > 3 ? (z - 3) * 2 : 0);
+      var z = c.z - 0.22 * f, rel = f - c.fi;
+      var sx = (c.dx * c.z - rel * PX) / z, sy = (c.dy * c.z - rel * PY) / z;
+      var x = cx + sx * W, y = cy + sy * H, sc = k * c.s * c.z / z;
+      var w = c.el.offsetWidth * sc, h = c.el.offsetHeight * sc;
+      var on = x + w / 2 > -40 && x - w / 2 < W + 40 && y + h / 2 > -40 && y - h / 2 < H + 40;
+      c.el.style.opacity = on ? '1' : '0';
+      if (!on) return;
       c.el.style.transform = 'translate3d(' + (x - c.el.offsetWidth / 2).toFixed(1) + 'px,' + (y - c.el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
-      c.el.style.opacity = op.toFixed(3);
-      c.el.style.filter = bl > 0.3 ? 'blur(' + bl.toFixed(1) + 'px)' : '';
+      c.el.style.filter = '';
     });
   }
 
