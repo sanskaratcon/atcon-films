@@ -1309,27 +1309,35 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 04: the road to launch. The business sets off; problems drop and pile into a wall across the road, no one
-   clears them, and while the months tick by the business pushes against the wall and stays where it is */
-.bw{padding:2cqw 2.6cqw 2.2cqw}
-.bw .mt-head{margin-bottom:1.2cqw}
-.bw-stage{position:relative;height:27cqw;border-radius:1.6cqw;background:linear-gradient(180deg,#F8FAFD,#F2F5FA);overflow:hidden}
-.bw-road{position:absolute;left:2cqw;right:2cqw;bottom:2.2cqw;border-top:.35cqw dashed #C9D2E1}
-.bw-flag{position:absolute;right:2.2cqw;bottom:3.6cqw;display:flex;align-items:center;gap:.7cqw;font-size:1.8cqw;font-weight:600;color:#8C95A6;white-space:nowrap}
-.bw-flag svg{width:2.5cqw;height:2.5cqw;fill:none;stroke:#8C95A6;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.bw-biz{position:absolute;left:3cqw;bottom:3.2cqw;display:flex;align-items:center;gap:1cqw;padding:1.1cqw 1.8cqw;border-radius:3cqw;background:var(--atc-navy);color:#fff;
-  font-size:1.9cqw;font-weight:600;white-space:nowrap;box-shadow:0 1.2cqw 2.6cqw -1.2cqw rgba(0,16,37,.55);transition:left 1.1s cubic-bezier(.3,0,.2,1)}
-.bw-biz svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:#9BBA2A;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.bw-biz.is-go{left:24cqw}
-.bw-biz.is-push{animation:bw-push .6s ease}
-@keyframes bw-push{35%{transform:translateX(1.8cqw)}70%{transform:translateX(-.5cqw)}100%{transform:none}}
-.bw-biz.is-stuck{box-shadow:0 1.2cqw 2.6cqw -1.2cqw rgba(0,16,37,.55),0 0 0 .5cqw rgba(217,72,60,.35)}
-.bw-brick{position:absolute;box-sizing:border-box;display:grid;place-items:center;width:14.2cqw;height:5.4cqw;padding:0 .8cqw;border-radius:.9cqw;
-  background:#FDF1DA;box-shadow:inset 0 0 0 .22cqw #EDD9A8,0 .9cqw 1.8cqw -.9cqw rgba(0,16,37,.35);
-  font-style:normal;font-size:1.5cqw;font-weight:600;line-height:1.15;text-align:center;color:#A86A00}
-.mac .bw-brick.st{opacity:0;transform:translateY(-15cqw) rotate(var(--r,0deg))}
-.mac .bw-brick.st.is-shown{opacity:1;transform:rotate(var(--r,0deg));transition:opacity .22s ease,transform .6s cubic-bezier(.3,1.3,.45,1)}
-.bw .mg-say{margin-top:1.6cqw}
+/* v10 problem 04: the stuck business. Problems pile up unresolved on one side (the dates move on, nothing gets solved);
+   on the other the portal's own page, refreshed month after month, always says Coming soon */
+.fd{padding:1.2cqw 2cqw 1.6cqw}
+.fd-head{display:flex;gap:1.2cqw;padding:.4cqw .6cqw 1.2cqw;border-bottom:1px solid #EEF1F6}
+.fd-head span{padding:.5cqw 1.5cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.6cqw;font-weight:600;color:#5B6B78}
+.fd-head b{color:var(--atc-navy)}
+.fd-head .fd-zero,.fd-head .fd-zero b{background:#FDE6E4;color:#C8382D}
+.fd-head span.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+.fd-row{display:flex;align-items:center;gap:1.5cqw;padding:1.25cqw .6cqw;border-bottom:1px solid #EEF1F6}
+.fd-row:last-child{border-bottom:0}
+.fd-ic{flex:none;display:grid;place-items:center;width:4.4cqw;height:4.4cqw;border-radius:1cqw;background:#FDF1DA}
+.fd-ic svg{width:60%;height:60%;fill:none;stroke:#A86A00;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.fd-row>div{flex:1;min-width:0}
+.fd-row b{display:block;font-size:1.95cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-row small{display:block;margin-top:.25cqw;font-size:1.55cqw;color:#8C95A6}
+.fd-st{flex:none;padding:.4cqw 1.3cqw;border-radius:3cqw;background:#FDE6E4;font-size:1.5cqw;font-weight:600;color:#C8382D}
+.wb{padding:1.4cqw 1.8cqw 2.2cqw}
+.wb-url{display:flex;align-items:center;gap:1cqw;padding:.9cqw 1.6cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.75cqw;color:#5B6B78;white-space:nowrap}
+.wb-url svg{flex:none;width:1.9cqw;height:1.9cqw;fill:none;stroke:#8C95A6;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.wb-spin{margin-left:auto;flex:none;width:2cqw;height:2cqw;box-sizing:border-box;border-radius:50%;border:.35cqw solid #D5DCE8;border-top-color:#2D63E6}
+.wb-spin.is-go{animation:wb-spin .6s ease}
+@keyframes wb-spin{to{transform:rotate(360deg)}}
+.wb-page{display:flex;flex-direction:column;align-items:center;gap:1.3cqw;padding:3.4cqw 2cqw 1.6cqw;text-align:center}
+.wb-page.is-go{animation:wb-blink .55s ease}
+@keyframes wb-blink{30%{opacity:.25}}
+.wb-badge{padding:.7cqw 2cqw;border-radius:4cqw;background:#FDF1DA;color:#A86A00;font-size:2cqw;font-weight:600}
+.wb-page p{margin:0;font-size:2.5cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
+.wb-page em{font-style:normal;font-size:1.7cqw;color:#8C95A6}
+.wb-page em.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4);display:inline-block}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1522,24 +1530,29 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 04 Stuck: the road to launch. The business sets off; problem after problem drops and piles into a wall across
-               the road, no one clears a single one, and while the months tick by (January to May) the business pushes against
-               the wall and stays where it is -->
+          <!-- 04 Stuck: problems keep arriving (the dates move on, January to May) and every one stays Open, nothing gets
+               solved; after each one the portal's own page is refreshed and still says Coming soon -->
           <div class="mac-sc">
-            <div class="mw st" data-k="win" style="--x:3%;--y:8%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal · Progress</span></div>
-              <div class="mw-b bw">
-                <div class="mt-head"><h4>Road to launch</h4><span class="pill" data-k="mon">January</span></div>
-                <div class="bw-stage">
-                  <i class="bw-road"></i>
-                  <span class="bw-flag"><svg viewBox="0 0 16 16"><path d="M4 14.5V2.2M4 2.5h7.6l-1.6 2.6 1.6 2.6H4"/></svg>Launch</span>
-                  <span class="bw-biz" data-k="biz"><svg viewBox="0 0 16 16"><path d="M2 8h10M8.5 4.5 12 8l-3.5 3.5"/></svg>Your business</span>
-                  <i class="bw-brick st" data-k="bk0" style="left:47.5cqw;bottom:2.2cqw;--r:-1.5deg">Checkout broken</i><i class="bw-brick st" data-k="bk1" style="left:62.8cqw;bottom:2.2cqw;--r:1deg">Payments failing</i><i class="bw-brick st" data-k="bk2" style="left:48.9cqw;bottom:7.9cqw;--r:1.5deg">No clear owner</i><i class="bw-brick st" data-k="bk3" style="left:63.6cqw;bottom:7.9cqw;--r:-1.2deg">Vendor delay</i><i class="bw-brick st" data-k="bk4" style="left:48.1cqw;bottom:13.6cqw;--r:-2deg">Budget freeze</i><i class="bw-brick st" data-k="bk5" style="left:63.2cqw;bottom:13.6cqw;--r:1.6deg">Scope creep</i>
-                </div>
-                <p class="mg-say" data-k="say" style="--c:#2D63E6"><i></i><span data-k="sayt">January. The portal sets off for launch.</span></p>
+            <div class="mw st" data-k="docs" style="--x:3%;--y:3%;--w:55%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Issues · Customer portal</span></div>
+              <div class="mw-b fd">
+                <div class="fd-head"><span>Open <b data-k="open">1</b></span><span class="fd-zero">Solved <b>0</b></span></div>
+                <div class="fd-row st" data-k="f0"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Checkout broken</b><small>Reported 12 Jan</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f1"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Payments failing</b><small>Reported 3 Feb</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f2"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Orders not syncing</b><small>Reported 24 Feb</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f3"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Login timeouts</b><small>Reported 18 Mar</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f4"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Reports empty</b><small>Reported 9 Apr</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f5"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Supplier feed down</b><small>Reported 2 May</small></div><span class="fd-st">Open</span></div>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:86%"><span><b>5</b> months passed</span><span class="is-zero"><b>0</b> problems solved</span><span>Business: <b>where it started</b></span></div>
+            <div class="mw st" data-k="web" style="--x:43%;--y:50%;--w:54%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>yourbusiness.com/portal</span></div>
+              <div class="mw-b wb">
+                <div class="wb-url"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>yourbusiness.com/portal<i class="wb-spin" data-k="spin"></i></div>
+                <div class="wb-page" data-k="page"><span class="wb-badge">Coming soon</span><p>Your customer portal is on its way.</p><em data-k="chk">Checked in January</em></div>
+              </div>
+            </div>
+            <div class="mtally st" data-k="tally" style="top:86%"><span><b>6</b> problems</span><span class="is-zero"><b>0</b> solved</span><span>Live: <b>still “Coming soon”</b></span></div>
           </div>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
@@ -2851,28 +2864,22 @@ class Component extends DCLogic {
       at(tt, function () { show('more'); });
       var total = tt + 400;
     } else if (i === 3) {
-      // 04 Stuck: the road to launch. The business sets off; problem after problem drops and piles into a wall across the
-      // road (the business bumps against it and bounces back), no one clears a single one, and the months tick by
-      var biz = $('biz'), mon = $('mon'), say = $('say'), sayt = $('sayt');
-      var MON = ['January', 'February', 'March', 'March', 'April', 'May'];
-      var BRICK = ['Checkout broken', 'Payments failing', 'No clear owner', 'Vendor delay', 'Budget freeze', 'Scope creep'];
-      var tell = function (txt, col) { sayt.textContent = txt; say.style.setProperty('--c', col); flag(say, 'is-new'); };
-      at(100, function () { show('win'); });
-      at(500, function () { biz.classList.add('is-go'); });
-      [0, 1, 2, 3, 4, 5].forEach(function (k) {
-        var t = 1400 + k * 900;
-        at(t, function () {
-          show('bk' + k); flag(biz, 'is-push');
-          if (mon.textContent !== MON[k]) { mon.textContent = MON[k]; flag(mon, 'is-go'); }
-          tell(MON[k] + '. \u201c' + BRICK[k] + '\u201d lands on the road. No one clears it.', '#A86A00');
+      // 04 Stuck: problems keep arriving (the dates move on, January to May) and every one stays Open, nothing gets
+      // solved; after each one the portal's page is refreshed (the spinner turns, the page blinks) and still says Coming soon
+      var spin = $('spin'), page = $('page'), chk = $('chk'), openN = $('open');
+      var CHKM = ['February', 'February', 'March', 'April', 'May'];
+      at(100, function () { show('docs'); show('f0'); });
+      at(700, function () { show('web'); });
+      [1, 2, 3, 4, 5].forEach(function (k) {
+        var t = 1400 + (k - 1) * 950;
+        at(t, function () { show('f' + k); openN.textContent = String(k + 1); flag(openN.parentElement, 'is-new'); });
+        at(t + 480, function () {
+          flag(spin, 'is-go'); flag(page, 'is-go');
+          chk.textContent = 'Refreshed in ' + CHKM[k - 1]; flag(chk, 'is-new');
         });
       });
-      at(1400 + 6 * 900 + 200, function () {
-        biz.classList.add('is-stuck'); mon.classList.add('pill-red');
-        tell('Five months on: six problems in the way, and the business where it started.', '#D9483C');
-        show('tally');
-      });
-      var total = 1400 + 6 * 900 + 1100;
+      at(1400 + 5 * 950 + 200, function () { show('tally'); });
+      var total = 1400 + 5 * 950 + 1000;
     }
     total += START;
     fillSteps(0);
