@@ -1308,6 +1308,28 @@ html,body{overflow-anchor:none}
 @keyframes mg-say{from{opacity:0;transform:translateY(.8cqw)}to{opacity:1;transform:none}}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
+
+/* v10 problem 03: one task passed around a circle of teams like a hot potato until no one owns it */
+.ht{position:absolute;left:0;top:0;width:100cqw;height:80cqw}
+.ht-ring{position:absolute;left:0;top:0;width:100cqw;height:96cqw;overflow:visible}
+.ht-ring circle{fill:none;stroke:#D5DCE8;stroke-width:.3;stroke-dasharray:1.2 1.2}
+.ht-n{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;transition:opacity .4s ease}
+.mac .ht-n .av-t{width:8.4cqw;height:8.4cqw;font-size:2.4cqw;box-shadow:0 0 0 .8cqw #fff}
+.ht-n span{position:absolute;top:100%;margin-top:1.2cqw;font-size:1.9cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap}
+.ht[data-on="0"] .ht-n:not(.ht-n0),.ht[data-on="1"] .ht-n:not(.ht-n1),.ht[data-on="2"] .ht-n:not(.ht-n2),.ht[data-on="3"] .ht-n:not(.ht-n3),.ht[data-on="none"] .ht-n{opacity:.35}
+.ht[data-on="0"] .ht-n0 .av-t,.ht[data-on="1"] .ht-n1 .av-t,.ht[data-on="2"] .ht-n2 .av-t,.ht[data-on="3"] .ht-n3 .av-t{box-shadow:0 0 0 .8cqw #fff,0 0 0 1.4cqw color-mix(in srgb,var(--c) 32%,#fff)}
+.ht-card{position:absolute;box-sizing:border-box;width:30cqw;height:15.6cqw;margin:-7.8cqw 0 0 -15cqw;padding:1.8cqw 2.2cqw;border-radius:2cqw;background:#fff;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 2.4cqw 5cqw -2cqw rgba(0,16,37,.32);transition:left .9s cubic-bezier(.45,0,.2,1),top .9s cubic-bezier(.45,0,.2,1)}
+.mac .ht-card.st{transform:translateY(1cqw) scale(.97)}.mac .ht-card.st.is-shown{transform:none}
+.ht-card.is-hop{animation:ht-hop .9s cubic-bezier(.45,0,.2,1)}
+@keyframes ht-hop{45%{transform:scale(.9) rotate(-4deg)}100%{transform:none}}
+.ht-card small{display:block;font-size:1.5cqw;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8C95A6}
+.ht-card h4{margin:.4cqw 0 1.2cqw;font-size:2.4cqw;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.ht-card p{display:flex;align-items:center;justify-content:space-between;margin:.6cqw 0 0;font-size:1.7cqw;color:#8C95A6}
+.ht-card .pill{font-size:1.6cqw}
+.pill.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+.ht-say{position:absolute;left:5cqw;right:5cqw;top:82cqw;margin:0;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.1),0 1.6cqw 3.6cqw -1.6cqw rgba(0,16,37,.22)}
+.ht-say strong{font-weight:600;color:var(--c)}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1474,30 +1496,20 @@ with a vision.</h2>
             <div class="mtally st" data-k="tally" style="top:83%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
+          <!-- 03 Everyone is involved, no one is accountable: one task passed around a circle of four teams like a hot
+               potato; the team holding it lights up and gives its excuse, the owner on the card changes and the delay grows,
+               until the last team drops it and it lands in the middle with no owner -->
           <div class="mac-sc">
-            <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
-              <div class="mw-b mtask">
-                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-red">Delayed 3 weeks</span></div>
-                <dl>
-                  <dt>Owner</dt><dd><span class="pill owner" data-k="owner">Marketing</span></dd>
-                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#5A86EE">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
-                </dl>
-                <div class="mcomments">
-                  <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span data-type="Not our fault. IT never set up the integration."></span></p></div>
-                  <small class="mlog st" data-k="l1"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Marketing</b> reassigned this to <b>IT</b></small>
-                  <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
-                  <small class="mlog st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>IT</b> reassigned this to <b>Bitforge Labs</b></small>
-                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#5A86EE">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
-                  <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> removed the owner</small>
-                  <small class="st" data-k="more">3 teams · 0 owners · still delayed</small>
-                </div>
+            <div class="ht" data-k="ht" data-on="0">
+              <svg class="ht-ring" viewBox="0 0 100 96"><circle cx="50" cy="40" r="32"/></svg>
+              <div class="ht-n ht-n0" style="left:50cqw;top:10cqw;--c:#2D63E6"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing</span></div><div class="ht-n ht-n1" style="left:84cqw;top:40cqw;--c:#3FB27E"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT</span></div><div class="ht-n ht-n2" style="left:50cqw;top:70cqw;--c:#5A86EE"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs</span></div><div class="ht-n ht-n3" style="left:16cqw;top:40cqw;--c:#9BBA2A"><b class="av av-t" style="--c:#9BBA2A">FN</b><span>Finance</span></div>
+              <div class="ht-card st" data-k="card" style="left:50cqw;top:24cqw">
+                <small>Task</small><h4>Launch customer portal</h4>
+                <p><span>Owner</span><b class="pill" data-k="owner">Marketing</b></p>
+                <p><span>Status</span><b class="pill pill-amber" data-k="late">Delayed 1 week</b></p>
               </div>
             </div>
+            <p class="mg-say ht-say st" data-k="say" style="--c:#2D63E6"><i></i><span data-k="sayt">One task. Four teams involved.</span></p>
           </div>
 
           <!-- 04 Still on the whiteboard: invitation after invitation, and the project never moves -->
@@ -2823,28 +2835,32 @@ class Component extends DCLogic {
       at(tEnd + 600, function () { gantt.setAttribute('data-on', 'all'); show('tally'); });
       var total = tEnd + 1300;
     } else if (i === 2) {
-      // 03 Every team blames the next and passes the task on; in the end nobody owns it
-      var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
-      at(100, function () { show('task'); });
-      [1, 2, 3].forEach(function (n) {
-        var from = tt;
-        at(from, function () { show('t' + n); });
-        // Each reply lands whole, like a chat message, after its typing indicator
-        at(from + 700, function () {
-          var msg = $('k' + n), sp = msg && msg.querySelector('[data-type]');
-          if (sp) sp.textContent = sp.getAttribute('data-type');
-          show('t' + n, false); show(msg);
+      // 03 One task passed around the circle like a hot potato: the team holding it lights up and gives its excuse, then
+      // hands it on; the owner changes and the delay grows each time, until the last team drops it and no one owns it
+      var ht = $('ht'), card = $('card'), owner = $('owner'), late = $('late'), say = $('say'), sayt = $('sayt');
+      var POS = [[50, 24], [57, 40], [50, 56], [43, 40]], NAMES = ['Marketing', 'IT', 'Bitforge Labs', 'Finance'];
+      var COL = ['#2D63E6', '#3FB27E', '#5A86EE', '#9BBA2A'];
+      var LINE = ['\u201cNot our fault. IT never set up the integration.\u201d', '\u201cNot on us. Bitforge changed the API last week.\u201d',
+                  '\u201cWe built what the brief said. Ask Finance.\u201d', '\u201cNo budget was approved for this. Not ours.\u201d'];
+      var tell = function (who, txt, col) {
+        sayt.innerHTML = who ? '<strong>' + who + ':</strong> ' + txt : txt;
+        say.style.setProperty('--c', col); flag(say, 'is-new');
+      };
+      at(100, function () { show('card'); show('say'); tell('', 'One task. Four teams involved. Marketing has it.', COL[0]); });
+      [0, 1, 2, 3].forEach(function (k) {
+        var t = 900 + k * 1350;
+        at(t, function () { tell(NAMES[k], LINE[k], COL[k]); });
+        at(t + 700, function () {
+          var last = k === 3, p = last ? [50, 40] : POS[k + 1];
+          card.style.left = p[0] + 'cqw'; card.style.top = p[1] + 'cqw'; flag(card, 'is-hop');
+          ht.setAttribute('data-on', last ? 'none' : String(k + 1));
+          owner.textContent = last ? 'No one' : NAMES[k + 1]; flag(owner, 'is-flip');
+          if (last) owner.classList.add('pill-red');
+          late.textContent = 'Delayed ' + (k + 2) + ' weeks'; flag(late, 'is-flip');
         });
-        var end = from + 700 + 900;
-        at(end + 200, function () {
-          show('l' + n);
-          owner.textContent = owners[n - 1];
-          flag(owner, n === 3 ? 'is-none' : 'is-flip');
-        });
-        tt = end + 650;
       });
-      at(tt, function () { show('more'); });
-      var total = tt + 400;
+      at(900 + 4 * 1350, function () { tell('', 'Everyone involved. No one accountable.', '#D9483C'); });
+      var total = 900 + 4 * 1350 + 900;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
