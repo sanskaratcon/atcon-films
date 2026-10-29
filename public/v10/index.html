@@ -1309,18 +1309,22 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 04: the stuck business. Plans pile up with moving dates on one side; on the other the portal's own page,
-   refreshed month after month, always says Coming soon */
+/* v10 problem 04: the stuck business. Problems pile up unresolved on one side (the dates move on, nothing gets solved);
+   on the other the portal's own page, refreshed month after month, always says Coming soon */
 .fd{padding:1.2cqw 2cqw 1.6cqw}
+.fd-head{display:flex;gap:1.2cqw;padding:.4cqw .6cqw 1.2cqw;border-bottom:1px solid #EEF1F6}
+.fd-head span{padding:.5cqw 1.5cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.6cqw;font-weight:600;color:#5B6B78}
+.fd-head b{color:var(--atc-navy)}
+.fd-head .fd-zero,.fd-head .fd-zero b{background:#FDE6E4;color:#C8382D}
+.fd-head span.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 .fd-row{display:flex;align-items:center;gap:1.5cqw;padding:1.25cqw .6cqw;border-bottom:1px solid #EEF1F6}
 .fd-row:last-child{border-bottom:0}
-.fd-ic{flex:none;display:grid;place-items:center;width:4.4cqw;height:4.4cqw;border-radius:1cqw;background:#FDEDEB}
-.fd-ic svg{width:60%;height:60%;fill:none;stroke:#D04423;stroke-width:1.6;stroke-linejoin:round}
+.fd-ic{flex:none;display:grid;place-items:center;width:4.4cqw;height:4.4cqw;border-radius:1cqw;background:#FDF1DA}
+.fd-ic svg{width:60%;height:60%;fill:none;stroke:#A86A00;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
 .fd-row>div{flex:1;min-width:0}
 .fd-row b{display:block;font-size:1.95cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fd-row b em{font-style:normal;color:#C8382D}
 .fd-row small{display:block;margin-top:.25cqw;font-size:1.55cqw;color:#8C95A6}
-.fd-v{flex:none;padding:.4cqw 1.1cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.5cqw;font-weight:600;color:#5B6B78}
+.fd-st{flex:none;padding:.4cqw 1.3cqw;border-radius:3cqw;background:#FDE6E4;font-size:1.5cqw;font-weight:600;color:#C8382D}
 .wb{padding:1.4cqw 1.8cqw 2.2cqw}
 .wb-url{display:flex;align-items:center;gap:1cqw;padding:.9cqw 1.6cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.75cqw;color:#5B6B78;white-space:nowrap}
 .wb-url svg{flex:none;width:1.9cqw;height:1.9cqw;fill:none;stroke:#8C95A6;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -1526,28 +1530,29 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 04 Stuck: time moves in the file dates. Plan after "final" plan is saved (January to May), and after each one
-               the portal's own page is refreshed and still says Coming soon: the months pass, nothing goes live -->
+          <!-- 04 Stuck: problems keep arriving (the dates move on, January to May) and every one stays Open, nothing gets
+               solved; after each one the portal's own page is refreshed and still says Coming soon -->
           <div class="mac-sc">
             <div class="mw st" data-k="docs" style="--x:3%;--y:3%;--w:55%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Documents · Portal</span></div>
+              <div class="mw-bar"><i></i><i></i><i></i><span>Issues · Customer portal</span></div>
               <div class="mw-b fd">
-                <div class="fd-row st" data-k="f0"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan.pptx</b><small>Edited 12 Jan</small></div><span class="fd-v">v1</span></div>
-                <div class="fd-row st" data-k="f1"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan v2.pptx</b><small>Edited 3 Feb</small></div><span class="fd-v">v2</span></div>
-                <div class="fd-row st" data-k="f2"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL</em>.pptx</b><small>Edited 24 Feb</small></div><span class="fd-v">v3</span></div>
-                <div class="fd-row st" data-k="f3"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL</em> v3.pptx</b><small>Edited 18 Mar</small></div><span class="fd-v">v4</span></div>
-                <div class="fd-row st" data-k="f4"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL FINAL</em>.pptx</b><small>Edited 9 Apr</small></div><span class="fd-v">v5</span></div>
-                <div class="fd-row st" data-k="f5"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL (really)</em>.pptx</b><small>Edited 2 May</small></div><span class="fd-v">v6</span></div>
+                <div class="fd-head"><span>Open <b data-k="open">1</b></span><span class="fd-zero">Solved <b>0</b></span></div>
+                <div class="fd-row st" data-k="f0"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Checkout broken</b><small>Reported 12 Jan</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f1"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Payments failing</b><small>Reported 3 Feb</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f2"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Orders not syncing</b><small>Reported 24 Feb</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f3"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Login timeouts</b><small>Reported 18 Mar</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f4"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Reports empty</b><small>Reported 9 Apr</small></div><span class="fd-st">Open</span></div>
+                <div class="fd-row st" data-k="f5"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Supplier feed down</b><small>Reported 2 May</small></div><span class="fd-st">Open</span></div>
               </div>
             </div>
-            <div class="mw st" data-k="web" style="--x:43%;--y:48%;--w:54%">
+            <div class="mw st" data-k="web" style="--x:43%;--y:50%;--w:54%">
               <div class="mw-bar"><i></i><i></i><i></i><span>yourbusiness.com/portal</span></div>
               <div class="mw-b wb">
                 <div class="wb-url"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>yourbusiness.com/portal<i class="wb-spin" data-k="spin"></i></div>
                 <div class="wb-page" data-k="page"><span class="wb-badge">Coming soon</span><p>Your customer portal is on its way.</p><em data-k="chk">Checked in January</em></div>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:84%"><span><b>6</b> plans</span><span><b>5</b> months</span><span class="is-zero">Live: <b>still “Coming soon”</b></span></div>
+            <div class="mtally st" data-k="tally" style="top:86%"><span><b>6</b> problems</span><span class="is-zero"><b>0</b> solved</span><span>Live: <b>still “Coming soon”</b></span></div>
           </div>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
@@ -2859,15 +2864,15 @@ class Component extends DCLogic {
       at(tt, function () { show('more'); });
       var total = tt + 400;
     } else if (i === 3) {
-      // 04 Stuck: time moves in the file dates: plan after "final" plan is saved (January to May), and after each one the
-      // portal's page is refreshed (the spinner turns, the page blinks) and still says Coming soon
-      var spin = $('spin'), page = $('page'), chk = $('chk');
+      // 04 Stuck: problems keep arriving (the dates move on, January to May) and every one stays Open, nothing gets
+      // solved; after each one the portal's page is refreshed (the spinner turns, the page blinks) and still says Coming soon
+      var spin = $('spin'), page = $('page'), chk = $('chk'), openN = $('open');
       var CHKM = ['February', 'February', 'March', 'April', 'May'];
       at(100, function () { show('docs'); show('f0'); });
       at(700, function () { show('web'); });
       [1, 2, 3, 4, 5].forEach(function (k) {
         var t = 1400 + (k - 1) * 950;
-        at(t, function () { show('f' + k); });
+        at(t, function () { show('f' + k); openN.textContent = String(k + 1); flag(openN.parentElement, 'is-new'); });
         at(t + 480, function () {
           flag(spin, 'is-go'); flag(page, 'is-go');
           chk.textContent = 'Refreshed in ' + CHKM[k - 1]; flag(chk, 'is-new');
