@@ -1309,26 +1309,32 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 04: time visibly moving (month tabs, weeks spent, meetings) while progress stays at 0% */
-.mc-months{display:flex;gap:.7cqw}
-.mc-months b{padding:.5cqw 1.5cqw;border-radius:3cqw;background:#F2F4F8;color:#A3ABB8;font-size:1.9cqw;font-weight:600;transition:background .3s ease,color .3s ease}
-.mc-months b.is-past{background:#E6EAF2;color:#5B6B78}
-.mc-months b.is-on{background:var(--atc-navy);color:#fff}
-.mc-months b.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
-.mcal .mc-grid{grid-template-rows:repeat(8,3.3cqw);row-gap:.5cqw;background:repeating-linear-gradient(180deg,transparent 0 3.55cqw,rgba(0,16,37,.06) 3.55cqw calc(3.55cqw + 1px))}
-.mcal .mc-grid i{font-size:1.6cqw}
-.mst2{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw;padding:2.2cqw 2.4cqw}
-.st2{position:relative;padding:1.6cqw 1.8cqw;border-radius:1.6cqw;background:#F6F8FB}
-.st2 small{display:block;font-size:1.6cqw;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8C95A6}
-.st2 strong{display:block;margin-top:.6cqw;font-size:4.4cqw;line-height:1.05;font-weight:500;letter-spacing:-.03em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
-.st2 strong span{display:inline-block}
-.st2 strong span.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
-.st2 em{display:block;margin-top:.4cqw;font-style:normal;font-size:1.7cqw;color:#8C95A6}
-.st2-zero{background:#FDECEA}
-.st2-zero strong{color:#C8382D}
-.st2-bar{display:block;height:1cqw;margin-top:1.2cqw;border-radius:1cqw;background:#F5D2CE}
-.st2 .mplus-0{right:1.2cqw;top:1.2cqw}
-.mac .mac-sc .minvite{top:43%;right:3%;z-index:5}
+/* v10 problem 04: the roadmap. Time sweeps across (Today line, meetings dropping in) while You are here stays on Plan */
+.rm{padding:2.2cqw 2.6cqw 2.6cqw}
+.rm-time{position:relative;height:16cqw;margin-top:.6cqw;border-radius:1.4cqw;background:#F8FAFD;overflow:hidden}
+.rm-months{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,1fr);height:4.4cqw}
+.rm-months span{display:flex;align-items:center;padding-left:1cqw;border-left:1px solid #E8ECF3;font-size:1.7cqw;font-weight:600;color:#8C95A6}
+.rm-months span:first-child{border-left:0}
+.rm-past{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#EEF2FB,#E3EAF9);transition:width .4s ease}
+.rm-today{position:absolute;top:0;bottom:0;left:0;z-index:3;width:0;border-left:.35cqw solid #2D63E6;transition:left .4s ease;font-style:normal}
+.rm-today b{position:absolute;bottom:.6cqw;right:.6cqw;padding:.3cqw 1cqw;border-radius:3cqw;background:#2D63E6;color:#fff;font-size:1.4cqw;font-weight:600;white-space:nowrap}
+.rm-pin{position:absolute;z-index:2;padding:.35cqw 1cqw;border-radius:.8cqw;border-left:.4cqw solid #5A86EE;background:#fff;box-shadow:0 .6cqw 1.4cqw -.6cqw rgba(0,16,37,.3);
+  font-style:normal;font-size:1.45cqw;font-weight:500;color:#2D4FA8;white-space:nowrap}
+.mac .rm-pin.st{transform:translateY(-3cqw) scale(1.1)}
+.mac .rm-pin.st.is-shown{transform:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+.rm-road{position:relative;height:17cqw;margin-top:1.6cqw}
+.rm-line{position:absolute;left:10%;right:10%;top:3.4cqw;border-top:.35cqw dashed #C9D2E1}
+.rm-st{position:absolute;top:0;width:16cqw;margin-left:-8cqw;display:flex;flex-direction:column;align-items:center;gap:.8cqw}
+.rm-st b{display:grid;place-items:center;width:6.8cqw;height:6.8cqw;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 .3cqw #D5DCE8;color:#A3ABB8;font-size:2.2cqw;font-weight:600}
+.rm-st span{font-size:1.9cqw;font-weight:600;color:#A3ABB8}
+.rm-st svg{width:3cqw;height:3cqw;fill:none;stroke:#A3ABB8;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rm-s0 b{background:var(--atc-navy);box-shadow:none;color:#fff}.rm-s0 span{color:var(--atc-navy)}
+.rm-here{position:absolute;left:10%;top:11.6cqw;width:16cqw;margin-left:-8cqw;display:flex;flex-direction:column;align-items:center;gap:.3cqw;font-size:1.8cqw;font-weight:600;color:#2D63E6;white-space:nowrap}
+.rm-here i{width:0;height:0;border-left:1.1cqw solid transparent;border-right:1.1cqw solid transparent;border-bottom:1.5cqw solid #2D63E6}
+.rm-here.is-try{animation:rm-try .55s cubic-bezier(.3,0,.3,1)}
+@keyframes rm-try{40%{margin-left:-4.6cqw}100%{margin-left:-8cqw}}
+.rm-here.is-stuck{color:#C8382D}.rm-here.is-stuck i{border-bottom-color:#C8382D}
+.rm .mg-say{margin-top:1cqw}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1521,36 +1527,18 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 04 Still on the whiteboard: invitation after invitation, and the project never moves -->
+          <!-- 04 Stuck: the project's roadmap. Time moves (the Today line sweeps from January to June and meetings drop onto
+               it), but "You are here" never leaves Plan: it twitches forward after each meeting and slides back -->
           <div class="mac-sc">
-            <div class="mw st" data-k="cal" style="--x:3%;--y:2%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Calendar</span></div>
-              <div class="mw-b mcal">
-                <div class="mc-head"><span class="mc-months"><b class="is-on" data-k="mo0">Jan</b><b data-k="mo1">Feb</b><b data-k="mo2">Mar</b><b data-k="mo3">Apr</b></span><small>This week</small></div>
-                <div class="mc-days"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div>
-                <div class="mc-grid">
-                  <i class="st" data-k="m0" style="--c:1;--r:1;--h:2">Kickoff</i>
-                  <i class="st b" data-k="m1" style="--c:3;--r:2;--h:1">Sync</i>
-                  <i class="st g" data-k="m2" style="--c:5;--r:1;--h:2">Alignment</i>
-                  <i class="st" data-k="m3" style="--c:2;--r:4;--h:1">Review</i>
-                  <i class="st b" data-k="m4" style="--c:4;--r:3;--h:1">Sync</i>
-                  <i class="st g" data-k="m5" style="--c:1;--r:5;--h:2">Workshop</i>
-                  <i class="st" data-k="m6" style="--c:3;--r:4;--h:2">Status</i>
-                  <i class="st b" data-k="m7" style="--c:5;--r:4;--h:1">Sync</i>
-                  <i class="st g" data-k="m8" style="--c:2;--r:6;--h:2">Steering</i>
-                  <i class="st" data-k="m9" style="--c:4;--r:5;--h:2">Alignment</i>
-                  <i class="st b" data-k="m10" style="--c:3;--r:7;--h:1">Recap</i>
-                  <i class="st" data-k="m11" style="--c:5;--r:6;--h:2">Review</i>
-                </div>
-              </div>
-            </div>
-            <div class="minvite st" data-k="inv" style="--z:6cqw"><b class="ni"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></b><div><p><strong>Invitation</strong><time>now</time></p><p data-k="invt">Kickoff · Mon 09:00</p></div><span class="ok">Accepted</span></div>
-            <div class="mw st" data-k="stat" style="--x:3%;--y:57%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal · Status</span></div>
-              <div class="mw-b mst2">
-                <div class="st2"><small>Time spent</small><strong><span data-k="wk">0</span> wks</strong><em data-k="span">January</em></div>
-                <div class="st2"><small>Meetings</small><strong data-k="meet">0</strong><em><span data-k="hrs">0</span> hours</em></div>
-                <div class="st2 st2-zero"><small>Progress</small><strong>0%</strong><span class="st2-bar"><i></i></span><b class="mplus mplus-0" data-k="zero">+0%</b></div>
+            <div class="mw st" data-k="road" style="--x:3%;--y:3%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal · Roadmap</span></div>
+              <div class="mw-b rm">
+                <div class="mt-head"><h4>Customer portal</h4><span class="pill pill-amber" data-k="mon">Month 1</span></div>
+                <div class="rm-time"><div class="rm-months"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div><i class="rm-past" data-k="past"></i><i class="rm-pin st" data-k="p0" style="left:1.0%;top:6.4cqw">Kickoff</i><i class="rm-pin st" data-k="p1" style="left:9.1%;top:10.6cqw">Sync</i><i class="rm-pin st" data-k="p2" style="left:17.2%;top:6.4cqw">Alignment</i><i class="rm-pin st" data-k="p3" style="left:25.3%;top:10.6cqw">Review</i><i class="rm-pin st" data-k="p4" style="left:33.4%;top:6.4cqw">Sync</i><i class="rm-pin st" data-k="p5" style="left:41.5%;top:10.6cqw">Workshop</i><i class="rm-pin st" data-k="p6" style="left:49.6%;top:6.4cqw">Status</i><i class="rm-pin st" data-k="p7" style="left:57.7%;top:10.6cqw">Sync</i><i class="rm-pin st" data-k="p8" style="left:65.8%;top:6.4cqw">Steering</i><i class="rm-pin st" data-k="p9" style="left:73.9%;top:10.6cqw">Alignment</i><i class="rm-pin st" data-k="p10" style="left:82.0%;top:6.4cqw">Recap</i><i class="rm-pin st" data-k="p11" style="left:90.1%;top:10.6cqw">Review</i>
+                  <i class="rm-today" data-k="today"><b>Today</b></i></div>
+                <div class="rm-road"><i class="rm-line"></i><div class="rm-st rm-s0" style="left:10%"><b>1</b><span>Plan</span></div><div class="rm-st rm-s1" style="left:37%"><b>2</b><span>Design</span></div><div class="rm-st rm-s2" style="left:64%"><b>3</b><span>Build</span></div><div class="rm-st rm-s3" style="left:90%"><b><svg viewBox="0 0 16 16"><path d="M4 14.5V2.2M4 2.5h7.6l-1.6 2.6 1.6 2.6H4"/></svg></b><span>Launch</span></div>
+                  <span class="rm-here" data-k="here"><i></i>You are here</span></div>
+                <p class="mg-say" data-k="say" style="--c:#2D63E6"><i></i><span data-k="sayt">Month 1. Planning starts.</span></p>
               </div>
             </div>
           </div>
@@ -2864,32 +2852,26 @@ class Component extends DCLogic {
       at(tt, function () { show('more'); });
       var total = tt + 400;
     } else if (i === 3) {
-      // 04 Invitation after invitation fills the calendar while the months move on (Jan to Apr) and the time spent climbs;
-      // every meeting adds +0%, and progress stays at 0%
-      var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), wk = $('wk'), hrs = $('hrs'), span = $('span');
-      var MON = ['January', 'February', 'March', 'April'];
-      var slots = ['Kickoff · Mon 09:00', 'Sync · Wed 10:30', 'Alignment · Fri 14:00', 'Review · Tue 11:00',
-        'Sync · Thu 09:30', 'Workshop · Mon 13:00', 'Status · Wed 15:00', 'Sync · Fri 09:00',
-        'Steering · Tue 16:00', 'Alignment · Thu 10:00', 'Recap · Wed 17:00', 'Review · Fri 11:30'];
-      var months = { 3: 1, 6: 2, 9: 3 };
-      at(100, function () { show('cal'); show('stat'); });
-      slots.forEach(function (label, m) {
-        var t = 700 + m * 480;
+      // 04 Stuck: the Today line sweeps across the months and a meeting drops onto the timeline at each step, while
+      // "You are here" twitches forward after each meeting and slides back to Plan; six months on, still planning
+      var today = $('today'), past = $('past'), here = $('here'), mon = $('mon'), say = $('say'), sayt = $('sayt');
+      at(100, function () { show('road'); });
+      for (var m = 0; m < 12; m++) (function (m) {
+        var t = 600 + m * 420, f = (m + 1) / 12;
         at(t, function () {
-          invt.textContent = label;
-          if (m === 0) show(inv); else flag(inv, 'is-pop');
-          if (months[m]) {
-            for (var q = 0; q < 4; q++) { var tb = $('mo' + q); tb.classList.toggle('is-on', q === months[m]); tb.classList.toggle('is-past', q < months[m]); }
-            span.textContent = MON[months[m]]; flag($('mo' + months[m]), 'is-flip');
+          today.style.left = (f * 100).toFixed(1) + '%'; past.style.width = (f * 100).toFixed(1) + '%';
+          show('p' + m); flag(here, 'is-try');
+          if (m % 2 === 1) {
+            var mo = (m + 1) / 2; mon.textContent = 'Month ' + mo; flag(mon, 'is-flip');
+            sayt.textContent = 'Month ' + mo + '. ' + ((m + 1) * 4) + ' meetings. Still planning.'; flag(say, 'is-new');
           }
         });
-        at(t + 260, function () {
-          show('m' + m); meet.textContent = String((m + 1) * 4); hrs.textContent = String((m + 1) * 6);
-          wk.textContent = String(Math.round((m + 1) * 16 / 12)); flag(wk, 'is-flip'); flag(zero, 'is-go');
-        });
+      })(m);
+      at(600 + 12 * 420 + 300, function () {
+        mon.classList.add('pill-red'); say.style.setProperty('--c', '#D9483C'); here.classList.add('is-stuck');
+        sayt.textContent = 'Month 6. 48 meetings. Still planning.'; flag(say, 'is-new');
       });
-      at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
-      var total = 700 + slots.length * 480 + 900;
+      var total = 600 + 12 * 420 + 1100;
     }
     total += START;
     fillSteps(0);
