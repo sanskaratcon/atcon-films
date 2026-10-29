@@ -2828,7 +2828,7 @@ class Component extends DCLogic {
     this._offHeld = this._offHeld || [];
     var stepLen = (S.tiles[1] - S.tiles[0]) / 4;
     for (var hs = 0; hs < 4; hs++) {
-      var hu = S.tiles[0] + hs * stepLen + stepLen * 0.85;
+      var hu = S.tiles[0] + hs * stepLen + stepLen * 0.5;
       if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
         this._offHeld[hs] = true;
         this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
@@ -3016,7 +3016,9 @@ class Component extends DCLogic {
     // One canvas, four layers: each capability adds its piece around ATCON and stays, linked back to the centre
     var span4 = (S.tiles[1] - S.tiles[0]) / 4, active = -1;
     for (var oi = 0; oi < 4; oi++) {
-      var s0 = S.tiles[0] + oi * span4, r = map(u, s0, s0 + span4);
+      var s0 = S.tiles[0] + oi * span4, wv0 = this.q('cvW' + oi);
+      // a window floating in the space plays while it comes up, and is done by the time it is in the middle
+      var r = wv0 && wv0.__inSpace ? map(u, s0 - span4 * 0.4, s0 + span4 * 0.6) : map(u, s0, s0 + span4);
       if (u >= s0 - 4) active = oi;
       var wv = this.q('cvW' + oi), lk = this.q('cvL' + oi);
       if (lk) lk.style.strokeDashoffset = (1 - ease(map(r, 0, 0.3))).toFixed(3);
@@ -3105,7 +3107,7 @@ class Component extends DCLogic {
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
     var O = T.sol;
-    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0], O.tiles[0] + 59], [O.tiles[0] + 70, O.tiles[0] + 129], [O.tiles[0] + 140, O.tiles[0] + 199], [O.tiles[0] + 210, O.tiles[0] + 269]);
+    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0] - 35, O.tiles[0] + 35], [O.tiles[0] + 35, O.tiles[0] + 105], [O.tiles[0] + 105, O.tiles[0] + 175], [O.tiles[0] + 175, O.tiles[0] + 245], [O.tiles[0] + 245, O.out - 6]);
     this._ranges = r;
     return r;
   }
@@ -3325,12 +3327,16 @@ class Component extends DCLogic {
     var W = G.w, H = G.h, cx = W / 2, cy = H / 2, k = Math.min(W / 1440, H / 900);
     var mp = this._fx.map, es = this._fx.ease;
     // the floating cards step back (fainter and darker) while the title or a capability is in front
-    var foc = es(mp(u, S.pop[0] + 40, S.pop[0] + 62)) * (1 - es(mp(u, S.tiles[1] - 10, S.tiles[1] + 10))), amb = 1 - 0.4 * foc;
-    var fr = this.ocapPlace(sp, W, H, u, S, endP);
+    var foc = es(mp(u, S.pop[0] + 40, S.pop[0] + 62)) * (1 - es(mp(u, S.tiles[1] - 10, S.tiles[1] + 10))), amb = 1 - 0.15 * foc;
+    var cam = this.ocamAt(u, S), fr = this.ocapPlace(sp, W, H, u, S, endP, cam);
     // the camera glides right and down and a little forward: near cards cross the screen fast, far ones drift slowly
     var PX = 1.15, PY = 0.95, PZ = 0.35;
     sp.__cards.forEach(function (c) {
-      var d = c.Z - PZ * f, x = cx + (c.X - PX * f) / d * W, y = cy + (c.Y - PY * f) / d * H, sc = k * c.s / d;
+      // the copies of the offer's own windows and notes would read as doubles of the capabilities, so only the photos
+      // and the small labels float around them
+      if (c.el.classList.contains('osc-w') || c.el.classList.contains('osc-n')) { c.el.style.opacity = '0'; return; }
+      var d = c.Z - PZ * f, x = cx + (c.X - PX * f) / d * W - cam[0] * W / d, y = cy + (c.Y - PY * f) / d * H - cam[1] * H / d, sc = k * c.s / d;
+      if (cam[1] > 0) { var wm = c.el.offsetHeight * sc / 2 + 40, wp = H + 2 * wm; y = ((y + wm) % wp + wp) % wp - wm; }
       var w = c.el.offsetWidth * sc, h = c.el.offsetHeight * sc;
       var on = x + w / 2 > -40 && x - w / 2 < W + 40 && y + h / 2 > -40 && y - h / 2 < H + 40;
       // and any that come near the title, a capability or its text fade out of their way
@@ -3343,7 +3349,7 @@ class Component extends DCLogic {
       if (!on) return;
       c.el.style.transform = 'translate3d(' + (x - c.el.offsetWidth / 2).toFixed(1) + 'px,' + (y - c.el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
       // depth, kept light: near the lens slightly soft, far away a little dimmer; nearer ones on top
-      var blur = d < 1.0 ? (1.0 - d) * 8 + 0.8 : 0, dim = (d > 2.2 ? Math.max(0.72, 1 - (d - 2.2) * 0.16) : 1) * (1 - 0.55 * foc);
+      var blur = d < 1.0 ? (1.0 - d) * 8 + 0.8 : 0, dim = (d > 2.2 ? Math.max(0.72, 1 - (d - 2.2) * 0.16) : 1) * (1 - 0.25 * foc);
       c.el.style.filter = (blur > 0.3 ? 'blur(' + (blur / sc).toFixed(2) + 'px) ' : '') + (dim < 1 ? 'brightness(' + dim.toFixed(3) + ')' : '');
       c.el.style.zIndex = String(Math.round(100 - d * 10));
     });
@@ -3371,42 +3377,41 @@ class Component extends DCLogic {
     sp.__end = mk('oend');
   }
 
-  ocapPlace(sp, W, H, u, S, endP) {
+  // How far the camera has moved down through the space (in screens, at the depth of the capabilities): it holds while
+  // the title is in front, then moves on steadily with the scroll
+  ocamAt(u, S) {
+    var span = (S.tiles[1] - S.tiles[0]) / 4, t = Math.max(0, (u - (S.tiles[0] - span * 0.5)) / span);
+    return [t * 0.15, t * 1.05];
+  }
+
+  ocapPlace(sp, W, H, u, S, endP, cam) {
     var map = this._fx.map, ease = this._fx.ease, k = Math.min(W / 1440, H / 900), narrow = W < H * 0.9;
     if (narrow) k = Math.min(W / 640, H / 1100);
-    var span = (S.tiles[1] - S.tiles[0]) / 4;
-    // where each sits when the camera rests in front of it (fractions of the screen from its centre): the windows
-    // alternate sides and sit a little higher or lower, the text takes the other side
+    // the title and the four capabilities are already in the space, one under the other, each window on the left or the
+    // right with its text on the other side; the camera moving down brings each one up into the screen and on past the top.
+    // [window x, window y, text x, text y] (fractions of the screen from its centre, when it is in the middle), and how
+    // near it floats (nearer ones are a little larger and pass a little faster)
     var spots = [[0.19, 0.03, -0.23, -0.01], [-0.2, -0.03, 0.2, 0.0], [0.18, -0.04, -0.24, 0.02], [-0.19, 0.04, 0.2, -0.01]];
+    var near = [1.0, 0.94, 1.05, 0.97];
     var rects = [];
     sp.__ocap.forEach(function (g) {
-      var inv, op, ox, oy, r;
-      if (g.kind === 'title') {
-        // the title: comes up out of the dark once the O has opened, rests, then the camera flies through it
-        inv = 0.35 + 0.65 * ease(map(u, S.pop[0] + 46, S.plug[1] - 30));
-        inv += 1.8 * Math.pow(map(u, S.tiles[0] - 12, S.tiles[0] + 12), 2);
-        op = ease(map(u, S.pop[0] + 46, S.pop[0] + 66)) * (1 - ease(map(u, S.tiles[0] - 6, S.tiles[0] + 10)));
-        ox = 0; oy = -0.02;
-      } else {
-        r = (u - (S.tiles[0] + g.i * span)) / span;
-        // far away and small, then in front (a slow drift while it rests), then past the lens
-        inv = r < 0.3 ? 0.22 + 0.78 * ease(map(r, -0.14, 0.3)) : r < 0.86 ? 1 + 0.08 * map(r, 0.3, 0.86) : 1.08 + 2.2 * Math.pow(map(r, 0.86, 1.16), 2);
+      var ox, oy, z, at, op = 1;
+      if (g.kind === 'title') { ox = 0; oy = -0.02; z = 1; at = 0; }
+      else {
         var sp4 = spots[g.i], isCard = g.kind === 'card';
         ox = narrow ? 0 : (isCard ? sp4[0] : sp4[2]); oy = narrow ? (isCard ? 0.14 : -0.22) : (isCard ? sp4[1] : sp4[3]);
-        op = isCard ? ease(map(r, -0.14, -0.02)) * (1 - ease(map(r, 1.0, 1.14)))
-                    : ease(map(r, 0.12, 0.32)) * (1 - ease(map(r, 0.84, 0.97)));
-        if (g.i === 3) op *= 1 - ease(map(endP, 0.3, 0.6));
+        z = near[g.i]; at = g.i + 1;
+        if (g.i === 3) op = 1 - ease(map(endP, 0.3, 0.6));
       }
-      var el = g.el;
-      if (op <= 0.002) { if (el.style.opacity !== '0') el.style.opacity = '0'; return; }
-      var sc = k * inv, x = W / 2 + ox * W * inv, y = H / 2 + oy * H * inv;
+      // where the camera is, relative to where this one sits in the middle of the screen
+      var dc = cam[1] / 1.05 - at, sc = k * z;
+      var x = W / 2 + ox * W - dc * 0.15 * W * z, y = H / 2 + oy * H - dc * 1.05 * H * z;
+      var el = g.el, hw = el.offsetWidth * sc / 2, hh = el.offsetHeight * sc / 2;
+      if (op <= 0.002 || y + hh < -40 || y - hh > H + 40 || x + hw < -40 || x - hw > W + 40) { if (el.style.opacity !== '0') el.style.opacity = '0'; return; }
       el.style.opacity = op.toFixed(3);
-      var hw = el.offsetWidth * sc / 2, hh = el.offsetHeight * sc / 2;
       rects.push([x - hw, y - hh, x + hw, y + hh, op]);
       el.style.transform = 'translate3d(' + (x - el.offsetWidth / 2).toFixed(1) + 'px,' + (y - el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
-      // soft while far, and again as it passes the lens
-      var bl = inv < 0.6 ? (0.6 - inv) * 10 : inv > 1.5 ? (inv - 1.5) * 5 : 0;
-      el.style.filter = bl > 0.2 ? 'blur(' + (bl / sc).toFixed(2) + 'px)' : '';
+      el.style.filter = '';
     });
     // the end: a white card comes in from the bottom right at a moderate size, settles in the middle, and grows until
     // it is the whole screen; the light sections follow from it
