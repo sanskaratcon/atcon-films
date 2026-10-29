@@ -1309,37 +1309,25 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 03: the empty chair. The crowd of everyone involved on one side, the owner's place empty on the other */
-.ch{padding:2.2cqw 2.6cqw 2.6cqw}
-.ch-cols{display:grid;grid-template-columns:1fr 1fr;gap:2cqw}
-.ch-col{display:flex;flex-direction:column;align-items:center;min-height:30cqw;padding:2cqw;border-radius:1.8cqw;background:#F6F8FB;text-align:center}
-.ch-col small{font-size:1.7cqw;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8C95A6}
-.ch-num{display:inline-block;margin:.4cqw 0 1.4cqw;font-size:8cqw;line-height:1;font-weight:500;letter-spacing:-.04em;color:var(--atc-navy)}
-.ch-num.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
-.ch-zero{color:#D9483C}
-.ch-crowd{display:flex;flex-wrap:wrap;justify-content:center;gap:.8cqw;max-width:30cqw}
-.mac .ch-crowd .av-t{width:4.4cqw;height:4.4cqw;font-size:1.4cqw}
-.mac .ch-crowd .ch-p{opacity:0;transform:scale(.3);transition:opacity .3s ease,transform .45s cubic-bezier(.2,.9,.3,1.4)}
-.mac .ch-crowd .ch-p.is-shown{opacity:1;transform:none}
-.ch-seat{position:relative;display:grid;place-items:center;width:11cqw;height:11cqw;border-radius:50%;border:.35cqw dashed #C9D2E1;background:#fff;transition:border-color .3s ease}
-.ch-q{font-size:4.6cqw;font-weight:500;color:#C9D2E1;transition:opacity .2s ease}
-.mac .ch-seat .ch-who{position:absolute;inset:.9cqw;width:auto;height:auto;font-size:2.6cqw;opacity:0;transform:scale(.4);transition:opacity .25s ease,transform .4s cubic-bezier(.2,.9,.3,1.4)}
-.ch-seat.is-try .ch-q{opacity:0}
-.ch-seat.is-try .ch-who{opacity:1;transform:none}
-.ch-seat.is-try{border-color:color-mix(in srgb,var(--c,#2D63E6) 50%,#fff)}
-.ch-x{position:absolute;right:-.6cqw;top:-.6cqw;width:4cqw;height:4cqw;border-radius:50%;background:#D9483C;opacity:0;transform:scale(.3);transition:opacity .2s ease,transform .35s cubic-bezier(.2,.9,.3,1.6)}
-.ch-x::before,.ch-x::after{content:'';position:absolute;left:50%;top:50%;width:2cqw;height:.4cqw;margin:-.2cqw 0 0 -1cqw;border-radius:.2cqw;background:#fff;transform:rotate(45deg)}
-.ch-x::after{transform:rotate(-45deg)}
-.ch-seat.is-no .ch-x{opacity:1;transform:none}
-.mac .ch-say{position:absolute;left:50%;top:calc(100% + 1.5cqw);z-index:2;margin:0 0 0 -15cqw;width:30cqw;text-align:center;box-sizing:border-box;padding:1cqw 1.4cqw;border-radius:1.4cqw;background:var(--atc-navy);color:#fff;
-  font-size:1.8cqw;line-height:1.3;opacity:0;transition:opacity .25s ease}
-.ch-say::after{content:'';position:absolute;left:50%;top:-.8cqw;width:1.6cqw;height:1.6cqw;margin-left:-.8cqw;background:var(--atc-navy);transform:rotate(45deg)}
-.ch-seat.is-try .ch-say{opacity:1}
-.ch-seat.is-empty{border-color:#E8A49D;animation:ch-pulse 1.6s ease-in-out infinite}
-@keyframes ch-pulse{50%{box-shadow:0 0 0 1.4cqw rgba(217,72,60,.12)}}
-.ch-lab{margin-top:1.4cqw;font-size:2cqw;font-weight:600;color:#8C95A6;transition:opacity .2s ease}
-.ch-seat.is-try + .ch-lab{opacity:0}
-.ch .mg-say{margin-top:2.2cqw}
+/* v10 problem 03, the original thread made easier to read: the owner shown with its face, each handoff as one face
+   passing to the next, the blamed team marked, and a summary at the end */
+.ownc{display:inline-flex;align-items:center;gap:1cqw;padding:.5cqw 1.8cqw .5cqw .5cqw;border-radius:5cqw;background:#fff;
+  box-shadow:0 0 0 .3cqw color-mix(in srgb,var(--c) 35%,#fff);transition:box-shadow .3s ease}
+.mac .ownc .av-t{width:4cqw;height:4cqw;font-size:1.3cqw}
+.ownc strong{font-size:2.1cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap}
+.ownc.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+.ownc.is-none{box-shadow:0 0 0 .3cqw #F3B7B1}.ownc.is-none strong{color:#C8382D}
+.mcomments .hl{font-weight:600;color:var(--atc-navy);background:linear-gradient(transparent 58%,#FDE7A6 58%)}
+.mcomments .mpass{display:flex;align-items:center;gap:1cqw;padding-left:6.6cqw;font-size:1.75cqw;color:#8C95A6}
+.mac .mcomments .mpass .av-t{width:3.2cqw;height:3.2cqw;font-size:1.05cqw}
+.mac .mcomments .mpass .mpass-none{background:#fff;color:#A3ABB8;box-shadow:inset 0 0 0 .25cqw #C9D2E1}
+.mcomments .mpass svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:#8C95A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mcomments .mpass span{margin-left:.6cqw}
+.mcomments .mpass span b{font-weight:600;color:#3A4D55}
+.mcomments .msum{display:flex;flex-wrap:wrap;gap:1.2cqw;padding-top:1cqw}
+.msum span{padding:.9cqw 1.8cqw;border-radius:4cqw;background:#F5F6F9;font-size:1.9cqw;color:#3A4D55;white-space:nowrap}
+.msum b{font-weight:600;color:var(--atc-navy)}
+.msum .is-zero{background:#FDE6E4}.msum .is-zero,.msum .is-zero b{color:#C8382D}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1506,22 +1494,30 @@ with a vision.</h2>
             <div class="mtally st" data-k="tally" style="top:83%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: the empty chair. On one side everyone involved, a crowd that
-               keeps growing; on the other the owner's place, empty. Each team steps into it, says "not me" and steps back
-               out, until twelve people are involved and the owner is still no one -->
+          <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on. The owner
+               (with its face) changes hands, each handoff shows as one face passing to the next, the blamed team is marked,
+               the delay grows, and it ends unassigned: 3 teams involved, 3 handoffs, 0 owners -->
           <div class="mac-sc">
             <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
-              <div class="mw-b ch">
-                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber">Delayed 5 weeks</span></div>
-                <div class="ch-cols">
-                  <div class="ch-col"><small>Involved</small><strong class="ch-num" data-k="inv">3</strong><div class="ch-crowd"><b class="av av-t" data-k="p0" style="--c:#2D63E6">MK</b><b class="av av-t" data-k="p1" style="--c:#8EA9F1">PM</b><b class="av av-t" data-k="p2" style="--c:#6DC49D">CS</b><b class="av av-t ch-p" data-k="p3" style="--c:#3FB27E">IT</b><b class="av av-t ch-p" data-k="p4" style="--c:#B3CB5D">OP</b><b class="av av-t ch-p" data-k="p5" style="--c:#5F88EC">SE</b><b class="av av-t ch-p" data-k="p6" style="--c:#5A86EE">BF</b><b class="av av-t ch-p" data-k="p7" style="--c:#82A3F2">QA</b><b class="av av-t ch-p" data-k="p8" style="--c:#3FB27E">UX</b><b class="av av-t ch-p" data-k="p9" style="--c:#9BBA2A">FN</b><b class="av av-t ch-p" data-k="p10" style="--c:#5A86EE">LG</b><b class="av av-t ch-p" data-k="p11" style="--c:#6DC49D">HR</b></div></div>
-                  <div class="ch-col ch-own"><small>Owner</small><strong class="ch-num ch-zero">0</strong>
-                    <div class="ch-seat" data-k="seat"><span class="ch-q">?</span><b class="av av-t ch-who" data-k="who"></b><i class="ch-x" data-k="x"></i>
-                      <p class="ch-say" data-k="say"></p></div>
-                    <span class="ch-lab" data-k="lab">Unassigned</span></div>
+              <div class="mw-b mtask">
+                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber" data-k="late">Delayed 1 week</span></div>
+                <dl>
+                  <dt>Owner</dt><dd><span class="ownc" data-k="owner" style="--c:#2D63E6"><b class="av av-t" data-k="oav" style="--c:#2D63E6">MK</b><strong data-k="oname">Marketing</strong></span></dd>
+                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#5A86EE">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
+                </dl>
+                <div class="mcomments">
+                  <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span>Not our fault. <b class="hl">IT</b> never set up the integration.</span></p></div>
+                  <div class="mpass st" data-k="l1"><b class="av av-t" style="--c:#2D63E6">MK</b><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b class="av av-t" style="--c:#3FB27E">IT</b><span><b>Marketing</b> passed it to <b>IT</b></span></div>
+                  <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span>Not on us. <b class="hl">Bitforge</b> changed the API last week.</span></p></div>
+                  <div class="mpass st" data-k="l2"><b class="av av-t" style="--c:#3FB27E">IT</b><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b class="av av-t" style="--c:#5A86EE">BF</b><span><b>IT</b> passed it to <b>Bitforge Labs</b></span></div>
+                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#5A86EE">BF</b><p><strong>Bitforge Labs</strong><span>We built what the brief said. <b class="hl">Not our problem.</b></span></p></div>
+                  <div class="mpass st" data-k="l3"><b class="av av-t" style="--c:#5A86EE">BF</b><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b class="av av-t mpass-none" style="--c:#A3ABB8">?</b><span><b>Bitforge Labs</b> removed the owner</span></div>
+                  <div class="msum st" data-k="more"><span><b>3</b> teams involved</span><span><b>3</b> handoffs</span><span class="is-zero"><b>0</b> owners</span></div>
                 </div>
-                <p class="mg-say" data-k="cap" style="--c:#001025"><i></i><span data-k="capt">Who owns the portal launch?</span></p>
               </div>
             </div>
           </div>
@@ -2849,32 +2845,28 @@ class Component extends DCLogic {
       at(tEnd + 600, function () { gantt.setAttribute('data-on', 'all'); show('tally'); });
       var total = tEnd + 1300;
     } else if (i === 2) {
-      // 03 The empty chair: each team steps into the owner's place, says "not me" and steps back out, and more people get
-      // involved each time; in the end twelve are involved and the owner is still no one
-      var seat = $('seat'), who = $('who'), sayEl = $('say'), inv = $('inv'), cap = $('cap'), capt = $('capt'), lab = $('lab');
-      var TRY = [['MK', '#2D63E6', 'Marketing', 'Not me. That\u2019s IT\u2019s job.'], ['IT', '#3FB27E', 'IT', 'Not me. Ask Bitforge.'],
-                 ['BF', '#5A86EE', 'Bitforge Labs', 'Not me. Not in our contract.'], ['FN', '#9BBA2A', 'Finance', 'Not me. No budget for it.']];
+      // 03 Every team blames the next and passes the task on: the owner (with its face) changes each time, the handoff
+      // shows as one face passing to the next, the delay grows, and in the end nobody owns it
+      var owner = $('owner'), oav = $('oav'), oname = $('oname'), late = $('late'), tt = 500;
+      var NEXT = [['IT', 'IT', '#3FB27E'], ['Bitforge Labs', 'BF', '#5A86EE'], ['Unassigned', '?', '#A3ABB8']];
       at(100, function () { show('task'); });
-      TRY.forEach(function (p, k) {
-        var t = 700 + k * 1250;
-        at(t, function () {
-          who.textContent = p[0]; who.style.setProperty('--c', p[1]); sayEl.textContent = p[3];
-          seat.classList.remove('is-no'); seat.classList.add('is-try'); lab.textContent = p[2] + '?';
-          capt.textContent = p[2] + ' is asked to own it.'; cap.style.setProperty('--c', p[1]); flag(cap, 'is-new');
+      [1, 2, 3].forEach(function (n) {
+        var from = tt;
+        at(from, function () { show('t' + n); });
+        // each reply lands whole, like a chat message, after its typing indicator
+        at(from + 700, function () { show('t' + n, false); show('k' + n); });
+        var end = from + 700 + 900;
+        at(end + 200, function () {
+          var o = NEXT[n - 1];
+          show('l' + n);
+          oname.textContent = o[0]; oav.textContent = o[1]; oav.style.setProperty('--c', o[2]); owner.style.setProperty('--c', o[2]);
+          flag(owner, 'is-flip'); if (n === 3) owner.classList.add('is-none');
+          late.textContent = 'Delayed ' + (n + 1) + ' weeks'; flag(late, 'is-flip');
         });
-        at(t + 650, function () { seat.classList.add('is-no'); });
-        at(t + 1050, function () {
-          seat.classList.remove('is-try', 'is-no'); lab.textContent = 'Unassigned';
-          var CNT = [5, 8, 10, 12];
-          for (var c = 3; c < CNT[k]; c++) show('p' + c);
-          inv.textContent = String(CNT[k]); flag(inv, 'is-new');
-        });
+        tt = end + 650;
       });
-      at(700 + 4 * 1250, function () {
-        seat.classList.add('is-empty'); lab.textContent = 'Still no one';
-        capt.textContent = 'Everyone is involved. No one owns it.'; cap.style.setProperty('--c', '#D9483C'); flag(cap, 'is-new');
-      });
-      var total = 700 + 4 * 1250 + 900;
+      at(tt, function () { show('more'); });
+      var total = tt + 900;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
