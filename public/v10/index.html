@@ -1124,65 +1124,6 @@ html,body{overflow-anchor:none}
 /* v10: no browser window around the partner section: no frame, dots, tabs or border; the content keeps its place */
 .atc-sol-win::before,.atc-sol-body::before,.atc-sol-body::after{display:none}
 .atc-sol-bar{visibility:hidden}
-
-/* v10 What we offer: the offer page lies flat on a bright studio floor and one camera flies over it, rises above it,
-   dives into its hero and lands it as a card under the title. Every frame comes from ofly(t). */
-.atc-offer>:not(.ofly){display:none !important}
-.ofly{position:absolute;inset:0;overflow:hidden;--k:1;background:radial-gradient(ellipse 75% 70% at 50% 50%,#f9fbfb 0,#f9fbfb 30%,#f2f3f6 100%)}
-.ofly-gl{position:absolute;inset:0;width:100%;height:100%;display:block}
-/* the page the fly-over's textures are captured from (tools/offer-capture/capture.js); never shown on the site */
-.ofly-src{display:none}
-.ofp{position:absolute;left:0;top:0;width:1440px;height:3980px;transform-origin:0 0;transform-style:preserve-3d;background:#fff;border-radius:24px;
-  box-shadow:0 0 0 1px rgba(0,16,37,.04),0 40px 120px -30px rgba(26,33,51,.20),0 12px 40px -18px rgba(26,33,51,.12);font-family:var(--atc-font);color:var(--atc-navy);-webkit-font-smoothing:antialiased}
-.ofp>*{position:absolute;margin:0;box-sizing:border-box}
-.ofp [data-lift]{transform-style:preserve-3d;transform-origin:50% 50%;backface-visibility:hidden}
-.ofp-head{left:40px;right:40px;top:22px;height:44px;display:flex;align-items:center;justify-content:space-between}
-.ofp-logo img{display:block;height:22px}
-.ofp-nav{display:flex;gap:6px;padding:4px;border-radius:999px;background:#F2F4F7;font-size:14px}
-.ofp-nav>*{padding:7px 14px;border-radius:999px;color:#5B6B78}.ofp-nav b{font-weight:400;background:var(--atc-navy);color:#fff}
-.ofp-talk{padding:10px 18px;border-radius:999px;font-size:14px;background:#fff;box-shadow:0 0 0 1px rgba(0,16,37,.12)}
-.ofp-label{left:0;right:0;top:176px;text-align:center;font-size:13px;letter-spacing:.14em;text-transform:uppercase;background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ofp-h1{left:170px;right:170px;top:212px;text-align:center;font-size:72px;line-height:1.04;letter-spacing:-.035em;font-weight:400}
-.ofp-h1 span{color:#8C95A6}
-.ofp-lede{left:380px;right:380px;top:396px;text-align:center;font-size:19px;line-height:1.5;color:var(--atc-slate)}
-.ofp-btn{top:508px;left:520px;height:54px;padding:0 26px;display:flex;align-items:center;border-radius:999px;font-size:16px;color:#fff;background:var(--atc-navy);
-  box-shadow:0 14px 30px -16px rgba(0,16,37,.5)}
-.ofp-btn--sec{left:762px;color:var(--atc-navy);background:#fff;box-shadow:0 0 0 1px rgba(0,16,37,.12),0 14px 30px -18px rgba(0,16,37,.35)}
-.ofp-sec{left:64px;width:1312px;height:620px;border-radius:28px;background:radial-gradient(90% 90% at 0% 0%,#E9F6EF 0,rgba(233,246,239,0) 60%),radial-gradient(90% 90% at 100% 100%,#E5EDFD 0,rgba(229,237,253,0) 60%),#F7F8FA}
-.ofp-txt{width:440px}
-.ofp-txt>span{font-size:14px;letter-spacing:.1em;color:#8C95A6}
-.ofp-txt .ofp-h2{margin:14px 0 16px;font-size:44px;line-height:1.08;letter-spacing:-.03em}
-.ofp-txt p:last-child{font-size:18px;line-height:1.5;color:var(--atc-slate)}
-.ofp-win{width:620px;height:400px}
-.ofp .ofp-win .cvm{background:#fff;border-radius:20px;box-shadow:0 0 0 1px rgba(0,16,37,.06),0 24px 50px -30px rgba(0,16,37,.4)}
-.ofp-chip{width:360px}
-.ofp .ofp-chip .cvb{position:relative;right:auto;top:auto;width:100%;opacity:1 !important;transform:none !important}
-.ofp-edge{position:absolute;left:14px;right:14px;top:100%;height:34px;background:#fff;border-radius:0 0 12px 12px;transform-origin:50% 0;transform:rotateX(-90deg);
-  box-shadow:inset 0 -1px 0 rgba(0,16,37,.08)}
-.ofp-pill{height:40px;padding:0 16px 0 12px;display:flex;align-items:center;gap:8px;border-radius:999px;background:#fff;font-size:14px;color:#1F7A50;
-  box-shadow:0 0 0 1px rgba(0,16,37,.06),0 12px 26px -16px rgba(0,16,37,.4)}
-.ofp-pill i{width:18px;height:18px;border-radius:50%;background:#E6F5EC;box-shadow:inset 0 0 0 5px #3FB27E}
-.ofp [data-in]{opacity:1 !important;transform:none !important}
-.ofp .an-rev{clip-path:none !important}
-.ofp-foot{left:64px;right:64px;top:3560px;height:380px;border-top:1px solid #EEF0F4;padding-top:44px}
-.ofp-claim{margin:0;font-size:36px;line-height:1.15;letter-spacing:-.03em;max-width:15em}
-.ofp-cols{position:absolute;right:0;top:52px;display:flex;gap:90px;font-size:15px;color:#5B6B78}
-.ofp-wm{position:absolute;left:0;right:0;bottom:0;opacity:.08}.ofp-wm img{display:block;width:100%}
-.ofp-fade{left:0;right:0;top:720px;bottom:0;background:#fff;opacity:0}
-.ofly-tiles{position:absolute;inset:0;pointer-events:none}
-.ofly-tile{position:absolute;left:0;top:0;width:100px;height:100px;border-radius:24px;background:#fff;display:grid;place-items:center;transform-origin:50% 50%;opacity:0;
-  box-shadow:0 0 0 1px rgba(0,16,37,.05),0 18px 36px -18px rgba(26,33,51,.35);will-change:transform,filter,opacity}
-.ofly-tile svg{width:56%;height:auto}
-.ofly-end{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column;align-items:center;pointer-events:none}
-.ofly-badge{position:absolute;top:calc(44px * var(--k));transform:translateY(-50%);display:flex;align-items:center;gap:calc(8px * var(--k));
-  padding:calc(8px * var(--k)) calc(16px * var(--k)) calc(8px * var(--k)) calc(12px * var(--k));border-radius:999px;background:#fff;opacity:0;
-  box-shadow:0 0 0 1px rgba(0,16,37,.05),0 10px 24px -14px rgba(26,33,51,.3)}
-.ofly-badge svg{width:calc(24px * var(--k));height:auto}
-.ofly-badge b{font-weight:500;font-size:calc(21px * var(--k));letter-spacing:.04em;color:var(--atc-navy)}
-.ofly-title{position:absolute;top:calc(92px * var(--k));margin:0;display:flex;flex-direction:column;align-items:center;font-family:var(--atc-font);
-  font-weight:500;font-size:calc(74px * var(--k));line-height:1.02;letter-spacing:-.04em;color:var(--atc-navy);white-space:nowrap}
-.ofly-l2{color:#8b8b92}
-.ofly-title span span{display:inline-block;opacity:0;will-change:transform,filter,opacity}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1482,9 +1423,7 @@ with a vision.</h2>
       <!-- The solution: more than a supplier. Business on the left, the technology ecosystem on the right; they don't
            reach each other directly, ATCON sits between them and connects every side -->
       <section class="atc-sol" data-atc="sol" aria-label="More than a supplier, a true technology partner">
-        <div class="atc-float" data-atc="solFloat" aria-hidden="true"><img class="atc-float-word" src="../assets/798217b522466503844e74dfe6407be1.svg" alt=""><svg class="atc-float-a" viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></div><div class="atc-sol-win" data-atc="solWin"><div class="atc-sol-bar" aria-hidden="true"><span class="atc-sol-ind" data-atc="solInd"></span><span class="atc-sol-dots"><i></i><i></i><i></i></span><span class="atc-sol-tab is-on">Business-led technology</span><span class="atc-sol-tab">What we offer</span><span class="atc-sol-sep"></span><span class="atc-sol-tab">End-to-end ownership</span></div><div class="atc-sol-body"><div class="atc-offer" data-atc="offer">
-          <!-- v10 What we offer: a fly-over of the offer page, lying on a studio floor, seen through the O -->
-          <div class="ofly" data-atc="ofly"><canvas class="ofly-gl" aria-hidden="true"></canvas><div class="ofly-src" aria-hidden="true"><div class="ofp" data-atc="ofp"><div class="ofp-head"><span class="ofp-logo"><img src="../assets/798217b522466503844e74dfe6407be1.svg" alt="" draggable="false"></span><span class="ofp-nav"><b>What we do</b><span>Industries</span><span>About us</span><span>Career</span></span><span class="ofp-talk">Let&rsquo;s talk</span></div><p class="ofp-label">What we offer</p><p class="ofp-h1">The right capabilities.<br><span>Connected around your business.</span></p><p class="ofp-lede">Four capabilities from one accountable partner, each one connected to how your business already works.</p><span class="ofp-btn" data-lift="hb0">Start a conversation</span><span class="ofp-btn ofp-btn--sec" data-lift="hb1">See how we work</span><div class="ofp-sec" style="top:760px"></div><div class="ofp-txt" style="left:150px;top:950px"><span>01</span><p class="ofp-h2">Data &amp; Analysis</p><p>Turn your data into decisions. Find patterns, insights and opportunities.</p></div><div class="ofp-win" data-lift="w0" data-src="0" style="left:700px;top:870px"></div><div class="ofp-chip" data-lift="c0a" data-src="0" style="left:560px;top:824px"></div><span class="ofp-pill" data-lift="c0b" style="left:1210px;top:1230px"><i></i>Revenue +18%</span><div class="ofp-sec" style="top:1460px"></div><div class="ofp-txt" style="left:860px;top:1650px"><span>02</span><p class="ofp-h2">Process &amp; Automation</p><p>Remove repetitive work. Make processes scalable.</p></div><div class="ofp-win" data-lift="w1" data-src="1" style="left:120px;top:1570px"></div><div class="ofp-chip" data-lift="c1" data-src="1" style="left:560px;top:1915px"></div><div class="ofp-sec" style="top:2160px"></div><div class="ofp-txt" style="left:150px;top:2350px"><span>03</span><p class="ofp-h2">Global Talent</p><p>Access the right expertise when needed. Aligned with ownership and delivery.</p></div><div class="ofp-win" data-lift="w2" data-src="2" style="left:700px;top:2270px"></div><div class="ofp-chip" data-lift="c2" data-src="2" style="left:880px;top:2615px"><i class="ofp-edge"></i></div><div class="ofp-sec" style="top:2860px"></div><div class="ofp-txt" style="left:860px;top:3050px"><span>04</span><p class="ofp-h2">Digital Solutions</p><p>Turn your idea into a custom solution. Build what you actually need.</p></div><div class="ofp-win" data-lift="w3" data-src="3" style="left:120px;top:2970px"></div><div class="ofp-chip" data-lift="c3" data-src="3" style="left:520px;top:3315px"></div><div class="ofp-foot"><p class="ofp-claim">The partner that finally works for your business.</p><span class="ofp-cols"><span>Explore</span><span>Contact</span><span>Our values</span></span><span class="ofp-wm"><img src="../assets/798217b522466503844e74dfe6407be1.svg" alt="" draggable="false"></span></div><i class="ofp-fade"></i></div></div><div class="ofly-tiles" aria-hidden="true"><span class="ofly-tile"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><span class="ofly-tile"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><span class="ofly-tile"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><span class="ofly-tile"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><span class="ofly-tile"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span></div><div class="ofly-end"><span class="ofly-badge"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg><b>ATCON</b></span><h2 class="ofly-title"><span class="ofly-l1"><span>The</span> <span>right</span> <span>capabilities.</span></span><span class="ofly-l2"><span>Connected</span> <span>around</span> <span>your</span> <span>business.</span></span></h2></div></div><div class="atc-offer-text"><p class="ds-label ds-grad-text">What we offer</p><h2 class="atc-offer-title">The right capabilities. <span class="ds-mute">Connected around your business.</span></h2><ol class="atc-offer-list"><li data-atc="offerL0"><span class="atc-offer-ic" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 20 H20.5"/><path d="M7 17 V13.5 M11 17 V11 M15 17 V12.5"/><path d="M4.5 11 L9.5 6.8 L13 9.3 L18.8 4.6"/><path d="M15.6 4.4 H19 V7.8"/></svg></span><div><strong>Data &amp; Analysis</strong><span>Turn your data into decisions. Find patterns, insights and opportunities.</span></div></li><li data-atc="offerL1"><span class="atc-offer-ic" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><circle cx="11" cy="12" r="2.6"/><path d="M11 6.2 V7.6 M11 16.4 V17.8 M5.2 12 H6.6 M15.4 12 H16.8 M6.9 7.9 L7.9 8.9 M14.1 15.1 L15.1 16.1 M6.9 16.1 L7.9 15.1 M14.1 8.9 L15.1 7.9"/><path d="M19.2 9.4 A8.6 8.6 0 1 0 19.6 13.8"/><path d="M20.4 6.6 L19.4 9.6 L16.4 8.8"/></svg></span><div><strong>Process &amp; Automation</strong><span>Remove repetitive work. Make processes scalable.</span></div></li><li data-atc="offerL2"><span class="atc-offer-ic" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><path d="M3 19.5 C3 15.8 5.4 13.6 8.5 13.6 C9.9 13.6 11.1 14 12.1 14.8"/><circle cx="17" cy="16" r="4.2"/><path d="M12.8 16 H21.2 M17 11.8 C15.5 13.2 15.5 18.8 17 20.2 M17 11.8 C18.5 13.2 18.5 18.8 17 20.2"/></svg></span><div><strong>Global Talent</strong><span>Access the right expertise when needed. Aligned with ownership and delivery.</span></div></li><li data-atc="offerL3"><span class="atc-offer-ic" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M3 8.5 H21"/><circle cx="5.8" cy="6.5" r=".5"/><path d="M10 11.6 L7.8 13.9 L10 16.2 M14 11.6 L16.2 13.9 L14 16.2"/></svg></span><div><strong>Digital Solutions</strong><span>Turn your idea into a custom solution. Build what you actually need.</span></div></li></ol></div><div class="atc-canvas"><div class="cv-bar"><i></i><i></i><i></i><span>Your business</span></div><div class="cv-body"><svg class="cv-links" viewBox="0 0 600 340" preserveAspectRatio="none"><path class="cv-link" data-atc="cvL0" d="M300 140 V86 H262" pathLength="1"></path><path class="cv-link" data-atc="cvL1" d="M300 200 V254 H262" pathLength="1"></path><path class="cv-link" data-atc="cvL2" d="M300 140 V86 H338" pathLength="1"></path><path class="cv-link" data-atc="cvL3" d="M300 200 V254 H338" pathLength="1"></path></svg><span class="cv-hub" data-atc="offerSlot"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div class="cv-w cv-w0" data-atc="cvW0"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Analytics</span></div><div class="cvm-body"><div class="an-top"><div><small>Revenue · this quarter</small><strong>€<span data-count="2.4" data-dec="1" data-from=".18" data-to=".55">0.0</span>M</strong></div><em class="an-up" data-in=".5">+18%</em></div><svg class="an-chart" viewBox="0 0 300 110" preserveAspectRatio="none"><path class="an-grid" d="M0 27 H300 M0 55 H300 M0 83 H300"/><path class="an-area an-rev" d="M0 96 C40 90 60 78 90 80 C120 82 140 60 170 58 C200 56 220 40 250 30 C270 24 285 16 300 10 V110 H0 Z"/><path class="an-line an-rev" d="M0 96 C40 90 60 78 90 80 C120 82 140 60 170 58 C200 56 220 40 250 30 C270 24 285 16 300 10"/></svg></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Insight ready</span><span class="cvb-x">Region C is your fastest-growing market</span></div><em>now</em></div></div><div class="cv-w cv-w1" data-atc="cvW1"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Automations</span></div><div class="cvm-body"><div class="au-rows"><div class="au-row" data-in="0.16"><span class="au-ic" style="--c:#2D63E6"></span><div><b>Invoice approvals</b><small>Runs on every new invoice</small></div><i class="cv-tg" data-on="0.32"></i></div><div class="au-row" data-in="0.24"><span class="au-ic" style="--c:#3FB27E"></span><div><b>Order sync</b><small>Shop → ERP, every minute</small></div><i class="cv-tg" data-on="0.42"></i></div><div class="au-row" data-in="0.32"><span class="au-ic" style="--c:#9BBA2A"></span><div><b>Weekly reports</b><small>Sent Monday 08:00</small></div><i class="cv-tg" data-on="0.52"></i></div></div><p class="au-count" data-in=".55"><strong data-count="1284" data-from=".55" data-to=".85">0</strong> tasks done for you this month</p></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">6 hours saved this week</span><span class="cvb-x">Automations ran 1,284 tasks for your team</span></div><em>now</em></div></div><div class="cv-w cv-w2" data-atc="cvW2"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>FaceTime · Project kickoff</span></div><div class="cvm-body"><div class="ft-grid"><div class="ft-tile" data-in="0.14" style="--c:#2D63E6"><b class="ft-av">AM</b><span>Ana<small>Cloud architect · Lisbon</small></span></div><div class="ft-tile" data-in="0.26" style="--c:#3FB27E"><b class="ft-av">RK</b><span>Rahul<small>Data engineer · Pune</small></span></div><div class="ft-tile" data-in="0.38" style="--c:#9BBA2A"><b class="ft-av">LB</b><span>Lena<small>Product designer · Berlin</small></span></div><div class="ft-tile" data-in="0.50" style="--c:#0C1628"><b class="ft-av">YOU</b><span>You<small>Product owner · Brussels</small></span></div></div></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Your project team is ready</span><span class="cvb-x">3 experts joined from Lisbon, Pune and Berlin</span></div><em>now</em></div></div><div class="cv-w cv-w3" data-atc="cvW3"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Client portal · build</span></div><div class="cvm-body"><div class="pt pt-sk pt-min"><div class="pt-side" data-in=".14"><span class="pt-logo"></span><i class="on"></i><i></i><i></i></div><div class="pt-main"><u class="lg" data-in=".2" style="width:46%"></u><div class="pt-kpis"><div class="pt-k" data-in="0.26"><u style="width:60%"></u></div><div class="pt-k" data-in="0.32"><u style="width:45%"></u></div></div><div class="pt-bars" data-in=".4"><i style="--h:0.38"></i><i style="--h:0.55"></i><i style="--h:0.47"></i><i style="--h:0.7"></i><i style="--h:0.95"></i></div></div></div><div class="bd-prog"><span>Building v1.0</span><div class="bd-bar"><i data-fill data-from=".2" data-to=".66"></i></div><em data-in=".66">Live</em></div></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Client portal is live</span><span class="cvb-x">v1.0 shipped to your customers</span></div><em>now</em></div></div></div></div></div><h2 class="ds-h1 atc-sol-head"><span class="ds-mask"><span class="ds-rise"><span class="ds-mute">More than</span> a supplier.</span></span><span class="ds-mask"><span class="ds-rise"><span class="atc-line-grad">A true technology partner.</span></span></span></h2><svg class="atc-sol-map" viewBox="0 40 1920 790" aria-hidden="true"><defs><linearGradient id="tg-2D63E6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5F88EC"></stop><stop offset="1" stop-color="#2D63E6"></stop></linearGradient><linearGradient id="tg-3FB27E" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6DC49D"></stop><stop offset="1" stop-color="#3FB27E"></stop></linearGradient><linearGradient id="tg-5A86EE" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#82A3F2"></stop><stop offset="1" stop-color="#5A86EE"></stop></linearGradient><linearGradient id="tg-9BBA2A" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B3CB5D"></stop><stop offset="1" stop-color="#9BBA2A"></stop></linearGradient><linearGradient id="tg-hi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"></stop><stop offset=".5" stop-color="#fff" stop-opacity="0"></stop></linearGradient><linearGradient id="sol-kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A2C4A"></stop><stop offset="1" stop-color="#001025"></stop></linearGradient><linearGradient id="sol-amark" x1="84.5321" y1="37.5117" x2="117.043" y2="111.535" gradientUnits="userSpaceOnUse">
+        <div class="atc-float" data-atc="solFloat" aria-hidden="true"><img class="atc-float-word" src="../assets/798217b522466503844e74dfe6407be1.svg" alt=""><svg class="atc-float-a" viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></div><div class="atc-sol-win" data-atc="solWin"><div class="atc-sol-bar" aria-hidden="true"><span class="atc-sol-ind" data-atc="solInd"></span><span class="atc-sol-dots"><i></i><i></i><i></i></span><span class="atc-sol-tab is-on">Business-led technology</span><span class="atc-sol-tab">What we offer</span><span class="atc-sol-sep"></span><span class="atc-sol-tab">End-to-end ownership</span></div><div class="atc-sol-body"><div class="atc-offer" data-atc="offer"><div class="atc-offer-text"><p class="ds-label ds-grad-text">What we offer</p><h2 class="atc-offer-title">The right capabilities. <span class="ds-mute">Connected around your business.</span></h2><ol class="atc-offer-list"><li data-atc="offerL0"><span class="atc-offer-ic" style="--c:#2D63E6"><svg viewBox="0 0 24 24"><path d="M3.5 20 H20.5"/><path d="M7 17 V13.5 M11 17 V11 M15 17 V12.5"/><path d="M4.5 11 L9.5 6.8 L13 9.3 L18.8 4.6"/><path d="M15.6 4.4 H19 V7.8"/></svg></span><div><strong>Data &amp; Analysis</strong><span>Turn your data into decisions. Find patterns, insights and opportunities.</span></div></li><li data-atc="offerL1"><span class="atc-offer-ic" style="--c:#3FB27E"><svg viewBox="0 0 24 24"><circle cx="11" cy="12" r="2.6"/><path d="M11 6.2 V7.6 M11 16.4 V17.8 M5.2 12 H6.6 M15.4 12 H16.8 M6.9 7.9 L7.9 8.9 M14.1 15.1 L15.1 16.1 M6.9 16.1 L7.9 15.1 M14.1 8.9 L15.1 7.9"/><path d="M19.2 9.4 A8.6 8.6 0 1 0 19.6 13.8"/><path d="M20.4 6.6 L19.4 9.6 L16.4 8.8"/></svg></span><div><strong>Process &amp; Automation</strong><span>Remove repetitive work. Make processes scalable.</span></div></li><li data-atc="offerL2"><span class="atc-offer-ic" style="--c:#5A86EE"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="3"/><path d="M3 19.5 C3 15.8 5.4 13.6 8.5 13.6 C9.9 13.6 11.1 14 12.1 14.8"/><circle cx="17" cy="16" r="4.2"/><path d="M12.8 16 H21.2 M17 11.8 C15.5 13.2 15.5 18.8 17 20.2 M17 11.8 C18.5 13.2 18.5 18.8 17 20.2"/></svg></span><div><strong>Global Talent</strong><span>Access the right expertise when needed. Aligned with ownership and delivery.</span></div></li><li data-atc="offerL3"><span class="atc-offer-ic" style="--c:#9BBA2A"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M3 8.5 H21"/><circle cx="5.8" cy="6.5" r=".5"/><path d="M10 11.6 L7.8 13.9 L10 16.2 M14 11.6 L16.2 13.9 L14 16.2"/></svg></span><div><strong>Digital Solutions</strong><span>Turn your idea into a custom solution. Build what you actually need.</span></div></li></ol></div><div class="atc-canvas"><div class="cv-bar"><i></i><i></i><i></i><span>Your business</span></div><div class="cv-body"><svg class="cv-links" viewBox="0 0 600 340" preserveAspectRatio="none"><path class="cv-link" data-atc="cvL0" d="M300 140 V86 H262" pathLength="1"></path><path class="cv-link" data-atc="cvL1" d="M300 200 V254 H262" pathLength="1"></path><path class="cv-link" data-atc="cvL2" d="M300 140 V86 H338" pathLength="1"></path><path class="cv-link" data-atc="cvL3" d="M300 200 V254 H338" pathLength="1"></path></svg><span class="cv-hub" data-atc="offerSlot"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div class="cv-w cv-w0" data-atc="cvW0"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Analytics</span></div><div class="cvm-body"><div class="an-top"><div><small>Revenue · this quarter</small><strong>€<span data-count="2.4" data-dec="1" data-from=".18" data-to=".55">0.0</span>M</strong></div><em class="an-up" data-in=".5">+18%</em></div><svg class="an-chart" viewBox="0 0 300 110" preserveAspectRatio="none"><path class="an-grid" d="M0 27 H300 M0 55 H300 M0 83 H300"/><path class="an-area an-rev" d="M0 96 C40 90 60 78 90 80 C120 82 140 60 170 58 C200 56 220 40 250 30 C270 24 285 16 300 10 V110 H0 Z"/><path class="an-line an-rev" d="M0 96 C40 90 60 78 90 80 C120 82 140 60 170 58 C200 56 220 40 250 30 C270 24 285 16 300 10"/></svg></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Insight ready</span><span class="cvb-x">Region C is your fastest-growing market</span></div><em>now</em></div></div><div class="cv-w cv-w1" data-atc="cvW1"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Automations</span></div><div class="cvm-body"><div class="au-rows"><div class="au-row" data-in="0.16"><span class="au-ic" style="--c:#2D63E6"></span><div><b>Invoice approvals</b><small>Runs on every new invoice</small></div><i class="cv-tg" data-on="0.32"></i></div><div class="au-row" data-in="0.24"><span class="au-ic" style="--c:#3FB27E"></span><div><b>Order sync</b><small>Shop → ERP, every minute</small></div><i class="cv-tg" data-on="0.42"></i></div><div class="au-row" data-in="0.32"><span class="au-ic" style="--c:#9BBA2A"></span><div><b>Weekly reports</b><small>Sent Monday 08:00</small></div><i class="cv-tg" data-on="0.52"></i></div></div><p class="au-count" data-in=".55"><strong data-count="1284" data-from=".55" data-to=".85">0</strong> tasks done for you this month</p></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">6 hours saved this week</span><span class="cvb-x">Automations ran 1,284 tasks for your team</span></div><em>now</em></div></div><div class="cv-w cv-w2" data-atc="cvW2"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>FaceTime · Project kickoff</span></div><div class="cvm-body"><div class="ft-grid"><div class="ft-tile" data-in="0.14" style="--c:#2D63E6"><b class="ft-av">AM</b><span>Ana<small>Cloud architect · Lisbon</small></span></div><div class="ft-tile" data-in="0.26" style="--c:#3FB27E"><b class="ft-av">RK</b><span>Rahul<small>Data engineer · Pune</small></span></div><div class="ft-tile" data-in="0.38" style="--c:#9BBA2A"><b class="ft-av">LB</b><span>Lena<small>Product designer · Berlin</small></span></div><div class="ft-tile" data-in="0.50" style="--c:#0C1628"><b class="ft-av">YOU</b><span>You<small>Product owner · Brussels</small></span></div></div></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Your project team is ready</span><span class="cvb-x">3 experts joined from Lisbon, Pune and Berlin</span></div><em>now</em></div></div><div class="cv-w cv-w3" data-atc="cvW3"><div class="cvm"><div class="cvm-bar"><i></i><i></i><i></i><span>Client portal · build</span></div><div class="cvm-body"><div class="pt pt-sk pt-min"><div class="pt-side" data-in=".14"><span class="pt-logo"></span><i class="on"></i><i></i><i></i></div><div class="pt-main"><u class="lg" data-in=".2" style="width:46%"></u><div class="pt-kpis"><div class="pt-k" data-in="0.26"><u style="width:60%"></u></div><div class="pt-k" data-in="0.32"><u style="width:45%"></u></div></div><div class="pt-bars" data-in=".4"><i style="--h:0.38"></i><i style="--h:0.55"></i><i style="--h:0.47"></i><i style="--h:0.7"></i><i style="--h:0.95"></i></div></div></div><div class="bd-prog"><span>Building v1.0</span><div class="bd-bar"><i data-fill data-from=".2" data-to=".66"></i></div><em data-in=".66">Live</em></div></div></div><div class="cvb" data-in=".5"><span class="cvb-ic"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="url(#sol-amark)"></path></svg></span><div><b>ATCON</b><span class="cvb-t">Client portal is live</span><span class="cvb-x">v1.0 shipped to your customers</span></div><em>now</em></div></div></div></div></div><h2 class="ds-h1 atc-sol-head"><span class="ds-mask"><span class="ds-rise"><span class="ds-mute">More than</span> a supplier.</span></span><span class="ds-mask"><span class="ds-rise"><span class="atc-line-grad">A true technology partner.</span></span></span></h2><svg class="atc-sol-map" viewBox="0 40 1920 790" aria-hidden="true"><defs><linearGradient id="tg-2D63E6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5F88EC"></stop><stop offset="1" stop-color="#2D63E6"></stop></linearGradient><linearGradient id="tg-3FB27E" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6DC49D"></stop><stop offset="1" stop-color="#3FB27E"></stop></linearGradient><linearGradient id="tg-5A86EE" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#82A3F2"></stop><stop offset="1" stop-color="#5A86EE"></stop></linearGradient><linearGradient id="tg-9BBA2A" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B3CB5D"></stop><stop offset="1" stop-color="#9BBA2A"></stop></linearGradient><linearGradient id="tg-hi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"></stop><stop offset=".5" stop-color="#fff" stop-opacity="0"></stop></linearGradient><linearGradient id="sol-kg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A2C4A"></stop><stop offset="1" stop-color="#001025"></stop></linearGradient><linearGradient id="sol-amark" x1="84.5321" y1="37.5117" x2="117.043" y2="111.535" gradientUnits="userSpaceOnUse">
 <stop offset="0.00480769" stop-color="#D3FFE4"></stop>
 <stop offset="0.3" stop-color="#EBFF39"></stop>
 <stop offset="0.7" stop-color="#0065ED"></stop>
@@ -2848,14 +2787,14 @@ class Component extends DCLogic {
     var stepLen = (S.tiles[1] - S.tiles[0]) / 4;
     for (var hs = 0; hs < 4; hs++) {
       var hu = S.tiles[0] + hs * stepLen + stepLen * 0.85;
-      if (false && !this._offHeld[hs] && lastU < hu && u >= hu) {   // v10: no pauses inside the fly-over
+      if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
         this._offHeld[hs] = true;
         this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
       }
     }
     var live = u > S.mark[0] - 6;
     box.style.visibility = live ? 'visible' : 'hidden';
-    if (!live) { var fz = this.q('ofly'); if (fz && fz.__out) fz.style.visibility = 'hidden'; return; }
+    if (!live) return;
     // On the way out the whole section scrolls up as one piece instead of fading
     // No separate exit: when the story ends the whole stage scrolls up with the page and the next section follows
     box.style.transform = '';
@@ -2963,19 +2902,8 @@ class Component extends DCLogic {
         off.style.transform = zr < 1 ? 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + fs.toFixed(4) + ')' : '';
         // the clip is drawn before the transform, so the opening is mapped back into the view's own coordinates
         off.style.clipPath = mid ? 'circle(' + (Rs / fs).toFixed(1) + 'px at ' + ((ox - tx) / fs).toFixed(1) + 'px ' + ((oy - ty) / fs).toFixed(1) + 'px)' : '';
-        // v10: the fly-over lives at page level (see ofly()); it takes the same zoom, clip and fade as the offer's box
-        var fly = this.q('ofly');
-        if (fly && fly.__out) {
-          var bx = fly.__bx || 0, by = fly.__by || 0;
-          fly.style.transformOrigin = '0 0';
-          fly.style.transform = zr < 1 ? 'translate(' + (bx * (1 - fs) + tx).toFixed(1) + 'px,' + (by * (1 - fs) + ty).toFixed(1) + 'px) scale(' + fs.toFixed(4) + ')' : '';
-          fly.style.clipPath = mid ? 'circle(' + (Rs / fs).toFixed(1) + 'px at ' + ((ox - tx) / fs + bx).toFixed(1) + 'px ' + ((oy - ty) / fs + by).toFixed(1) + 'px)' : '';
-          fly.style.opacity = off.style.opacity; fly.style.visibility = off.style.visibility;
-        }
       }
     }
-    // v10: the fly-over of the offer page, at its first frame while the O opens around it, then over the rest of the section
-    this.ofly(14.5 * map(u, S.swap[1] + 2, S.out));
     var tabs = win ? win.querySelectorAll('.atc-sol-tab') : [];
     if (tabs.length > 1) {
       tabs[0].classList.toggle('is-on', sw < 0.5); tabs[1].classList.toggle('is-on', sw >= 0.5);
@@ -3115,7 +3043,7 @@ class Component extends DCLogic {
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
     var O = T.sol;
-    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug);  // v10: the fly-over has no resting points of its own
+    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0], O.tiles[0] + 68], [O.tiles[0] + 80, O.tiles[0] + 148], [O.tiles[0] + 160, O.tiles[0] + 228], [O.tiles[0] + 240, O.tiles[0] + 308]);
     this._ranges = r;
     return r;
   }
@@ -3293,293 +3221,6 @@ class Component extends DCLogic {
     var W = (el.offsetParent && el.offsetParent.clientWidth) || window.innerWidth;
     var shift = W / 2 - (el.offsetLeft + el.offsetWidth / 2);
     el.style.transform = 'translateX(' + (shift * (1 - move)).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * op).toFixed(4) + ')';
-  }
-
-  // v10 What we offer. The offer page lies on a studio floor; one camera glides down it looking up it, rises
-  // overhead, dives into the hero and lands it as a card under the title. Everything comes from t (0 to 14.5 s)
-  // through one speed curve, drawn with WebGL (the page and its pieces are captures in assets/offer-fly); the frame is
-  // laid out for 1440x1152 and scaled to the screen's height.
-  oflyInit(st) {
-    var O = { PH: 3980, ly0: 260, yFoot: 3620, tiles: st.querySelectorAll('.ofly-tile'), ready: false };
-    // the capture source: the windows and their notes are copies of the offer's own live windows, shown finished
-    var pg = st.querySelector('.ofp');
-    if (pg) Array.prototype.forEach.call(pg.querySelectorAll('.ofp-win,.ofp-chip'), function (el) {
-      var src = document.querySelector('[data-atc="cvW' + el.getAttribute('data-src') + '"]');
-      var part = src && src.querySelector(el.classList.contains('ofp-win') ? '.cvm' : '.cvb');
-      if (!part) return;
-      var c = part.cloneNode(true);
-      c.querySelectorAll('[data-count]').forEach(function (n) { var v = parseFloat(n.getAttribute('data-count')), d = parseInt(n.getAttribute('data-dec') || '0', 10); n.textContent = d ? v.toFixed(d) : Math.round(v).toLocaleString('en'); });
-      c.querySelectorAll('.cv-tg').forEach(function (n) { n.classList.add('on'); });
-      c.querySelectorAll('[data-fill]').forEach(function (n) { n.style.width = '100%'; });
-      el.insertBefore(c, el.firstChild);
-    });
-    // the glide down the page: one speed curve, as a share of cruise, integrated into the page position
-    var sm = function (x) { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
-    var v = function (t) { if (t < 0.6) return 0.5 * sm(t / 0.6); if (t < 1.25) return 0.5; if (t < 1.6) return 0.5 + 0.5 * sm((t - 1.25) / 0.35);
-      if (t < 7.3) return 1 + 0.04 * Math.sin((t - 1.6) * 1.1); if (t < 8.3) return 1 - 0.88 * sm(t - 7.3); return 0.12; };
-    var I = [0], dt = 0.005;
-    for (var i = 1; i <= 2000; i++) I.push(I[i - 1] + v((i - 0.5) * dt) * dt);
-    O.I = I; O.dt = dt; O.C = (O.yFoot - O.ly0) / I[Math.round(8 / dt)];
-    O.scale = 1; O.last = '';
-    this.oflyGL(st, O);
-    return O;
-  }
-
-  oflyGL(st, O) {
-    var cv = st.querySelector('.ofly-gl'), gl = cv && cv.getContext('webgl2', { alpha: false, antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: true });
-    if (!gl) return;
-    O.gl = gl; O.cv = cv;
-    var aniso = gl.getExtension('EXT_texture_filter_anisotropic');
-    var sh = function (type, src) { var o = gl.createShader(type); gl.shaderSource(o, '#version 300 es\nprecision highp float;\n' + src); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) console.warn(gl.getShaderInfoLog(o)); return o; };
-    var prog = function (vs, fs) { var p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) console.warn(gl.getProgramInfoLog(p)); var u = {}, n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS); for (var i = 0; i < n; i++) { var nm = gl.getActiveUniform(p, i).name.replace(/\[0\]$/, ''); u[nm] = gl.getUniformLocation(p, nm); } return { p: p, u: u }; };
-    var FULL = 'out vec2 vUv; void main(){ vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2); vUv = p; gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0); }';
-    // depth goes out in a second target, packed in two bytes, solid only where something opaque was drawn
-    var PACK = 'vec4 pk(float d, float a){ float x = clamp(d / 12000.0, 0.0, 1.0) * 255.0; float hi = floor(x); return vec4(hi / 255.0, fract(x), 0.0, 1.0) * a; }';
-    // 1. the floor and the page on it, traced per pixel
-    O.pFloor = prog(FULL,
-      'in vec2 vUv; layout(location=0) out vec4 oC; layout(location=1) out vec4 oD;' +
-      'uniform vec3 uC, uR, uU, uF; uniform vec2 uRes; uniform float uFoc, uPH, uMaskH, uRad, uFade, uHeroH, uHave; uniform sampler2D uPage;' + PACK +
-      'float sdR(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }' +
-      'void main(){ vec2 px = vUv * uRes; vec3 dir = normalize(uF * uFoc + uR * (px.x - uRes.x * 0.5) + uU * (px.y - uRes.y * 0.5));' +
-      ' vec2 q = (vUv - 0.5) * vec2(uRes.x / uRes.y, 1.0); float r = smoothstep(0.25, 0.95, length(q * vec2(0.8, 1.0)));' +
-      ' vec3 floorC = mix(vec3(0.976, 0.984, 0.984), vec3(0.949, 0.953, 0.965), r); float dep = 12000.0;' +
-      ' vec3 col = floorC;' +
-      ' if (dir.z < -1e-4) { float tt = -uC.z / dir.z; vec3 P = uC + dir * tt; dep = dot(P - uC, uF);' +
-      '  vec2 pp = vec2(P.x + 720.0, -P.y);' +
-      '  float sd = sdR(pp - vec2(720.0, uMaskH * 0.5), vec2(720.0, uMaskH * 0.5), uRad);' +
-      '  float shd = 0.16 * exp(-max(sd, 0.0) / 90.0) + 0.06 * exp(-max(sd, 0.0) / 14.0); col = mix(col, vec3(0.102, 0.129, 0.2), shd * step(0.0, sd));' +
-      '  float fw = max(fwidth(sd), 1e-3); float a = clamp(0.5 - sd / fw, 0.0, 1.0);' +
-      '  vec3 pc = uHave > 0.5 ? texture(uPage, vec2(pp.x / 1440.0, pp.y / uPH)).rgb : vec3(1.0);' +
-      '  pc = mix(pc, vec3(1.0), uFade * step(uHeroH, pp.y));' +
-      '  col = mix(col, pc, a); }' +
-      ' oC = vec4(col, 1.0); oD = pk(dep, 1.0); }');
-    // 2. a piece, its shadow, or a plain white edge
-    O.pQuad = prog(
-      'uniform vec3 uP[4]; uniform vec3 uC, uR, uU, uF; uniform vec2 uRes; uniform float uFoc; out vec2 vUv; out float vD;' +
-      'void main(){ int i = gl_VertexID; vec3 w = uP[i]; vUv = vec2(float(i & 1), float((i >> 1) & 1)); vec3 d = w - uC; float z = dot(d, uF); vD = z;' +
-      ' gl_Position = vec4(uFoc * dot(d, uR) / (uRes.x * 0.5), uFoc * dot(d, uU) / (uRes.y * 0.5), 0.0, z); }',
-      'in vec2 vUv; in float vD; layout(location=0) out vec4 oC; layout(location=1) out vec4 oD; uniform sampler2D uTex; uniform int uMode; uniform float uLod, uOp;' + PACK +
-      'void main(){ if (uMode == 2) { oC = vec4(vec3(0.985), 1.0) * uOp; oD = pk(vD, 1.0); return; }' +
-      ' vec4 c = uMode == 1 ? textureLod(uTex, vUv, uLod) : texture(uTex, vUv);' +
-      ' if (uMode == 1) { float a = c.a * 0.26 * uOp; oC = vec4(vec3(0.102, 0.129, 0.2) * a, a); oD = vec4(0.0); return; }' +
-      ' oC = c * uOp; oD = pk(vD, step(0.5, c.a)); }');
-    // 3. depth of field: 40 taps on a golden-angle disc, each read from the mip level that matches the blur
-    O.pDof = prog(FULL,
-      'in vec2 vUv; out vec4 oC; uniform sampler2D uCol, uDep; uniform vec2 uRes; uniform float uFocus, uK;' +
-      'float dp(vec2 uv){ vec4 d = texture(uDep, uv); return (d.r * 255.0 + d.g) / 255.0 * 12000.0; }' +
-      'float coc(float d){ return min(120.0, d < uFocus ? 75.0 * (uFocus - d) / max(d, 1.0) : 6.0 * (d - uFocus) / d) * uK; }' +
-      'void main(){ float d = dp(vUv), R = coc(d); vec3 c0 = textureLod(uCol, vUv, 0.0).rgb; if (R < 0.6) { oC = vec4(c0, 1.0); return; }' +
-      ' float lod = log2(max(1.0, R * 0.28)); vec3 acc = vec3(0.0); float ws = 0.0;' +
-      ' for (int i = 0; i < 40; i++) { float fi = float(i); float rr = R * sqrt((fi + 0.5) / 40.0); float an = fi * 2.39996323;' +
-      '  vec2 uv = vUv + vec2(cos(an), sin(an)) * rr / uRes; float dt = dp(uv); float w = dt < d ? 1.0 : clamp(coc(dt) / max(rr, 0.5), 0.0, 1.0);' +
-      '  acc += textureLod(uCol, uv, lod).rgb * w; ws += w; }' +
-      ' oC = vec4(ws > 0.0 ? acc / ws : c0, 1.0); }');
-    gl.bindVertexArray(gl.createVertexArray());
-    // textures: the page and every piece, with mipmaps and anisotropic filtering so the far text does not shimmer
-    var mk = function (img) { var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img); gl.generateMipmap(gl.TEXTURE_2D);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      if (aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(16, gl.getParameter(aniso.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
-      return t; };
-    var base = '../assets/offer-fly/', self = this;
-    var load = function (src) { return new Promise(function (res) { var im = new Image(); im.decoding = 'async'; im.onload = function () { res(im); }; im.onerror = function () { res(null); }; im.src = base + src; }); };
-    O.pieces = [];
-    fetch(base + 'layers.json').then(function (r) { return r.json(); }).then(function (meta) {
-      O.meta = meta;
-      return Promise.all([load('page.webp')].concat(meta.layers.map(function (l) { return load('piece-' + l.id + '.webp'); }))).then(function (ims) {
-        if (ims[0]) O.page = mk(ims[0]);
-        meta.layers.forEach(function (l, i) { if (ims[i + 1]) O.pieces.push({ id: l.id, x: l.x, y: l.y, w: l.w, h: l.h, pad: meta.pad, tex: mk(ims[i + 1]) }); });
-        O.ready = true; O.last = '';
-      });
-    }).catch(function () {});
-  }
-
-  oflyTargets(O, w, h) {
-    var gl = O.gl;
-    if (O.tw === w && O.th === h) return;
-    O.tw = w; O.th = h;
-    var tex = function (lin) { var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.texStorage2D(gl.TEXTURE_2D, lin ? Math.floor(Math.log2(Math.max(w, h))) + 1 : 1, gl.RGBA8, w, h);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, lin ? gl.LINEAR_MIPMAP_LINEAR : gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, lin ? gl.LINEAR : gl.NEAREST);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); return t; };
-    if (O.fb) { gl.deleteFramebuffer(O.fb); gl.deleteTexture(O.tc); gl.deleteTexture(O.td); }
-    O.tc = tex(true); O.td = tex(false); O.fb = gl.createFramebuffer();
-    gl.bindFramebuffer(gl.FRAMEBUFFER, O.fb);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, O.tc, 0);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, O.td, 0);
-    gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-  }
-
-  ofly(t) {
-    var st = this.q('ofly');
-    if (!st) return;
-    // the film covers the whole screen. It lives at page level, above the stage and the header's white band (only the
-    // logo and menu sit on it): a WebGL canvas partly covered by an opaque layer loses the wrong edge in some compositors. It follows the stage, and the O's zoom
-    // and clip are copied onto it (see sol()), so it still opens inside the O.
-    var stg = this.q('stage');
-    if (!stg) return;
-    if (!st.__out) { st.__home = st.parentElement; document.body.appendChild(st); st.__out = true; st.style.position = 'fixed'; st.style.inset = 'auto'; st.style.zIndex = '3'; }
-    var key = stg.clientWidth + 'x' + stg.clientHeight;
-    if (this._oflKey !== key) {
-      var ox = 0, oy = 0;
-      for (var el = st.__home; el && el !== stg; el = el.offsetParent) { ox += el.offsetLeft; oy += el.offsetTop; if (el.offsetParent === null) break; }
-      this._oflKey = key; st.__bx = ox; st.__by = oy;
-      st.style.width = stg.clientWidth + 'px'; st.style.height = stg.clientHeight + 'px';
-    }
-    var sr = stg.getBoundingClientRect();
-    st.style.left = sr.left.toFixed(1) + 'px'; st.style.top = sr.top.toFixed(1) + 'px';
-    var W = st.clientWidth, Hs = st.clientHeight;
-    if (!W || !Hs) return;
-    var cl = function (x, a, b) { return Math.min(b, Math.max(a, x)); }, mp = function (x, a, b) { return cl((x - a) / (b - a), 0, 1); };
-    var sm = function (x) { x = cl(x, 0, 1); return x * x * (3 - 2 * x); }, io2 = function (x) { x = cl(x, 0, 1); return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; };
-    var O = this._ofl || (this._ofl = this.oflyInit(st)), PH = O.PH, F = 1880, k = Hs / 1152, fs = F * k;
-    t = cl(t, 0, 14.5);
-    st.style.setProperty('--k', k.toFixed(4));
-    var lyAt = function (tt) { var x = cl(tt, 0, 9.99) / O.dt, i = Math.floor(x), f = x - i; return O.ly0 + O.C * (O.I[i] + (O.I[i + 1] - O.I[i]) * f); };
-
-    // ---- the camera: look-at point down the page (ly), distance D, tilt off straight-down (th), all from t
-    var Dfl = 1360 + 340 * (1 - Math.pow(1 - Math.min(1, t / 8.3), 2));
-    var Dover = F * PH / 1068, sOver = 1068 / PH, s1 = 1018 / 1440, ly, D, th = 56 * (1 - sm(mp(t, 8.15, 8.95))) * Math.PI / 180;
-    if (t < 9.25) {
-      // the rise: an even zoom out in log scale (a smooth trapezoid of speed), handing the glide over to a camera
-      // that holds the page's bottom edge 42px above the frame's bottom
-      var tr = function (x) { x = cl(x, 7.75, 9.25) - 7.75; var a = 0.6, b = 0.6, c = 0.3, A = a / 2 + b + c / 2;
-        if (x < a) return (x * x / (2 * a)) / A; if (x < a + b) return (a / 2 + x - a) / A; var y = x - a - b; return (a / 2 + b + y - y * y / (2 * c)) / A; };
-      D = Math.exp(Math.log(Dfl) + (Math.log(Dover) - Math.log(Dfl)) * tr(t));
-      var e = 534 * D / (F * Math.cos(th) + 534 * Math.sin(th)), lyP = PH - e, w = sm(mp(t, 8.3, 8.65));
-      ly = lyAt(t) + (lyP - lyAt(t)) * w;
-    } else if (t < 9.47) {
-      D = Dover / (1 + 0.035 * sm(mp(t, 9.25, 9.47))); ly = PH / 2;
-    } else {
-      // the dive: the scale grows in log scale on a quadratic ease, the page's top edge held at the top, then dropping to 283
-      var s0 = sOver * 1.035, sc = t < 9.97 ? Math.exp(Math.log(s0) + (Math.log(s1) - Math.log(s0)) * io2(mp(t, 9.47, 9.97))) : s1 * (1 + 0.02 * sm(mp(t, 10.6, 14.5)));
-      var yT0 = 576 - PH / 2 * s0, yT = yT0 + (283 - yT0) * sm(mp(t, 9.68, 9.97));
-      D = F / sc; ly = (576 - yT) / sc;
-    }
-    var sn = Math.sin(th), cs = Math.cos(th);
-    var Cw = [0, -ly - D * sn, D * cs], Rw = [1, 0, 0], Uw = [0, cs, sn], Fw = [0, sn, -cs];
-    var depth = function (x, y, z) { return (-y - Cw[1]) * sn - (z - Cw[2]) * cs; };
-    var coc = function (d) { return Math.min(120, d < D ? 75 * (D - d) / Math.max(d, 1) : 6 * (d - D) / d); };
-    var proj = function (x, y, z) { var dY = -y - Cw[1], dZ = z - Cw[2], d = dY * sn - dZ * cs; return { x: W / 2 + fs * (x - 720) / d, y: Hs / 2 - fs * (dY * cs + dZ * sn) / d, d: d }; };
-
-    // ---- the pieces: they lift, stand up about their middle (top edge toward the lens) and cast a shadow under them
-    var settle = 1 - sm(mp(t, 7.9, 9.05));
-    var pose = function (p) {
-      var z = 0, a = 0, dx = 0, dy = 0, near = sm(mp(ly, p.y - 1000, p.y - 320));
-      if (p.id === 'hb0' || p.id === 'hb1') { var q = sm(mp(t, 0.1, 1.35)); z = (p.id === 'hb0' ? 72 : 62) * q; a = 30 * q; }
-      else if (p.id === 'w0') { var q2 = sm(mp(t, 1.35, 2.7)); z = 6 + 110 * q2; a = 46 * q2; }
-      else if (p.id === 'c0a' || p.id === 'c0b') { var q3 = sm(mp(t, 1.35, 2.7)); z = 8 + 192 * q3; a = 54 * q3; dx = (p.id === 'c0a' ? -440 : 440) * q3; dy = -40 * q3; }
-      else if (p.id === 'c2') { var q4 = sm(mp(t, 5.45, 6.3)); z = 22 * near + 90 * q4; a = 30 * q4; }
-      else if (p.id.charAt(0) === 'w') { z = 6 + 24 * near; a = 10 * near; }
-      else { z = 8 + 40 * near; a = 24 * near; }
-      return { z: z * settle, a: a * settle * Math.PI / 180, dx: dx * settle, dy: dy * settle };
-    };
-
-    // ---- draw (only when something changed); the resolution follows how fast the machine draws
-    var gl = O.gl, dpr = Math.min(window.devicePixelRatio || 1, 1.5) * O.scale;
-    var cw = Math.max(2, Math.round(W * dpr)), ch = Math.max(2, Math.round(Hs * dpr)), fk = ch / 1152, fpx = F * fk;
-    var sig = t.toFixed(4) + '|' + cw + 'x' + ch + '|' + (O.ready ? 1 : 0);
-    if (gl && O.last !== sig) {
-      O.last = sig;
-      var t0 = performance.now();
-      if (O.cv.width !== cw || O.cv.height !== ch) { O.cv.width = cw; O.cv.height = ch; }
-      this.oflyTargets(O, cw, ch);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, O.fb); gl.viewport(0, 0, cw, ch); gl.disable(gl.BLEND);
-      var cam = function (pr) { gl.uniform3fv(pr.u.uC, Cw); gl.uniform3fv(pr.u.uR, Rw); gl.uniform3fv(pr.u.uU, Uw); gl.uniform3fv(pr.u.uF, Fw); gl.uniform2f(pr.u.uRes, cw, ch); gl.uniform1f(pr.u.uFoc, fpx); };
-      var pf = O.pFloor; gl.useProgram(pf.p); cam(pf);
-      var close = sm(mp(t, 9.6, 9.97));
-      gl.uniform1f(pf.u.uPH, PH); gl.uniform1f(pf.u.uMaskH, PH + (720 - PH) * close); gl.uniform1f(pf.u.uRad, 24 + (38 / s1 - 24) * sm(mp(t, 9.47, 9.97)));
-      gl.uniform1f(pf.u.uFade, sm(mp(t, 9.47, 9.8))); gl.uniform1f(pf.u.uHeroH, 720); gl.uniform1f(pf.u.uHave, O.page ? 1 : 0);
-      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, O.page || null); gl.uniform1i(pf.u.uPage, 0);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      // shadows first, then the pieces from the lowest up; no depth buffer
-      var pq = O.pQuad; gl.useProgram(pq.p); cam(pq); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1i(pq.u.uTex, 0);
-      var list = O.pieces.map(function (p) { return { p: p, s: pose(p) }; }).sort(function (a, b) { return a.s.z - b.s.z; });
-      var corners = function (p, s, flat, ox2, oy2, zz) {
-        var hw = p.w / 2 + p.pad, hh = p.h / 2 + p.pad, cx = p.x + p.w / 2 - 720 + s.dx + (ox2 || 0), cy = -(p.y + p.h / 2 + s.dy + (oy2 || 0));
-        var ca = Math.cos(s.a), sa = flat ? 0 : Math.sin(s.a), z0 = flat ? zz : s.z, out = [];
-        [[-1, 1], [1, 1], [-1, -1], [1, -1]].forEach(function (c) { out.push(cx + c[0] * hw, cy + c[1] * hh * ca, z0 + c[1] * hh * sa); });
-        return out;
-      };
-      var fade = sm(mp(t, 9.47, 9.8));
-      list.forEach(function (it) {
-        var p = it.p, s = it.s; if (s.z < 0.5) return;
-        gl.uniform1i(pq.u.uMode, 1); gl.uniform1f(pq.u.uOp, Math.min(1, s.z / 6) * (1 - fade)); gl.uniform1f(pq.u.uLod, Math.log2((7 + 0.5 * s.z) * (O.meta.scale || 1.5)));
-        gl.uniform3fv(pq.u.uP, corners(p, s, true, 0.10 * s.z, 4 + 0.36 * s.z, 0.3));
-        gl.bindTexture(gl.TEXTURE_2D, p.tex); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      });
-      list.forEach(function (it) {
-        var p = it.p, s = it.s, op = p.y > 720 ? 1 - fade : 1;
-        if (p.id === 'c2' && s.a > 0.01) {
-          // the testimonial shows its 34px white edge as it stands up
-          var ca = Math.cos(s.a), sa = Math.sin(s.a), cx = p.x + p.w / 2 - 720, by = -(p.y + p.h), bz = s.z - (p.h / 2) * sa, byy = -(p.y + p.h / 2) - (p.h / 2) * ca, hw = p.w / 2 - 14;
-          var ny = sa * 34, nz = -ca * 34;
-          gl.uniform1i(pq.u.uMode, 2); gl.uniform1f(pq.u.uOp, op);
-          gl.uniform3fv(pq.u.uP, [cx - hw, byy, bz, cx + hw, byy, bz, cx - hw, byy + ny, bz + nz, cx + hw, byy + ny, bz + nz]);
-          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        }
-        gl.uniform1i(pq.u.uMode, 0); gl.uniform1f(pq.u.uOp, op);
-        gl.uniform3fv(pq.u.uP, corners(p, s, false));
-        gl.bindTexture(gl.TEXTURE_2D, p.tex); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      });
-      // depth of field onto the screen
-      gl.disable(gl.BLEND); gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, cw, ch);
-      gl.bindTexture(gl.TEXTURE_2D, O.tc); gl.generateMipmap(gl.TEXTURE_2D);
-      var pd = O.pDof; gl.useProgram(pd.p);
-      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, O.tc); gl.uniform1i(pd.u.uCol, 0);
-      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, O.td); gl.uniform1i(pd.u.uDep, 1);
-      gl.uniform2f(pd.u.uRes, cw, ch); gl.uniform1f(pd.u.uFocus, D); gl.uniform1f(pd.u.uK, fk);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      gl.activeTexture(gl.TEXTURE0);
-      // on a slow machine draw fewer pixels, on a fast one go back up
-      var ms = performance.now() - t0;
-      // (it only steps down, after a few slow frames in a row, so the canvas is not resized back and forth)
-      O.slow = ms > 60 ? (O.slow || 0) + 1 : 0;
-      if (O.slow >= 4 && O.scale > 0.6) { O.scale = Math.max(0.6, O.scale - 0.2); O.slow = 0; }
-    }
-
-    // ---- the ATCON tiles: four lift off beside the hero's button, hang off the page's top corners and trail the camera;
-    // a fifth drifts past the lens; at the end two sit on the card's top corners, one at the right edge, two soft giants below
-    var T = O.tiles, place = function (el, x, y, size, op, blur) {
-      var sz = size / 100;
-      el.style.transform = 'translate3d(' + (x - 50).toFixed(1) + 'px,' + (y - 50).toFixed(1) + 'px,0) scale(' + sz.toFixed(4) + ')';
-      el.style.opacity = op.toFixed(3); el.style.filter = blur > 0.5 ? 'blur(' + (blur / sz).toFixed(2) + 'px)' : '';
-    };
-    var lerp = function (a, b, x) { return a + (b - a) * x; };
-    var lifted = sm(mp(t, 0.1, 1.35)), trail = sm(mp(t, 1.2, 2.4)) * 300;
-    var hang = [[90, -70, 230, 180], [300, -150, 130, 140], [1350, -60, 250, 200], [1150, -150, 140, 150]];
-    var dock = [[40, 36, 36, 150], null, [1400, 36, 36, 170], null];
-    for (var ti = 0; ti < 4; ti++) {
-      var hg = hang[ti], x0 = 1000 + ti * 40, y0 = 535;
-      var wx = lerp(x0, hg[0], lifted), wy = lerp(y0, hg[1], lifted) + trail, wz = lerp(4, hg[2], lifted), ws = lerp(32, hg[3], lifted);
-      if (dock[ti]) { var g = sm(mp(t, 8.0, 9.9)); wx = lerp(wx, dock[ti][0], g); wy = lerp(wy, dock[ti][1], g); wz = lerp(wz, dock[ti][2], g); ws = lerp(ws, dock[ti][3], g); }
-      var drift = t > 9.97 ? Math.sin((t - 9.97) * 0.9 + ti) * 3 * k : 0;
-      if (!dock[ti] && t > 9.6) {
-        // the end card's other tiles, in the frame itself
-        var endP = ti === 1 ? [1385, 640, 150, 0] : [100, 1110, 560, 46], q5 = sm(mp(t, 9.75, 10.6));
-        var ex = W / 2 + (endP[0] - 720) * k + (ti === 1 ? (1 - q5) * 220 * k : 0), ey = (endP[1] + (1 - q5) * 240) * k + drift;
-        place(T[ti], ex, ey, endP[2] * k, q5 * (ti === 1 ? 1 : 0.9), endP[3] * k);
-        continue;
-      }
-      var pp = proj(wx, wy, wz), vis = dock[ti] ? 1 : 1 - sm(mp(t, 6.5, 7.0));
-      place(T[ti], pp.x, pp.y + drift, ws * fs / Math.max(pp.d, 1), pp.d > 60 ? vis : 0, coc(pp.d) * k * 0.5);
-    }
-    // the fifth: near the lens at the left edge at 5.4 s, then at the end the soft giant at the bottom right
-    if (T[4]) {
-      if (t < 9.6) { var p5 = proj(60, lyAt(5.4) + 430, 360), o5 = sm(mp(t, 3.4, 3.8)) * (1 - sm(mp(t, 7.0, 7.4)));
-        place(T[4], p5.x, p5.y, 190 * fs / Math.max(p5.d, 1), p5.d > 60 ? o5 : 0, coc(p5.d) * k * 0.5); }
-      else { var q6 = sm(mp(t, 9.85, 10.7)); place(T[4], W / 2 + (1350 - 720) * k, (1090 + (1 - q6) * 260) * k, 480 * k, q6 * 0.9, 40 * k); }
-    }
-
-    // ---- the end card: the badge, then the title one word at a time, each rising 16px out of a 12px blur in 0.34 s
-    var bd = st.querySelector('.ofly-badge');
-    if (bd) bd.style.opacity = sm(mp(t, 10.02, 10.32)).toFixed(3);
-    var wds = st.querySelectorAll('.ofly-l1>span'), wds2 = st.querySelectorAll('.ofly-l2>span');
-    var word = function (el, t0) { var q = cl((t - t0) / 0.34, 0, 1), e2 = 1 - Math.pow(1 - q, 3);
-      el.style.opacity = e2.toFixed(3); el.style.transform = 'translateY(' + ((1 - e2) * 16 * k).toFixed(2) + 'px)'; el.style.filter = q < 1 ? 'blur(' + ((1 - e2) * 12 * k).toFixed(2) + 'px)' : ''; };
-    for (var wi = 0; wi < wds.length; wi++) word(wds[wi], 10.12 + wi * 0.06);
-    for (var wj = 0; wj < wds2.length; wj++) word(wds2[wj], 10.36 + wj * 0.05);
   }
 
   backOut(x) {
