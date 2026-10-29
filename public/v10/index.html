@@ -1148,6 +1148,24 @@ html,body{overflow-anchor:none}
 .atc .atc-offer{box-sizing:border-box;overflow:hidden;background:#fff;padding:calc(var(--rail) + 2.6vh) 4vw 3vh calc(var(--rail) + 4vw) !important;
   box-shadow:0 40px 120px -30px rgba(0,0,0,.65)}
 @media (min-width:1101px){.atc .atc-offer .atc-offer-title{font-size:clamp(30px,3.1vw,54px);line-height:1.08;letter-spacing:-.035em;max-width:20em}}
+
+/* v10 What we offer, told inside the O: the title, then each capability as a live window with its text beside it,
+   floating in the dark space; the camera flies to each in turn, and a white card fills the screen at the end */
+.ospace .ocap{position:absolute;left:0;top:0;z-index:300;transform-origin:50% 50%;will-change:transform,opacity,filter;opacity:0}
+.ospace .ocap-card{width:560px;height:360px}
+.ospace .ocap-card .cv-w{position:absolute;left:0;top:0;width:100%;height:100%;padding:0;opacity:1;visibility:visible;background:transparent;box-shadow:none !important;overflow:visible;display:block}
+.ospace .ocap-card .cvm{background:#fff;border-radius:22px;box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
+.ospace .ocap-card .cvb{box-shadow:0 24px 50px -20px rgba(0,0,0,.7)}
+.ospace .ocap-txt{width:380px;color:#fff;text-align:left}
+.ospace .ocap-txt .atc-offer-ic{width:52px;height:52px;border-radius:14px;margin-bottom:26px;filter:none !important}
+.ospace .ocap-txt .atc-offer-ic svg{width:26px;height:26px}
+.ospace .ocap-txt strong{display:block;font-size:40px;line-height:1.1;font-weight:500;letter-spacing:-.02em;color:#fff}
+.ospace .ocap-txt span.ocap-line{display:block;margin-top:16px;font-size:19px;line-height:1.5;color:rgba(255,255,255,.62)}
+.ospace .ocap-title{width:980px;text-align:center}
+.ospace .ocap-title .ds-label{margin:0 0 22px}
+.ospace .ocap-title h2{margin:0;font-size:62px;line-height:1.08;font-weight:500;letter-spacing:-.03em;color:#fff}
+.ospace .ocap-title h2 span{color:rgba(255,255,255,.5)}
+.ospace .oend{position:absolute;left:0;top:0;width:100%;height:100%;z-index:400;background:#fff;visibility:hidden;transform-origin:50% 50%;will-change:transform}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1654,7 +1672,7 @@ class Component extends DCLogic {
         out: 1578
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { mark: [1584, 1624], word: [1630, 1704], title: 1708, hub: [1754, 1799], sides: [1794, 1844], links: [1839, 1949], pop: [1995, 2025], swap: [2028, 2070], plug: [2074, 2116], glow: [2110, 2120], tiles: [2120, 2440], out: 2452 }
+      sol: { mark: [1584, 1624], word: [1630, 1704], title: 1708, hub: [1754, 1799], sides: [1794, 1844], links: [1839, 1949], pop: [1995, 2025], swap: [2028, 2070], plug: [2074, 2116], glow: [2110, 2120], tiles: [2120, 2400], out: 2452 }
     };
   }
 
@@ -2929,31 +2947,18 @@ class Component extends DCLogic {
           [off, sp].forEach(function (el) { if (!el) return; el.style.inset = 'auto'; el.style.left = -gx + 'px'; el.style.top = -gy + 'px'; el.style.width = stg.clientWidth + 'px'; el.style.height = stg.clientHeight + 'px'; });
         }
         var G = this._osp || { x: 0, y: 0, w: bR.width, h: bR.height }, Rs = oc.r * s * 1.46, Ox = ox + G.x, Oy = oy + G.y;
-        var fly = ease(map(u, S.pop[0] + 10, S.plug[1])), cardP = map(u, S.pop[0] + 44, S.plug[1]);
+        var fly = map(u, S.pop[0] + 10, S.tiles[1] + 40), endP = map(u, S.tiles[1] - 2, S.out - 6);
         if (sp) {
           var spOn = zr > 0.12;
           sp.style.visibility = spOn ? 'visible' : 'hidden';
           sp.style.clipPath = mid ? 'circle(' + Rs.toFixed(1) + 'px at ' + Ox.toFixed(1) + 'px ' + Oy.toFixed(1) + 'px)' : '';
-          if (spOn) this.ospace(sp, fly, G);
+          if (spOn) this.ospace(sp, fly, G, u, S, endP);
         }
-        // the card: far and small in the middle, then nearer until it is the whole screen
-        // like the reference: it slides in at a moderate size among the others, settles in the middle, then grows to fill the screen
-        var csc = Math.exp(Math.log(0.42) * (1 - ease(map(cardP, 0.5, 1)))), cxs = G.w / 2, cys = G.h / 2;
-        // like the camera gliding right and down: the card comes in from the bottom right and settles in the middle
-        var cin = 1 - ease(map(cardP, 0, 0.55)), cdx = cin * G.w * 0.62, cdy = cin * G.h * 0.62;
-        off.style.visibility = cardP > 0.001 ? 'visible' : 'hidden';
-        off.style.opacity = ease(map(cardP, 0, 0.1)).toFixed(3);
-        off.style.transformOrigin = '50% 50%';
-        off.style.transform = cardP < 1 ? 'translate(' + cdx.toFixed(1) + 'px,' + cdy.toFixed(1) + 'px) scale(' + csc.toFixed(4) + ')' : '';
-        off.style.borderRadius = cardP < 1 ? (28 * (1 - cardP) / csc).toFixed(1) + 'px' : '';
-        // the clip is drawn before the card's scale, so the opening is mapped back into the card's own coordinates
-        off.style.clipPath = mid ? 'circle(' + (Rs / csc).toFixed(1) + 'px at ' + (cxs + (Ox - cxs - cdx) / csc).toFixed(1) + 'px ' + (cys + (Oy - cys - cdy) / csc).toFixed(1) + 'px)' : '';
-        // the white title comes up on the card as it arrives
-        var tEls = off.querySelectorAll('.atc-offer-text .ds-label,.atc-offer-title');
-        for (var tq = 0; tq < tEls.length; tq++) { var tk = ease(map(cardP, 0.6 + tq * 0.08, 0.92 + tq * 0.05)); tEls[tq].style.opacity = tk.toFixed(3); tEls[tq].style.transform = tk < 1 ? 'translateY(' + ((1 - tk) * 18).toFixed(1) + 'px)' : ''; tEls[tq].style.filter = tk < 1 ? 'blur(' + ((1 - tk) * 8).toFixed(1) + 'px)' : ''; }
+        // the offer is told in the space now; its own card stays hidden
+        off.style.visibility = 'hidden';
         // the page is dark while the black space is on screen (the menu goes light, the white header band goes away),
-        // and light again once the white card fills the screen
-        this._oDark = ease(map(zr, 0.55, 0.9)) * (1 - ease(map(cardP, 0.86, 1)));
+        // and light again once the white screen has filled it at the end
+        this._oDark = ease(map(zr, 0.55, 0.9)) * (1 - ease(map(endP, 0.86, 1)));
       }
     }
     // the dark look ends as the section scrolls off and the light sections come up
@@ -3018,9 +3023,11 @@ class Component extends DCLogic {
       if (!wv) continue;
       var wk = ease(map(r, 0.08, 0.3));
       var wout = oi < 3 ? ease(map(u, s0 + span4 - 8, s0 + span4 + 2)) : 0;
-      wv.style.opacity = (wk * (1 - wout)).toFixed(3);
-      wv.style.visibility = wk * (1 - wout) > 0.01 ? 'visible' : 'hidden';
-      wv.style.transform = 'translateY(' + ((1 - wk) * 10).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * wk).toFixed(4) + ')';
+      if (!wv.__inSpace) {
+        wv.style.opacity = (wk * (1 - wout)).toFixed(3);
+        wv.style.visibility = wk * (1 - wout) > 0.01 ? 'visible' : 'hidden';
+        wv.style.transform = 'translateY(' + ((1 - wk) * 10).toFixed(1) + 'px) scale(' + (0.96 + 0.04 * wk).toFixed(4) + ')';
+      }
       var els = wv.querySelectorAll('[data-in]');
       for (var ei = 0; ei < els.length; ei++) {
         var el = els[ei], a0 = parseFloat(el.getAttribute('data-in')), k2 = ease(map(r, a0 + 0.1, a0 + 0.24));
@@ -3098,7 +3105,7 @@ class Component extends DCLogic {
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
     var O = T.sol;
-    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0], O.tiles[0] + 68], [O.tiles[0] + 80, O.tiles[0] + 148], [O.tiles[0] + 160, O.tiles[0] + 228], [O.tiles[0] + 240, O.tiles[0] + 308]);
+    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0], O.tiles[0] + 59], [O.tiles[0] + 70, O.tiles[0] + 129], [O.tiles[0] + 140, O.tiles[0] + 199], [O.tiles[0] + 210, O.tiles[0] + 269]);
     this._ranges = r;
     return r;
   }
@@ -3280,7 +3287,8 @@ class Component extends DCLogic {
 
   // v10: the dark space inside the O. Copies of the offer's windows and notes float at different depths; f (0 to 1)
   // glides the camera right and down across them, so they slide up and to the left past the edges.
-  ospace(sp, f, G) {
+  ospace(sp, f, G, u, S, endP) {
+    if (!sp.__ocap) this.ocapBuild(sp);
     if (!sp.__cards) {
       // a 3D space: a few cards at real depths, from near the lens to far away, scattered at random (they start from a random
       // scatter over the whole space, and the search that spaces them also keeps them from lining up in rows, columns or
@@ -3315,20 +3323,101 @@ class Component extends DCLogic {
       });
     }
     var W = G.w, H = G.h, cx = W / 2, cy = H / 2, k = Math.min(W / 1440, H / 900);
+    var mp = this._fx.map, es = this._fx.ease;
+    // the floating cards step back (fainter and darker) while the title or a capability is in front
+    var foc = es(mp(u, S.pop[0] + 40, S.pop[0] + 62)) * (1 - es(mp(u, S.tiles[1] - 10, S.tiles[1] + 10))), amb = 1 - 0.4 * foc;
+    var fr = this.ocapPlace(sp, W, H, u, S, endP);
     // the camera glides right and down and a little forward: near cards cross the screen fast, far ones drift slowly
     var PX = 1.15, PY = 0.95, PZ = 0.35;
     sp.__cards.forEach(function (c) {
       var d = c.Z - PZ * f, x = cx + (c.X - PX * f) / d * W, y = cy + (c.Y - PY * f) / d * H, sc = k * c.s / d;
       var w = c.el.offsetWidth * sc, h = c.el.offsetHeight * sc;
       var on = x + w / 2 > -40 && x - w / 2 < W + 40 && y + h / 2 > -40 && y - h / 2 < H + 40;
-      c.el.style.opacity = on ? '1' : '0';
+      // and any that come near the title, a capability or its text fade out of their way
+      var clr = 1;
+      for (var fi = 0; fi < fr.length; fi++) {
+        var q = fr[fi], gx = Math.max(q[0] - (x + w / 2), (x - w / 2) - q[2], 0), gy = Math.max(q[1] - (y + h / 2), (y - h / 2) - q[3], 0);
+        clr = Math.min(clr, 1 - q[4] * (1 - Math.min(1, Math.hypot(gx, gy) / 90)));
+      }
+      c.el.style.opacity = on ? (amb * clr).toFixed(3) : '0';
       if (!on) return;
       c.el.style.transform = 'translate3d(' + (x - c.el.offsetWidth / 2).toFixed(1) + 'px,' + (y - c.el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
       // depth, kept light: near the lens slightly soft, far away a little dimmer; nearer ones on top
-      var blur = d < 1.0 ? (1.0 - d) * 8 + 0.8 : 0, dim = d > 2.2 ? Math.max(0.72, 1 - (d - 2.2) * 0.16) : 1;
+      var blur = d < 1.0 ? (1.0 - d) * 8 + 0.8 : 0, dim = (d > 2.2 ? Math.max(0.72, 1 - (d - 2.2) * 0.16) : 1) * (1 - 0.55 * foc);
       c.el.style.filter = (blur > 0.3 ? 'blur(' + (blur / sc).toFixed(2) + 'px) ' : '') + (dim < 1 ? 'brightness(' + dim.toFixed(3) + ')' : '');
       c.el.style.zIndex = String(Math.round(100 - d * 10));
     });
+  }
+
+  // v10: What we offer, told inside the O. The title and the four capabilities hang in the dark space, each at its own
+  // spot; the camera flies to each in turn (it comes from far away, rests in front with its window playing, then passes
+  // the lens), and the text sits beside the window, on the left or the right. A white card fills the screen at the end.
+  ocapBuild(sp) {
+    var groups = [];
+    var mk = function (cls, html) { var e = document.createElement('div'); e.className = cls; if (html) e.innerHTML = html; sp.appendChild(e); return e; };
+    var off = this.q('offer'), lab = off && off.querySelector('.atc-offer-text .ds-label'), ttl = off && off.querySelector('.atc-offer-title');
+    var t = mk('ocap ocap-title', (lab ? lab.outerHTML : '') + '<h2>' + (ttl ? ttl.innerHTML : '') + '</h2>');
+    groups.push({ el: t, kind: 'title' });
+    for (var i = 0; i < 4; i++) {
+      var li = this.q('offerL' + i), wv = this.q('cvW' + i);
+      if (!li || !wv) continue;
+      var card = mk('ocap ocap-card'); card.appendChild(wv); wv.__inSpace = true;
+      wv.style.opacity = ''; wv.style.visibility = ''; wv.style.transform = '';
+      var ic = li.querySelector('.atc-offer-ic'), st = li.querySelector('strong'), ln = li.querySelector('div > span');
+      var tx = mk('ocap ocap-txt', (ic ? ic.outerHTML.replace(/ style="[^"]*filter[^"]*"/, function (m) { return m.replace(/filter:[^;"]*;?/, ''); }) : '') + '<strong>' + (st ? st.innerHTML : '') + '</strong><span class="ocap-line">' + (ln ? ln.innerHTML : '') + '</span>');
+      groups.push({ el: card, kind: 'card', i: i }, { el: tx, kind: 'txt', i: i });
+    }
+    sp.__ocap = groups;
+    sp.__end = mk('oend');
+  }
+
+  ocapPlace(sp, W, H, u, S, endP) {
+    var map = this._fx.map, ease = this._fx.ease, k = Math.min(W / 1440, H / 900), narrow = W < H * 0.9;
+    if (narrow) k = Math.min(W / 640, H / 1100);
+    var span = (S.tiles[1] - S.tiles[0]) / 4;
+    // where each sits when the camera rests in front of it (fractions of the screen from its centre): the windows
+    // alternate sides and sit a little higher or lower, the text takes the other side
+    var spots = [[0.19, 0.03, -0.23, -0.01], [-0.2, -0.03, 0.2, 0.0], [0.18, -0.04, -0.24, 0.02], [-0.19, 0.04, 0.2, -0.01]];
+    var rects = [];
+    sp.__ocap.forEach(function (g) {
+      var inv, op, ox, oy, r;
+      if (g.kind === 'title') {
+        // the title: comes up out of the dark once the O has opened, rests, then the camera flies through it
+        inv = 0.35 + 0.65 * ease(map(u, S.pop[0] + 46, S.plug[1] - 30));
+        inv += 1.8 * Math.pow(map(u, S.tiles[0] - 12, S.tiles[0] + 12), 2);
+        op = ease(map(u, S.pop[0] + 46, S.pop[0] + 66)) * (1 - ease(map(u, S.tiles[0] - 6, S.tiles[0] + 10)));
+        ox = 0; oy = -0.02;
+      } else {
+        r = (u - (S.tiles[0] + g.i * span)) / span;
+        // far away and small, then in front (a slow drift while it rests), then past the lens
+        inv = r < 0.3 ? 0.22 + 0.78 * ease(map(r, -0.14, 0.3)) : r < 0.86 ? 1 + 0.08 * map(r, 0.3, 0.86) : 1.08 + 2.2 * Math.pow(map(r, 0.86, 1.16), 2);
+        var sp4 = spots[g.i], isCard = g.kind === 'card';
+        ox = narrow ? 0 : (isCard ? sp4[0] : sp4[2]); oy = narrow ? (isCard ? 0.14 : -0.22) : (isCard ? sp4[1] : sp4[3]);
+        op = isCard ? ease(map(r, -0.14, -0.02)) * (1 - ease(map(r, 1.0, 1.14)))
+                    : ease(map(r, 0.12, 0.32)) * (1 - ease(map(r, 0.84, 0.97)));
+        if (g.i === 3) op *= 1 - ease(map(endP, 0.3, 0.6));
+      }
+      var el = g.el;
+      if (op <= 0.002) { if (el.style.opacity !== '0') el.style.opacity = '0'; return; }
+      var sc = k * inv, x = W / 2 + ox * W * inv, y = H / 2 + oy * H * inv;
+      el.style.opacity = op.toFixed(3);
+      var hw = el.offsetWidth * sc / 2, hh = el.offsetHeight * sc / 2;
+      rects.push([x - hw, y - hh, x + hw, y + hh, op]);
+      el.style.transform = 'translate3d(' + (x - el.offsetWidth / 2).toFixed(1) + 'px,' + (y - el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
+      // soft while far, and again as it passes the lens
+      var bl = inv < 0.6 ? (0.6 - inv) * 10 : inv > 1.5 ? (inv - 1.5) * 5 : 0;
+      el.style.filter = bl > 0.2 ? 'blur(' + (bl / sc).toFixed(2) + 'px)' : '';
+    });
+    // the end: a white card comes in from the bottom right at a moderate size, settles in the middle, and grows until
+    // it is the whole screen; the light sections follow from it
+    var e = sp.__end;
+    if (endP <= 0) { e.style.visibility = 'hidden'; return rects; }
+    var csc = Math.exp(Math.log(0.42) * (1 - ease(map(endP, 0.5, 1)))), cin = 1 - ease(map(endP, 0, 0.55));
+    e.style.visibility = 'visible';
+    e.style.opacity = ease(map(endP, 0, 0.08)).toFixed(3);
+    e.style.transform = endP < 1 ? 'translate(' + (cin * W * 0.62).toFixed(1) + 'px,' + (cin * H * 0.62).toFixed(1) + 'px) scale(' + csc.toFixed(4) + ')' : '';
+    e.style.borderRadius = endP < 1 ? (28 * (1 - endP) / csc).toFixed(1) + 'px' : '';
+    return rects;
   }
 
   backOut(x) {
