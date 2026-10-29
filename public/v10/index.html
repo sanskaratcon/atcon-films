@@ -1309,31 +1309,31 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 03: one task in its window, passed from team to team until no one owns it */
-.hp{padding:2.2cqw 2.6cqw 2.6cqw}
-.hp small{display:block;font-size:1.6cqw;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8C95A6}
-.hp-own{display:flex;align-items:center;justify-content:space-between;padding:1.6cqw 2cqw;border-radius:1.6cqw;background:#F6F8FB}
-.hp-chip{display:flex;align-items:center;gap:1.2cqw;padding:.6cqw 1.8cqw .6cqw .6cqw;border-radius:5cqw;background:#fff;box-shadow:0 0 0 .3cqw color-mix(in srgb,var(--c) 35%,#fff)}
-.mac .hp-chip .av-t{width:4.6cqw;height:4.6cqw;font-size:1.5cqw}
-.hp-chip strong{font-size:2.2cqw;font-weight:600;white-space:nowrap}
-.hp-chip.is-none{box-shadow:0 0 0 .3cqw #F3B7B1}.hp-chip.is-none strong{color:#C8382D}
-.hp-chip.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
-.hp-row{margin-top:2.2cqw}
-.hp-chain{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:5cqw}
-.hp-line{position:absolute;left:12.5%;right:12.5%;top:3.5cqw;border-top:.3cqw dashed #C9D2E1}
-.hp-n{position:relative;display:flex;flex-direction:column;align-items:center;gap:1cqw;transition:opacity .4s ease}
-.mac .hp-n .av-t{width:7cqw;height:7cqw;font-size:2.1cqw;box-shadow:0 0 0 .7cqw #fff}
-.hp-n span{font-size:1.8cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap}
-.hp[data-on="0"] .hp-n:not(.hp-n0),.hp[data-on="1"] .hp-n:not(.hp-n1),.hp[data-on="2"] .hp-n:not(.hp-n2),.hp[data-on="3"] .hp-n:not(.hp-n3),.hp[data-on="none"] .hp-n{opacity:.35}
-.hp[data-on="0"] .hp-n0 .av-t,.hp[data-on="1"] .hp-n1 .av-t,.hp[data-on="2"] .hp-n2 .av-t,.hp[data-on="3"] .hp-n3 .av-t{box-shadow:0 0 0 .7cqw #fff,0 0 0 1.3cqw color-mix(in srgb,var(--c) 32%,#fff)}
-.hp-tok{position:absolute;top:-4.4cqw;width:10cqw;margin-left:-5cqw;box-sizing:border-box;padding:.6cqw 0;border-radius:1cqw;background:var(--atc-navy);color:#fff;text-align:center;
-  font-size:1.6cqw;font-weight:600;box-shadow:0 1cqw 2cqw -1cqw rgba(0,16,37,.5);transition:left .9s cubic-bezier(.45,0,.2,1),background .4s ease}
-.hp[data-on="none"] .hp-tok{background:#D9483C}
-.hp-tok.is-hop{animation:ht-hop .9s cubic-bezier(.45,0,.2,1)}
-@keyframes ht-hop{45%{transform:scale(.9) rotate(-4deg)}100%{transform:none}}
-.hp .mg-say{margin-top:3cqw}
-.mg-say strong{font-weight:600;color:var(--c)}
-.pill.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+/* v10 problem 03: a reply-all chain; the subject grows, the CC list fills, and no one owns it */
+.em{padding:2.4cqw 2.6cqw 2.6cqw}
+.em-subj{margin:0;font-size:2.8cqw;font-weight:500;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.em-pre{color:#C8382D;font-weight:600;margin-right:.6cqw}.em-pre:empty{margin:0}
+.em-pre.is-new,.em-n.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4);display:inline-block}
+.em-to{display:flex;align-items:center;gap:1.4cqw;margin-top:1.6cqw;padding:1.2cqw 1.6cqw;border-radius:1.4cqw;background:#F6F8FB}
+.em-to small{font-size:1.6cqw;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8C95A6;white-space:nowrap}
+.em-avs{flex:1;display:flex;align-items:center}
+.mac .em-avs .av-t{width:4cqw;height:4cqw;margin-right:-1cqw;font-size:1.3cqw;box-shadow:0 0 0 .4cqw #F6F8FB}
+.mac .em-avs .em-cc{width:0;margin-right:0;opacity:0;transform:scale(.3);transition:width .35s ease,margin .35s ease,opacity .3s ease,transform .4s cubic-bezier(.2,.9,.3,1.4)}
+.mac .em-avs .em-cc.is-shown{width:4cqw;margin-right:-1cqw;opacity:1;transform:none}
+.em-avs em{margin-left:1.8cqw;font-style:normal;font-size:1.7cqw;font-weight:600;color:#5B6B78}
+.em-n{font-size:1.9cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap}
+.em-list{margin-top:1.2cqw}
+.em-m{display:grid;grid-template-columns:4.6cqw minmax(0,1fr);gap:1.4cqw;align-items:start;padding:1.3cqw .4cqw;border-bottom:1px solid #EEF1F6}
+.mac .em-m .av-t{width:4.6cqw;height:4.6cqw;font-size:1.5cqw}
+.em-m p{display:flex;align-items:baseline;gap:1cqw;margin:0;font-size:1.9cqw}
+.em-m strong{font-weight:600}
+.em-m em{font-style:normal;color:#8C95A6}
+.em-m time{margin-left:auto;font-size:1.6cqw;color:#A3ABB8}
+.em-m span{display:block;margin-top:.3cqw;font-size:2cqw;color:#3A4D55}
+.em-ask{border-radius:1.4cqw;border-bottom:0;background:#EEF3FD}
+.em-ask span{font-size:2.3cqw;font-weight:600;color:var(--atc-navy)}
+.em-none{display:flex;align-items:center;gap:1cqw;margin:1.4cqw 0 0 6cqw;font-size:1.8cqw;font-style:italic;color:#A3ABB8}
+.em-none svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1500,22 +1500,20 @@ with a vision.</h2>
             <div class="mtally st" data-k="tally" style="top:83%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: one task in its window; it is passed from team to team (the
-               team holding it lights up and its excuse shows underneath), the owner changes and the delay grows, until the
-               last team drops it and no one owns it -->
+          <!-- 03 Everyone is involved, no one is accountable: a reply-all chain. Every reply forwards the problem to the
+               next team, the subject grows (RE: FW: ...) and the CC list fills up, until someone asks who owns it and no one
+               answers -->
           <div class="mac-sc">
-            <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
-              <div class="mw-b hp" data-k="ht" data-on="0">
-                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber" data-k="late">Delayed 1 week</span></div>
-                <div class="hp-own"><small>Owner</small><span class="hp-chip" data-k="owner" style="--c:#2D63E6"><b class="av av-t" data-k="oav" style="--c:#2D63E6">MK</b><strong data-k="oname">Marketing</strong></span></div>
-                <div class="hp-row"><small>Passed between</small>
-                  <div class="hp-chain"><i class="hp-line"></i><div class="hp-n hp-n0" style="--c:#2D63E6"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing</span></div><div class="hp-n hp-n1" style="--c:#3FB27E"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT</span></div><div class="hp-n hp-n2" style="--c:#5A86EE"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs</span></div><div class="hp-n hp-n3" style="--c:#9BBA2A"><b class="av av-t" style="--c:#9BBA2A">FN</b><span>Finance</span></div><span class="hp-tok" data-k="tok" style="left:12.5%">Task</span></div>
-                </div>
-                <p class="mg-say" data-k="say" style="--c:#2D63E6"><i></i><span data-k="sayt">One task. Four teams involved.</span></p>
+            <div class="mw st" data-k="mail" style="--x:3%;--y:3%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><b class="mw-ap"><img class="app-ic" src="../assets/apps/outlook.svg" alt="" draggable="false"></b><span>Outlook · Inbox</span></div>
+              <div class="mw-b em">
+                <h4 class="em-subj"><span class="em-pre" data-k="pre"></span>Portal checkout broken</h4>
+                <div class="em-to"><small>To / CC</small><span class="em-avs"><b class="av av-t" data-k="cc0" style="--c:#2D63E6">MK</b><b class="av av-t" data-k="cc1" style="--c:#8EA9F1">PM</b><b class="av av-t" data-k="cc2" style="--c:#C9D6F3">CS</b><b class="av av-t em-cc" data-k="cc3" style="--c:#3FB27E">IT</b><b class="av av-t em-cc" data-k="cc4" style="--c:#5A86EE">BF</b><b class="av av-t em-cc" data-k="cc5" style="--c:#9BBA2A">FN</b><b class="av av-t em-cc" data-k="cc6" style="--c:#6DC49D">OP</b><em data-k="more"></em></span><b class="em-n" data-k="ppl">3 people</b></div>
+                <div class="em-list"><div class="em-m st" data-k="m0"><b class="av av-t" style="--c:#2D63E6">MK</b><div><p><strong>Marketing</strong><em>to IT</em><time>09:14</time></p><span>Checkout is broken. Looping in IT.</span></div></div><div class="em-m st" data-k="m1"><b class="av av-t" style="--c:#3FB27E">IT</b><div><p><strong>IT</strong><em>to Bitforge Labs</em><time>11:02</time></p><span>Not ours. Adding Bitforge, they changed the API.</span></div></div><div class="em-m st" data-k="m2"><b class="av av-t" style="--c:#5A86EE">BF</b><div><p><strong>Bitforge Labs</strong><em>to Finance</em><time>14:37</time></p><span>Works on our side. CC’ing Finance about the budget.</span></div></div><div class="em-m st" data-k="m3"><b class="av av-t" style="--c:#9BBA2A">FN</b><div><p><strong>Finance</strong><em>to Marketing</em><time>16:20</time></p><span>No budget line for this. Forwarding back to Marketing.</span></div></div><div class="em-m st em-ask" data-k="m4"><b class="av av-t" style="--c:#2D63E6">MK</b><div><p><strong>Marketing</strong><em>to all 14</em><time>17:05</time></p><span>So… who owns this?</span></div></div></div>
+                <p class="em-none st" data-k="none"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.6V8l2.4 1.6"/></svg>No reply · 3 days later</p>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:80%"><span><b>4</b> teams</span><span><b>4</b> handoffs</span><span class="is-zero"><b>0</b> owners</span></div>
+            <div class="mtally st" data-k="tally" style="top:84%"><span><b>14</b> people</span><span><b>4</b> forwards</span><span class="is-zero"><b>0</b> owners</span></div>
           </div>
 
           <!-- 04 Still on the whiteboard: invitation after invitation, and the project never moves -->
@@ -2841,33 +2839,24 @@ class Component extends DCLogic {
       at(tEnd + 600, function () { gantt.setAttribute('data-on', 'all'); show('tally'); });
       var total = tEnd + 1300;
     } else if (i === 2) {
-      // 03 One task passed from team to team: the team holding it lights up and gives its excuse, then hands it on; the
-      // owner changes and the delay grows each time, until the last team drops it and no one owns it
-      var ht = $('ht'), tok = $('tok'), owner = $('owner'), oav = $('oav'), oname = $('oname'), late = $('late'), say = $('say'), sayt = $('sayt');
-      var NAMES = ['Marketing', 'IT', 'Bitforge Labs', 'Finance'], INI = ['MK', 'IT', 'BF', 'FN'], COL = ['#2D63E6', '#3FB27E', '#5A86EE', '#9BBA2A'];
-      var LINE = ['\u201cNot our fault. IT never set up the integration.\u201d', '\u201cNot on us. Bitforge changed the API last week.\u201d',
-                  '\u201cWe built what the brief said. Ask Finance.\u201d', '\u201cNo budget was approved for this. Not ours.\u201d'];
-      var tell = function (who, txt, col) {
-        sayt.innerHTML = who ? '<strong>' + who + ':</strong> ' + txt : txt;
-        say.style.setProperty('--c', col); flag(say, 'is-new');
-      };
-      at(100, function () { show('task'); tell('', 'One task. Four teams involved. Marketing has it.', COL[0]); });
+      // 03 Reply-all: each reply forwards the problem to the next team; the subject grows and more people are copied in,
+      // until Marketing asks who owns it, and no one answers
+      var pre = $('pre'), ppl = $('ppl'), more = $('more');
+      var PRE = ['FW: ', 'RE: FW: ', 'FW: RE: FW: ', 'RE: FW: RE: FW: '], PPL = [5, 8, 11, 14], SHOWN = [4, 5, 6, 7];
+      at(100, function () { show('mail'); });
       [0, 1, 2, 3].forEach(function (k) {
-        var t = 900 + k * 1350;
-        at(t, function () { tell(NAMES[k], LINE[k], COL[k]); });
-        at(t + 700, function () {
-          var last = k === 3, n = k + 1;
-          tok.style.left = last ? '50%' : (12.5 + 25 * n) + '%'; flag(tok, 'is-hop');
-          ht.setAttribute('data-on', last ? 'none' : String(n));
-          if (last) { tok.textContent = 'Dropped'; oav.textContent = '?'; oav.style.setProperty('--c', '#A3ABB8'); oname.textContent = 'No one'; owner.classList.add('is-none'); }
-          else { oav.textContent = INI[n]; oav.style.setProperty('--c', COL[n]); oname.textContent = NAMES[n]; owner.style.setProperty('--c', COL[n]); }
-          flag(owner, 'is-flip');
-          late.textContent = 'Delayed ' + (k + 2) + ' weeks'; flag(late, 'is-flip');
+        at(600 + k * 1100, function () {
+          show('m' + k);
+          pre.textContent = PRE[k]; flag(pre, 'is-new');
+          for (var c = 3; c < SHOWN[k]; c++) show('cc' + c);
+          more.textContent = PPL[k] > SHOWN[k] ? '+' + (PPL[k] - SHOWN[k]) : '';
+          ppl.textContent = PPL[k] + ' people'; flag(ppl, 'is-new');
         });
       });
-      at(900 + 4 * 1350, function () { tell('', 'Everyone involved. No one accountable.', '#D9483C'); });
-      at(900 + 4 * 1350 + 500, function () { show('tally'); });
-      var total = 900 + 4 * 1350 + 1100;
+      at(600 + 4 * 1100, function () { show('m4'); });
+      at(600 + 4 * 1100 + 900, function () { show('none'); });
+      at(600 + 4 * 1100 + 1400, function () { show('tally'); });
+      var total = 600 + 4 * 1100 + 2100;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
