@@ -1308,6 +1308,27 @@ html,body{overflow-anchor:none}
 @keyframes mg-say{from{opacity:0;transform:translateY(.8cqw)}to{opacity:1;transform:none}}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
+
+/* v10 problem 04: time visibly moving (month tabs, weeks spent, meetings) while progress stays at 0% */
+.mc-months{display:flex;gap:.7cqw}
+.mc-months b{padding:.5cqw 1.5cqw;border-radius:3cqw;background:#F2F4F8;color:#A3ABB8;font-size:1.9cqw;font-weight:600;transition:background .3s ease,color .3s ease}
+.mc-months b.is-past{background:#E6EAF2;color:#5B6B78}
+.mc-months b.is-on{background:var(--atc-navy);color:#fff}
+.mc-months b.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+.mcal .mc-grid{grid-template-rows:repeat(8,3.3cqw);row-gap:.5cqw;background:repeating-linear-gradient(180deg,transparent 0 3.55cqw,rgba(0,16,37,.06) 3.55cqw calc(3.55cqw + 1px))}
+.mcal .mc-grid i{font-size:1.6cqw}
+.mst2{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw;padding:2.2cqw 2.4cqw}
+.st2{position:relative;padding:1.6cqw 1.8cqw;border-radius:1.6cqw;background:#F6F8FB}
+.st2 small{display:block;font-size:1.6cqw;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8C95A6}
+.st2 strong{display:block;margin-top:.6cqw;font-size:4.4cqw;line-height:1.05;font-weight:500;letter-spacing:-.03em;color:var(--atc-navy);font-variant-numeric:tabular-nums}
+.st2 strong span{display:inline-block}
+.st2 strong span.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+.st2 em{display:block;margin-top:.4cqw;font-style:normal;font-size:1.7cqw;color:#8C95A6}
+.st2-zero{background:#FDECEA}
+.st2-zero strong{color:#C8382D}
+.st2-bar{display:block;height:1cqw;margin-top:1.2cqw;border-radius:1cqw;background:#F5D2CE}
+.st2 .mplus-0{right:1.2cqw;top:1.2cqw}
+.mac .mac-sc .minvite{top:43%;right:3%;z-index:5}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1502,10 +1523,10 @@ with a vision.</h2>
 
           <!-- 04 Still on the whiteboard: invitation after invitation, and the project never moves -->
           <div class="mac-sc">
-            <div class="mw st" data-k="cal" style="--x:2%;--y:14%;--w:62%">
+            <div class="mw st" data-k="cal" style="--x:3%;--y:2%;--w:94%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Calendar</span></div>
               <div class="mw-b mcal">
-                <div class="mc-head"><strong data-k="month">January</strong><small>Week view</small></div>
+                <div class="mc-head"><span class="mc-months"><b class="is-on" data-k="mo0">Jan</b><b data-k="mo1">Feb</b><b data-k="mo2">Mar</b><b data-k="mo3">Apr</b></span><small>This week</small></div>
                 <div class="mc-days"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div>
                 <div class="mc-grid">
                   <i class="st" data-k="m0" style="--c:1;--r:1;--h:2">Kickoff</i>
@@ -1523,16 +1544,13 @@ with a vision.</h2>
                 </div>
               </div>
             </div>
-            <div class="minvite st" data-k="inv"><b class="ni"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></b><div><p><strong>Invitation</strong><time>now</time></p><p data-k="invt">Kickoff · Mon 09:00</p></div><span class="ok">Accepted</span></div>
-            <div class="mw st" data-k="stat" style="--x:50%;--y:52%;--w:48%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal</span></div>
-              <div class="mw-b mstatus">
-                <div class="ms-note"><svg viewBox="0 0 24 24"><path d="M9 18 H15 M10 21 H14 M12 3 C8 3 5.5 5.8 5.5 9.2 C5.5 11.6 6.9 13.3 8.4 14.6 C8.9 15 9.2 15.6 9.2 16.2 V16.5 H14.8 V16.2 C14.8 15.6 15.1 15 15.6 14.6 C17.1 13.3 18.5 11.6 18.5 9.2 C18.5 5.8 16 3 12 3 Z"/></svg><span>Still an idea</span></div>
-                <dl>
-                  <dt>Meetings</dt><dd><strong data-k="meet">0</strong></dd>
-                  <dt>Progress</dt><dd class="ms-prog"><span class="ms-bar"><i></i></span><strong>0%</strong><b class="mplus mplus-0" data-k="zero">+0%</b></dd>
-                  <dt>Shipped</dt><dd class="muted">Nothing yet</dd>
-                </dl>
+            <div class="minvite st" data-k="inv" style="--z:6cqw"><b class="ni"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></b><div><p><strong>Invitation</strong><time>now</time></p><p data-k="invt">Kickoff · Mon 09:00</p></div><span class="ok">Accepted</span></div>
+            <div class="mw st" data-k="stat" style="--x:3%;--y:57%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal · Status</span></div>
+              <div class="mw-b mst2">
+                <div class="st2"><small>Time spent</small><strong><span data-k="wk">0</span> wks</strong><em data-k="span">January</em></div>
+                <div class="st2"><small>Meetings</small><strong data-k="meet">0</strong><em><span data-k="hrs">0</span> hours</em></div>
+                <div class="st2 st2-zero"><small>Progress</small><strong>0%</strong><span class="st2-bar"><i></i></span><b class="mplus mplus-0" data-k="zero">+0%</b></div>
               </div>
             </div>
           </div>
@@ -2846,21 +2864,29 @@ class Component extends DCLogic {
       at(tt, function () { show('more'); });
       var total = tt + 400;
     } else if (i === 3) {
-      // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
-      var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
+      // 04 Invitation after invitation fills the calendar while the months move on (Jan to Apr) and the time spent climbs;
+      // every meeting adds +0%, and progress stays at 0%
+      var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), wk = $('wk'), hrs = $('hrs'), span = $('span');
+      var MON = ['January', 'February', 'March', 'April'];
       var slots = ['Kickoff · Mon 09:00', 'Sync · Wed 10:30', 'Alignment · Fri 14:00', 'Review · Tue 11:00',
         'Sync · Thu 09:30', 'Workshop · Mon 13:00', 'Status · Wed 15:00', 'Sync · Fri 09:00',
         'Steering · Tue 16:00', 'Alignment · Thu 10:00', 'Recap · Wed 17:00', 'Review · Fri 11:30'];
-      var months = { 3: 'February', 6: 'March', 9: 'April' };
+      var months = { 3: 1, 6: 2, 9: 3 };
       at(100, function () { show('cal'); show('stat'); });
       slots.forEach(function (label, m) {
         var t = 700 + m * 480;
         at(t, function () {
           invt.textContent = label;
           if (m === 0) show(inv); else flag(inv, 'is-pop');
-          if (months[m]) { month.textContent = months[m]; flag(month, 'is-flip'); }
+          if (months[m]) {
+            for (var q = 0; q < 4; q++) { var tb = $('mo' + q); tb.classList.toggle('is-on', q === months[m]); tb.classList.toggle('is-past', q < months[m]); }
+            span.textContent = MON[months[m]]; flag($('mo' + months[m]), 'is-flip');
+          }
         });
-        at(t + 260, function () { show('m' + m); meet.textContent = String((m + 1) * 4); flag(zero, 'is-go'); });
+        at(t + 260, function () {
+          show('m' + m); meet.textContent = String((m + 1) * 4); hrs.textContent = String((m + 1) * 6);
+          wk.textContent = String(Math.round((m + 1) * 16 / 12)); flag(wk, 'is-flip'); flag(zero, 'is-go');
+        });
       });
       at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
       var total = 700 + slots.length * 480 + 900;
