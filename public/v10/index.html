@@ -1138,17 +1138,10 @@ html,body{overflow-anchor:none}
 .ospace .osc-n .cvb{position:relative;right:auto;top:auto;width:100%;opacity:1;transform:none;box-shadow:0 24px 50px -24px rgba(0,0,0,.7)}
 .ospace [data-in]{opacity:1 !important;transform:none !important}
 .ospace .an-rev{clip-path:none !important}
-/* the card: navy, lit by soft brand light, text in white */
-.atc .atc-offer{box-sizing:border-box;overflow:hidden;color:#fff;padding:calc(var(--rail) + 2.6vh) 4vw 3vh calc(var(--rail) + 4vw) !important;
-  background:radial-gradient(70% 60% at 88% 6%,rgba(45,99,230,.42) 0,rgba(45,99,230,0) 62%),radial-gradient(60% 55% at 6% 96%,rgba(63,178,126,.24) 0,rgba(63,178,126,0) 62%),
-  radial-gradient(50% 45% at 50% 58%,rgba(90,134,238,.16) 0,rgba(90,134,238,0) 70%),#001025;box-shadow:0 40px 120px -40px rgba(0,0,0,.8)}
-.atc .atc-offer .atc-offer-title{color:#fff}
+/* the card: white, the site's light look, filling the screen once it arrives */
+.atc .atc-offer{box-sizing:border-box;overflow:hidden;background:#fff;padding:calc(var(--rail) + 2.6vh) 4vw 3vh calc(var(--rail) + 4vw) !important;
+  box-shadow:0 40px 120px -30px rgba(0,0,0,.65)}
 @media (min-width:1101px){.atc .atc-offer .atc-offer-title{font-size:clamp(30px,3.1vw,54px);line-height:1.08;letter-spacing:-.035em;max-width:20em}}
-.atc .atc-offer .atc-offer-title .ds-mute{color:rgba(255,255,255,.55)}
-.atc .atc-offer .atc-offer-list strong{color:#fff}
-.atc .atc-offer .atc-offer-list span{color:rgba(255,255,255,.62)}
-.atc .atc-offer .atc-canvas::before{background:radial-gradient(closest-side,rgba(90,134,238,.22) 0,rgba(90,134,238,.08) 60%,rgba(90,134,238,0) 100%) !important}
-.atc .atc-offer .atc-offer-ic{box-shadow:0 8px 20px -10px rgba(0,0,0,.6)}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2937,18 +2930,21 @@ class Component extends DCLogic {
         }
         // the card: far and small in the middle, then nearer until it is the whole screen
         var csc = Math.exp(Math.log(0.12) * (1 - cardP)), cxs = G.w / 2, cys = G.h / 2;
+        // like the camera gliding right and down: the card comes in from the bottom right and settles in the middle
+        var cin = 1 - ease(map(cardP, 0, 0.92)), cdx = cin * G.w * 0.42, cdy = cin * G.h * 0.38;
         off.style.visibility = cardP > 0.001 ? 'visible' : 'hidden';
         off.style.opacity = ease(map(cardP, 0, 0.1)).toFixed(3);
         off.style.transformOrigin = '50% 50%';
-        off.style.transform = cardP < 1 ? 'scale(' + csc.toFixed(4) + ')' : '';
+        off.style.transform = cardP < 1 ? 'translate(' + cdx.toFixed(1) + 'px,' + cdy.toFixed(1) + 'px) scale(' + csc.toFixed(4) + ')' : '';
         off.style.borderRadius = cardP < 1 ? (28 * (1 - cardP) / csc).toFixed(1) + 'px' : '';
         // the clip is drawn before the card's scale, so the opening is mapped back into the card's own coordinates
-        off.style.clipPath = mid ? 'circle(' + (Rs / csc).toFixed(1) + 'px at ' + (cxs + (Ox - cxs) / csc).toFixed(1) + 'px ' + (cys + (Oy - cys) / csc).toFixed(1) + 'px)' : '';
+        off.style.clipPath = mid ? 'circle(' + (Rs / csc).toFixed(1) + 'px at ' + (cxs + (Ox - cxs - cdx) / csc).toFixed(1) + 'px ' + (cys + (Oy - cys - cdy) / csc).toFixed(1) + 'px)' : '';
         // the white title comes up on the card as it arrives
-        var tIn = ease(map(cardP, 0.6, 0.97)), tEls = off.querySelectorAll('.atc-offer-text .ds-label,.atc-offer-title');
+        var tEls = off.querySelectorAll('.atc-offer-text .ds-label,.atc-offer-title');
         for (var tq = 0; tq < tEls.length; tq++) { var tk = ease(map(cardP, 0.6 + tq * 0.08, 0.92 + tq * 0.05)); tEls[tq].style.opacity = tk.toFixed(3); tEls[tq].style.transform = tk < 1 ? 'translateY(' + ((1 - tk) * 18).toFixed(1) + 'px)' : ''; tEls[tq].style.filter = tk < 1 ? 'blur(' + ((1 - tk) * 8).toFixed(1) + 'px)' : ''; }
-        // the page around it is dark while the card is on screen: the menu goes light and the white header band goes away
-        this._oDark = ease(map(zr, 0.55, 0.9));
+        // the page is dark while the black space is on screen (the menu goes light, the white header band goes away),
+        // and light again once the white card fills the screen
+        this._oDark = ease(map(zr, 0.55, 0.9)) * (1 - ease(map(cardP, 0.86, 1)));
       }
     }
     // the dark look ends as the section scrolls off and the light sections come up
@@ -3274,11 +3270,13 @@ class Component extends DCLogic {
   }
 
   // v10: the dark space inside the O. Copies of the offer's windows and notes float at different depths; f (0 to 1)
-  // moves the camera forward through them, so they grow, slide past the edges and melt as they come near the lens.
+  // moves the camera forward and to the right and down through them, so they grow, slide up and to the left past the
+  // edges and melt as they come near the lens.
   ospace(sp, f, G) {
     if (!sp.__cards) {
-      var defs = [['w', 0, -0.95, -0.52, 1.6], ['n', 0, 0.62, -0.92, 1.9], ['w', 1, 1.02, 0.42, 2.1], ['n', 1, -0.6, 0.98, 2.5],
-                  ['w', 2, -1.06, 0.58, 2.8], ['n', 2, 1.22, 0.02, 3.0], ['w', 3, 0.96, -0.62, 3.4], ['n', 3, -1.28, -0.12, 3.8]];
+      // placed along the camera's way (it glides right and down), so each comes in from the bottom right and leaves at the top left
+      var defs = [['w', 0, -0.55, -0.35, 1.5], ['n', 0, 0.55, -0.6, 1.8], ['w', 1, 0.2, 0.75, 2.1], ['n', 1, 1.35, 0.3, 2.4],
+                  ['w', 2, 1.0, 1.25, 2.7], ['n', 2, 2.0, 0.95, 3.0], ['w', 3, 1.75, 1.85, 3.3], ['n', 3, 2.6, 1.6, 3.7]];
       sp.__cards = [];
       defs.forEach(function (d) {
         var src = document.querySelector('[data-atc="cvW' + d[1] + '"]'), part = src && src.querySelector(d[0] === 'w' ? '.cvm' : '.cvb');
@@ -3293,9 +3291,9 @@ class Component extends DCLogic {
     }
     var W = G.w, H = G.h, cx = W / 2, cy = H / 2, k = Math.min(W / 1440, H / 900);
     sp.__cards.forEach(function (c) {
-      var z = c.z - f * 3.5;
+      var z = c.z - f * 2.9, camX = f * 2.1, camY = f * 1.75;
       if (z < 0.22) { c.el.style.opacity = '0'; return; }
-      var sc = k / z, x = cx + c.x * cx / z, y = cy + c.y * cy / z;
+      var sc = k / z, x = cx + (c.x - camX) * cx / z, y = cy + (c.y - camY) * cy / z;
       // far ones come out of the dark, near ones melt as they pass the lens
       var op = Math.min(1, Math.max(0, (4.6 - z) / 1.2)) * Math.min(1, Math.max(0, (z - 0.22) / 0.35));
       var bl = z < 1 ? (1 - z) * 14 : (z > 3 ? (z - 3) * 2 : 0);
