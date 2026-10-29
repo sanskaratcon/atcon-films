@@ -1718,7 +1718,7 @@ class Component extends DCLogic {
   // Whole story in scroll units (1 unit = 1% of the viewport height at pace 1).
   timeline() {
     return {
-      U: 2454,
+      U: 2147.6,
       heroGrow: [0, 78], heroOut: [1, 10],
       v2: [0, 173], v4: [173, 294], v3: [294, 414],
       indoor: 130,
@@ -1735,23 +1735,23 @@ class Component extends DCLogic {
         ins: [539, 724, 909, 1094],
         out: 1314
       },
-      famIn: [1344, 1389],
-      famOut: [1524, 1549],
-      focus: [1356, 1404],
-      unfocus: [1534, 1574],
-      fill: [1404, 1504],
+      famIn: [1330.5, 1355.2],
+      famOut: [1429.5, 1443.2],
+      focus: [1337.1, 1363.5],
+      unfocus: [1435, 1457],
+      fill: [1363.5, 1418.5],
       gap: {
         // The A mark, the title, "Not as another…" and "As a partner." are no longer shown: their slots
         // are kept tiny so the ATCON logo and tagline follow the familiar-statement straight away
-        mark: [1569, 1570, 1572, 1574], markMove: [1570, 1572],
-        title: 1572,
-        lift: [1572, 1574],
-        a: 1575, aOut: 1576, aPlay: 0,
-        center: [1572, 1577], b: 1577, bOut: 1578, sign: 1579,
-        out: 1578
+        mark: [1454.2, 1454.8, 1455.9, 1457], markMove: [1454.8, 1455.9],
+        title: 1455.9,
+        lift: [1455.9, 1457],
+        a: 1457.5, aOut: 1458.1, aPlay: 0,
+        center: [1455.9, 1458.7], b: 1458.7, bOut: 1459.2, sign: 1459.8,
+        out: 1459.2
       },
       // The solution: tagline, the two sides, the broken direct line, ATCON in the middle, the links, then the caption
-      sol: { mark: [1584, 1624], word: [1630, 1704], title: 1708, hub: [1754, 1799], sides: [1794, 1844], links: [1839, 1949], pop: [1995, 2025], swap: [2028, 2070], plug: [2074, 2116], glow: [2110, 2120], tiles: [2120, 2400], out: 2452 }
+      sol: { mark: [1462.5, 1484.5], word: [1487.8, 1528.5], title: 1530.7, hub: [1556, 1580.8], sides: [1578, 1605.5], links: [1602.8, 1663.2], pop: [1688.5, 1718.5], swap: [1721.5, 1763.5], plug: [1767.5, 1809.5], glow: [1803.5, 1813.5], tiles: [1813.5, 2093.6], out: 2145.6 }
     };
   }
 
@@ -2933,7 +2933,7 @@ class Component extends DCLogic {
     var sink = 0;
     var rises = this.qa('[data-atc="sol"] .atc-sol-head .ds-rise');
     for (var j = 0; j < rises.length; j++) {
-      var k = ease(map(u, S.title + j * 10, S.title + j * 10 + 46));
+      var k = ease(map(u, S.title + j * 6, S.title + j * 6 + 25));
       rises[j].style.transform = 'translateY(' + ((1 - k) * 112 + sink * 112).toFixed(2) + '%)';
     }
     var side = ease(map(u, S.sides[0], S.sides[1])) * (1 - sink);
@@ -3197,7 +3197,7 @@ class Component extends DCLogic {
     r.push([G.mark[0], G.mark[1]], G.markMove, [G.title, G.title + 46], G.lift, [G.mark[2], G.mark[3]],
       [G.aOut, G.aOut + 50], G.center, [G.b, G.b + 44], [G.bOut, G.bOut + 40], [G.sign, G.sign + 58], [G.out, G.out + 50]);
     var O = T.sol;
-    r.push(O.mark, O.word, [O.title, O.title + 46], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0] - 35, O.tiles[0] + 35], [O.tiles[0] + 35, O.tiles[0] + 105], [O.tiles[0] + 105, O.tiles[0] + 175], [O.tiles[0] + 175, O.tiles[0] + 245], [O.tiles[0] + 245, O.out - 6]);
+    r.push(O.mark, O.word, [O.title, O.title + 25], O.sides, O.hub, O.links, O.pop, O.swap, O.plug, [O.tiles[0] - 35, O.tiles[0] + 35], [O.tiles[0] + 35, O.tiles[0] + 105], [O.tiles[0] + 105, O.tiles[0] + 175], [O.tiles[0] + 175, O.tiles[0] + 245], [O.tiles[0] + 245, O.out - 6]);
     this._ranges = r;
     return r;
   }
