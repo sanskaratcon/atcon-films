@@ -3336,7 +3336,10 @@ class Component extends DCLogic {
       // and the small labels float around them
       if (c.el.classList.contains('osc-w') || c.el.classList.contains('osc-n')) { c.el.style.opacity = '0'; return; }
       var d = c.Z - PZ * f, x = cx + (c.X - PX * f) / d * W - cam[0] * W / d, y = cy + (c.Y - PY * f) / d * H - cam[1] * H / d, sc = k * c.s / d;
-      if (cam[1] > 0) { var wm = c.el.offsetHeight * sc / 2 + 40, wp = H + 2 * wm; y = ((y + wm) % wp + wp) % wp - wm; }
+      if (cam.moved) {
+        var wm = c.el.offsetHeight * sc / 2 + 40, wp = H + 2 * wm, wn = c.el.offsetWidth * sc / 2 + 40, wq = W + 2 * wn;
+        y = ((y + wm) % wp + wp) % wp - wm; x = ((x + wn) % wq + wq) % wq - wn;
+      }
       var w = c.el.offsetWidth * sc, h = c.el.offsetHeight * sc;
       var on = x + w / 2 > -40 && x - w / 2 < W + 40 && y + h / 2 > -40 && y - h / 2 < H + 40;
       // and any that come near the title, a capability or its text fade out of their way
@@ -3377,11 +3380,21 @@ class Component extends DCLogic {
     sp.__end = mk('oend');
   }
 
-  // How far the camera has moved down through the space (in screens, at the depth of the capabilities): it holds while
-  // the title is in front, then moves on steadily with the scroll
+  // Where each one sits in the space (in screens, at the depth of the capabilities): the title, then the four
+  // capabilities, so the camera goes down, then right and a little down, then right and a little up, then down again
+  ocamStops() { return [[0, 0], [0, 1.05], [0.95, 1.3], [1.9, 1.05], [1.8, 2.1], [1.75, 3.15]]; }
+
+  // Where the camera is: it holds while the title is in front, then moves on steadily with the scroll along a smooth
+  // curve through each stop
   ocamAt(u, S) {
-    var span = (S.tiles[1] - S.tiles[0]) / 4, t = Math.max(0, (u - (S.tiles[0] - span * 0.5)) / span);
-    return [t * 0.15, t * 1.05];
+    var span = (S.tiles[1] - S.tiles[0]) / 4, t = Math.max(0, (u - (S.tiles[0] - span * 0.5)) / span), P = this.ocamStops();
+    var n = P.length - 1, i = Math.min(n - 1, Math.floor(t)), q = Math.min(1, t - i);
+    var p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(n, i + 2)], o = [];
+    for (var a = 0; a < 2; a++) {
+      o[a] = 0.5 * (2 * p1[a] + (p2[a] - p0[a]) * q + (2 * p0[a] - 5 * p1[a] + 4 * p2[a] - p3[a]) * q * q + (3 * p1[a] - p0[a] - 3 * p2[a] + p3[a]) * q * q * q);
+    }
+    o.moved = t > 0;
+    return o;
   }
 
   ocapPlace(sp, W, H, u, S, endP, cam) {
@@ -3392,7 +3405,7 @@ class Component extends DCLogic {
     // [window x, window y, text x, text y] (fractions of the screen from its centre, when it is in the middle), and how
     // near it floats (nearer ones are a little larger and pass a little faster)
     var spots = [[0.19, 0.03, -0.23, -0.01], [-0.2, -0.03, 0.2, 0.0], [0.18, -0.04, -0.24, 0.02], [-0.19, 0.04, 0.2, -0.01]];
-    var near = [1.0, 0.94, 1.05, 0.97];
+    var near = [1.0, 0.94, 1.05, 0.97], stops = this.ocamStops();
     var rects = [];
     sp.__ocap.forEach(function (g) {
       var ox, oy, z, at, op = 1;
@@ -3404,8 +3417,8 @@ class Component extends DCLogic {
         if (g.i === 3) op = 1 - ease(map(endP, 0.3, 0.6));
       }
       // where the camera is, relative to where this one sits in the middle of the screen
-      var dc = cam[1] / 1.05 - at, sc = k * z;
-      var x = W / 2 + ox * W - dc * 0.15 * W * z, y = H / 2 + oy * H - dc * 1.05 * H * z;
+      var st = stops[at], sc = k * z;
+      var x = W / 2 + (st[0] - cam[0]) * W * z + ox * W, y = H / 2 + (st[1] - cam[1]) * H * z + oy * H;
       var el = g.el, hw = el.offsetWidth * sc / 2, hh = el.offsetHeight * sc / 2;
       if (op <= 0.002 || y + hh < -40 || y - hh > H + 40 || x + hw < -40 || x - hw > W + 40) { if (el.style.opacity !== '0') el.style.opacity = '0'; return; }
       el.style.opacity = op.toFixed(3);
