@@ -1309,32 +1309,31 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 04: the roadmap. Time sweeps across (Today line, meetings dropping in) while You are here stays on Plan */
-.rm{padding:2.2cqw 2.6cqw 2.6cqw}
-.rm-time{position:relative;height:16cqw;margin-top:.6cqw;border-radius:1.4cqw;background:#F8FAFD;overflow:hidden}
-.rm-months{position:relative;z-index:1;display:grid;grid-template-columns:repeat(6,1fr);height:4.4cqw}
-.rm-months span{display:flex;align-items:center;padding-left:1cqw;border-left:1px solid #E8ECF3;font-size:1.7cqw;font-weight:600;color:#8C95A6}
-.rm-months span:first-child{border-left:0}
-.rm-past{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#EEF2FB,#E3EAF9);transition:width .4s ease}
-.rm-today{position:absolute;top:0;bottom:0;left:0;z-index:3;width:0;border-left:.35cqw solid #2D63E6;transition:left .4s ease;font-style:normal}
-.rm-today b{position:absolute;bottom:.6cqw;right:.6cqw;padding:.3cqw 1cqw;border-radius:3cqw;background:#2D63E6;color:#fff;font-size:1.4cqw;font-weight:600;white-space:nowrap}
-.rm-pin{position:absolute;z-index:2;padding:.35cqw 1cqw;border-radius:.8cqw;border-left:.4cqw solid #5A86EE;background:#fff;box-shadow:0 .6cqw 1.4cqw -.6cqw rgba(0,16,37,.3);
-  font-style:normal;font-size:1.45cqw;font-weight:500;color:#2D4FA8;white-space:nowrap}
-.mac .rm-pin.st{transform:translateY(-3cqw) scale(1.1)}
-.mac .rm-pin.st.is-shown{transform:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
-.rm-road{position:relative;height:17cqw;margin-top:1.6cqw}
-.rm-line{position:absolute;left:10%;right:10%;top:3.4cqw;border-top:.35cqw dashed #C9D2E1}
-.rm-st{position:absolute;top:0;width:16cqw;margin-left:-8cqw;display:flex;flex-direction:column;align-items:center;gap:.8cqw}
-.rm-st b{display:grid;place-items:center;width:6.8cqw;height:6.8cqw;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 .3cqw #D5DCE8;color:#A3ABB8;font-size:2.2cqw;font-weight:600}
-.rm-st span{font-size:1.9cqw;font-weight:600;color:#A3ABB8}
-.rm-st svg{width:3cqw;height:3cqw;fill:none;stroke:#A3ABB8;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.rm-s0 b{background:var(--atc-navy);box-shadow:none;color:#fff}.rm-s0 span{color:var(--atc-navy)}
-.rm-here{position:absolute;left:10%;top:11.6cqw;width:16cqw;margin-left:-8cqw;display:flex;flex-direction:column;align-items:center;gap:.3cqw;font-size:1.8cqw;font-weight:600;color:#2D63E6;white-space:nowrap}
-.rm-here i{width:0;height:0;border-left:1.1cqw solid transparent;border-right:1.1cqw solid transparent;border-bottom:1.5cqw solid #2D63E6}
-.rm-here.is-try{animation:rm-try .55s cubic-bezier(.3,0,.3,1)}
-@keyframes rm-try{40%{margin-left:-4.6cqw}100%{margin-left:-8cqw}}
-.rm-here.is-stuck{color:#C8382D}.rm-here.is-stuck i{border-bottom-color:#C8382D}
-.rm .mg-say{margin-top:1cqw}
+/* v10 problem 04: the stuck business. Plans pile up with moving dates on one side; on the other the portal's own page,
+   refreshed month after month, always says Coming soon */
+.fd{padding:1.2cqw 2cqw 1.6cqw}
+.fd-row{display:flex;align-items:center;gap:1.5cqw;padding:1.25cqw .6cqw;border-bottom:1px solid #EEF1F6}
+.fd-row:last-child{border-bottom:0}
+.fd-ic{flex:none;display:grid;place-items:center;width:4.4cqw;height:4.4cqw;border-radius:1cqw;background:#FDEDEB}
+.fd-ic svg{width:60%;height:60%;fill:none;stroke:#D04423;stroke-width:1.6;stroke-linejoin:round}
+.fd-row>div{flex:1;min-width:0}
+.fd-row b{display:block;font-size:1.95cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-row b em{font-style:normal;color:#C8382D}
+.fd-row small{display:block;margin-top:.25cqw;font-size:1.55cqw;color:#8C95A6}
+.fd-v{flex:none;padding:.4cqw 1.1cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.5cqw;font-weight:600;color:#5B6B78}
+.wb{padding:1.4cqw 1.8cqw 2.2cqw}
+.wb-url{display:flex;align-items:center;gap:1cqw;padding:.9cqw 1.6cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.75cqw;color:#5B6B78;white-space:nowrap}
+.wb-url svg{flex:none;width:1.9cqw;height:1.9cqw;fill:none;stroke:#8C95A6;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.wb-spin{margin-left:auto;flex:none;width:2cqw;height:2cqw;box-sizing:border-box;border-radius:50%;border:.35cqw solid #D5DCE8;border-top-color:#2D63E6}
+.wb-spin.is-go{animation:wb-spin .6s ease}
+@keyframes wb-spin{to{transform:rotate(360deg)}}
+.wb-page{display:flex;flex-direction:column;align-items:center;gap:1.3cqw;padding:3.4cqw 2cqw 1.6cqw;text-align:center}
+.wb-page.is-go{animation:wb-blink .55s ease}
+@keyframes wb-blink{30%{opacity:.25}}
+.wb-badge{padding:.7cqw 2cqw;border-radius:4cqw;background:#FDF1DA;color:#A86A00;font-size:2cqw;font-weight:600}
+.wb-page p{margin:0;font-size:2.5cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
+.wb-page em{font-style:normal;font-size:1.7cqw;color:#8C95A6}
+.wb-page em.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4);display:inline-block}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1527,20 +1526,28 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 04 Stuck: the project's roadmap. Time moves (the Today line sweeps from January to June and meetings drop onto
-               it), but "You are here" never leaves Plan: it twitches forward after each meeting and slides back -->
+          <!-- 04 Stuck: time moves in the file dates. Plan after "final" plan is saved (January to May), and after each one
+               the portal's own page is refreshed and still says Coming soon: the months pass, nothing goes live -->
           <div class="mac-sc">
-            <div class="mw st" data-k="road" style="--x:3%;--y:3%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal · Roadmap</span></div>
-              <div class="mw-b rm">
-                <div class="mt-head"><h4>Customer portal</h4><span class="pill pill-amber" data-k="mon">Month 1</span></div>
-                <div class="rm-time"><div class="rm-months"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div><i class="rm-past" data-k="past"></i><i class="rm-pin st" data-k="p0" style="left:1.0%;top:6.4cqw">Kickoff</i><i class="rm-pin st" data-k="p1" style="left:9.1%;top:10.6cqw">Sync</i><i class="rm-pin st" data-k="p2" style="left:17.2%;top:6.4cqw">Alignment</i><i class="rm-pin st" data-k="p3" style="left:25.3%;top:10.6cqw">Review</i><i class="rm-pin st" data-k="p4" style="left:33.4%;top:6.4cqw">Sync</i><i class="rm-pin st" data-k="p5" style="left:41.5%;top:10.6cqw">Workshop</i><i class="rm-pin st" data-k="p6" style="left:49.6%;top:6.4cqw">Status</i><i class="rm-pin st" data-k="p7" style="left:57.7%;top:10.6cqw">Sync</i><i class="rm-pin st" data-k="p8" style="left:65.8%;top:6.4cqw">Steering</i><i class="rm-pin st" data-k="p9" style="left:73.9%;top:10.6cqw">Alignment</i><i class="rm-pin st" data-k="p10" style="left:82.0%;top:6.4cqw">Recap</i><i class="rm-pin st" data-k="p11" style="left:90.1%;top:10.6cqw">Review</i>
-                  <i class="rm-today" data-k="today"><b>Today</b></i></div>
-                <div class="rm-road"><i class="rm-line"></i><div class="rm-st rm-s0" style="left:10%"><b>1</b><span>Plan</span></div><div class="rm-st rm-s1" style="left:37%"><b>2</b><span>Design</span></div><div class="rm-st rm-s2" style="left:64%"><b>3</b><span>Build</span></div><div class="rm-st rm-s3" style="left:90%"><b><svg viewBox="0 0 16 16"><path d="M4 14.5V2.2M4 2.5h7.6l-1.6 2.6 1.6 2.6H4"/></svg></b><span>Launch</span></div>
-                  <span class="rm-here" data-k="here"><i></i>You are here</span></div>
-                <p class="mg-say" data-k="say" style="--c:#2D63E6"><i></i><span data-k="sayt">Month 1. Planning starts.</span></p>
+            <div class="mw st" data-k="docs" style="--x:3%;--y:3%;--w:55%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Documents · Portal</span></div>
+              <div class="mw-b fd">
+                <div class="fd-row st" data-k="f0"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan.pptx</b><small>Edited 12 Jan</small></div><span class="fd-v">v1</span></div>
+                <div class="fd-row st" data-k="f1"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan v2.pptx</b><small>Edited 3 Feb</small></div><span class="fd-v">v2</span></div>
+                <div class="fd-row st" data-k="f2"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL</em>.pptx</b><small>Edited 24 Feb</small></div><span class="fd-v">v3</span></div>
+                <div class="fd-row st" data-k="f3"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL</em> v3.pptx</b><small>Edited 18 Mar</small></div><span class="fd-v">v4</span></div>
+                <div class="fd-row st" data-k="f4"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL FINAL</em>.pptx</b><small>Edited 9 Apr</small></div><span class="fd-v">v5</span></div>
+                <div class="fd-row st" data-k="f5"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M6.2 3.2h7.6l4 4v13.6H6.2z"/><path d="M13.8 3.2v4h4"/></svg></span><div><b>Portal plan <em>FINAL (really)</em>.pptx</b><small>Edited 2 May</small></div><span class="fd-v">v6</span></div>
               </div>
             </div>
+            <div class="mw st" data-k="web" style="--x:43%;--y:48%;--w:54%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>yourbusiness.com/portal</span></div>
+              <div class="mw-b wb">
+                <div class="wb-url"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>yourbusiness.com/portal<i class="wb-spin" data-k="spin"></i></div>
+                <div class="wb-page" data-k="page"><span class="wb-badge">Coming soon</span><p>Your customer portal is on its way.</p><em data-k="chk">Checked in January</em></div>
+              </div>
+            </div>
+            <div class="mtally st" data-k="tally" style="top:84%"><span><b>6</b> plans</span><span><b>5</b> months</span><span class="is-zero">Live: <b>still “Coming soon”</b></span></div>
           </div>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
@@ -2852,26 +2859,22 @@ class Component extends DCLogic {
       at(tt, function () { show('more'); });
       var total = tt + 400;
     } else if (i === 3) {
-      // 04 Stuck: the Today line sweeps across the months and a meeting drops onto the timeline at each step, while
-      // "You are here" twitches forward after each meeting and slides back to Plan; six months on, still planning
-      var today = $('today'), past = $('past'), here = $('here'), mon = $('mon'), say = $('say'), sayt = $('sayt');
-      at(100, function () { show('road'); });
-      for (var m = 0; m < 12; m++) (function (m) {
-        var t = 600 + m * 420, f = (m + 1) / 12;
-        at(t, function () {
-          today.style.left = (f * 100).toFixed(1) + '%'; past.style.width = (f * 100).toFixed(1) + '%';
-          show('p' + m); flag(here, 'is-try');
-          if (m % 2 === 1) {
-            var mo = (m + 1) / 2; mon.textContent = 'Month ' + mo; flag(mon, 'is-flip');
-            sayt.textContent = 'Month ' + mo + '. ' + ((m + 1) * 4) + ' meetings. Still planning.'; flag(say, 'is-new');
-          }
+      // 04 Stuck: time moves in the file dates: plan after "final" plan is saved (January to May), and after each one the
+      // portal's page is refreshed (the spinner turns, the page blinks) and still says Coming soon
+      var spin = $('spin'), page = $('page'), chk = $('chk');
+      var CHKM = ['February', 'February', 'March', 'April', 'May'];
+      at(100, function () { show('docs'); show('f0'); });
+      at(700, function () { show('web'); });
+      [1, 2, 3, 4, 5].forEach(function (k) {
+        var t = 1400 + (k - 1) * 950;
+        at(t, function () { show('f' + k); });
+        at(t + 480, function () {
+          flag(spin, 'is-go'); flag(page, 'is-go');
+          chk.textContent = 'Refreshed in ' + CHKM[k - 1]; flag(chk, 'is-new');
         });
-      })(m);
-      at(600 + 12 * 420 + 300, function () {
-        mon.classList.add('pill-red'); say.style.setProperty('--c', '#D9483C'); here.classList.add('is-stuck');
-        sayt.textContent = 'Month 6. 48 meetings. Still planning.'; flag(say, 'is-new');
       });
-      var total = 600 + 12 * 420 + 1100;
+      at(1400 + 5 * 950 + 200, function () { show('tally'); });
+      var total = 1400 + 5 * 950 + 1000;
     }
     total += START;
     fillSteps(0);
