@@ -1261,29 +1261,19 @@ html,body{overflow-anchor:none}
 .ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
 
 
-/* v10 problem 02: one project in the middle, a vendor at each corner holding only its part; they pull it apart */
-.mv-name{position:absolute;left:50%;top:19cqw;transform:translateX(-50%);display:flex;align-items:center;gap:1.2cqw;white-space:nowrap;font-size:2.6cqw;font-weight:600;color:var(--atc-navy)}
-.mac .mv-name.st{transform:translate(-50%,1.8cqw)}.mac .mv-name.st.is-shown{transform:translateX(-50%)}
-.mv-name em{font-style:normal;font-size:1.8cqw;font-weight:500;padding:.4cqw 1.2cqw;border-radius:3cqw;background:#E9EFFC;color:#2D63E6}
-.mv-ropes{position:absolute;left:0;top:0;width:100cqw;height:96cqw;overflow:visible}
-.mv-ropes path{fill:none;stroke:var(--c);stroke-width:.35;stroke-dasharray:1 .9;stroke-linecap:round}
-.mac .mv-ropes path.st{transform:none}
-.mv-p{position:absolute;left:29cqw;top:30cqw;width:42cqw;height:34cqw}
-.mv-q{position:absolute;box-sizing:border-box;width:21cqw;height:17cqw;padding:2cqw 2cqw;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 2cqw 4cqw -2cqw rgba(0,16,37,.28);
-  border-top:.5cqw solid var(--c);display:flex;flex-direction:column;gap:1.3cqw;transition:transform 1.2s cubic-bezier(.3,0,.15,1),border-radius 1.2s ease}
-.mv-qh{display:flex;align-items:center;gap:1cqw;font-size:2.2cqw;font-weight:600;color:var(--atc-navy)}
-.mv-qh svg{width:3.6cqw;height:3.6cqw;padding:.7cqw;box-sizing:border-box;border-radius:1cqw;background:color-mix(in srgb,var(--c) 14%,#fff);fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.mv-tl{left:0;top:0;border-radius:1.6cqw 0 0 0}.mv-tr{left:21cqw;top:0;border-radius:0 1.6cqw 0 0}
-.mv-bl{left:0;top:17cqw;border-radius:0 0 0 1.6cqw}.mv-br{left:21cqw;top:17cqw;border-radius:0 0 1.6cqw 0}
-.mv-p.is-shown .mv-q{border-radius:1.6cqw}
-.mv-p.is-shown .mv-tl{transform:translate(-4.5cqw,-3.6cqw) rotate(-4deg)}.mv-p.is-shown .mv-tr{transform:translate(4.5cqw,-3.6cqw) rotate(4deg)}
-.mv-p.is-shown .mv-bl{transform:translate(-4.5cqw,3.6cqw) rotate(3deg)}.mv-p.is-shown .mv-br{transform:translate(4.5cqw,3.6cqw) rotate(-3deg)}
-.mv-v{position:absolute;box-sizing:border-box;width:30cqw;display:flex;align-items:center;gap:1.6cqw;padding:1.6cqw 1.8cqw;border-radius:1.8cqw;background:#fff;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 1.6cqw 3.6cqw -1.6cqw rgba(0,16,37,.25)}
-.mv-v strong{display:block;font-size:2.1cqw;font-weight:600;white-space:nowrap}
-.mv-v small{display:block;margin-top:.2cqw;font-size:1.8cqw;color:var(--c);font-weight:500;white-space:nowrap}
-.mac .mv-v .av-t{width:5cqw;height:5cqw;font-size:1.7cqw}
-.mv-vtl{left:3cqw;top:6cqw}.mv-vtr{right:3cqw;top:6cqw}.mv-vbl{left:3cqw;top:70cqw}.mv-vbr{right:3cqw;top:70cqw}
+/* v10 problem 02: one project, four stages, four vendors, a loss at every handoff */
+.mproj{padding:2.4cqw 2.6cqw 2.8cqw}
+.mpr{display:grid;grid-template-columns:14cqw 5.2cqw minmax(0,1fr) auto;align-items:center;column-gap:1.8cqw;padding:1.7cqw 2cqw;border-radius:1.6cqw;
+  background:#F6F8FB;box-shadow:inset 0 0 0 1px rgba(0,16,37,.05)}
+.mpr-n{display:flex;flex-direction:column;gap:.3cqw;font-size:1.6cqw;font-weight:600;letter-spacing:.06em;color:#8C95A6}
+.mpr-n b{font-size:2.5cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
+.mac .mpr .av-t{width:5.2cqw;height:5.2cqw;font-size:1.7cqw}
+.mpr-v{min-width:0}
+.mpr-v strong{display:block;font-size:2.2cqw;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mpr-v small{display:block;margin-top:.2cqw;font-size:1.8cqw;color:#8C95A6;white-space:nowrap}
+.mph{display:flex;align-items:center;gap:1.6cqw;height:4.8cqw;padding-left:8.6cqw}
+.mph i{align-self:stretch;width:0;border-left:.3cqw dashed #C9D2E1}
+.mph span{padding:.45cqw 1.3cqw;border-radius:3cqw;background:#FDE6E4;color:#C8382D;font-size:1.7cqw;font-weight:500;white-space:nowrap}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1435,14 +1425,23 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 02 You have the vendors: one project in the middle, and a vendor at each corner holding only its own part
-               (advice, design, build, support); as they pull, the project splits four ways -->
+          <!-- 02 You have the vendors: one project, and every stage of it in other hands: advice, design, execution and
+               support each by a different vendor, and something is lost at every handoff -->
           <div class="mac-sc">
-            <span class="mv-name st" data-k="proj">Customer portal <em>1 project</em></span>
-            <svg class="mv-ropes" viewBox="0 0 100 96" preserveAspectRatio="none"><path class="st" data-k="r1" d="M20 16 L32 31" style="--c:#2D63E6"/><path class="st" data-k="r2" d="M80 16 L68 31" style="--c:#5A86EE"/><path class="st" data-k="r3" d="M20 72 L32 63" style="--c:#3FB27E"/><path class="st" data-k="r4" d="M80 72 L68 63" style="--c:#9BBA2A"/></svg>
-            <div class="mv-p" data-k="pull"><div class="mv-q mv-tl" style="--c:#2D63E6"><span class="mv-qh"><svg viewBox="0 0 24 24"><path d="M12 3.5a5.5 5.5 0 0 0-3.2 10c.6.5.9 1.1.9 1.8v.7h4.6v-.7c0-.7.3-1.3.9-1.8A5.5 5.5 0 0 0 12 3.5z"/><path d="M10 19h4M10.6 21h2.8"/></svg>Advice</span><i class="sk" style="--l:78%"></i><i class="sk" style="--l:52%"></i></div><div class="mv-q mv-tr" style="--c:#5A86EE"><span class="mv-qh"><svg viewBox="0 0 24 24"><path d="M4 20l4-1L19 8a2.1 2.1 0 0 0-3-3L5 16z"/><path d="M14 7l3 3"/></svg>Design</span><i class="sk" style="--l:78%"></i><i class="sk" style="--l:52%"></i></div><div class="mv-q mv-bl" style="--c:#3FB27E"><span class="mv-qh"><svg viewBox="0 0 24 24"><path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4M13.5 6l-3 12"/></svg>Build</span><i class="sk" style="--l:78%"></i><i class="sk" style="--l:52%"></i></div><div class="mv-q mv-br" style="--c:#9BBA2A"><span class="mv-qh"><svg viewBox="0 0 24 24"><path d="M5 13v-1a7 7 0 0 1 14 0v1"/><rect x="3.5" y="12.5" width="3.5" height="6" rx="1.4"/><rect x="17" y="12.5" width="3.5" height="6" rx="1.4"/><path d="M19 18.5a3 3 0 0 1-3 2.5h-2.5"/></svg>Support</span><i class="sk" style="--l:78%"></i><i class="sk" style="--l:52%"></i></div></div>
-            <div class="mv-v mv-vtl st" data-k="v1" style="--c:#2D63E6"><b class="av av-t" style="--c:#2D63E6">NA</b><span><strong>Northpoint Advisory</strong><small>Only the advice</small></span></div><div class="mv-v mv-vtr st" data-k="v2" style="--c:#5A86EE"><b class="av av-t" style="--c:#5A86EE">NS</b><span><strong>Northfield Studio</strong><small>Only the design</small></span></div><div class="mv-v mv-vbl st" data-k="v3" style="--c:#3FB27E"><b class="av av-t" style="--c:#3FB27E">BF</b><span><strong>Bitforge Labs</strong><small>Only the build</small></span></div><div class="mv-v mv-vbr st" data-k="v4" style="--c:#9BBA2A"><b class="av av-t" style="--c:#9BBA2A">HL</b><span><strong>Helpline IT</strong><small>Only the support</small></span></div>
-            <div class="mtally st" data-k="tally" style="top:89%"><span><b>4</b> vendors</span><span><b>4</b> directions</span><span class="is-zero"><b>0</b> owning the whole</span></div>
+            <div class="mw st" data-k="proj" style="--x:3%;--y:4%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal</span></div>
+              <div class="mw-b mproj">
+                <div class="mt-head"><h4>Customer portal</h4><span class="pill pill-amber">4 vendors · 1 project</span></div>
+                <div class="mpr st" data-k="s1"><span class="mpr-n">01<b>Advise</b></span><b class="av av-t" style="--c:#2D63E6">NA</b><span class="mpr-v"><strong>Northpoint Advisory</strong><small>Strategy &amp; roadmap</small></span><span class="pill">Report delivered</span></div>
+                <div class="mph st" data-k="h1"><i></i><span>Context lost in the handoff</span></div>
+                <div class="mpr st" data-k="s2"><span class="mpr-n">02<b>Design</b></span><b class="av av-t" style="--c:#5A86EE">NS</b><span class="mpr-v"><strong>Northfield Studio</strong><small>UX &amp; interface</small></span><span class="pill">Handed over</span></div>
+                <div class="mph st" data-k="h2"><i></i><span>Context lost in the handoff</span></div>
+                <div class="mpr st" data-k="s3"><span class="mpr-n">03<b>Execution</b></span><b class="av av-t" style="--c:#3FB27E">BF</b><span class="mpr-v"><strong>Bitforge Labs</strong><small>Development</small></span><span class="pill pill-amber">Waiting on design files</span></div>
+                <div class="mph st" data-k="h3"><i></i><span>Context lost in the handoff</span></div>
+                <div class="mpr st" data-k="s4"><span class="mpr-n">04<b>Support</b></span><b class="av av-t" style="--c:#9BBA2A">HL</b><span class="mpr-v"><strong>Helpline IT</strong><small>Run &amp; maintain</small></span><span class="pill pill-red">Not briefed</span></div>
+              </div>
+            </div>
+            <div class="mtally st" data-k="tally" style="top:86%"><span><b>4</b> vendors</span><span><b>4</b> contracts</span><span class="is-zero"><b>0</b> owning the whole</span></div>
           </div>
 
           <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
@@ -2771,15 +2770,15 @@ class Component extends DCLogic {
       at(2900 + 5 * 280 + 200, function () { show('tm'); });
       var total = 2900 + 5 * 280 + 900;
     } else if (i === 1) {
-      // 02 Vendors: the project is one piece; a vendor takes each part in turn (advice, design, build, support), each tied
-      // to its own corner; then they all pull, and the project comes apart four ways
+      // 02 Vendors: one project opens, then each stage gets its own vendor in turn (advise, design, execution, support),
+      // and every handoff between them loses something
       at(100, function () { show('proj'); });
       [1, 2, 3, 4].forEach(function (n) {
-        at(500 + (n - 1) * 650, function () { show('v' + n); show('r' + n); });
+        at(500 + (n - 1) * 800, function () { show('s' + n); });
+        if (n < 4) at(500 + (n - 1) * 800 + 450, function () { show('h' + n); });
       });
-      at(500 + 4 * 650 + 200, function () { show('pull'); });
-      at(500 + 4 * 650 + 1300, function () { show('tally'); });
-      var total = 500 + 4 * 650 + 2000;
+      at(500 + 4 * 800 + 200, function () { show('tally'); });
+      var total = 500 + 4 * 800 + 900;
     } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
       var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
