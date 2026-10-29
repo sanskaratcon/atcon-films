@@ -1261,19 +1261,30 @@ html,body{overflow-anchor:none}
 .ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
 
 
-/* v10 problem 02: one project, four stages, four vendors, a loss at every handoff */
-.mproj{padding:2.4cqw 2.6cqw 2.8cqw}
-.mpr{display:grid;grid-template-columns:14cqw 5.2cqw minmax(0,1fr) auto;align-items:center;column-gap:1.8cqw;padding:1.7cqw 2cqw;border-radius:1.6cqw;
-  background:#F6F8FB;box-shadow:inset 0 0 0 1px rgba(0,16,37,.05)}
-.mpr-n{display:flex;flex-direction:column;gap:.3cqw;font-size:1.6cqw;font-weight:600;letter-spacing:.06em;color:#8C95A6}
-.mpr-n b{font-size:2.5cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
-.mac .mpr .av-t{width:5.2cqw;height:5.2cqw;font-size:1.7cqw}
-.mpr-v{min-width:0}
-.mpr-v strong{display:block;font-size:2.2cqw;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mpr-v small{display:block;margin-top:.2cqw;font-size:1.8cqw;color:#8C95A6;white-space:nowrap}
-.mph{display:flex;align-items:center;gap:1.6cqw;height:4.8cqw;padding-left:8.6cqw}
-.mph i{align-self:stretch;width:0;border-left:.3cqw dashed #C9D2E1}
-.mph span{padding:.45cqw 1.3cqw;border-radius:3cqw;background:#FDE6E4;color:#C8382D;font-size:1.7cqw;font-weight:500;white-space:nowrap}
+/* v10 problem 02: one project's plan, a different vendor on every phase, a wait at every handover */
+.mgantt{padding:2.4cqw 2.6cqw 3.4cqw}
+.mg-body{display:grid;grid-template-columns:24cqw minmax(0,1fr);column-gap:1.6cqw}
+.mg-who>div{display:flex;align-items:center;gap:1.2cqw;height:9cqw}
+.mg-who>.mg-sp{height:4cqw}
+.mg-who strong{display:block;font-size:2.1cqw;font-weight:600}
+.mg-who small{display:block;margin-top:.2cqw;font-size:1.6cqw;color:#8C95A6;white-space:nowrap}
+.mac .mg-who .av-t{width:4.6cqw;height:4.6cqw;font-size:1.5cqw}
+.mg-lanes{position:relative}
+.mg-months{display:grid;grid-template-columns:repeat(7,1fr);height:4cqw}
+.mg-months i{display:flex;align-items:center;padding-left:.7cqw;border-left:1px solid #E8ECF3;font-style:normal;font-size:1.5cqw;color:#8C95A6}
+.mg-lane{position:relative;height:9cqw;border-top:1px solid #F0F2F6;
+  background:repeating-linear-gradient(90deg,#E8ECF3 0,#E8ECF3 1px,transparent 1px,transparent calc(100% / 7))}
+.mg-bar{position:absolute;top:2.4cqw;height:4.2cqw;border-radius:1.2cqw;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 78%,#fff),var(--c));
+  box-shadow:0 .8cqw 1.6cqw -.8cqw color-mix(in srgb,var(--c) 70%,#001025);transform-origin:0 50%;transform:scaleX(0);transition:transform .9s cubic-bezier(.3,0,.2,1)}
+.mg-bar.is-shown{transform:none}
+.mg-gap{position:absolute;top:2.4cqw;height:4.2cqw;box-sizing:border-box;display:grid;place-items:center;border:.25cqw dashed #E8A49D;border-radius:1.2cqw;
+  background:repeating-linear-gradient(-45deg,#FDEDEB 0 .7cqw,#FFF8F7 .7cqw 1.4cqw);font-size:1.5cqw;font-weight:600;color:#C8382D;white-space:nowrap;opacity:0;transition:opacity .5s ease}
+.mg-gap.is-shown{opacity:1}
+.mg-plan{position:absolute;top:4cqw;bottom:-3.4cqw;width:0;border-left:.3cqw dashed #2D63E6;font-style:normal;opacity:0;transition:opacity .5s ease}
+.mg-plan.is-shown{opacity:1}
+.mg-plan b{position:absolute;left:.8cqw;bottom:0;font-size:1.5cqw;font-weight:600;color:#2D63E6;white-space:nowrap}
+.pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1425,23 +1436,20 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 02 You have the vendors: one project, and every stage of it in other hands: advice, design, execution and
-               support each by a different vendor, and something is lost at every handoff -->
+          <!-- 02 You have the vendors: one project's plan. Each phase is a different vendor (advise, design, execution,
+               support); between them the project waits for every handover, and the 3-month plan becomes 7 months -->
           <div class="mac-sc">
             <div class="mw st" data-k="proj" style="--x:3%;--y:4%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal</span></div>
-              <div class="mw-b mproj">
-                <div class="mt-head"><h4>Customer portal</h4><span class="pill pill-amber">4 vendors · 1 project</span></div>
-                <div class="mpr st" data-k="s1"><span class="mpr-n">01<b>Advise</b></span><b class="av av-t" style="--c:#2D63E6">NA</b><span class="mpr-v"><strong>Northpoint Advisory</strong><small>Strategy &amp; roadmap</small></span><span class="pill">Report delivered</span></div>
-                <div class="mph st" data-k="h1"><i></i><span>Context lost in the handoff</span></div>
-                <div class="mpr st" data-k="s2"><span class="mpr-n">02<b>Design</b></span><b class="av av-t" style="--c:#5A86EE">NS</b><span class="mpr-v"><strong>Northfield Studio</strong><small>UX &amp; interface</small></span><span class="pill">Handed over</span></div>
-                <div class="mph st" data-k="h2"><i></i><span>Context lost in the handoff</span></div>
-                <div class="mpr st" data-k="s3"><span class="mpr-n">03<b>Execution</b></span><b class="av av-t" style="--c:#3FB27E">BF</b><span class="mpr-v"><strong>Bitforge Labs</strong><small>Development</small></span><span class="pill pill-amber">Waiting on design files</span></div>
-                <div class="mph st" data-k="h3"><i></i><span>Context lost in the handoff</span></div>
-                <div class="mpr st" data-k="s4"><span class="mpr-n">04<b>Support</b></span><b class="av av-t" style="--c:#9BBA2A">HL</b><span class="mpr-v"><strong>Helpline IT</strong><small>Run &amp; maintain</small></span><span class="pill pill-red">Not briefed</span></div>
+              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal · Timeline</span></div>
+              <div class="mw-b mgantt">
+                <div class="mt-head"><h4>Customer portal</h4><span class="pill" data-k="plan">Planned: 3 months</span></div>
+                <div class="mg-body">
+                  <div class="mg-who"><div class="mg-sp"></div><div><b class="av av-t" style="--c:#2D63E6">NA</b><span><strong>Advise</strong><small>Northpoint Advisory</small></span></div><div><b class="av av-t" style="--c:#5A86EE">NS</b><span><strong>Design</strong><small>Northfield Studio</small></span></div><div><b class="av av-t" style="--c:#3FB27E">BF</b><span><strong>Execution</strong><small>Bitforge Labs</small></span></div><div><b class="av av-t" style="--c:#9BBA2A">HL</b><span><strong>Support</strong><small>Helpline IT</small></span></div></div>
+                  <div class="mg-lanes"><div class="mg-months"><i>M1</i><i>M2</i><i>M3</i><i>M4</i><i>M5</i><i>M6</i><i>M7</i></div><div class="mg-lane"><i class="mg-bar" data-k="b1" style="left:0.00%;width:14.29%;--c:#2D63E6"></i><span class="mg-gap" data-k="g1" style="left:14.29%;width:10.71%">3 wks</span></div><div class="mg-lane"><i class="mg-bar" data-k="b2" style="left:25.00%;width:14.29%;--c:#5A86EE"></i><span class="mg-gap" data-k="g2" style="left:39.29%;width:7.14%">2 wks</span></div><div class="mg-lane"><i class="mg-bar" data-k="b3" style="left:46.43%;width:32.14%;--c:#3FB27E"></i><span class="mg-gap" data-k="g3" style="left:78.57%;width:14.29%">4 wks</span></div><div class="mg-lane"><i class="mg-bar" data-k="b4" style="left:92.86%;width:7.14%;--c:#9BBA2A"></i></div><i class="mg-plan" data-k="pl" style="left:42.86%"><b>Planned launch</b></i></div>
+                </div>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:86%"><span><b>4</b> vendors</span><span><b>4</b> contracts</span><span class="is-zero"><b>0</b> owning the whole</span></div>
+            <div class="mtally st" data-k="tally" style="top:80%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
           <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
@@ -2770,15 +2778,18 @@ class Component extends DCLogic {
       at(2900 + 5 * 280 + 200, function () { show('tm'); });
       var total = 2900 + 5 * 280 + 900;
     } else if (i === 1) {
-      // 02 Vendors: one project opens, then each stage gets its own vendor in turn (advise, design, execution, support),
-      // and every handoff between them loses something
+      // 02 Vendors: the project's plan fills in phase by phase, each by a different vendor; every handover leaves the project
+      // waiting, and the plan's 3 months become 7
       at(100, function () { show('proj'); });
+      at(450, function () { show('pl'); });
       [1, 2, 3, 4].forEach(function (n) {
-        at(500 + (n - 1) * 800, function () { show('s' + n); });
-        if (n < 4) at(500 + (n - 1) * 800 + 450, function () { show('h' + n); });
+        var t = 700 + (n - 1) * 1050;
+        at(t, function () { show('b' + n); });
+        if (n < 4) at(t + 650, function () { show('g' + n); });
       });
-      at(500 + 4 * 800 + 200, function () { show('tally'); });
-      var total = 500 + 4 * 800 + 900;
+      at(700 + 4 * 1050 + 100, function () { var p = $('plan'); if (p) { p.textContent = 'Actual: 7 months'; p.classList.add('pill-red'); flag(p, 'is-go'); } });
+      at(700 + 4 * 1050 + 500, function () { show('tally'); });
+      var total = 700 + 4 * 1050 + 1200;
     } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
       var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
