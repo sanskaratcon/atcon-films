@@ -3280,16 +3280,14 @@ class Component extends DCLogic {
   // glides the camera right and down across them, so they slide up and to the left past the edges.
   ospace(sp, f, G) {
     if (!sp.__cards) {
-      // a 3D space: cards at real depths, from right by the lens (large, soft) to far away (small, dim). Their places come
-      // from a simulation of the whole glide: no two ever overlap on screen, and the space stays lightly filled throughout
-      // (9 to 12 on screen, no large empty areas). [id, kind:source, X, Y, depth, size]; ph = photo, w = window, n = note, p = pill
-      var defs = [['a', 'ph:0', 0.082, 1.339, 0.8, 1.0], ['b', 'w:0', 0.481, 0.529, 0.9, 0.9], ['c', 'ph:3', 0.169, 0.267, 0.95, 1.0],
-                  ['d', 'ph:2', -0.349, 0.254, 1.4, 0.9], ['e', 'w:1', 2.097, 1.367, 1.5, 0.85], ['f', 'ph:4', 1.476, 0.758, 1.6, 0.9],
-                  ['g', 'n:0', 3.849, 2.216, 1.5, 0.9], ['h', 'ph:5', -0.675, -0.452, 1.8, 0.9], ['i', 'w:2', -0.873, 0.097, 1.9, 0.85],
-                  ['j', 'n:1', 0.938, 1.142, 1.7, 0.9], ['l', 'ph:1', 1.076, 0.041, 2.0, 0.9], ['m', 'p:0', 0.598, -0.062, 2.6, 0.9],
-                  ['n', 'ph:3', 2.964, 1.978, 3.0, 0.9], ['o', 'w:3', 0.61, -1.137, 3.2, 0.85], ['q', 'n:2', -0.077, 1.514, 3.0, 0.9],
-                  ['r', 'ph:5', 2.06, 1.988, 3.4, 0.9], ['s', 'p:1', 2.381, -0.05, 3.6, 0.9], ['t', 'ph:1', 1.497, 0.412, 3.8, 0.9],
-                  ['u', 'n:3', 1.66, -0.814, 3.5, 0.9], ['v', 'p:2', 1.851, 2.388, 4.0, 0.9], ['w2', 'ph:2', -0.823, 2.067, 3.9, 0.85]];
+      // a 3D space: a few cards at real depths, from near the lens to far away, scattered at random (they start from a random
+      // scatter over the whole space, and the search that spaces them also keeps them from lining up in rows, columns or
+      // diagonals); every card passes through the frame, no two ever overlap on screen, and about six are on screen at a time.
+      // [id, kind:source, X, Y, depth, size]; ph = photo, w = window, n = note, p = pill
+      var defs = [['a', 'ph:0', 1.242, 0.34, 0.95, 0.95], ['b', 'w:0', 0.831, -0.263, 1.05, 0.85], ['c', 'ph:2', 1.269, 0.979, 1.5, 0.9],
+                  ['d', 'ph:4', 0.493, 1.231, 1.7, 0.9], ['e', 'n:0', -0.191, 1.117, 1.6, 0.9], ['f', 'ph:3', 0.322, -0.308, 1.9, 0.9],
+                  ['g', 'w:1', 0.013, 0.343, 2.0, 0.85], ['h', 'ph:5', 1.033, -0.315, 2.7, 0.9], ['i', 'p:0', 0.882, 0.885, 2.9, 0.9],
+                  ['j', 'ph:1', -1.292, 0.048, 3.1, 0.9], ['l', 'n:1', 1.158, 2.188, 3.0, 0.9], ['m', 'w:2', 0.746, -1.581, 3.3, 0.85]];
       // photos: [file, width, height] at depth 1, cut from the hero's own footage
       var photos = [['handshake', 280, 350], ['office', 300, 300], ['meeting', 390, 260], ['building', 280, 350], ['thinking', 280, 350], ['talk', 360, 270]];
       var pills = ['<i style="--c:#3FB27E"></i>Revenue <b>+18%</b>', '<i style="--c:#2D63E6"></i><b>1,284</b> tasks done', '<i style="--c:#9BBA2A"></i>Client portal <b>v1.0 live</b>'];
@@ -3324,8 +3322,8 @@ class Component extends DCLogic {
       c.el.style.opacity = on ? '1' : '0';
       if (!on) return;
       c.el.style.transform = 'translate3d(' + (x - c.el.offsetWidth / 2).toFixed(1) + 'px,' + (y - c.el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
-      // depth: near the lens soft, far away dim and a little soft, as if seen through dark air; nearer ones on top
-      var blur = d < 1.05 ? (1.05 - d) * 22 + 1.5 : (d > 2.6 ? (d - 2.6) * 1.4 : 0), dim = d > 2.0 ? Math.max(0.42, 1 - (d - 2.0) * 0.3) : 1;
+      // depth, kept light: near the lens slightly soft, far away a little dimmer; nearer ones on top
+      var blur = d < 1.0 ? (1.0 - d) * 8 + 0.8 : 0, dim = d > 2.2 ? Math.max(0.72, 1 - (d - 2.2) * 0.16) : 1;
       c.el.style.filter = (blur > 0.3 ? 'blur(' + (blur / sc).toFixed(2) + 'px) ' : '') + (dim < 1 ? 'brightness(' + dim.toFixed(3) + ')' : '');
       c.el.style.zIndex = String(Math.round(100 - d * 10));
     });
