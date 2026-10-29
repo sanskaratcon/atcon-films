@@ -1308,36 +1308,6 @@ html,body{overflow-anchor:none}
 @keyframes mg-say{from{opacity:0;transform:translateY(.8cqw)}to{opacity:1;transform:none}}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
-
-/* v10 problem 03: the hot potato. The Owner badge is tossed from person to person until it drops to the floor */
-.hb{padding:2.2cqw 2.6cqw 2.6cqw}
-.hb-own{display:flex;align-items:center;gap:1.4cqw;margin:0;font-size:2cqw;color:#8C95A6}
-.hb-own b{display:inline-block;padding:.5cqw 1.6cqw;border-radius:3cqw;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);font-weight:600;font-size:2.1cqw;transition:background .3s ease,color .3s ease}
-.hb-own b.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
-.hb-own b.is-none{background:#FDE6E4;color:#C8382D}
-.hb-stage{position:relative;height:33cqw;margin-top:1.8cqw;border-radius:1.8cqw;background:linear-gradient(180deg,#F8FAFD 0,#F8FAFD 82%,#EEF1F6 82%)}
-.hb-p{position:absolute;top:10cqw;width:16cqw;margin-left:-8cqw;display:flex;flex-direction:column;align-items:center}
-.hb-face{display:block;width:9cqw;height:9cqw;border-radius:50%;box-shadow:0 0 0 .5cqw #fff,0 1.4cqw 2.6cqw -1.2cqw rgba(0,16,37,.35)}
-.hb-p span{margin-top:1.2cqw;font-size:1.8cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap}
-.hb-p.is-hot .hb-face{animation:hb-wig .6s ease}
-@keyframes hb-wig{20%{transform:rotate(-8deg)}40%{transform:rotate(7deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(3deg)}100%{transform:none}}
-.mac .hb-say{position:absolute;bottom:calc(100% + .8cqw);left:50%;width:22cqw;margin:0 0 0 -11cqw;box-sizing:border-box;padding:1cqw 1.2cqw;border-radius:1.4cqw;
-  background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.12),0 1.2cqw 2.6cqw -1.2cqw rgba(0,16,37,.3);text-align:center;font-size:1.8cqw;font-weight:500;color:var(--atc-navy);
-  opacity:0;transform:scale(.6);transform-origin:50% 120%;transition:opacity .2s ease,transform .35s cubic-bezier(.2,.9,.3,1.5)}
-.hb-say::after{content:'';position:absolute;left:50%;bottom:-.7cqw;width:1.4cqw;height:1.4cqw;margin-left:-.7cqw;background:#fff;transform:rotate(45deg)}
-.mac .hb-say.is-shown{opacity:1;transform:none}
-.hb-p:first-child .hb-say{margin-left:-7cqw}.hb-p:nth-child(4) .hb-say{margin-left:-15cqw}
-.hb-badge{position:absolute;top:15.6cqw;width:12cqw;margin-left:2.2cqw;z-index:2;transition:left .8s cubic-bezier(.45,0,.25,1),top .7s cubic-bezier(.55,0,.85,.25)}
-.hb-badge b{display:inline-flex;align-items:center;gap:.6cqw;padding:.6cqw 1.3cqw;border-radius:3cqw;background:var(--atc-navy);color:#fff;font-size:1.6cqw;font-weight:600;
-  box-shadow:0 1cqw 2cqw -.8cqw rgba(0,16,37,.6);white-space:nowrap;transition:background .3s ease}
-.hb-badge svg{width:1.8cqw;height:1.8cqw;fill:#F5C542}
-.hb-badge.is-hop b{animation:hb-hop .8s cubic-bezier(.3,0,.3,1)}
-@keyframes hb-hop{45%{transform:translateY(-6cqw) rotate(-14deg)}100%{transform:none}}
-.hb-badge.is-drop{left:46% !important;top:27.4cqw}
-.hb-badge.is-drop b{background:#A3ABB8;animation:hb-land 1.1s ease forwards}
-.hb-badge.is-drop svg{fill:#fff}
-@keyframes hb-land{0%{transform:translateY(-3cqw) rotate(-30deg)}60%{transform:rotate(-12deg)}75%{transform:translateY(-1.2cqw) rotate(-16deg)}100%{transform:rotate(-14deg)}}
-.mac .hb-end{margin:1.8cqw 0 0;padding:1.4cqw 1.8cqw;border-radius:1.6cqw;background:#FDE6E4;color:#C8382D;font-size:2.3cqw;font-weight:600;text-align:center}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1504,19 +1474,28 @@ with a vision.</h2>
             <div class="mtally st" data-k="tally" style="top:83%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: the hot potato. The task's Owner badge is tossed from person to
-               person (each says "not us" and throws it on), until the last one flicks it away and it drops to the floor:
-               the owner is no one -->
+          <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
           <div class="mac-sc">
             <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
-              <div class="mw-b hb">
-                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber" data-k="late">Delayed 1 week</span></div>
-                <p class="hb-own">Owner <b data-k="ownt" style="--c:#2D63E6">Marketing</b></p>
-                <div class="hb-stage"><div class="hb-p" data-k="p0" style="left:12.5%;--c:#2D63E6"><i class="hb-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:66.31% 39.86%"></i><span>Marketing</span><p class="hb-say" data-k="s0">Not us. Ask IT.</p></div><div class="hb-p" data-k="p1" style="left:37.5%;--c:#3FB27E"><i class="hb-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:26.91% 57.11%"></i><span>IT</span><p class="hb-say" data-k="s1">Not us. Ask Bitforge.</p></div><div class="hb-p" data-k="p2" style="left:62.5%;--c:#5A86EE"><i class="hb-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:58.26% 57.11%"></i><span>Bitforge Labs</span><p class="hb-say" data-k="s2">Not our job.</p></div><div class="hb-p" data-k="p3" style="left:87.5%;--c:#9BBA2A"><i class="hb-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:73.94% 57.11%"></i><span>Finance</span><p class="hb-say" data-k="s3">No budget for this.</p></div>
-                  <span class="hb-badge" data-k="badge" style="left:12.5%"><b><svg viewBox="0 0 16 16"><path d="M8 1.6l1.9 4 4.4.5-3.3 3 .9 4.3L8 11.3l-3.9 2.1.9-4.3-3.3-3 4.4-.5z"/></svg>Owner</b></span>
+              <div class="mw-b mtask">
+                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-red">Delayed 3 weeks</span></div>
+                <dl>
+                  <dt>Owner</dt><dd><span class="pill owner" data-k="owner">Marketing</span></dd>
+                  <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#5A86EE">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
+                </dl>
+                <div class="mcomments">
+                  <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span data-type="Not our fault. IT never set up the integration."></span></p></div>
+                  <small class="mlog st" data-k="l1"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Marketing</b> reassigned this to <b>IT</b></small>
+                  <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span data-type="Not on us. Bitforge changed the API last week."></span></p></div>
+                  <small class="mlog st" data-k="l2"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>IT</b> reassigned this to <b>Bitforge Labs</b></small>
+                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
+                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#5A86EE">BF</b><p><strong>Bitforge Labs</strong><span data-type="We built what the brief said. Not our problem."></span></p></div>
+                  <small class="mlog st" data-k="l3"><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b>Bitforge Labs</b> removed the owner</small>
+                  <small class="st" data-k="more">3 teams · 0 owners · still delayed</small>
                 </div>
-                <p class="hb-end st" data-k="end">Everyone involved. No one owns it.</p>
               </div>
             </div>
           </div>
@@ -2844,28 +2823,28 @@ class Component extends DCLogic {
       at(tEnd + 600, function () { gantt.setAttribute('data-on', 'all'); show('tally'); });
       var total = tEnd + 1300;
     } else if (i === 2) {
-      // 03 The hot potato: each person says "not us" and tosses the Owner badge to the next; the last one flicks it away
-      // and it drops to the floor, so the owner is no one
-      var badge = $('badge'), ownt = $('ownt'), late = $('late');
-      var NAMES = ['Marketing', 'IT', 'Bitforge Labs', 'Finance'], COL = ['#2D63E6', '#3FB27E', '#5A86EE', '#9BBA2A'], X = ['12.5%', '37.5%', '62.5%', '87.5%'];
-      var say = function (k) { for (var m = 0; m < 4; m++) show('s' + m, m === k); };
-      at(100, function () { show('task'); flag($('p0'), 'is-hot'); });
-      [0, 1, 2, 3].forEach(function (k) {
-        var t = 700 + k * 1300;
-        at(t, function () { say(k); });
-        at(t + 650, function () {
-          late.textContent = 'Delayed ' + (k + 2) + ' weeks'; flag(late, 'is-flip');
-          if (k < 3) {
-            badge.style.left = X[k + 1]; flag(badge, 'is-hop'); flag($('p' + (k + 1)), 'is-hot');
-            ownt.textContent = NAMES[k + 1]; ownt.style.setProperty('--c', COL[k + 1]); flag(ownt, 'is-flip');
-          } else {
-            badge.classList.add('is-drop');
-            ownt.textContent = 'No one'; ownt.classList.add('is-none'); flag(ownt, 'is-flip');
-          }
+      // 03 Every team blames the next and passes the task on; in the end nobody owns it
+      var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
+      at(100, function () { show('task'); });
+      [1, 2, 3].forEach(function (n) {
+        var from = tt;
+        at(from, function () { show('t' + n); });
+        // Each reply lands whole, like a chat message, after its typing indicator
+        at(from + 700, function () {
+          var msg = $('k' + n), sp = msg && msg.querySelector('[data-type]');
+          if (sp) sp.textContent = sp.getAttribute('data-type');
+          show('t' + n, false); show(msg);
         });
+        var end = from + 700 + 900;
+        at(end + 200, function () {
+          show('l' + n);
+          owner.textContent = owners[n - 1];
+          flag(owner, n === 3 ? 'is-none' : 'is-flip');
+        });
+        tt = end + 650;
       });
-      at(700 + 4 * 1300, function () { say(-1); show('end'); });
-      var total = 700 + 4 * 1300 + 900;
+      at(tt, function () { show('more'); });
+      var total = tt + 400;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
