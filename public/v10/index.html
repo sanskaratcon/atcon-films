@@ -1135,6 +1135,8 @@ html,body{overflow-anchor:none}
 .ospace .osc-w .cvm-bar{display:none}
 .ospace .osc-w .cvm-body{padding:24px 26px;gap:14px}
 .ospace .osc-n{width:340px}
+.ospace .osc-ph{border-radius:10px;overflow:hidden;background:#0B1424;box-shadow:0 30px 70px -30px rgba(0,0,0,.8)}
+.ospace .osc-ph img{display:block;width:100%;height:100%;object-fit:cover}
 .ospace .osc-p{display:flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 14px;border-radius:999px;background:#fff;white-space:nowrap;
   font-family:var(--atc-font);font-size:16px;color:#5B6B78;box-shadow:0 24px 50px -24px rgba(0,0,0,.7)}
 .ospace .osc-p b{font-weight:500;color:var(--atc-navy)}
@@ -3278,16 +3280,26 @@ class Component extends DCLogic {
   // glides the camera right and down across them, so they slide up and to the left past the edges.
   ospace(sp, f, G) {
     if (!sp.__cards) {
-      // like the reference: a sparse layout, four to six on screen at once, one large and others medium and small, well
-      // apart; each is placed by when it passes (fi), where it is then (dx, dy, as parts of the screen), its depth and size
-      // [kind, source, fi, dx, dy, depth, size]; p = a small pill
-      var defs = [['w', 0, 0.04, -0.13, -0.17, 1.0, 1.0], ['p', 0, 0.0, -0.34, -0.36, 1.7, 0.6], ['n', 0, 0.1, 0.31, 0.12, 1.3, 0.75],
-                  ['w', 1, 0.24, -0.31, 0.24, 1.5, 0.72], ['p', 1, 0.3, 0.37, -0.27, 1.9, 0.55], ['w', 2, 0.42, 0.13, -0.1, 1.1, 0.88],
-                  ['n', 1, 0.5, -0.37, 0.04, 1.7, 0.62], ['w', 3, 0.62, 0.33, 0.27, 1.25, 0.8], ['n', 2, 0.7, -0.16, -0.33, 1.45, 0.66],
-                  ['p', 2, 0.78, 0.41, -0.06, 1.8, 0.55], ['n', 3, 0.86, -0.38, 0.3, 1.35, 0.7]];
+      // like the reference: a sparse layout, four to six on screen at once, mostly photos from the site's own footage with
+      // the offer's windows, notes and pills between them; one large and others medium and small, well apart. Each is placed
+      // by when it passes (fi), where it is then (dx, dy, as parts of the screen), its depth and size
+      // [kind, source, fi, dx, dy, depth, size]; ph = a photo, p = a small pill
+      // (spaced with a simulation of the whole glide: no two ever overlap and four to six are on screen at a time)
+      var defs = [['ph', 0, 0.02, -0.45, 0.42, 1.0, 1.0], ['ph', 1, 0.0, 0.111, -0.42, 1.8, 0.55], ['w', 0, 0.08, -0.45, -0.406, 1.3, 0.72],
+                  ['ph', 2, 0.16, -0.12, 0.001, 1.5, 0.75], ['p', 0, 0.22, -0.418, 0.191, 1.9, 0.55], ['ph', 3, 0.32, 0.45, -0.42, 1.05, 0.95],
+                  ['n', 0, 0.4, 0.379, -0.157, 1.7, 0.6], ['w', 1, 0.5, -0.176, -0.097, 1.3, 0.7], ['ph', 4, 0.58, 0.427, 0.281, 1.4, 0.78],
+                  ['p', 1, 0.66, -0.45, 0.195, 1.85, 0.5], ['ph', 5, 0.72, -0.342, 0.215, 1.35, 0.7], ['n', 1, 0.8, 0.45, 0.042, 1.6, 0.6],
+                  ['w', 2, 0.88, 0.326, 0.257, 1.5, 0.6]];
+      // photos: [file, width, height] at depth 1, cut from the hero's own footage
+      var photos = [['handshake', 280, 350], ['office', 300, 300], ['meeting', 390, 260], ['building', 280, 350], ['thinking', 280, 350], ['talk', 360, 270]];
       var pills = ['<i style="--c:#3FB27E"></i>Revenue <b>+18%</b>', '<i style="--c:#2D63E6"></i><b>1,284</b> tasks done', '<i style="--c:#9BBA2A"></i>Client portal <b>v1.0 live</b>'];
       sp.__cards = [];
       defs.forEach(function (d) {
+        if (d[0] === 'ph') {
+          var ph = photos[d[1]], pe2 = document.createElement('div'); pe2.className = 'osc osc-ph'; pe2.style.width = ph[1] + 'px'; pe2.style.height = ph[2] + 'px';
+          pe2.innerHTML = '<img src="../assets/offer-photos/' + ph[0] + '.webp" alt="" decoding="async" draggable="false">'; sp.appendChild(pe2);
+          sp.__cards.push({ el: pe2, fi: d[2], dx: d[3], dy: d[4], z: d[5], s: d[6] }); return;
+        }
         if (d[0] === 'p') {
           var pe = document.createElement('div'); pe.className = 'osc osc-p'; pe.innerHTML = pills[d[1]]; sp.appendChild(pe);
           sp.__cards.push({ el: pe, fi: d[2], dx: d[3], dy: d[4], z: d[5], s: d[6] }); return;
