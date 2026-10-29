@@ -2883,6 +2883,8 @@ class Component extends DCLogic {
     // already there inside the O's opening; it grows with the opening until it fills the window.
     var zr = ease(map(u, S.pop[0], S.swap[1])), bodyEl = box.querySelector('.atc-sol-body');
     var Oel = Tw ? Tw.querySelectorAll('.sol-ltr')[2] : null;
+    // going in, the whole O turns black (its stroke too), one with the black space inside it
+    if (Oel) { var ob = 1 - ease(map(zr, 0.02, 0.2)), oP = Oel.querySelector('path'); if (oP) oP.style.fill = ob < 1 ? 'rgb(0,' + Math.round(16 * ob) + ',' + Math.round(37 * ob) + ')' : ''; }
     // the window (bar, tabs, frame) stays on Business-led technology and fades away as the camera starts to move in;
     // the tab never switches, and What we offer arrives without the window around it
     sw = 0;
@@ -2926,7 +2928,7 @@ class Component extends DCLogic {
           this._ospK = gk; this._osp = { x: gx, y: gy, w: stg.clientWidth, h: stg.clientHeight };
           [off, sp].forEach(function (el) { if (!el) return; el.style.inset = 'auto'; el.style.left = -gx + 'px'; el.style.top = -gy + 'px'; el.style.width = stg.clientWidth + 'px'; el.style.height = stg.clientHeight + 'px'; });
         }
-        var G = this._osp || { x: 0, y: 0, w: bR.width, h: bR.height }, Rs = oc.r * s * 0.96, Ox = ox + G.x, Oy = oy + G.y;
+        var G = this._osp || { x: 0, y: 0, w: bR.width, h: bR.height }, Rs = oc.r * s * 1.46, Ox = ox + G.x, Oy = oy + G.y;
         var fly = ease(map(u, S.pop[0] + 10, S.plug[1])), cardP = map(u, S.pop[0] + 44, S.plug[1]);
         if (sp) {
           var spOn = zr > 0.12;
