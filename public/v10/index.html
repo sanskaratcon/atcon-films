@@ -2830,7 +2830,8 @@ class Component extends DCLogic {
     if (u < S.tiles[0]) this._offHeld = [];
     this._offHeld = this._offHeld || [];
     var stepLen = (S.tiles[1] - S.tiles[0]) / 4;
-    for (var hs = 0; hs < 4; hs++) {
+    // (v10: inside the O there is no hard stop on each capability, only the soft glide to the nearest one)
+    for (var hs = 0; hs < 4 && !this.q('ospace'); hs++) {
       var hu = S.tiles[0] + hs * stepLen + stepLen * 0.5;
       if (!this._offHeld[hs] && lastU < hu && u >= hu && performance.now() > (this._jumpUntil || 0)) {
         this._offHeld[hs] = true;
@@ -3329,6 +3330,11 @@ class Component extends DCLogic {
     }
     var W = G.w, H = G.h, cx = W / 2, cy = H / 2, k = Math.min(W / 1440, H / 900);
     var mp = this._fx.map, es = this._fx.ease;
+    // every size is read in one go before anything moves (and only when the screen changes, or now and then while
+    // fonts and pictures settle), so no frame stops to lay the page out again
+    var szK = W + 'x' + H, all = sp.__cards.map(function (c) { return c.el; }).concat(sp.__ocap.map(function (g) { return g.el; }));
+    sp.__szN = (sp.__szN || 0) + 1;
+    if (sp.__szK !== szK || sp.__szN % 45 === 0) { sp.__szK = szK; all.forEach(function (el) { el.__w = el.offsetWidth; el.__h = el.offsetHeight; }); }
     // the floating cards step back (fainter and darker) while the title or a capability is in front
     var foc = es(mp(u, S.pop[0] + 40, S.pop[0] + 62)) * (1 - es(mp(u, S.tiles[1] - 10, S.tiles[1] + 10))), amb = 1 - 0.15 * foc;
     var cam = this.ocamAt(u, S), fr = this.ocapPlace(sp, W, H, u, S, endP, cam);
@@ -3340,10 +3346,10 @@ class Component extends DCLogic {
       if (c.el.classList.contains('osc-w') || c.el.classList.contains('osc-n')) { c.el.style.opacity = '0'; return; }
       var d = c.Z - PZ * f, x = cx + (c.X - PX * f) / d * W - cam[0] * W / d, y = cy + (c.Y - PY * f) / d * H - cam[1] * H / d, sc = k * c.s / d;
       if (cam.moved) {
-        var wm = c.el.offsetHeight * sc / 2 + 40, wp = H + 2 * wm, wn = c.el.offsetWidth * sc / 2 + 40, wq = W + 2 * wn;
+        var wm = c.el.__h * sc / 2 + 40, wp = H + 2 * wm, wn = c.el.__w * sc / 2 + 40, wq = W + 2 * wn;
         y = ((y + wm) % wp + wp) % wp - wm; x = ((x + wn) % wq + wq) % wq - wn;
       }
-      var w = c.el.offsetWidth * sc, h = c.el.offsetHeight * sc;
+      var w = c.el.__w * sc, h = c.el.__h * sc;
       var on = x + w / 2 > -40 && x - w / 2 < W + 40 && y + h / 2 > -40 && y - h / 2 < H + 40;
       // and any that come near the title, a capability or its text fade out of their way
       var clr = 1;
@@ -3351,13 +3357,14 @@ class Component extends DCLogic {
         var q = fr[fi], gx = Math.max(q[0] - (x + w / 2), (x - w / 2) - q[2], 0), gy = Math.max(q[1] - (y + h / 2), (y - h / 2) - q[3], 0);
         clr = Math.min(clr, 1 - q[4] * (1 - Math.min(1, Math.hypot(gx, gy) / 90)));
       }
-      c.el.style.opacity = on ? (amb * clr).toFixed(3) : '0';
+      // depth by transparency alone, which costs nothing to draw: far away a little fainter; nearer ones on top
+      var dim = (d > 2.2 ? Math.max(0.72, 1 - (d - 2.2) * 0.16) : 1) * (1 - 0.25 * foc);
+      c.el.style.opacity = on ? (amb * clr * dim).toFixed(3) : '0';
       if (!on) return;
-      c.el.style.transform = 'translate3d(' + (x - c.el.offsetWidth / 2).toFixed(1) + 'px,' + (y - c.el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
-      // depth, kept light: near the lens slightly soft, far away a little dimmer; nearer ones on top
-      var blur = d < 1.0 ? (1.0 - d) * 8 + 0.8 : 0, dim = (d > 2.2 ? Math.max(0.72, 1 - (d - 2.2) * 0.16) : 1) * (1 - 0.25 * foc);
-      c.el.style.filter = (blur > 0.3 ? 'blur(' + (blur / sc).toFixed(2) + 'px) ' : '') + (dim < 1 ? 'brightness(' + dim.toFixed(3) + ')' : '');
-      c.el.style.zIndex = String(Math.round(100 - d * 10));
+      c.el.style.transform = 'translate3d(' + (x - c.el.__w / 2).toFixed(2) + 'px,' + (y - c.el.__h / 2).toFixed(2) + 'px,0) scale(' + sc.toFixed(4) + ')';
+      if (c.el.style.filter) c.el.style.filter = '';
+      var zi = String(Math.round(100 - d * 10));
+      if (c.el.style.zIndex !== zi) c.el.style.zIndex = zi;
     });
   }
 
@@ -3391,6 +3398,7 @@ class Component extends DCLogic {
   // curve through each stop
   ocamAt(u, S) {
     var span = (S.tiles[1] - S.tiles[0]) / 4, t = Math.max(0, (u - (S.tiles[0] - span * 0.5)) / span), P = this.ocamStops();
+    if (t < 1) t = t * t * (2 - t);
     var n = P.length - 1, i = Math.min(n - 1, Math.floor(t)), q = Math.min(1, t - i);
     var p0 = P[Math.max(0, i - 1)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(n, i + 2)], o = [];
     for (var a = 0; a < 2; a++) {
@@ -3422,12 +3430,12 @@ class Component extends DCLogic {
       // where the camera is, relative to where this one sits in the middle of the screen
       var st = stops[at], sc = k * z;
       var x = W / 2 + (st[0] - cam[0]) * W * z + ox * W, y = H / 2 + (st[1] - cam[1]) * H * z + oy * H;
-      var el = g.el, hw = el.offsetWidth * sc / 2, hh = el.offsetHeight * sc / 2;
+      var el = g.el, hw = (el.__w || el.offsetWidth) * sc / 2, hh = (el.__h || el.offsetHeight) * sc / 2;
       if (op <= 0.002 || y + hh < -40 || y - hh > H + 40 || x + hw < -40 || x - hw > W + 40) { if (el.style.opacity !== '0') el.style.opacity = '0'; return; }
       el.style.opacity = op.toFixed(3);
       rects.push([x - hw, y - hh, x + hw, y + hh, op]);
-      el.style.transform = 'translate3d(' + (x - el.offsetWidth / 2).toFixed(1) + 'px,' + (y - el.offsetHeight / 2).toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
-      el.style.filter = '';
+      el.style.transform = 'translate3d(' + (x - hw / sc).toFixed(2) + 'px,' + (y - hh / sc).toFixed(2) + 'px,0) scale(' + sc.toFixed(4) + ')';
+      if (el.style.filter) el.style.filter = '';
     });
     // the end: a white card comes in from the bottom right at a moderate size, settles in the middle, and grows until
     // it is the whole screen; the light sections follow from it
