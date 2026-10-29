@@ -1128,7 +1128,10 @@ html,body{overflow-anchor:none}
 /* v10 What we offer: inside the O is a dark space with the offer's windows floating at different depths; the camera
    flies through it toward one card, which comes to the front, fills the screen and carries What we offer in white */
 .ospace{position:absolute;z-index:3;left:0;top:0;width:100%;height:100%;visibility:hidden;pointer-events:none;overflow:hidden;
-  background:#000}
+  background:radial-gradient(120% 95% at 50% 45%,#0D1016 0,#0B0E13 55%,#07090D 100%)}
+/* matte: a fine still grain over the dark (behind the cards), so it reads as a soft printed surface, not a glossy black */
+.ospace::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.07;background-size:180px 180px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .ospace .osc{position:absolute;left:0;top:0;transform-origin:50% 50%;will-change:transform,opacity,filter;opacity:0}
 .ospace .osc-w{width:440px;height:280px}
 .ospace .osc-w .cvm{position:absolute;inset:0;background:#fff;border-radius:22px;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
@@ -2901,8 +2904,8 @@ class Component extends DCLogic {
     // already there inside the O's opening; it grows with the opening until it fills the window.
     var zr = ease(map(u, S.pop[0], S.swap[1])), bodyEl = box.querySelector('.atc-sol-body');
     var Oel = Tw ? Tw.querySelectorAll('.sol-ltr')[2] : null;
-    // going in, the whole O turns black (its stroke too), one with the black space inside it
-    if (Oel) { var ob = 1 - ease(map(zr, 0.02, 0.2)), oP = Oel.querySelector('path'); if (oP) oP.style.fill = ob < 1 ? 'rgb(0,' + Math.round(16 * ob) + ',' + Math.round(37 * ob) + ')' : ''; }
+    // going in, the whole O turns the matte charcoal of the space (its stroke too), one with the space inside it
+    if (Oel) { var ob = 1 - ease(map(zr, 0.02, 0.2)), oP = Oel.querySelector('path'); if (oP) oP.style.fill = ob < 1 ? 'rgb(' + Math.round(20 * (1 - ob)) + ',' + Math.round(23 - 7 * ob) + ',' + Math.round(29 + 8 * ob) + ')' : ''; }
     // the window (bar, tabs, frame) stays on Business-led technology and fades away as the camera starts to move in;
     // the tab never switches, and What we offer arrives without the window around it
     sw = 0;
