@@ -1309,25 +1309,17 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 03, the original thread made easier to read: the owner shown with its face, each handoff as one face
-   passing to the next, the blamed team marked, and a summary at the end */
+/* v10 problem 03, the original thread kept simple: the owner shown with its face moving on with each reply, and one
+   line at the end */
 .ownc{display:inline-flex;align-items:center;gap:1cqw;padding:.5cqw 1.8cqw .5cqw .5cqw;border-radius:5cqw;background:#fff;
   box-shadow:0 0 0 .3cqw color-mix(in srgb,var(--c) 35%,#fff);transition:box-shadow .3s ease}
 .mac .ownc .av-t{width:4cqw;height:4cqw;font-size:1.3cqw}
 .ownc strong{font-size:2.1cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap}
 .ownc.is-flip{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 .ownc.is-none{box-shadow:0 0 0 .3cqw #F3B7B1}.ownc.is-none strong{color:#C8382D}
-.mcomments .hl{font-weight:600;color:var(--atc-navy);background:linear-gradient(transparent 58%,#FDE7A6 58%)}
-.mcomments .mpass{display:flex;align-items:center;gap:1cqw;padding-left:6.6cqw;font-size:1.75cqw;color:#8C95A6}
-.mac .mcomments .mpass .av-t{width:3.2cqw;height:3.2cqw;font-size:1.05cqw}
-.mac .mcomments .mpass .mpass-none{background:#fff;color:#A3ABB8;box-shadow:inset 0 0 0 .25cqw #C9D2E1}
-.mcomments .mpass svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:#8C95A6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.mcomments .mpass span{margin-left:.6cqw}
-.mcomments .mpass span b{font-weight:600;color:#3A4D55}
-.mcomments .msum{display:flex;flex-wrap:wrap;gap:1.2cqw;padding-top:1cqw}
-.msum span{padding:.9cqw 1.8cqw;border-radius:4cqw;background:#F5F6F9;font-size:1.9cqw;color:#3A4D55;white-space:nowrap}
-.msum b{font-weight:600;color:var(--atc-navy)}
-.msum .is-zero{background:#FDE6E4}.msum .is-zero,.msum .is-zero b{color:#C8382D}
+.mtask .ownc strong{font-size:2.4cqw}
+.mac .mtask .ownc .av-t{width:4.6cqw;height:4.6cqw;font-size:1.5cqw}
+.mcomments .mend{padding:1.4cqw 1.8cqw;border-radius:1.6cqw;background:#FDE6E4;color:#C8382D;font-size:2.3cqw;font-weight:600}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1494,29 +1486,22 @@ with a vision.</h2>
             <div class="mtally st" data-k="tally" style="top:83%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on. The owner
-               (with its face) changes hands, each handoff shows as one face passing to the next, the blamed team is marked,
-               the delay grows, and it ends unassigned: 3 teams involved, 3 handoffs, 0 owners -->
+          <!-- 03 Everyone is involved, no one is accountable, kept simple: three short replies, each "not us", and the owner
+               moving with each one until it is no one -->
           <div class="mac-sc">
             <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
               <div class="mw-b mtask">
-                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber" data-k="late">Delayed 1 week</span></div>
+                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber">Delayed 3 weeks</span></div>
                 <dl>
                   <dt>Owner</dt><dd><span class="ownc" data-k="owner" style="--c:#2D63E6"><b class="av av-t" data-k="oav" style="--c:#2D63E6">MK</b><strong data-k="oname">Marketing</strong></span></dd>
                   <dt>Involved</dt><dd class="avs"><b style="--c:#2D63E6">MK</b><b style="--c:#3FB27E">IT</b><b style="--c:#5A86EE">BF</b><b style="--c:#9BBA2A">FN</b><em>+6</em></dd>
                 </dl>
                 <div class="mcomments">
-                  <div class="mtyping st" data-k="t1"><b class="av av-t" style="--c:#2D63E6">MK</b><span>Marketing is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span>Not our fault. <b class="hl">IT</b> never set up the integration.</span></p></div>
-                  <div class="mpass st" data-k="l1"><b class="av av-t" style="--c:#2D63E6">MK</b><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b class="av av-t" style="--c:#3FB27E">IT</b><span><b>Marketing</b> passed it to <b>IT</b></span></div>
-                  <div class="mtyping st" data-k="t2"><b class="av av-t" style="--c:#3FB27E">IT</b><span>IT is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span>Not on us. <b class="hl">Bitforge</b> changed the API last week.</span></p></div>
-                  <div class="mpass st" data-k="l2"><b class="av av-t" style="--c:#3FB27E">IT</b><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b class="av av-t" style="--c:#5A86EE">BF</b><span><b>IT</b> passed it to <b>Bitforge Labs</b></span></div>
-                  <div class="mtyping st" data-k="t3"><b class="av av-t" style="--c:#5A86EE">BF</b><span>Bitforge Labs is typing</span><i></i><i></i><i></i></div>
-                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#5A86EE">BF</b><p><strong>Bitforge Labs</strong><span>We built what the brief said. <b class="hl">Not our problem.</b></span></p></div>
-                  <div class="mpass st" data-k="l3"><b class="av av-t" style="--c:#5A86EE">BF</b><svg viewBox="0 0 16 16"><path d="M2 8 H13 M9.5 4.5 L13 8 L9.5 11.5"/></svg><b class="av av-t mpass-none" style="--c:#A3ABB8">?</b><span><b>Bitforge Labs</b> removed the owner</span></div>
-                  <div class="msum st" data-k="more"><span><b>3</b> teams involved</span><span><b>3</b> handoffs</span><span class="is-zero"><b>0</b> owners</span></div>
+                  <div class="st" data-k="k1"><b class="av av-t" style="--c:#2D63E6">MK</b><p><strong>Marketing</strong><span>Not us. Ask IT.</span></p></div>
+                  <div class="st" data-k="k2"><b class="av av-t" style="--c:#3FB27E">IT</b><p><strong>IT</strong><span>Not us. Ask Bitforge.</span></p></div>
+                  <div class="st" data-k="k3"><b class="av av-t" style="--c:#5A86EE">BF</b><p><strong>Bitforge Labs</strong><span>Not us. Not our problem.</span></p></div>
+                  <p class="mend st" data-k="more">Everyone involved. No one owns it.</p>
                 </div>
               </div>
             </div>
@@ -2845,28 +2830,21 @@ class Component extends DCLogic {
       at(tEnd + 600, function () { gantt.setAttribute('data-on', 'all'); show('tally'); });
       var total = tEnd + 1300;
     } else if (i === 2) {
-      // 03 Every team blames the next and passes the task on: the owner (with its face) changes each time, the handoff
-      // shows as one face passing to the next, the delay grows, and in the end nobody owns it
-      var owner = $('owner'), oav = $('oav'), oname = $('oname'), late = $('late'), tt = 500;
-      var NEXT = [['IT', 'IT', '#3FB27E'], ['Bitforge Labs', 'BF', '#5A86EE'], ['Unassigned', '?', '#A3ABB8']];
+      // 03 Three short replies, each "not us"; with each one the owner moves on, until it is no one
+      var owner = $('owner'), oav = $('oav'), oname = $('oname');
+      var NEXT = [['IT', 'IT', '#3FB27E'], ['Bitforge Labs', 'BF', '#5A86EE'], ['No one', '?', '#A3ABB8']];
       at(100, function () { show('task'); });
       [1, 2, 3].forEach(function (n) {
-        var from = tt;
-        at(from, function () { show('t' + n); });
-        // each reply lands whole, like a chat message, after its typing indicator
-        at(from + 700, function () { show('t' + n, false); show('k' + n); });
-        var end = from + 700 + 900;
-        at(end + 200, function () {
+        var t = 600 + (n - 1) * 1300;
+        at(t, function () { show('k' + n); });
+        at(t + 650, function () {
           var o = NEXT[n - 1];
-          show('l' + n);
           oname.textContent = o[0]; oav.textContent = o[1]; oav.style.setProperty('--c', o[2]); owner.style.setProperty('--c', o[2]);
           flag(owner, 'is-flip'); if (n === 3) owner.classList.add('is-none');
-          late.textContent = 'Delayed ' + (n + 1) + ' weeks'; flag(late, 'is-flip');
         });
-        tt = end + 650;
       });
-      at(tt, function () { show('more'); });
-      var total = tt + 900;
+      at(600 + 3 * 1300 + 200, function () { show('more'); });
+      var total = 600 + 3 * 1300 + 1000;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
