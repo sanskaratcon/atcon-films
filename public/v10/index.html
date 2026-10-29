@@ -1260,6 +1260,20 @@ html,body{overflow-anchor:none}
 /* the word beside the counter follows the loading: Ideas, Strategy, Creative, Development, Partner */
 .ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
 
+
+/* v10 problem 02: one project, four stages, four vendors, a loss at every handoff */
+.mproj{padding:2.4cqw 2.6cqw 2.8cqw}
+.mpr{display:grid;grid-template-columns:14cqw 5.2cqw minmax(0,1fr) auto;align-items:center;column-gap:1.8cqw;padding:1.7cqw 2cqw;border-radius:1.6cqw;
+  background:#F6F8FB;box-shadow:inset 0 0 0 1px rgba(0,16,37,.05)}
+.mpr-n{display:flex;flex-direction:column;gap:.3cqw;font-size:1.6cqw;font-weight:600;letter-spacing:.06em;color:#8C95A6}
+.mpr-n b{font-size:2.5cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
+.mac .mpr .av-t{width:5.2cqw;height:5.2cqw;font-size:1.7cqw}
+.mpr-v{min-width:0}
+.mpr-v strong{display:block;font-size:2.2cqw;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mpr-v small{display:block;margin-top:.2cqw;font-size:1.8cqw;color:#8C95A6;white-space:nowrap}
+.mph{display:flex;align-items:center;gap:1.6cqw;height:4.8cqw;padding-left:8.6cqw}
+.mph i{align-self:stretch;width:0;border-left:.3cqw dashed #C9D2E1}
+.mph span{padding:.45cqw 1.3cqw;border-radius:3cqw;background:#FDE6E4;color:#C8382D;font-size:1.7cqw;font-weight:500;white-space:nowrap}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1324,7 +1338,7 @@ with a vision.</h2>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">02</span></span></div>
           <h2 class="ds-h3 atc-card-title"><span class="ds-mask"><span class="ds-rise">And every vendor pulls a different way.</span></span></h2>
-          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Each one offers a different way to build it.</span></span></p></div></div>
+          <div class="atc-card-acc"><div class="atc-card-acc-in"><p class="ds-body atc-card-body"><span class="ds-mask"><span class="ds-rise">Advice, design, execution and support, each by someone else.</span></span></p></div></div>
         </article>
         <article class="atc-card">
           <div class="atc-card-side"><button class="atc-card-tog" type="button" aria-expanded="false" aria-label="Show details" tabindex="-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="tog-h" d="M4 8 H12"></path><path class="tog-v" d="M8 4 V12"></path></svg></button><span class="ds-mask"><span class="ds-rise atc-card-num">03</span></span></div>
@@ -1359,7 +1373,7 @@ with a vision.</h2>
         <i class="wv-orb wv-o1"></i><i class="wv-orb wv-o2"></i><i class="wv-orb wv-o3"></i><i class="wv-orb wv-o4"></i>
         <svg class="wv-path" viewBox="0 0 180 400" preserveAspectRatio="none"><defs><linearGradient id="wvg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FB27E"/><stop offset=".4" stop-color="#2D63E6"/><stop offset=".7" stop-color="#5A86EE"/><stop offset="1" stop-color="#9BBA2A"/></linearGradient></defs>
           <path class="wv-track" d="M40 50 C 40 100, 130 100, 130 150 S 40 200, 40 250 S 130 300, 130 350"/><path class="wv-line" pathLength="1" d="M40 50 C 40 100, 130 100, 130 150 S 40 200, 40 250 S 130 300, 130 350"/></svg>
-        <article class="wv-card" data-k="0"><div class="wv-text"><span class="wv-num">01<i>/ 04</i></span><h3>But too many tools add complexity.</h3><p>Which one is right for your software?</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="1"><div class="wv-text"><span class="wv-num">02<i>/ 04</i></span><h3>And every vendor pulls a different way.</h3><p>Each one offers a different way to build it.</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="2"><div class="wv-text"><span class="wv-num">03<i>/ 04</i></span><h3>Many people. Different perspectives. No clear ownership.</h3><p>Each team passes the task on until no one owns it.</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="3"><div class="wv-text"><span class="wv-num">04<i>/ 04</i></span><h3>Instead of moving forward, your business gets stuck.</h3><p>Meeting after meeting, and the result is still zero.</p></div><div class="wv-slot"></div></article>
+        <article class="wv-card" data-k="0"><div class="wv-text"><span class="wv-num">01<i>/ 04</i></span><h3>But too many tools add complexity.</h3><p>Which one is right for your software?</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="1"><div class="wv-text"><span class="wv-num">02<i>/ 04</i></span><h3>And every vendor pulls a different way.</h3><p>Advice, design, execution and support, each by someone else.</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="2"><div class="wv-text"><span class="wv-num">03<i>/ 04</i></span><h3>Many people. Different perspectives. No clear ownership.</h3><p>Each team passes the task on until no one owns it.</p></div><div class="wv-slot"></div></article><article class="wv-card" data-k="3"><div class="wv-text"><span class="wv-num">04<i>/ 04</i></span><h3>Instead of moving forward, your business gets stuck.</h3><p>Meeting after meeting, and the result is still zero.</p></div><div class="wv-slot"></div></article>
       </div></div>
       <div class="atc-iso atc-mac" data-atc="iso" aria-hidden="true">
         <div class="mac" data-atc="mac" data-scene="-1">
@@ -1411,21 +1425,23 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 02 You have the vendors: three replies land in the inbox, each promising only its own piece -->
+          <!-- 02 You have the vendors: one project, and every stage of it in other hands: advice, design, execution and
+               support each by a different vendor, and something is lost at every handoff -->
           <div class="mac-sc">
-            <div class="mw mw-ol st" data-k="inbox" style="--x:3%;--y:5%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><b class="mw-ap"><img class="app-ic" src="../assets/apps/outlook.svg" alt="" draggable="false"></b><span>Outlook · Inbox</span></div>
-              <div class="olbar"><span class="olnew">New mail</span><span>Reply</span><span>Reply all</span><span>Forward</span><span class="olsearch">Search</span></div>
-              <div class="mw-b minbox">
-                <div class="mside"><small>Folders</small><span class="is-on">Inbox <b data-k="unread">0</b></span><span>Vendors</span><span>Projects</span><span>Sent items</span><span>Archive</span></div>
-                <div class="mlist">
-                  <div class="mmsg st" data-k="e1"><div class="mmsg-in"><b class="av av-t" style="--c:#2D63E6">NS</b><div><p><strong>Northfield Studio</strong><em>Design</em><time>09:12</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll deliver the design. The rest is up to the other teams.</p></div></div></div>
-                  <div class="mmsg st" data-k="e2"><div class="mmsg-in"><b class="av av-t" style="--c:#3FB27E">BF</b><div><p><strong>Bitforge Labs</strong><em>Development</em><time>10:47</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll build our part. Integration is someone else’s job.</p></div></div></div>
-                  <div class="mmsg st" data-k="e3"><div class="mmsg-in"><b class="av av-t" style="--c:#9BBA2A">CL</b><div><p><strong>Cloudline</strong><em>Infrastructure</em><time>14:05</time><i class="dot"></i></p><h4>Re: Customer portal</h4><p class="nt">We’ll set up the servers, once everyone else is done.</p></div></div></div>
-                </div>
+            <div class="mw st" data-k="proj" style="--x:3%;--y:4%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal</span></div>
+              <div class="mw-b mproj">
+                <div class="mt-head"><h4>Customer portal</h4><span class="pill pill-amber">4 vendors · 1 project</span></div>
+                <div class="mpr st" data-k="s1"><span class="mpr-n">01<b>Advise</b></span><b class="av av-t" style="--c:#2D63E6">NA</b><span class="mpr-v"><strong>Northpoint Advisory</strong><small>Strategy &amp; roadmap</small></span><span class="pill">Report delivered</span></div>
+                <div class="mph st" data-k="h1"><i></i><span>Context lost in the handoff</span></div>
+                <div class="mpr st" data-k="s2"><span class="mpr-n">02<b>Design</b></span><b class="av av-t" style="--c:#5A86EE">NS</b><span class="mpr-v"><strong>Northfield Studio</strong><small>UX &amp; interface</small></span><span class="pill">Handed over</span></div>
+                <div class="mph st" data-k="h2"><i></i><span>Context lost in the handoff</span></div>
+                <div class="mpr st" data-k="s3"><span class="mpr-n">03<b>Execution</b></span><b class="av av-t" style="--c:#3FB27E">BF</b><span class="mpr-v"><strong>Bitforge Labs</strong><small>Development</small></span><span class="pill pill-amber">Waiting on design files</span></div>
+                <div class="mph st" data-k="h3"><i></i><span>Context lost in the handoff</span></div>
+                <div class="mpr st" data-k="s4"><span class="mpr-n">04<b>Support</b></span><b class="av av-t" style="--c:#9BBA2A">HL</b><span class="mpr-v"><strong>Helpline IT</strong><small>Run &amp; maintain</small></span><span class="pill pill-red">Not briefed</span></div>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:75%"><span><b>3</b> vendors</span><span><b>3</b> promises</span><span class="is-zero"><b>0</b> owning the whole</span></div>
+            <div class="mtally st" data-k="tally" style="top:86%"><span><b>4</b> vendors</span><span><b>4</b> contracts</span><span class="is-zero"><b>0</b> owning the whole</span></div>
           </div>
 
           <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
@@ -2754,15 +2770,15 @@ class Component extends DCLogic {
       at(2900 + 5 * 280 + 200, function () { show('tm'); });
       var total = 2900 + 5 * 280 + 900;
     } else if (i === 1) {
-      // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
-      var unread = $('unread');
-      at(100, function () { show('inbox'); });
-      ['e1', 'e2', 'e3'].forEach(function (key, n) {
-        at(600 + n * 750, function () { show(key); unread.textContent = String(n + 1); });
-        at(600 + n * 750 + 1400, function () { $(key).classList.add('is-read'); });
+      // 02 Vendors: one project opens, then each stage gets its own vendor in turn (advise, design, execution, support),
+      // and every handoff between them loses something
+      at(100, function () { show('proj'); });
+      [1, 2, 3, 4].forEach(function (n) {
+        at(500 + (n - 1) * 800, function () { show('s' + n); });
+        if (n < 4) at(500 + (n - 1) * 800 + 450, function () { show('h' + n); });
       });
-      at(600 + 3 * 750 + 400, function () { show('tally'); });
-      var total = 600 + 3 * 750 + 900;
+      at(500 + 4 * 800 + 200, function () { show('tally'); });
+      var total = 500 + 4 * 800 + 900;
     } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
       var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
