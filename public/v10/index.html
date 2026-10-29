@@ -1240,6 +1240,11 @@ html,body{overflow-anchor:none}
 /* v10: the v9 illustrations sit on a white card in the space inside the O */
 .ospace .ocap-card{box-sizing:border-box;padding:18px;border-radius:24px;background:#fff;box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
 .ospace .ocap-card .cv-w{position:relative !important;left:auto !important;top:auto !important;width:100% !important;height:100% !important}
+
+/* v10: Proven results takes over from the full-screen card at the end of What we offer (wide screens, where it is pinned) */
+.ospace .oend{text-align:left}
+.ospace .oend .atc-kpi{position:relative;top:auto;width:100%}
+@media (min-width:901px){.atc-after.v10-ov{z-index:3;margin-top:-100vh;margin-top:-100svh}}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -2909,6 +2914,16 @@ class Component extends DCLogic {
         this._lock = { top: this.unitTop(hu), until: performance.now() + 700, ease: true };
       }
     }
+    // Proven results waits, hidden, right under the end of the stage; it shows once it is exactly in place
+    var aft = this._aft || (this._aft = document.querySelector('.atc-after'));
+    if (aft) {
+      var wide = window.matchMedia('(min-width:901px)').matches;
+      if (aft.classList.contains('v10-ov') !== wide) aft.classList.toggle('v10-ov', wide);
+      var hideA = wide && aft.getBoundingClientRect().top > 1 ? 'hidden' : '';
+      if (aft.style.visibility !== hideA) aft.style.visibility = hideA;
+      // its heading is already shown when it takes over, so it matches the card it replaces
+      if (hideA && !this._aftRv) { this._aftRv = 1; aft.querySelectorAll('.atc-kpi [data-rv]').forEach(function (n) { n.style.transition = 'none'; n.classList.add('is-in'); }); }
+    }
     var live = u > S.mark[0] - 6;
     box.style.visibility = live ? 'visible' : 'hidden';
     if (!live) { this._oDark = 0; return; }
@@ -3022,7 +3037,7 @@ class Component extends DCLogic {
           [off, sp].forEach(function (el) { if (!el) return; el.style.inset = 'auto'; el.style.left = -gx + 'px'; el.style.top = -gy + 'px'; el.style.width = stg.clientWidth + 'px'; el.style.height = stg.clientHeight + 'px'; });
         }
         var G = this._osp || { x: 0, y: 0, w: bR.width, h: bR.height }, Rs = oc.r * s * 1.46, Ox = ox + G.x, Oy = oy + G.y;
-        var fly = map(u, S.pop[0] + 10, S.tiles[1] + 40), endP = map(u, S.tiles[1] - 2, S.out - 6);
+        var fly = map(u, S.pop[0] + 10, S.tiles[1] + 40), endP = map(u, S.tiles[1] - 28, S.out - 6);
         if (sp) {
           var spOn = zr > 0.12;
           sp.style.visibility = spOn ? 'visible' : 'hidden';
@@ -3459,11 +3474,25 @@ class Component extends DCLogic {
     }
     sp.__ocap = groups;
     sp.__end = mk('oend');
+    // the end card is the next screen, Proven results, as it will be when it arrives (its heading and line shown); when
+    // it fills the screen the real section takes its place
+    sp.__end.setAttribute('data-theme', 'light');
+    var kpi = document.querySelector('.atc-pin .atc-kpi');
+    if (kpi) {
+      var kc = kpi.cloneNode(true);
+      kc.removeAttribute('aria-labelledby'); kc.querySelectorAll('[id]').forEach(function (n) { n.removeAttribute('id'); });
+      kc.querySelectorAll('[data-rv]').forEach(function (n) { n.classList.add('is-in'); });
+      // the three result cards are not on it yet: they arrive once the real section has taken over, as they always do
+      kc.querySelectorAll('[data-atc]').forEach(function (n) { n.removeAttribute('data-atc'); });
+      kc.querySelectorAll('.atc-kpis').forEach(function (n) { n.classList.remove('is-play'); });
+      sp.__end.appendChild(kc);
+    }
   }
 
   // Where each one sits in the space (in screens, at the depth of the capabilities): the title, then the four
-  // capabilities, so the camera goes down, then right and a little down, then right and a little up, then down again
-  ocamStops() { return [[0, 0], [0, 1.05], [1.5, 1.4], [2.45, 1.15], [2.35, 2.2], [2.3, 3.25]]; }
+  // capabilities, so the camera goes down, then right and a little down, then right and a little up, then down again,
+  // and at the end it moves on to the right, toward Proven results
+  ocamStops() { return [[0, 0], [0, 1.05], [1.5, 1.4], [2.45, 1.15], [2.35, 2.2], [3.45, 2.3]]; }
 
   // Where the camera is: it holds while the title is in front, then moves on steadily with the scroll along a smooth
   // curve through each stop
@@ -3496,7 +3525,7 @@ class Component extends DCLogic {
         var sp4 = spots[g.i], isCard = g.kind === 'card';
         ox = narrow ? 0 : (isCard ? sp4[0] : sp4[2]); oy = narrow ? (isCard ? 0.14 : -0.22) : (isCard ? sp4[1] : sp4[3]);
         z = near[g.i]; at = g.i + 1;
-        if (g.i === 3) op = 1 - ease(map(endP, 0.3, 0.6));
+        if (g.i === 3) op = 1 - ease(map(endP, 0.55, 0.8));
       }
       // where the camera is, relative to where this one sits in the middle of the screen
       var st = stops[at], sc = k * z;
@@ -3508,14 +3537,14 @@ class Component extends DCLogic {
       el.style.transform = 'translate3d(' + (x - hw / sc).toFixed(2) + 'px,' + (y - hh / sc).toFixed(2) + 'px,0) scale(' + sc.toFixed(4) + ')';
       if (el.style.filter) el.style.filter = '';
     });
-    // the end: a white card comes in from the bottom right at a moderate size, settles in the middle, and grows until
-    // it is the whole screen; the light sections follow from it
+    // the end: as the camera moves on to the right, the Proven results screen comes in slowly from the right edge as a
+    // card, slides to the middle and grows until it is the whole screen
     var e = sp.__end;
     if (endP <= 0) { e.style.visibility = 'hidden'; return rects; }
-    var csc = Math.exp(Math.log(0.42) * (1 - ease(map(endP, 0.5, 1)))), cin = 1 - ease(map(endP, 0, 0.55));
+    var csc = Math.exp(Math.log(0.4) * (1 - ease(map(endP, 0.3, 1)))), cin = 1 - ease(map(endP, 0, 0.75));
     e.style.visibility = 'visible';
-    e.style.opacity = ease(map(endP, 0, 0.08)).toFixed(3);
-    e.style.transform = endP < 1 ? 'translate(' + (cin * W * 0.62).toFixed(1) + 'px,' + (cin * H * 0.62).toFixed(1) + 'px) scale(' + csc.toFixed(4) + ')' : '';
+    e.style.opacity = '1';
+    e.style.transform = endP < 1 ? 'translate(' + (cin * W * 0.78).toFixed(1) + 'px,' + (cin * H * 0.05).toFixed(1) + 'px) scale(' + csc.toFixed(4) + ')' : '';
     e.style.borderRadius = endP < 1 ? (28 * (1 - endP) / csc).toFixed(1) + 'px' : '';
     return rects;
   }
