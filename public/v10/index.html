@@ -1259,6 +1259,14 @@ html,body{overflow-anchor:none}
 .ld-n{position:absolute;right:4vw;bottom:7vh;font-family:var(--atc-font);font-size:clamp(28px,3vw,52px);line-height:1;letter-spacing:-.03em;color:var(--atc-mute);font-variant-numeric:tabular-nums}
 /* the word beside the counter follows the loading: Ideas, Strategy, Creative, Development, Partner */
 .ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
+
+/* v10: the dock also gets the platforms (Azure, AWS, Fabric, Tableau, Foundry, React, HubSpot, Salesforce); as they pile
+   in, every icon in the dock gets smaller so the whole row still fits, like a crowded dock */
+.mac .mac-dock{--dk:7.4cqw}
+.mac .mac-dock:has(.dk-t.is-in),.mac[data-scene="1"] .mac-dock,.mac[data-scene="2"] .mac-dock,.mac[data-scene="3"] .mac-dock{--dk:4.6cqw}
+.mac .mac-dock .dk{height:var(--dk);transition:width .45s cubic-bezier(.2,.85,.25,1),height .45s cubic-bezier(.2,.85,.25,1),margin .45s cubic-bezier(.2,.85,.25,1),opacity .35s ease,transform .5s cubic-bezier(.2,.9,.3,1.35)}
+.mac .mac-dock .dk:not(.dk-x),.mac .mac-dock .dk-x.is-in,.mac[data-scene="1"] .mac-dock .dk-x,.mac[data-scene="2"] .mac-dock .dk-x,.mac[data-scene="3"] .mac-dock .dk-x{width:var(--dk);margin:0 calc(var(--dk) * .08)}
+.mac .mac-dock .dk-t .app-ic{width:62%;height:62%}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1499,6 +1507,14 @@ with a vision.</h2>
             <span class="dk dk-x dk-app" data-dock="1" data-app="2" style="--c:#FFFFFF"><img class="app-ic" src="../assets/apps/jira.svg" alt="" draggable="false"></span>
             <span class="dk dk-x dk-app" data-dock="2" style="--c:#FFFFFF"><img class="app-ic" src="../assets/apps/teams.svg" alt="" draggable="false"></span>
             <span class="dk dk-x dk-app" data-dock="3" style="--c:#FFFFFF"><img class="app-ic" src="../assets/apps/excel.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="4" style="--c:#FFFFFF" title="Azure"><img class="app-ic" src="../assets/tech/azure.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="5" style="--c:#FFFFFF" title="AWS"><img class="app-ic" src="../assets/tech/aws.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="6" style="--c:#FFFFFF" title="Microsoft Fabric"><img class="app-ic" src="../assets/tech/fabric.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="7" style="--c:#FFFFFF" title="Tableau"><img class="app-ic" src="../assets/tech/tableau.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="8" style="--c:#FFFFFF" title="Microsoft Foundry"><img class="app-ic" src="../assets/tech/foundry.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="9" style="--c:#FFFFFF" title="React"><img class="app-ic" src="../assets/tech/react.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="10" style="--c:#FFFFFF" title="HubSpot"><img class="app-ic" src="../assets/tech/hubspot.svg" alt="" draggable="false"></span>
+            <span class="dk dk-x dk-app dk-t" data-dock="11" style="--c:#FFFFFF" title="Salesforce"><img class="app-ic" src="../assets/tech/salesforce.svg" alt="" draggable="false"></span>
           </div>
         </div>
       </div>
@@ -2752,7 +2768,12 @@ class Component extends DCLogic {
       for (var r = 0; r < 5; r++) (function (r) { at(2900 + r * 280, function () { show('r' + r); }); })(r);
       // and on top of it all, another meeting about the tools
       at(2900 + 5 * 280 + 200, function () { show('tm'); });
-      var total = 2900 + 5 * 280 + 900;
+      // then the platforms pile into the dock one after another: Azure, AWS, Fabric, Tableau, Foundry, React, HubSpot, Salesforce
+      for (var tq = 0; tq < 8; tq++) (function (tq) { at(3600 + tq * 140, function () {
+        var icon = mac.querySelector('.dk-x[data-dock="' + (4 + tq) + '"]');
+        if (icon) { icon.classList.add('is-in'); flag(icon, 'is-bounce'); }
+      }); })(tq);
+      var total = Math.max(2900 + 5 * 280 + 900, 3600 + 8 * 140 + 600);
     } else if (i === 1) {
       // 02 Vendors: the inbox opens and the three replies load in one by one, each the same promise in other words
       var unread = $('unread');
