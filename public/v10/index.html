@@ -1261,28 +1261,51 @@ html,body{overflow-anchor:none}
 .ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
 
 
-/* v10 problem 02: one project's plan, a different vendor on every phase, a wait at every handover */
-.mgantt{padding:2.4cqw 2.6cqw 3.4cqw}
-.mg-body{display:grid;grid-template-columns:24cqw minmax(0,1fr);column-gap:1.6cqw}
-.mg-who>div{display:flex;align-items:center;gap:1.2cqw;height:9cqw}
-.mg-who>.mg-sp{height:4cqw}
+/* v10 problem 02: one project's plan, told step by step: a different vendor on every phase, a wait at every handover,
+   the row in play lit, a line underneath saying what happens, and the real bar running far past the plan */
+.mgantt{padding:2.2cqw 2.6cqw 2.6cqw}
+.mgantt .mt-head{margin-bottom:1.4cqw}
+.mg-body{position:relative;display:grid;grid-template-columns:24cqw minmax(0,1fr);column-gap:1.6cqw}
+.mg-sp{height:3.6cqw}
+.mg-months{display:grid;grid-template-columns:repeat(7,1fr);height:3.6cqw}
+.mg-months i{display:flex;align-items:center;padding-left:.7cqw;border-left:1px solid #E8ECF3;font-style:normal;font-size:1.5cqw;color:#8C95A6}
+.mg-who{display:flex;align-items:center;gap:1.2cqw;height:8.4cqw;transition:opacity .4s ease}
 .mg-who strong{display:block;font-size:2.1cqw;font-weight:600}
 .mg-who small{display:block;margin-top:.2cqw;font-size:1.6cqw;color:#8C95A6;white-space:nowrap}
 .mac .mg-who .av-t{width:4.6cqw;height:4.6cqw;font-size:1.5cqw}
-.mg-lanes{position:relative}
-.mg-months{display:grid;grid-template-columns:repeat(7,1fr);height:4cqw}
-.mg-months i{display:flex;align-items:center;padding-left:.7cqw;border-left:1px solid #E8ECF3;font-style:normal;font-size:1.5cqw;color:#8C95A6}
-.mg-lane{position:relative;height:9cqw;border-top:1px solid #F0F2F6;
+.mg-you{flex:none;display:grid;place-items:center;width:4.6cqw;height:4.6cqw;border-radius:50%;background:var(--atc-navy);color:#fff;font-size:1.4cqw;font-weight:600}
+.mg-lane{position:relative;height:8.4cqw;border-top:1px solid #F0F2F6;transition:opacity .4s ease;
   background:repeating-linear-gradient(90deg,#E8ECF3 0,#E8ECF3 1px,transparent 1px,transparent calc(100% / 7))}
-.mg-bar{position:absolute;top:2.4cqw;height:4.2cqw;border-radius:1.2cqw;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 78%,#fff),var(--c));
-  box-shadow:0 .8cqw 1.6cqw -.8cqw color-mix(in srgb,var(--c) 70%,#001025);transform-origin:0 50%;transform:scaleX(0);transition:transform .9s cubic-bezier(.3,0,.2,1)}
+.mg-r0.mg-lane,.mg-r0.mg-who{height:7cqw}
+.mg-r0.mg-lane{background-color:#F8FAFD}
+/* the row in play is lit, the others step back */
+.mgantt[data-on="0"] .mg-who:not(.mg-r0),.mgantt[data-on="0"] .mg-lane:not(.mg-r0),
+.mgantt[data-on="1"] :is(.mg-who,.mg-lane):not(.mg-r1),.mgantt[data-on="2"] :is(.mg-who,.mg-lane):not(.mg-r2),
+.mgantt[data-on="3"] :is(.mg-who,.mg-lane):not(.mg-r3),.mgantt[data-on="4"] :is(.mg-who,.mg-lane):not(.mg-r4){opacity:.38}
+.mg-bar{position:absolute;top:2.1cqw;height:4.2cqw;display:flex;align-items:center;padding-left:1cqw;box-sizing:border-box;overflow:hidden;border-radius:1.2cqw;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 78%,#fff),var(--c));box-shadow:0 .8cqw 1.6cqw -.8cqw color-mix(in srgb,var(--c) 70%,#001025);
+  font-style:normal;transform-origin:0 50%;transform:scaleX(0);transition:transform .9s cubic-bezier(.3,0,.2,1)}
 .mg-bar.is-shown{transform:none}
-.mg-gap{position:absolute;top:2.4cqw;height:4.2cqw;box-sizing:border-box;display:grid;place-items:center;border:.25cqw dashed #E8A49D;border-radius:1.2cqw;
+.mg-bar b{font-size:1.5cqw;font-weight:600;color:#fff;white-space:nowrap}
+.mg-gap{position:absolute;top:2.1cqw;height:4.2cqw;box-sizing:border-box;display:grid;place-items:center;border:.25cqw dashed #E8A49D;border-radius:1.2cqw;
   background:repeating-linear-gradient(-45deg,#FDEDEB 0 .7cqw,#FFF8F7 .7cqw 1.4cqw);font-size:1.5cqw;font-weight:600;color:#C8382D;white-space:nowrap;opacity:0;transition:opacity .5s ease}
 .mg-gap.is-shown{opacity:1}
-.mg-plan{position:absolute;top:4cqw;bottom:-3.4cqw;width:0;border-left:.3cqw dashed #2D63E6;font-style:normal;opacity:0;transition:opacity .5s ease}
+.mg-pbar,.mg-abar{position:absolute;height:2.6cqw;display:flex;align-items:center;padding-left:1cqw;box-sizing:border-box;border-radius:1cqw;font-style:normal;transition:opacity .5s ease,transform .9s cubic-bezier(.3,0,.2,1)}
+.mg-pbar{top:.9cqw;border:.25cqw dashed #2D63E6;background:#EEF3FD;opacity:0}
+.mg-pbar.is-shown{opacity:1}
+.mg-abar{top:3.7cqw;background:var(--atc-navy);transform-origin:0 50%;transform:scaleX(0)}
+.mg-abar.is-shown{transform:none}
+.mg-pbar b,.mg-abar b{font-size:1.4cqw;font-weight:600;white-space:nowrap}
+.mg-pbar b{color:#2D63E6}.mg-abar b{color:#fff}
+.mg-late{position:absolute;right:0;top:-1.6cqw;padding:.3cqw 1cqw;border-radius:3cqw;background:#D9483C;color:#fff;font-style:normal;font-size:1.4cqw;font-weight:600;opacity:0;transform:translateY(.8cqw);transition:opacity .4s ease .5s,transform .4s ease .5s}
+.mg-late.is-shown{opacity:1;transform:none}
+.mg-plan{position:absolute;left:calc(25.6cqw + (100% - 25.6cqw) * var(--at));top:3.6cqw;bottom:0;width:0;border-left:.3cqw dashed #2D63E6;font-style:normal;opacity:0;transition:opacity .5s ease}
 .mg-plan.is-shown{opacity:1}
-.mg-plan b{position:absolute;left:.8cqw;bottom:0;font-size:1.5cqw;font-weight:600;color:#2D63E6;white-space:nowrap}
+/* the line underneath that says what is happening */
+.mg-say{display:flex;align-items:center;gap:1.4cqw;margin:3.4cqw 0 0;padding:1.6cqw 2cqw;border-radius:1.6cqw;background:#F4F6FA;font-size:2.2cqw;line-height:1.3;color:var(--atc-navy)}
+.mg-say i{flex:none;width:1.6cqw;height:1.6cqw;border-radius:50%;background:var(--c);box-shadow:0 0 0 .6cqw color-mix(in srgb,var(--c) 18%,transparent)}
+.mg-say.is-new span{animation:mg-say .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes mg-say{from{opacity:0;transform:translateY(.8cqw)}to{opacity:1;transform:none}}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 </style>
@@ -1436,20 +1459,19 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 02 You have the vendors: one project's plan. Each phase is a different vendor (advise, design, execution,
-               support); between them the project waits for every handover, and the 3-month plan becomes 7 months -->
+          <!-- 02 You have the vendors: one project's plan, told step by step. Each phase is a different vendor (advise,
+               design, execution, support), the row in play lights up, a line underneath says what is happening, every
+               handover loses weeks, and in the end the real bar (7 months) runs far past the plan (3 months) -->
           <div class="mac-sc">
-            <div class="mw st" data-k="proj" style="--x:3%;--y:4%;--w:94%">
+            <div class="mw st" data-k="proj" style="--x:3%;--y:3%;--w:94%">
               <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Customer portal · Timeline</span></div>
-              <div class="mw-b mgantt">
+              <div class="mw-b mgantt" data-k="gantt" data-on="-1">
                 <div class="mt-head"><h4>Customer portal</h4><span class="pill" data-k="plan">Planned: 3 months</span></div>
-                <div class="mg-body">
-                  <div class="mg-who"><div class="mg-sp"></div><div><b class="av av-t" style="--c:#2D63E6">NA</b><span><strong>Advise</strong><small>Northpoint Advisory</small></span></div><div><b class="av av-t" style="--c:#5A86EE">NS</b><span><strong>Design</strong><small>Northfield Studio</small></span></div><div><b class="av av-t" style="--c:#3FB27E">BF</b><span><strong>Execution</strong><small>Bitforge Labs</small></span></div><div><b class="av av-t" style="--c:#9BBA2A">HL</b><span><strong>Support</strong><small>Helpline IT</small></span></div></div>
-                  <div class="mg-lanes"><div class="mg-months"><i>M1</i><i>M2</i><i>M3</i><i>M4</i><i>M5</i><i>M6</i><i>M7</i></div><div class="mg-lane"><i class="mg-bar" data-k="b1" style="left:0.00%;width:14.29%;--c:#2D63E6"></i><span class="mg-gap" data-k="g1" style="left:14.29%;width:10.71%">3 wks</span></div><div class="mg-lane"><i class="mg-bar" data-k="b2" style="left:25.00%;width:14.29%;--c:#5A86EE"></i><span class="mg-gap" data-k="g2" style="left:39.29%;width:7.14%">2 wks</span></div><div class="mg-lane"><i class="mg-bar" data-k="b3" style="left:46.43%;width:32.14%;--c:#3FB27E"></i><span class="mg-gap" data-k="g3" style="left:78.57%;width:14.29%">4 wks</span></div><div class="mg-lane"><i class="mg-bar" data-k="b4" style="left:92.86%;width:7.14%;--c:#9BBA2A"></i></div><i class="mg-plan" data-k="pl" style="left:42.86%"><b>Planned launch</b></i></div>
-                </div>
+                <div class="mg-body"><div class="mg-sp"></div><div class="mg-months"><i>M1</i><i>M2</i><i>M3</i><i>M4</i><i>M5</i><i>M6</i><i>M7</i></div><div class="mg-who mg-r0"><b class="mg-you">You</b><span><strong>Your plan</strong><small>One portal</small></span></div><div class="mg-lane mg-r0"><i class="mg-pbar" data-k="pb" style="left:0;width:42.86%"><b>Planned: 3 months</b></i><i class="mg-abar" data-k="ab" style="left:0;width:100%"><b>Actual: 7 months</b></i><em class="mg-late" data-k="late">+4 months</em></div><div class="mg-who mg-r1"><b class="av av-t" style="--c:#2D63E6">NA</b><span><strong>Advise</strong><small>Northpoint Advisory</small></span></div><div class="mg-lane mg-r1"><i class="mg-bar" data-k="b1" style="left:0.00%;width:14.29%;--c:#2D63E6"><b>Report</b></i><span class="mg-gap" data-k="g1" style="left:14.29%;width:10.71%">3 wks</span></div><div class="mg-who mg-r2"><b class="av av-t" style="--c:#5A86EE">NS</b><span><strong>Design</strong><small>Northfield Studio</small></span></div><div class="mg-lane mg-r2"><i class="mg-bar" data-k="b2" style="left:25.00%;width:14.29%;--c:#5A86EE"><b>Designs</b></i><span class="mg-gap" data-k="g2" style="left:39.29%;width:7.14%">2 wks</span></div><div class="mg-who mg-r3"><b class="av av-t" style="--c:#3FB27E">BF</b><span><strong>Execution</strong><small>Bitforge Labs</small></span></div><div class="mg-lane mg-r3"><i class="mg-bar" data-k="b3" style="left:46.43%;width:32.14%;--c:#3FB27E"><b>Code</b></i><span class="mg-gap" data-k="g3" style="left:78.57%;width:14.29%">4 wks</span></div><div class="mg-who mg-r4"><b class="av av-t" style="--c:#9BBA2A">HL</b><span><strong>Support</strong><small>Helpline IT</small></span></div><div class="mg-lane mg-r4"><i class="mg-bar" data-k="b4" style="left:92.86%;width:7.14%;--c:#9BBA2A"></i></div><i class="mg-plan" data-k="pl" style="--at:.4286"></i></div>
+                <p class="mg-say" data-k="say" style="--c:#2D63E6"><i></i><span data-k="sayt">One portal, planned for 3 months.</span></p>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:80%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
+            <div class="mtally st" data-k="tally" style="top:83%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
           <!-- 03 Everyone is involved, no one is accountable: every team blames the next and hands the task on -->
@@ -2778,18 +2800,28 @@ class Component extends DCLogic {
       at(2900 + 5 * 280 + 200, function () { show('tm'); });
       var total = 2900 + 5 * 280 + 900;
     } else if (i === 1) {
-      // 02 Vendors: the project's plan fills in phase by phase, each by a different vendor; every handover leaves the project
-      // waiting, and the plan's 3 months become 7
+      // 02 Vendors, told step by step: the plan, then each phase by a different vendor (its row lights up, a line says what
+      // happens), every handover loses weeks while the next vendor catches up, and the real bar runs far past the plan
+      var gantt = $('gantt'), say = $('say'), sayt = $('sayt');
+      var tell = function (n, txt, col) { gantt.setAttribute('data-on', String(n)); sayt.textContent = txt; say.style.setProperty('--c', col); flag(say, 'is-new'); };
+      var V = [['Northpoint Advisory advises, writes a report, and leaves.', '3 weeks lost: Northfield Studio starts again from the report.', '#2D63E6'],
+               ['Northfield Studio designs it, and hands the files over.', '2 weeks lost: Bitforge Labs has to re-learn every decision.', '#5A86EE'],
+               ['Bitforge Labs builds it, its own way.', '4 weeks lost: Helpline IT must learn a system it didn\u2019t build.', '#3FB27E'],
+               ['Helpline IT supports it, without the full picture.', '', '#9BBA2A']];
       at(100, function () { show('proj'); });
-      at(450, function () { show('pl'); });
-      [1, 2, 3, 4].forEach(function (n) {
-        var t = 700 + (n - 1) * 1050;
-        at(t, function () { show('b' + n); });
-        if (n < 4) at(t + 650, function () { show('g' + n); });
+      at(450, function () { show('pb'); show('pl'); tell(0, 'Your plan: one portal, live in 3 months.', '#001025'); });
+      V.forEach(function (v, k) {
+        var n = k + 1, t = 1100 + k * 1350;
+        at(t, function () { show('b' + n); tell(n, v[0], v[2]); });
+        if (v[1]) at(t + 700, function () { show('g' + n); tell(n, v[1], '#D9483C'); });
       });
-      at(700 + 4 * 1050 + 100, function () { var p = $('plan'); if (p) { p.textContent = 'Actual: 7 months'; p.classList.add('pill-red'); flag(p, 'is-go'); } });
-      at(700 + 4 * 1050 + 500, function () { show('tally'); });
-      var total = 700 + 4 * 1050 + 1200;
+      var tEnd = 1100 + 4 * 1350;
+      at(tEnd, function () {
+        show('ab'); show('late'); tell(0, 'Planned 3 months. Delivered in 7. No one owned the whole.', '#D9483C');
+        var p = $('plan'); if (p) { p.textContent = 'Actual: 7 months'; p.classList.add('pill-red'); flag(p, 'is-go'); }
+      });
+      at(tEnd + 600, function () { gantt.setAttribute('data-on', 'all'); show('tally'); });
+      var total = tEnd + 1300;
     } else if (i === 2) {
       // 03 Every team blames the next and passes the task on; in the end nobody owns it
       var owner = $('owner'), owners = ['IT', 'Bitforge Labs', 'Unassigned'], tt = 500;
