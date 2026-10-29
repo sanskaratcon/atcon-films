@@ -1129,6 +1129,9 @@ html,body{overflow-anchor:none}
    flies through it toward one card, which comes to the front, fills the screen and carries What we offer in white */
 .ospace{position:absolute;z-index:3;left:0;top:0;width:100%;height:100%;visibility:hidden;pointer-events:none;overflow:hidden;
   background:#000}
+.ospace .osg{position:absolute;left:-25%;top:-25%;width:150%;height:150%;z-index:0;will-change:transform;
+  background:radial-gradient(32% 30% at 70% 30%,rgba(45,99,230,.30) 0,rgba(45,99,230,0) 100%),radial-gradient(28% 26% at 28% 68%,rgba(63,178,126,.20) 0,rgba(63,178,126,0) 100%),
+  radial-gradient(22% 20% at 48% 46%,rgba(90,134,238,.14) 0,rgba(90,134,238,0) 100%),radial-gradient(20% 18% at 80% 78%,rgba(155,186,42,.12) 0,rgba(155,186,42,0) 100%)}
 .ospace .osc{position:absolute;left:0;top:0;transform-origin:50% 50%;will-change:transform,opacity,filter;opacity:0}
 .ospace .osc-w{width:440px;height:280px}
 .ospace .osc-w .cvm{position:absolute;inset:0;background:#fff;border-radius:22px;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
@@ -3281,6 +3284,10 @@ class Component extends DCLogic {
   // v10: the dark space inside the O. Copies of the offer's windows and notes float at different depths; f (0 to 1)
   // glides the camera right and down across them, so they slide up and to the left past the edges.
   ospace(sp, f, G) {
+    if (!sp.__glow) {
+      // soft brand light far behind the cards, so the dark has some depth
+      sp.__glow = document.createElement('div'); sp.__glow.className = 'osg'; sp.insertBefore(sp.__glow, sp.firstChild);
+    }
     if (!sp.__cards) {
       // a 3D space: a few cards at real depths, from near the lens to far away, scattered at random (they start from a random
       // scatter over the whole space, and the search that spaces them also keeps them from lining up in rows, columns or
@@ -3315,6 +3322,8 @@ class Component extends DCLogic {
       });
     }
     var W = G.w, H = G.h, cx = W / 2, cy = H / 2, k = Math.min(W / 1440, H / 900);
+    // the light is very far away, so it drifts the slowest
+    sp.__glow.style.transform = 'translate3d(' + (-0.1 * W * f).toFixed(1) + 'px,' + (-0.08 * H * f).toFixed(1) + 'px,0)';
     // the camera glides right and down and a little forward: near cards cross the screen fast, far ones drift slowly
     var PX = 1.15, PY = 0.95, PZ = 0.35;
     sp.__cards.forEach(function (c) {
