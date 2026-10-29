@@ -3453,8 +3453,8 @@ class Component extends DCLogic {
       if (!li || !wv) continue;
       var card = mk('ocap ocap-card'); card.appendChild(wv); wv.__inSpace = true;
       wv.style.opacity = ''; wv.style.visibility = ''; wv.style.transform = '';
-      var ic = li.querySelector('.atc-offer-ic'), st = li.querySelector('strong'), ln = li.querySelector('div > span');
-      var tx = mk('ocap ocap-txt', (ic ? ic.outerHTML.replace(/ style="[^"]*filter[^"]*"/, function (m) { return m.replace(/filter:[^;"]*;?/, ''); }) : '') + '<strong>' + (st ? st.innerHTML : '') + '</strong><span class="ocap-line">' + (ln ? ln.innerHTML : '') + '</span>');
+      var st = li.querySelector('strong'), ln = li.querySelector('div > span');
+      var tx = mk('ocap ocap-txt', '<strong>' + (st ? st.innerHTML : '') + '</strong><span class="ocap-line">' + (ln ? ln.innerHTML : '') + '</span>');
       groups.push({ el: card, kind: 'card', i: i }, { el: tx, kind: 'txt', i: i });
     }
     sp.__ocap = groups;
