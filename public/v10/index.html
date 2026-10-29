@@ -1128,17 +1128,16 @@ html,body{overflow-anchor:none}
 /* v10 What we offer: inside the O is a dark space with the offer's windows floating at different depths; the camera
    flies through it toward one card, which comes to the front, fills the screen and carries What we offer in white */
 .ospace{position:absolute;z-index:3;left:0;top:0;width:100%;height:100%;visibility:hidden;pointer-events:none;overflow:hidden;
-  background:#001025}
-/* the colour field: big soft blobs of the brand colours flowing out of deep navy; it is larger than the screen and drifts
-   with the camera, so moving through the space moves through the colour */
+  background:#0B0C0E}
+/* the field: big soft areas of deep charcoal flowing out of near-black (enough light for the grain to show on); it is
+   larger than the screen and drifts with the camera, so moving through the space moves through it */
 .ospace .osg{position:absolute;left:-20%;top:-20%;width:180%;height:180%;z-index:0;pointer-events:none;will-change:transform;
-  background:radial-gradient(36% 32% at 55% 22%,#2D63E6 0,rgba(45,99,230,.75) 45%,rgba(45,99,230,0) 100%),
-  radial-gradient(30% 32% at 74% 46%,#5A86EE 0,rgba(90,134,238,.7) 45%,rgba(90,134,238,0) 100%),
-  radial-gradient(32% 30% at 20% 58%,#3FB27E 0,rgba(63,178,126,.7) 45%,rgba(63,178,126,0) 100%),
-  radial-gradient(26% 20% at 46% 84%,#9BBA2A 0,rgba(155,186,42,.65) 45%,rgba(155,186,42,0) 100%),
-  radial-gradient(22% 22% at 62% 66%,#2D63E6 0,rgba(45,99,230,.4) 40%,rgba(45,99,230,0) 100%),
-  radial-gradient(22% 20% at 39% 39%,#001025 0,rgba(0,16,37,.85) 45%,rgba(0,16,37,0) 100%),
-  radial-gradient(30% 30% at 28% 26%,#163A8E 0,rgba(22,58,142,0) 100%),#03163A}
+  background:radial-gradient(36% 32% at 55% 22%,#2A2C30 0,rgba(42,44,48,.7) 45%,rgba(42,44,48,0) 100%),
+  radial-gradient(30% 32% at 74% 46%,#232529 0,rgba(35,37,41,.7) 45%,rgba(35,37,41,0) 100%),
+  radial-gradient(32% 30% at 20% 58%,#26282C 0,rgba(38,40,44,.7) 45%,rgba(38,40,44,0) 100%),
+  radial-gradient(26% 20% at 46% 84%,#202226 0,rgba(32,34,38,.6) 45%,rgba(32,34,38,0) 100%),
+  radial-gradient(22% 22% at 62% 66%,#1E2024 0,rgba(30,32,36,.5) 40%,rgba(30,32,36,0) 100%),
+  radial-gradient(22% 20% at 39% 39%,#08090A 0,rgba(8,9,10,.85) 45%,rgba(8,9,10,0) 100%),#0B0C0E}
 /* matte: a fine still grain over the dark (behind the cards), so it reads as a soft printed surface, not a glossy black */
 .ospace::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.7;mix-blend-mode:overlay;background-size:150px 150px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 1 1 0 -1 1 1 1 0 -1 1 1 1 0 -1 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -1174,7 +1173,7 @@ html,body{overflow-anchor:none}
 .ospace .ocap-txt .atc-offer-ic svg{width:26px;height:26px}
 .ospace .ocap-txt strong{display:block;font-size:40px;line-height:1.1;font-weight:500;letter-spacing:-.02em;color:#fff}
 .ospace .ocap-txt span.ocap-line{display:block;margin-top:16px;font-size:19px;line-height:1.5;color:rgba(255,255,255,.88)}
-.ospace .ocap-txt,.ospace .ocap-title{text-shadow:0 1px 18px rgba(0,16,37,.35)}
+.ospace .ocap-txt,.ospace .ocap-title{text-shadow:0 1px 18px rgba(0,0,0,.35)}
 .ospace .ocap-title{width:980px;text-align:center}
 .ospace .ocap-title .ds-label{margin:0 0 22px}
 .ospace .ocap-title h2{margin:0;font-size:62px;line-height:1.08;font-weight:500;letter-spacing:-.03em;color:#fff}
@@ -2916,7 +2915,8 @@ class Component extends DCLogic {
     // already there inside the O's opening; it grows with the opening until it fills the window.
     var zr = ease(map(u, S.pop[0], S.swap[1])), bodyEl = box.querySelector('.atc-sol-body');
     var Oel = Tw ? Tw.querySelectorAll('.sol-ltr')[2] : null;
-    // going in, the O keeps its brand navy, the deepest colour of the space it opens onto
+    // going in, the whole O turns the near-black of the space (its stroke too), one with the space inside it
+    if (Oel) { var ob = 1 - ease(map(zr, 0.02, 0.2)), oP = Oel.querySelector('path'); if (oP) oP.style.fill = ob < 1 ? 'rgb(' + Math.round(24 * (1 - ob)) + ',' + Math.round(25 - 9 * ob) + ',' + Math.round(28 + 9 * ob) + ')' : ''; }
     // the window (bar, tabs, frame) stays on Business-led technology and fades away as the camera starts to move in;
     // the tab never switches, and What we offer arrives without the window around it
     sw = 0;
