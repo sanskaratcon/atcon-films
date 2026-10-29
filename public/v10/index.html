@@ -1308,36 +1308,6 @@ html,body{overflow-anchor:none}
 @keyframes mg-say{from{opacity:0;transform:translateY(.8cqw)}to{opacity:1;transform:none}}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
-
-/* v10 problem 04: the stuck business. Problems pile up unresolved on one side (the dates move on, nothing gets solved);
-   on the other the portal's own page, refreshed month after month, always says Coming soon */
-.fd{padding:1.2cqw 2cqw 1.6cqw}
-.fd-head{display:flex;gap:1.2cqw;padding:.4cqw .6cqw 1.2cqw;border-bottom:1px solid #EEF1F6}
-.fd-head span{padding:.5cqw 1.5cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.6cqw;font-weight:600;color:#5B6B78}
-.fd-head b{color:var(--atc-navy)}
-.fd-head .fd-zero,.fd-head .fd-zero b{background:#FDE6E4;color:#C8382D}
-.fd-head span.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
-.fd-row{display:flex;align-items:center;gap:1.5cqw;padding:1.25cqw .6cqw;border-bottom:1px solid #EEF1F6}
-.fd-row:last-child{border-bottom:0}
-.fd-ic{flex:none;display:grid;place-items:center;width:4.4cqw;height:4.4cqw;border-radius:1cqw;background:#FDF1DA}
-.fd-ic svg{width:60%;height:60%;fill:none;stroke:#A86A00;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
-.fd-row>div{flex:1;min-width:0}
-.fd-row b{display:block;font-size:1.95cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fd-row small{display:block;margin-top:.25cqw;font-size:1.55cqw;color:#8C95A6}
-.fd-st{flex:none;padding:.4cqw 1.3cqw;border-radius:3cqw;background:#FDE6E4;font-size:1.5cqw;font-weight:600;color:#C8382D}
-.wb{padding:1.4cqw 1.8cqw 2.2cqw}
-.wb-url{display:flex;align-items:center;gap:1cqw;padding:.9cqw 1.6cqw;border-radius:3cqw;background:#F2F4F8;font-size:1.75cqw;color:#5B6B78;white-space:nowrap}
-.wb-url svg{flex:none;width:1.9cqw;height:1.9cqw;fill:none;stroke:#8C95A6;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.wb-spin{margin-left:auto;flex:none;width:2cqw;height:2cqw;box-sizing:border-box;border-radius:50%;border:.35cqw solid #D5DCE8;border-top-color:#2D63E6}
-.wb-spin.is-go{animation:wb-spin .6s ease}
-@keyframes wb-spin{to{transform:rotate(360deg)}}
-.wb-page{display:flex;flex-direction:column;align-items:center;gap:1.3cqw;padding:3.4cqw 2cqw 1.6cqw;text-align:center}
-.wb-page.is-go{animation:wb-blink .55s ease}
-@keyframes wb-blink{30%{opacity:.25}}
-.wb-badge{padding:.7cqw 2cqw;border-radius:4cqw;background:#FDF1DA;color:#A86A00;font-size:2cqw;font-weight:600}
-.wb-page p{margin:0;font-size:2.5cqw;font-weight:500;letter-spacing:-.01em;color:var(--atc-navy)}
-.wb-page em{font-style:normal;font-size:1.7cqw;color:#8C95A6}
-.wb-page em.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4);display:inline-block}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1530,29 +1500,41 @@ with a vision.</h2>
             </div>
           </div>
 
-          <!-- 04 Stuck: problems keep arriving (the dates move on, January to May) and every one stays Open, nothing gets
-               solved; after each one the portal's own page is refreshed and still says Coming soon -->
+          <!-- 04 Still on the whiteboard: invitation after invitation, and the project never moves -->
           <div class="mac-sc">
-            <div class="mw st" data-k="docs" style="--x:3%;--y:3%;--w:55%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>Issues · Customer portal</span></div>
-              <div class="mw-b fd">
-                <div class="fd-head"><span>Open <b data-k="open">1</b></span><span class="fd-zero">Solved <b>0</b></span></div>
-                <div class="fd-row st" data-k="f0"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Checkout broken</b><small>Reported 12 Jan</small></div><span class="fd-st">Open</span></div>
-                <div class="fd-row st" data-k="f1"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Payments failing</b><small>Reported 3 Feb</small></div><span class="fd-st">Open</span></div>
-                <div class="fd-row st" data-k="f2"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Orders not syncing</b><small>Reported 24 Feb</small></div><span class="fd-st">Open</span></div>
-                <div class="fd-row st" data-k="f3"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Login timeouts</b><small>Reported 18 Mar</small></div><span class="fd-st">Open</span></div>
-                <div class="fd-row st" data-k="f4"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Reports empty</b><small>Reported 9 Apr</small></div><span class="fd-st">Open</span></div>
-                <div class="fd-row st" data-k="f5"><span class="fd-ic"><svg viewBox="0 0 24 24"><path d="M12 4 3.6 19h16.8z"/><path d="M12 10v4M12 16.6v.6"/></svg></span><div><b>Supplier feed down</b><small>Reported 2 May</small></div><span class="fd-st">Open</span></div>
+            <div class="mw st" data-k="cal" style="--x:2%;--y:14%;--w:62%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Calendar</span></div>
+              <div class="mw-b mcal">
+                <div class="mc-head"><strong data-k="month">January</strong><small>Week view</small></div>
+                <div class="mc-days"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div>
+                <div class="mc-grid">
+                  <i class="st" data-k="m0" style="--c:1;--r:1;--h:2">Kickoff</i>
+                  <i class="st b" data-k="m1" style="--c:3;--r:2;--h:1">Sync</i>
+                  <i class="st g" data-k="m2" style="--c:5;--r:1;--h:2">Alignment</i>
+                  <i class="st" data-k="m3" style="--c:2;--r:4;--h:1">Review</i>
+                  <i class="st b" data-k="m4" style="--c:4;--r:3;--h:1">Sync</i>
+                  <i class="st g" data-k="m5" style="--c:1;--r:5;--h:2">Workshop</i>
+                  <i class="st" data-k="m6" style="--c:3;--r:4;--h:2">Status</i>
+                  <i class="st b" data-k="m7" style="--c:5;--r:4;--h:1">Sync</i>
+                  <i class="st g" data-k="m8" style="--c:2;--r:6;--h:2">Steering</i>
+                  <i class="st" data-k="m9" style="--c:4;--r:5;--h:2">Alignment</i>
+                  <i class="st b" data-k="m10" style="--c:3;--r:7;--h:1">Recap</i>
+                  <i class="st" data-k="m11" style="--c:5;--r:6;--h:2">Review</i>
+                </div>
               </div>
             </div>
-            <div class="mw st" data-k="web" style="--x:43%;--y:50%;--w:54%">
-              <div class="mw-bar"><i></i><i></i><i></i><span>yourbusiness.com/portal</span></div>
-              <div class="mw-b wb">
-                <div class="wb-url"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>yourbusiness.com/portal<i class="wb-spin" data-k="spin"></i></div>
-                <div class="wb-page" data-k="page"><span class="wb-badge">Coming soon</span><p>Your customer portal is on its way.</p><em data-k="chk">Checked in January</em></div>
+            <div class="minvite st" data-k="inv"><b class="ni"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10 H20 M8.5 3.5 V7 M15.5 3.5 V7"/></svg></b><div><p><strong>Invitation</strong><time>now</time></p><p data-k="invt">Kickoff · Mon 09:00</p></div><span class="ok">Accepted</span></div>
+            <div class="mw st" data-k="stat" style="--x:50%;--y:52%;--w:48%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Customer portal</span></div>
+              <div class="mw-b mstatus">
+                <div class="ms-note"><svg viewBox="0 0 24 24"><path d="M9 18 H15 M10 21 H14 M12 3 C8 3 5.5 5.8 5.5 9.2 C5.5 11.6 6.9 13.3 8.4 14.6 C8.9 15 9.2 15.6 9.2 16.2 V16.5 H14.8 V16.2 C14.8 15.6 15.1 15 15.6 14.6 C17.1 13.3 18.5 11.6 18.5 9.2 C18.5 5.8 16 3 12 3 Z"/></svg><span>Still an idea</span></div>
+                <dl>
+                  <dt>Meetings</dt><dd><strong data-k="meet">0</strong></dd>
+                  <dt>Progress</dt><dd class="ms-prog"><span class="ms-bar"><i></i></span><strong>0%</strong><b class="mplus mplus-0" data-k="zero">+0%</b></dd>
+                  <dt>Shipped</dt><dd class="muted">Nothing yet</dd>
+                </dl>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:86%"><span><b>6</b> problems</span><span class="is-zero"><b>0</b> solved</span><span>Live: <b>still “Coming soon”</b></span></div>
           </div>
 
           <!-- The dock: tools join it as they pile up; the app in use is marked -->
@@ -2864,22 +2846,24 @@ class Component extends DCLogic {
       at(tt, function () { show('more'); });
       var total = tt + 400;
     } else if (i === 3) {
-      // 04 Stuck: problems keep arriving (the dates move on, January to May) and every one stays Open, nothing gets
-      // solved; after each one the portal's page is refreshed (the spinner turns, the page blinks) and still says Coming soon
-      var spin = $('spin'), page = $('page'), chk = $('chk'), openN = $('open');
-      var CHKM = ['February', 'February', 'March', 'April', 'May'];
-      at(100, function () { show('docs'); show('f0'); });
-      at(700, function () { show('web'); });
-      [1, 2, 3, 4, 5].forEach(function (k) {
-        var t = 1400 + (k - 1) * 950;
-        at(t, function () { show('f' + k); openN.textContent = String(k + 1); flag(openN.parentElement, 'is-new'); });
-        at(t + 480, function () {
-          flag(spin, 'is-go'); flag(page, 'is-go');
-          chk.textContent = 'Refreshed in ' + CHKM[k - 1]; flag(chk, 'is-new');
+      // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
+      var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
+      var slots = ['Kickoff · Mon 09:00', 'Sync · Wed 10:30', 'Alignment · Fri 14:00', 'Review · Tue 11:00',
+        'Sync · Thu 09:30', 'Workshop · Mon 13:00', 'Status · Wed 15:00', 'Sync · Fri 09:00',
+        'Steering · Tue 16:00', 'Alignment · Thu 10:00', 'Recap · Wed 17:00', 'Review · Fri 11:30'];
+      var months = { 3: 'February', 6: 'March', 9: 'April' };
+      at(100, function () { show('cal'); show('stat'); });
+      slots.forEach(function (label, m) {
+        var t = 700 + m * 480;
+        at(t, function () {
+          invt.textContent = label;
+          if (m === 0) show(inv); else flag(inv, 'is-pop');
+          if (months[m]) { month.textContent = months[m]; flag(month, 'is-flip'); }
         });
+        at(t + 260, function () { show('m' + m); meet.textContent = String((m + 1) * 4); flag(zero, 'is-go'); });
       });
-      at(1400 + 5 * 950 + 200, function () { show('tally'); });
-      var total = 1400 + 5 * 950 + 1000;
+      at(700 + slots.length * 480 + 500, function () { invt.textContent = 'Alignment #49 · Tomorrow 09:00'; flag(inv, 'is-pop'); });
+      var total = 700 + slots.length * 480 + 900;
     }
     total += START;
     fillSteps(0);
