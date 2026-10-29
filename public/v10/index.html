@@ -1309,31 +1309,37 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* v10 problem 03: a reply-all chain; the subject grows, the CC list fills, and no one owns it */
-.em{padding:2.4cqw 2.6cqw 2.6cqw}
-.em-subj{margin:0;font-size:2.8cqw;font-weight:500;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.em-pre{color:#C8382D;font-weight:600;margin-right:.6cqw}.em-pre:empty{margin:0}
-.em-pre.is-new,.em-n.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4);display:inline-block}
-.em-to{display:flex;align-items:center;gap:1.4cqw;margin-top:1.6cqw;padding:1.2cqw 1.6cqw;border-radius:1.4cqw;background:#F6F8FB}
-.em-to small{font-size:1.6cqw;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8C95A6;white-space:nowrap}
-.em-avs{flex:1;display:flex;align-items:center}
-.mac .em-avs .av-t{width:4cqw;height:4cqw;margin-right:-1cqw;font-size:1.3cqw;box-shadow:0 0 0 .4cqw #F6F8FB}
-.mac .em-avs .em-cc{width:0;margin-right:0;opacity:0;transform:scale(.3);transition:width .35s ease,margin .35s ease,opacity .3s ease,transform .4s cubic-bezier(.2,.9,.3,1.4)}
-.mac .em-avs .em-cc.is-shown{width:4cqw;margin-right:-1cqw;opacity:1;transform:none}
-.em-avs em{margin-left:1.8cqw;font-style:normal;font-size:1.7cqw;font-weight:600;color:#5B6B78}
-.em-n{font-size:1.9cqw;font-weight:600;color:var(--atc-navy);white-space:nowrap}
-.em-list{margin-top:1.2cqw}
-.em-m{display:grid;grid-template-columns:4.6cqw minmax(0,1fr);gap:1.4cqw;align-items:start;padding:1.3cqw .4cqw;border-bottom:1px solid #EEF1F6}
-.mac .em-m .av-t{width:4.6cqw;height:4.6cqw;font-size:1.5cqw}
-.em-m p{display:flex;align-items:baseline;gap:1cqw;margin:0;font-size:1.9cqw}
-.em-m strong{font-weight:600}
-.em-m em{font-style:normal;color:#8C95A6}
-.em-m time{margin-left:auto;font-size:1.6cqw;color:#A3ABB8}
-.em-m span{display:block;margin-top:.3cqw;font-size:2cqw;color:#3A4D55}
-.em-ask{border-radius:1.4cqw;border-bottom:0;background:#EEF3FD}
-.em-ask span{font-size:2.3cqw;font-weight:600;color:var(--atc-navy)}
-.em-none{display:flex;align-items:center;gap:1cqw;margin:1.4cqw 0 0 6cqw;font-size:1.8cqw;font-style:italic;color:#A3ABB8}
-.em-none svg{width:2.2cqw;height:2.2cqw;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
+/* v10 problem 03: the empty chair. The crowd of everyone involved on one side, the owner's place empty on the other */
+.ch{padding:2.2cqw 2.6cqw 2.6cqw}
+.ch-cols{display:grid;grid-template-columns:1fr 1fr;gap:2cqw}
+.ch-col{display:flex;flex-direction:column;align-items:center;min-height:30cqw;padding:2cqw;border-radius:1.8cqw;background:#F6F8FB;text-align:center}
+.ch-col small{font-size:1.7cqw;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8C95A6}
+.ch-num{display:inline-block;margin:.4cqw 0 1.4cqw;font-size:8cqw;line-height:1;font-weight:500;letter-spacing:-.04em;color:var(--atc-navy)}
+.ch-num.is-new{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
+.ch-zero{color:#D9483C}
+.ch-crowd{display:flex;flex-wrap:wrap;justify-content:center;gap:.8cqw;max-width:30cqw}
+.mac .ch-crowd .av-t{width:4.4cqw;height:4.4cqw;font-size:1.4cqw}
+.mac .ch-crowd .ch-p{opacity:0;transform:scale(.3);transition:opacity .3s ease,transform .45s cubic-bezier(.2,.9,.3,1.4)}
+.mac .ch-crowd .ch-p.is-shown{opacity:1;transform:none}
+.ch-seat{position:relative;display:grid;place-items:center;width:11cqw;height:11cqw;border-radius:50%;border:.35cqw dashed #C9D2E1;background:#fff;transition:border-color .3s ease}
+.ch-q{font-size:4.6cqw;font-weight:500;color:#C9D2E1;transition:opacity .2s ease}
+.mac .ch-seat .ch-who{position:absolute;inset:.9cqw;width:auto;height:auto;font-size:2.6cqw;opacity:0;transform:scale(.4);transition:opacity .25s ease,transform .4s cubic-bezier(.2,.9,.3,1.4)}
+.ch-seat.is-try .ch-q{opacity:0}
+.ch-seat.is-try .ch-who{opacity:1;transform:none}
+.ch-seat.is-try{border-color:color-mix(in srgb,var(--c,#2D63E6) 50%,#fff)}
+.ch-x{position:absolute;right:-.6cqw;top:-.6cqw;width:4cqw;height:4cqw;border-radius:50%;background:#D9483C;opacity:0;transform:scale(.3);transition:opacity .2s ease,transform .35s cubic-bezier(.2,.9,.3,1.6)}
+.ch-x::before,.ch-x::after{content:'';position:absolute;left:50%;top:50%;width:2cqw;height:.4cqw;margin:-.2cqw 0 0 -1cqw;border-radius:.2cqw;background:#fff;transform:rotate(45deg)}
+.ch-x::after{transform:rotate(-45deg)}
+.ch-seat.is-no .ch-x{opacity:1;transform:none}
+.mac .ch-say{position:absolute;left:50%;top:calc(100% + 1.5cqw);z-index:2;margin:0 0 0 -15cqw;width:30cqw;text-align:center;box-sizing:border-box;padding:1cqw 1.4cqw;border-radius:1.4cqw;background:var(--atc-navy);color:#fff;
+  font-size:1.8cqw;line-height:1.3;opacity:0;transition:opacity .25s ease}
+.ch-say::after{content:'';position:absolute;left:50%;top:-.8cqw;width:1.6cqw;height:1.6cqw;margin-left:-.8cqw;background:var(--atc-navy);transform:rotate(45deg)}
+.ch-seat.is-try .ch-say{opacity:1}
+.ch-seat.is-empty{border-color:#E8A49D;animation:ch-pulse 1.6s ease-in-out infinite}
+@keyframes ch-pulse{50%{box-shadow:0 0 0 1.4cqw rgba(217,72,60,.12)}}
+.ch-lab{margin-top:1.4cqw;font-size:2cqw;font-weight:600;color:#8C95A6;transition:opacity .2s ease}
+.ch-seat.is-try + .ch-lab{opacity:0}
+.ch .mg-say{margin-top:2.2cqw}
 </style>
 </helmet>
 <div class="atc" data-atc="root" data-theme="dark" data-menu="closed">
@@ -1500,20 +1506,24 @@ with a vision.</h2>
             <div class="mtally st" data-k="tally" style="top:83%"><span>Planned <b>3 months</b></span><span class="is-zero">Actual <b>7 months</b></span><span><b>4</b> vendors, <b>0</b> owner</span></div>
           </div>
 
-          <!-- 03 Everyone is involved, no one is accountable: a reply-all chain. Every reply forwards the problem to the
-               next team, the subject grows (RE: FW: ...) and the CC list fills up, until someone asks who owns it and no one
-               answers -->
+          <!-- 03 Everyone is involved, no one is accountable: the empty chair. On one side everyone involved, a crowd that
+               keeps growing; on the other the owner's place, empty. Each team steps into it, says "not me" and steps back
+               out, until twelve people are involved and the owner is still no one -->
           <div class="mac-sc">
-            <div class="mw st" data-k="mail" style="--x:3%;--y:3%;--w:94%">
-              <div class="mw-bar"><i></i><i></i><i></i><b class="mw-ap"><img class="app-ic" src="../assets/apps/outlook.svg" alt="" draggable="false"></b><span>Outlook · Inbox</span></div>
-              <div class="mw-b em">
-                <h4 class="em-subj"><span class="em-pre" data-k="pre"></span>Portal checkout broken</h4>
-                <div class="em-to"><small>To / CC</small><span class="em-avs"><b class="av av-t" data-k="cc0" style="--c:#2D63E6">MK</b><b class="av av-t" data-k="cc1" style="--c:#8EA9F1">PM</b><b class="av av-t" data-k="cc2" style="--c:#C9D6F3">CS</b><b class="av av-t em-cc" data-k="cc3" style="--c:#3FB27E">IT</b><b class="av av-t em-cc" data-k="cc4" style="--c:#5A86EE">BF</b><b class="av av-t em-cc" data-k="cc5" style="--c:#9BBA2A">FN</b><b class="av av-t em-cc" data-k="cc6" style="--c:#6DC49D">OP</b><em data-k="more"></em></span><b class="em-n" data-k="ppl">3 people</b></div>
-                <div class="em-list"><div class="em-m st" data-k="m0"><b class="av av-t" style="--c:#2D63E6">MK</b><div><p><strong>Marketing</strong><em>to IT</em><time>09:14</time></p><span>Checkout is broken. Looping in IT.</span></div></div><div class="em-m st" data-k="m1"><b class="av av-t" style="--c:#3FB27E">IT</b><div><p><strong>IT</strong><em>to Bitforge Labs</em><time>11:02</time></p><span>Not ours. Adding Bitforge, they changed the API.</span></div></div><div class="em-m st" data-k="m2"><b class="av av-t" style="--c:#5A86EE">BF</b><div><p><strong>Bitforge Labs</strong><em>to Finance</em><time>14:37</time></p><span>Works on our side. CC’ing Finance about the budget.</span></div></div><div class="em-m st" data-k="m3"><b class="av av-t" style="--c:#9BBA2A">FN</b><div><p><strong>Finance</strong><em>to Marketing</em><time>16:20</time></p><span>No budget line for this. Forwarding back to Marketing.</span></div></div><div class="em-m st em-ask" data-k="m4"><b class="av av-t" style="--c:#2D63E6">MK</b><div><p><strong>Marketing</strong><em>to all 14</em><time>17:05</time></p><span>So… who owns this?</span></div></div></div>
-                <p class="em-none st" data-k="none"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2"/><path d="M8 4.6V8l2.4 1.6"/></svg>No reply · 3 days later</p>
+            <div class="mw st" data-k="task" style="--x:3%;--y:3%;--w:94%">
+              <div class="mw-bar"><i></i><i></i><i></i><span>Projects · Task</span></div>
+              <div class="mw-b ch">
+                <div class="mt-head"><h4>Launch customer portal</h4><span class="pill pill-amber">Delayed 5 weeks</span></div>
+                <div class="ch-cols">
+                  <div class="ch-col"><small>Involved</small><strong class="ch-num" data-k="inv">3</strong><div class="ch-crowd"><b class="av av-t" data-k="p0" style="--c:#2D63E6">MK</b><b class="av av-t" data-k="p1" style="--c:#8EA9F1">PM</b><b class="av av-t" data-k="p2" style="--c:#6DC49D">CS</b><b class="av av-t ch-p" data-k="p3" style="--c:#3FB27E">IT</b><b class="av av-t ch-p" data-k="p4" style="--c:#B3CB5D">OP</b><b class="av av-t ch-p" data-k="p5" style="--c:#5F88EC">SE</b><b class="av av-t ch-p" data-k="p6" style="--c:#5A86EE">BF</b><b class="av av-t ch-p" data-k="p7" style="--c:#82A3F2">QA</b><b class="av av-t ch-p" data-k="p8" style="--c:#3FB27E">UX</b><b class="av av-t ch-p" data-k="p9" style="--c:#9BBA2A">FN</b><b class="av av-t ch-p" data-k="p10" style="--c:#5A86EE">LG</b><b class="av av-t ch-p" data-k="p11" style="--c:#6DC49D">HR</b></div></div>
+                  <div class="ch-col ch-own"><small>Owner</small><strong class="ch-num ch-zero">0</strong>
+                    <div class="ch-seat" data-k="seat"><span class="ch-q">?</span><b class="av av-t ch-who" data-k="who"></b><i class="ch-x" data-k="x"></i>
+                      <p class="ch-say" data-k="say"></p></div>
+                    <span class="ch-lab" data-k="lab">Unassigned</span></div>
+                </div>
+                <p class="mg-say" data-k="cap" style="--c:#001025"><i></i><span data-k="capt">Who owns the portal launch?</span></p>
               </div>
             </div>
-            <div class="mtally st" data-k="tally" style="top:84%"><span><b>14</b> people</span><span><b>4</b> forwards</span><span class="is-zero"><b>0</b> owners</span></div>
           </div>
 
           <!-- 04 Still on the whiteboard: invitation after invitation, and the project never moves -->
@@ -2839,24 +2849,32 @@ class Component extends DCLogic {
       at(tEnd + 600, function () { gantt.setAttribute('data-on', 'all'); show('tally'); });
       var total = tEnd + 1300;
     } else if (i === 2) {
-      // 03 Reply-all: each reply forwards the problem to the next team; the subject grows and more people are copied in,
-      // until Marketing asks who owns it, and no one answers
-      var pre = $('pre'), ppl = $('ppl'), more = $('more');
-      var PRE = ['FW: ', 'RE: FW: ', 'FW: RE: FW: ', 'RE: FW: RE: FW: '], PPL = [5, 8, 11, 14], SHOWN = [4, 5, 6, 7];
-      at(100, function () { show('mail'); });
-      [0, 1, 2, 3].forEach(function (k) {
-        at(600 + k * 1100, function () {
-          show('m' + k);
-          pre.textContent = PRE[k]; flag(pre, 'is-new');
-          for (var c = 3; c < SHOWN[k]; c++) show('cc' + c);
-          more.textContent = PPL[k] > SHOWN[k] ? '+' + (PPL[k] - SHOWN[k]) : '';
-          ppl.textContent = PPL[k] + ' people'; flag(ppl, 'is-new');
+      // 03 The empty chair: each team steps into the owner's place, says "not me" and steps back out, and more people get
+      // involved each time; in the end twelve are involved and the owner is still no one
+      var seat = $('seat'), who = $('who'), sayEl = $('say'), inv = $('inv'), cap = $('cap'), capt = $('capt'), lab = $('lab');
+      var TRY = [['MK', '#2D63E6', 'Marketing', 'Not me. That\u2019s IT\u2019s job.'], ['IT', '#3FB27E', 'IT', 'Not me. Ask Bitforge.'],
+                 ['BF', '#5A86EE', 'Bitforge Labs', 'Not me. Not in our contract.'], ['FN', '#9BBA2A', 'Finance', 'Not me. No budget for it.']];
+      at(100, function () { show('task'); });
+      TRY.forEach(function (p, k) {
+        var t = 700 + k * 1250;
+        at(t, function () {
+          who.textContent = p[0]; who.style.setProperty('--c', p[1]); sayEl.textContent = p[3];
+          seat.classList.remove('is-no'); seat.classList.add('is-try'); lab.textContent = p[2] + '?';
+          capt.textContent = p[2] + ' is asked to own it.'; cap.style.setProperty('--c', p[1]); flag(cap, 'is-new');
+        });
+        at(t + 650, function () { seat.classList.add('is-no'); });
+        at(t + 1050, function () {
+          seat.classList.remove('is-try', 'is-no'); lab.textContent = 'Unassigned';
+          var CNT = [5, 8, 10, 12];
+          for (var c = 3; c < CNT[k]; c++) show('p' + c);
+          inv.textContent = String(CNT[k]); flag(inv, 'is-new');
         });
       });
-      at(600 + 4 * 1100, function () { show('m4'); });
-      at(600 + 4 * 1100 + 900, function () { show('none'); });
-      at(600 + 4 * 1100 + 1400, function () { show('tally'); });
-      var total = 600 + 4 * 1100 + 2100;
+      at(700 + 4 * 1250, function () {
+        seat.classList.add('is-empty'); lab.textContent = 'Still no one';
+        capt.textContent = 'Everyone is involved. No one owns it.'; cap.style.setProperty('--c', '#D9483C'); flag(cap, 'is-new');
+      });
+      var total = 700 + 4 * 1250 + 900;
     } else if (i === 3) {
       // 04 Invitation after invitation fills the calendar; every meeting adds nothing to progress
       var inv = $('inv'), invt = $('invt'), meet = $('meet'), zero = $('zero'), month = $('month');
