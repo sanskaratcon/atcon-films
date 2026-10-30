@@ -1393,21 +1393,21 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
 .cq-head{position:relative;z-index:1}
 .cq-head .ds-label{margin:0 0 var(--sp-5)}
 .cq-head .ds-display{margin:0 auto}
-.cq-stage{position:relative;z-index:1;min-height:clamp(200px,28vh,260px);margin-top:clamp(26px,4.6vh,46px)}
+.cq-stage{position:relative;z-index:1;min-height:clamp(230px,32vh,300px);margin-top:clamp(26px,4.6vh,46px)}
 .cq-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,3.6vh,32px);margin:0;
-  opacity:0;visibility:hidden;animation:cq-cycle 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
-.cq-item blockquote{margin:0;max-width:20em;font-size:clamp(23px,2.9vw,40px);line-height:1.24;letter-spacing:-.025em;font-weight:500;color:var(--atc-navy);text-wrap:balance}
+  opacity:0;visibility:hidden;animation:cq-cycle 39s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
+.cq-item blockquote{margin:0;max-width:24em;font-size:clamp(20px,2.4vw,33px);line-height:1.3;letter-spacing:-.022em;font-weight:500;color:var(--atc-navy);text-wrap:balance}
 /* the speaker, unboxed: the avatar with its presence dot and one quiet line of type, straight on the canvas */
 .cq-item figcaption{display:flex;align-items:center;gap:11px}
-.cr-av{flex:none;width:36px;height:36px;border-radius:50%;background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044% 958%;
+.cr-av{flex:none;width:36px;height:36px;border-radius:50%;background-size:cover;background-position:50% 30%;background-repeat:no-repeat;
   filter:saturate(.85) contrast(1.02);box-shadow:inset 0 0 0 1px rgba(0,16,37,.08),0 1px 3px rgba(0,16,37,.12)}
 .cq-item figcaption span{display:flex;align-items:baseline;gap:9px;text-align:left}
 .cq-item figcaption span b{font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--atc-navy);white-space:nowrap}
 .cq-item figcaption small{font-size:12px;color:var(--atc-mute);white-space:nowrap}
-@keyframes cq-cycle{0%{opacity:0;transform:translateY(16px);visibility:visible}3.5%,21%{opacity:1;transform:none;visibility:visible}25%,100%{opacity:0;transform:translateY(-12px);visibility:hidden}}
+@keyframes cq-cycle{0%{opacity:0;transform:translateY(16px);visibility:visible}2.3%,14%{opacity:1;transform:none;visibility:visible}16.6%,100%{opacity:0;transform:translateY(-12px);visibility:hidden}}
 .cq-dots{position:relative;z-index:1;display:flex;justify-content:center;gap:10px;margin-top:clamp(20px,3.6vh,34px)}
-.cq-dots i{width:8px;height:8px;border-radius:50%;background:#D5DCE8;transform:scale(.8);animation:cq-dot 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
-@keyframes cq-dot{0%,24%{background:#2D63E6;transform:scale(1)}26%,100%{background:#D5DCE8;transform:scale(.8)}}
+.cq-dots i{width:8px;height:8px;border-radius:50%;background:#D5DCE8;transform:scale(.8);animation:cq-dot 39s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
+@keyframes cq-dot{0%,15.8%{background:#2D63E6;transform:scale(1)}17%,100%{background:#D5DCE8;transform:scale(.8)}}
 @media (max-width:900px){
   .cq-stage{min-height:300px}
   .cq-item blockquote{font-size:23px}
@@ -1840,23 +1840,31 @@ with a vision.</h2>
         </div>
         <div class="cq-stage">
           <figure class="cq-item" style="--i:0">
-            <blockquote>“They took ownership from day one. We shipped in months, not years.”</blockquote>
-            <figcaption><b class="cr-av" style="background-position:26.91% 57.11%"></b><span><b>Marc D.</b><small>CIO · Energy sector</small></span></figcaption>
+            <blockquote>“An incredible journey with a truly professional and dedicated team. Their focus on detail and innovation is unmatched. We are excited to start our next big project very soon.”</blockquote>
+            <figcaption><b class="cr-av" style="background-image:url(../assets/reviews/rev-1.webp)"></b><span><b>Kith Williams</b><small>CEO, Sinquc</small></span></figcaption>
           </figure>
           <figure class="cq-item" style="--i:1">
-            <blockquote>“One team for strategy, build and support. The handoffs just disappeared.”</blockquote>
-            <figcaption><b class="cr-av" style="background-position:58.8% 57.11%"></b><span><b>Sofie V.</b><small>Head of Digital · Public sector</small></span></figcaption>
+            <blockquote>“They cut through the noise and shipped a data platform our teams actually use daily. No theatre — just clear architecture and relentless follow-through.”</blockquote>
+            <figcaption><b class="cr-av" style="background-image:url(../assets/reviews/rev-2.webp)"></b><span><b>Priya Nanda</b><small>CTO, Northline Retail</small></span></figcaption>
           </figure>
           <figure class="cq-item" style="--i:2">
-            <blockquote>“For the first time, technology moved with the business instead of against it.”</blockquote>
-            <figcaption><b class="cr-av" style="background-position:51.6% 74.4%"></b><span><b>Elena R.</b><small>COO · Logistics</small></span></figcaption>
+            <blockquote>“The automation programme paid for itself inside two quarters. What stood out was how carefully they protected customer trust while moving fast.”</blockquote>
+            <figcaption><b class="cr-av" style="background-image:url(../assets/reviews/rev-3.webp)"></b><span><b>Marcus Helvi</b><small>Head of Ops, Helix Bank</small></span></figcaption>
           </figure>
           <figure class="cq-item" style="--i:3">
-            <blockquote>“They stayed until it worked. And it works.”</blockquote>
-            <figcaption><b class="cr-av" style="background-position:73.94% 57.11%"></b><span><b>Tom B.</b><small>Founder · Retail platform</small></span></figcaption>
+            <blockquote>“Our AI triage agent is calm under pressure because Atcon designed the fail paths first. That mindset is rare — and exactly what healthcare needs.”</blockquote>
+            <figcaption><b class="cr-av" style="background-image:url(../assets/reviews/rev-4.webp)"></b><span><b>Amélie Cousteau</b><small>VP Product, Lumina Health</small></span></figcaption>
+          </figure>
+          <figure class="cq-item" style="--i:4">
+            <blockquote>“From discovery to production in weeks, not months. The embedded squad worked like another room of our company, not a distant vendor.”</blockquote>
+            <figcaption><b class="cr-av" style="background-image:url(../assets/reviews/rev-5.webp)"></b><span><b>James Okoro</b><small>Founder, Stackfield Logistics</small></span></figcaption>
+          </figure>
+          <figure class="cq-item" style="--i:5">
+            <blockquote>“Security reviews were collaborative, not performative. They made our controls stronger without bogging delivery down.”</blockquote>
+            <figcaption><b class="cr-av" style="background-image:url(../assets/reviews/rev-6.webp)"></b><span><b>Sofie Berg</b><small>CISO, Polar Logistics</small></span></figcaption>
           </figure>
         </div>
-        <div class="cq-dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i></div>
+        <div class="cq-dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i></div>
       </div>
     </section>
 
