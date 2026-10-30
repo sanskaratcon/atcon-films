@@ -1336,12 +1336,12 @@ html,body{overflow-anchor:none}
 .ds-rv.is-in .tm-h{opacity:1}
 /* the portraits: tilted white cards, the photo slightly stilled, the role marked with its colour */
 .tm-p{position:absolute;z-index:1;margin:0}
-.tm-card{display:flex;flex-direction:column;align-items:center;padding:7px 7px 10px;border-radius:16px;background:#fff;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 56px -34px rgba(0,16,37,.4),0 2px 6px rgba(0,16,37,.045);
-  animation:tm-float 9s ease-in-out infinite}
+.tm-it{display:flex;flex-direction:column;align-items:flex-start;animation:tm-float 9s ease-in-out infinite}
+.tm-card{display:block;padding:7px;border-radius:16px;background:#fff;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 56px -34px rgba(0,16,37,.4),0 2px 6px rgba(0,16,37,.045)}
 .tm-face{display:block;width:clamp(70px,6.4vw,92px);height:clamp(70px,6.4vw,92px);border-radius:11px;filter:saturate(.85) contrast(1.02);box-shadow:inset 0 0 0 1px rgba(0,16,37,.06)}
-.tm-p figcaption{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:9.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--atc-mute);white-space:nowrap}
-.tm-dot{width:5px;height:5px;border-radius:50%;background:var(--c)}
+.tm-p figcaption{display:flex;align-items:flex-start;gap:6px;margin:9px 0 0 3px;max-width:118px;font-size:9.5px;line-height:1.5;font-weight:600;letter-spacing:.11em;text-transform:uppercase;text-align:left;color:var(--atc-mute)}
+.tm-dot{flex:none;width:5px;height:5px;margin-top:4px;border-radius:50%;background:var(--c)}
 /* the live notes beside them: quiet glass cards with the mark and a soft online pulse */
 .tm-n{position:absolute;z-index:1}
 .tm-nc{display:flex;align-items:center;gap:11px;padding:10px 18px 10px 10px;border-radius:16px;background:rgba(255,255,255,.94);
@@ -1355,17 +1355,17 @@ html,body{overflow-anchor:none}
 .tm-nc strong{font-weight:600;letter-spacing:.01em;color:var(--atc-navy)}
 .tm-nc em{font-style:normal;font-size:11.5px;color:var(--atc-mute)}
 .tm-nc span{display:block;margin-top:2px;font-size:12.5px;color:var(--atc-slate);white-space:nowrap}
-.tm-p2 .tm-card,.tm-p5 .tm-card{animation-delay:-3s}.tm-p3 .tm-card,.tm-p4 .tm-card{animation-delay:-6s}
+.tm-p2 .tm-it,.tm-p5 .tm-it{animation-delay:-3s}.tm-p3 .tm-it,.tm-p4 .tm-it{animation-delay:-6s}
 .tm-n2 .tm-nc{animation-delay:-3.4s}.tm-n3 .tm-nc{animation-delay:-6.8s}
 @keyframes tm-float{0%,100%{transform:rotate(var(--rt,0deg)) translateY(0)}50%{transform:rotate(var(--rt,0deg)) translateY(-6px)}}
 @keyframes tm-pulse{0%{box-shadow:0 0 0 0 rgba(63,178,126,.35)}70%{box-shadow:0 0 0 7px rgba(63,178,126,0)}100%{box-shadow:0 0 0 0 rgba(63,178,126,0)}}
 .atc-team .ds-rv{transition-delay:var(--d,0s)}
-@media (prefers-reduced-motion:reduce){.tm-card,.tm-nc,.tm-ni::after{animation:none}}
+@media (prefers-reduced-motion:reduce){.tm-it,.tm-nc,.tm-ni::after{animation:none}}
 @media (max-width:900px){
   .tm-wrap{display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:14px;min-height:0}
   .atc-team-head{width:100%;margin-bottom:12px}
   .tm-p{position:static}
-  .tm-card{animation:none;transform:rotate(var(--rt,0deg)) scale(.96)}
+  .tm-it{animation:none;transform:rotate(var(--rt,0deg)) scale(.96)}
   .tm-face{width:74px;height:74px}
   .tm-p figcaption{font-size:9px}
   .tm-n{display:none}
@@ -1774,12 +1774,12 @@ with a vision.</h2>
           <p class="ds-lede">Architects, engineers and designers, from Brussels and beyond, who stay until it runs.</p>
           <a class="ds-btn" href="mailto:hello@atconglobal.com">Work with us<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
         </div>
-        <figure class="tm-p tm-p1 ds-rv" data-rv="" style="left:9%;top:15%;--d:.05s;--rt:-2.5deg"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:66.31% 39.86%"></i><figcaption><i class="tm-dot" style="--c:#2D63E6"></i>Creative director</figcaption></div></figure>
-        <figure class="tm-p tm-p2 ds-rv" data-rv="" style="left:37%;top:4%;--d:.15s;--rt:1.5deg"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:26.91% 57.11%"></i><figcaption><i class="tm-dot" style="--c:#3FB27E"></i>Dev</figcaption></div></figure>
-        <figure class="tm-p tm-p3 ds-rv" data-rv="" style="right:10%;top:15%;--d:.25s;--rt:-1.5deg"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:34.96% 39.86%"></i><figcaption><i class="tm-dot" style="--c:#5A86EE"></i>Business developer</figcaption></div></figure>
-        <figure class="tm-p tm-p4 ds-rv" data-rv="" style="left:17%;bottom:12%;--d:.1s;--rt:2deg"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:50.64% 74.36%"></i><figcaption><i class="tm-dot" style="--c:#9BBA2A"></i>Product designer</figcaption></div></figure>
-        <figure class="tm-p tm-p5 ds-rv" data-rv="" style="left:38%;bottom:5%;--d:.2s;--rt:-1.5deg"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:58.26% 57.11%"></i><figcaption><i class="tm-dot" style="--c:#2D63E6"></i>Project manager</figcaption></div></figure>
-        <figure class="tm-p tm-p6 ds-rv" data-rv="" style="right:8%;bottom:20%;--d:.3s;--rt:1.5deg"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:73.94% 57.11%"></i><figcaption><i class="tm-dot" style="--c:#3FB27E"></i>Data engineer</figcaption></div></figure>
+        <figure class="tm-p tm-p1 ds-rv" data-rv="" style="left:9%;top:15%;--d:.05s;--rt:-2.5deg"><div class="tm-it"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:66.31% 39.86%"></i></div><figcaption><i class="tm-dot" style="--c:#2D63E6"></i>Creative director</figcaption></div></figure>
+        <figure class="tm-p tm-p2 ds-rv" data-rv="" style="left:37%;top:4%;--d:.15s;--rt:1.5deg"><div class="tm-it"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:26.91% 57.11%"></i></div><figcaption><i class="tm-dot" style="--c:#3FB27E"></i>Dev</figcaption></div></figure>
+        <figure class="tm-p tm-p3 ds-rv" data-rv="" style="right:10%;top:15%;--d:.25s;--rt:-1.5deg"><div class="tm-it"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:34.96% 39.86%"></i></div><figcaption><i class="tm-dot" style="--c:#5A86EE"></i>Business developer</figcaption></div></figure>
+        <figure class="tm-p tm-p4 ds-rv" data-rv="" style="left:17%;bottom:12%;--d:.1s;--rt:2deg"><div class="tm-it"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:50.64% 74.36%"></i></div><figcaption><i class="tm-dot" style="--c:#9BBA2A"></i>Product designer</figcaption></div></figure>
+        <figure class="tm-p tm-p5 ds-rv" data-rv="" style="left:38%;bottom:5%;--d:.2s;--rt:-1.5deg"><div class="tm-it"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:58.26% 57.11%"></i></div><figcaption><i class="tm-dot" style="--c:#2D63E6"></i>Project manager</figcaption></div></figure>
+        <figure class="tm-p tm-p6 ds-rv" data-rv="" style="right:8%;bottom:20%;--d:.3s;--rt:1.5deg"><div class="tm-it"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:73.94% 57.11%"></i></div><figcaption><i class="tm-dot" style="--c:#3FB27E"></i>Data engineer</figcaption></div></figure>
         <div class="tm-n tm-n1 ds-rv" data-rv="" style="left:3%;top:42%;--d:.4s"><div class="tm-nc"><b class="tm-ni"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#fff"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#fff"></path></svg></b><div><p><strong>ATCON</strong><em>now</em></p><span>Insight ready for Region C</span></div></div></div>
         <div class="tm-n tm-n2 ds-rv" data-rv="" style="left:49%;top:11%;--d:.5s"><div class="tm-nc"><b class="tm-ni"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#fff"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#fff"></path></svg></b><div><p><strong>ATCON</strong><em>today</em></p><span>Client portal v1.0 shipped</span></div></div></div>
         <div class="tm-n tm-n3 ds-rv" data-rv="" style="right:4%;bottom:4%;--d:.6s"><div class="tm-nc"><b class="tm-ni"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#fff"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#fff"></path></svg></b><div><p><strong>ATCON</strong><em>this week</em></p><span>New teammate joined in Pune</span></div></div></div>
