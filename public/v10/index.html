@@ -1378,45 +1378,30 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
   .tm-n{display:none}
 }
 
-/* Client reviews: the inbox after go-live. Earlier in the story the problems arrived as emails; here the thanks do.
-   One quiet mail window in the site's own card language, breathing softly, and the clients' words landing one by one */
-.atc-rev{position:relative;display:grid;place-items:center;padding-top:clamp(60px,9vh,110px);padding-bottom:clamp(70px,10vh,130px)}
-.cr-wrap{position:relative;width:min(100%,1240px)}
-.cr-wrap::before{content:'';position:absolute;left:50%;top:58%;width:min(58%,720px);height:min(70%,480px);transform:translate(-50%,-50%);
-  background:radial-gradient(closest-side,rgba(90,134,238,.1) 0,rgba(90,134,238,.035) 55%,rgba(90,134,238,0) 100%);pointer-events:none}
-.cr-head{position:relative;z-index:1;text-align:center}
-.cr-head .ds-label{margin:0 0 var(--sp-5)}
-.cr-head .ds-display{margin:0 auto}
-.cm-win{position:relative;z-index:1;width:min(100%,680px);margin:clamp(28px,5vh,52px) auto 0;border-radius:18px;background:#fff;overflow:hidden;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 40px 80px -44px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.045);
-  animation:cm-bob 7s ease-in-out infinite alternate}
-@keyframes cm-bob{to{transform:translateY(-6px)}}
-.cm-bar{display:flex;align-items:center;gap:7px;height:42px;padding:0 16px;background:#F7F8FA;border-bottom:1px solid rgba(0,16,37,.06);font-size:13px;font-weight:500;color:#5B6B78}
-.cm-bar i{flex:none;width:10px;height:10px;border-radius:50%;background:#D5D9E0}
-.cm-bar span{margin-left:8px}
-.cm-tools{display:flex;align-items:center;padding:11px 18px;border-bottom:1px solid #EEF1F6;font-size:12.5px;font-weight:600;color:var(--atc-navy)}
-.cm-new{margin-left:auto;padding:3px 11px;border-radius:999px;background:#E9EFFC;color:#2D63E6;font-weight:600}
-.cm-row{display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:13px;align-items:start;padding:14px 18px;border-bottom:1px solid #F0F2F6}
-.cr-av{flex:none;display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:600;letter-spacing:.02em;
+/* Client reviews: one voice at a time. A single oversized quote in the middle of the page, under a large gradient
+   quotation mark, crossfading from client to client on a slow clock; the speakers sit below as small dots, the active
+   one lit in turn. Pure typography, nothing else */
+.atc-rev{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(70px,10vh,130px)}
+.cq-wrap{position:relative;width:min(100%,980px);text-align:center}
+.cq-wrap .ds-label{margin:0}
+.cq-mark{display:block;margin:clamp(10px,2vh,22px) auto calc(clamp(10px,2vh,22px) * -1);font-size:clamp(72px,8vw,120px);line-height:1;font-weight:500}
+.cq-stage{position:relative;min-height:clamp(230px,34vh,300px)}
+.cq-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(18px,3.4vh,30px);margin:0;
+  opacity:0;visibility:hidden;animation:cq-cycle 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
+.cq-item blockquote{margin:0;max-width:19em;font-size:clamp(24px,3.2vw,44px);line-height:1.22;letter-spacing:-.025em;font-weight:500;color:var(--atc-navy);text-wrap:balance}
+.cq-item figcaption{display:flex;align-items:center;gap:12px}
+.cr-av{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:#fff;font-size:12.5px;font-weight:600;letter-spacing:.02em;
   background:linear-gradient(180deg,color-mix(in srgb,var(--c) 76%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
-.cm-row .cr-av{width:38px;height:38px;font-size:12.5px}
-.cm-who{display:flex;align-items:baseline;gap:8px;margin:0}
-.cm-who b{font-size:13.5px;font-weight:600;color:var(--atc-navy);white-space:nowrap}
-.cm-who small{font-size:11px;color:var(--atc-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cm-subj{margin:3px 0 0;font-size:13.5px;font-weight:600;color:var(--atc-navy)}
-.cm-prev{margin:2px 0 0;font-size:13px;line-height:1.5;color:var(--atc-slate)}
-.cm-meta{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.cm-meta time{font-size:11.5px;color:var(--atc-mute);white-space:nowrap}
-.cm-dot{width:8px;height:8px;border-radius:50%;background:#2D63E6}
-.cm-last .cm-dot{animation:cm-pulse 2.4s ease-out infinite}
-@keyframes cm-pulse{0%{box-shadow:0 0 0 0 rgba(45,99,230,.35)}70%{box-shadow:0 0 0 7px rgba(45,99,230,0)}100%{box-shadow:0 0 0 0 rgba(45,99,230,0)}}
-.cm-foot{margin:0;padding:13px 18px;text-align:center;font-size:12px;color:var(--atc-mute)}
-/* arrival: the window settles, then the mails land one by one */
-.atc-rev .ds-rv{transition-delay:var(--d,0s)}
-.atc-rev .cm-row.ds-rv{opacity:0;transform:translateY(-12px) scale(.985);transition:opacity .45s ease var(--d,0s),transform .6s cubic-bezier(.2,.9,.3,1.25) var(--d,0s)}
-.atc-rev .cm-row.ds-rv.is-in{opacity:1;transform:none}
+.cq-item figcaption span{text-align:left}
+.cq-item figcaption b{display:block;font-size:13.5px;font-weight:600;color:var(--atc-navy)}
+.cq-item figcaption small{display:block;margin-top:1px;font-size:11.5px;color:var(--atc-mute)}
+@keyframes cq-cycle{0%{opacity:0;transform:translateY(16px);visibility:visible}3.5%,21%{opacity:1;transform:none;visibility:visible}25%,100%{opacity:0;transform:translateY(-12px);visibility:hidden}}
+.cq-dots{display:flex;justify-content:center;gap:10px;margin-top:clamp(20px,3.6vh,34px)}
+.cq-dots i{width:8px;height:8px;border-radius:50%;background:#D5DCE8;transform:scale(.8);animation:cq-dot 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
+@keyframes cq-dot{0%,24%{background:#2D63E6;transform:scale(1)}26%,100%{background:#D5DCE8;transform:scale(.8)}}
 @media (max-width:900px){
-  .cm-who small{display:none}
+  .cq-stage{min-height:300px}
+  .cq-item blockquote{font-size:24px}
 }
 </style>
 </helmet>
@@ -1834,39 +1819,31 @@ with a vision.</h2>
       </div>
     </section>
 
-    <!-- Client reviews: the inbox after go-live. Earlier in the story the problems arrived as emails; here the thanks
-         do: one mail window, and the clients' words land in it one by one, unread and kind -->
+    <!-- Client reviews: one voice at a time. A single oversized quote in the middle of the page under a gradient
+         quotation mark, crossfading from client to client on a slow clock, with the speakers as small dots below -->
     <section class="atc-sec atc-rev" id="reviews" aria-labelledby="rev-title">
-      <div class="cr-wrap">
-        <div class="cr-head ds-rv" data-rv="">
-          <p class="ds-label ds-grad-text">Client reviews</p>
-          <h2 class="ds-display" id="rev-title">The inbox after go-live.</h2>
+      <div class="cq-wrap ds-rv" data-rv="">
+        <p class="ds-label ds-grad-text" id="rev-title">Client reviews</p>
+        <span class="cq-mark ds-grad-text" aria-hidden="true">“</span>
+        <div class="cq-stage">
+          <figure class="cq-item" style="--i:0">
+            <blockquote>“They took ownership from day one. We shipped in months, not years.”</blockquote>
+            <figcaption><b class="cr-av" style="--c:#2D63E6">MD</b><span><b>Marc D.</b><small>CIO · Energy sector</small></span></figcaption>
+          </figure>
+          <figure class="cq-item" style="--i:1">
+            <blockquote>“One team for strategy, build and support. The handoffs just disappeared.”</blockquote>
+            <figcaption><b class="cr-av" style="--c:#3FB27E">SV</b><span><b>Sofie V.</b><small>Head of Digital · Public sector</small></span></figcaption>
+          </figure>
+          <figure class="cq-item" style="--i:2">
+            <blockquote>“For the first time, technology moved with the business instead of against it.”</blockquote>
+            <figcaption><b class="cr-av" style="--c:#5A86EE">ER</b><span><b>Elena R.</b><small>COO · Logistics</small></span></figcaption>
+          </figure>
+          <figure class="cq-item" style="--i:3">
+            <blockquote>“They stayed until it worked. And it works.”</blockquote>
+            <figcaption><b class="cr-av" style="--c:#9BBA2A">TB</b><span><b>Tom B.</b><small>Founder · Retail platform</small></span></figcaption>
+          </figure>
         </div>
-        <div class="cm-win ds-rv" data-rv="">
-          <div class="cm-bar"><i></i><i></i><i></i><span>Mail · Inbox</span></div>
-          <div class="cm-tools"><span>Inbox</span><span class="cm-new"><b data-k="cmn">4</b> new</span></div>
-          <div class="cm-row ds-rv" data-rv="" style="--d:.25s">
-            <b class="cr-av" style="--c:#2D63E6">MD</b>
-            <div><p class="cm-who"><b>Marc D.</b><small>CIO · Energy sector</small></p><p class="cm-subj">Re: Go-live</p><p class="cm-prev">“You took ownership from day one. We shipped in months, not years.”</p></div>
-            <div class="cm-meta"><time>09:12</time><i class="cm-dot"></i></div>
-          </div>
-          <div class="cm-row ds-rv" data-rv="" style="--d:.5s">
-            <b class="cr-av" style="--c:#3FB27E">SV</b>
-            <div><p class="cm-who"><b>Sofie V.</b><small>Head of Digital · Public sector</small></p><p class="cm-subj">Re: One team</p><p class="cm-prev">“Strategy, build and support in one team. No more handoffs between vendors.”</p></div>
-            <div class="cm-meta"><time>10:47</time><i class="cm-dot"></i></div>
-          </div>
-          <div class="cm-row ds-rv" data-rv="" style="--d:.75s">
-            <b class="cr-av" style="--c:#5A86EE">ER</b>
-            <div><p class="cm-who"><b>Elena R.</b><small>COO · Logistics</small></p><p class="cm-subj">Re: Quarter close</p><p class="cm-prev">“For once, technology moved with the business instead of against it.”</p></div>
-            <div class="cm-meta"><time>14:05</time><i class="cm-dot"></i></div>
-          </div>
-          <div class="cm-row cm-last ds-rv" data-rv="" style="--d:1s">
-            <b class="cr-av" style="--c:#9BBA2A">TB</b>
-            <div><p class="cm-who"><b>Tom B.</b><small>Founder · Retail platform</small></p><p class="cm-subj">Re: It works</p><p class="cm-prev">“You stayed until it worked. And it works.”</p></div>
-            <div class="cm-meta"><time>16:20</time><i class="cm-dot"></i></div>
-          </div>
-          <p class="cm-foot">Four new today. All of them kind.</p>
-        </div>
+        <div class="cq-dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i></div>
       </div>
     </section>
 
