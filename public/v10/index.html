@@ -1322,7 +1322,8 @@ html,body{overflow-anchor:none}
   -webkit-mask-image:radial-gradient(84% 88% at 50% 50%,#000 50%,transparent 100%);mask-image:radial-gradient(84% 88% at 50% 50%,#000 50%,transparent 100%)}
 .atc-team-head{position:relative;z-index:2;max-width:820px;text-align:center}
 .atc-team-head .ds-label{margin:0 0 var(--sp-5)}
-.atc-team-head .ds-display{margin:0 auto;max-width:10.5em}
+.atc-team-head .ds-display{margin:0 auto}
+@media (min-width:901px){.atc-team-head .ds-display{white-space:nowrap;font-size:clamp(36px,4.6vw,66px)}}
 .atc-team-head .ds-lede{margin:var(--sp-5) auto 0;max-width:26em}
 .atc-team-head .ds-btn{margin-top:clamp(22px,3.6vh,36px)}
 /* the selection: the highlight sweeps over the words, then the two handles appear */
@@ -1770,6 +1771,7 @@ with a vision.</h2>
         <div class="atc-team-head ds-rv" data-rv="">
           <p class="ds-label ds-grad-text">Meet our team</p>
           <h2 class="ds-display" id="team-title">The people <span class="tm-hl">behind the proof.<i class="tm-h tm-ha"></i><i class="tm-h tm-hb"></i></span></h2>
+          <p class="ds-lede">Architects, engineers and designers, from Brussels and beyond, who stay until it runs.</p>
           <a class="ds-btn" href="mailto:hello@atconglobal.com">Work with us<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
         </div>
         <figure class="tm-p tm-p1 ds-rv" data-rv="" style="left:9%;top:15%;--d:.05s;--rt:-2.5deg"><div class="tm-card"><i class="tm-face" style="background-image:url(../assets/vendors-people.png);background-repeat:no-repeat;background-size:1044.0% 958.0%;background-position:66.31% 39.86%"></i><figcaption><i class="tm-dot" style="--c:#2D63E6"></i>Creative director</figcaption></div></figure>
