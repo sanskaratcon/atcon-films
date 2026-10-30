@@ -1334,8 +1334,8 @@ html,body{overflow-anchor:none}
 @keyframes tm-sel{from{background-size:0 100%}to{background-size:100% 100%}}
 .tm-h{position:absolute;top:-.1em;bottom:-.04em;width:.05em;min-width:2px;background:#2D63E6;opacity:0;transition:opacity .35s ease 2.3s}
 /* the cursor: it appears at the middle of the line, drags across the words at the selection's own pace, and slips away */
-.tm-cur{position:absolute;left:-.02em;top:52%;z-index:3;width:.4em;height:.4em;opacity:0;pointer-events:none}
-.tm-cur svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,16,37,.3))}
+.tm-cur{position:absolute;left:-.02em;top:54%;z-index:3;width:.46em;height:.46em;opacity:0;pointer-events:none}
+.tm-cur svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 4px rgba(0,16,37,.4))}
 .ds-rv.is-in .tm-cur{animation:tm-curm 1.1s cubic-bezier(.32,.5,.22,1) 1.1s both,tm-curio 2.9s ease .45s forwards}
 @keyframes tm-curm{from{left:-.02em}to{left:99.5%}}
 @keyframes tm-curio{0%{opacity:0}8%{opacity:1}88%{opacity:1}100%{opacity:0}}
@@ -1372,7 +1372,7 @@ html,body{overflow-anchor:none}
 .atc-team .tm-p.ds-rv,.atc-team .tm-n.ds-rv{transition:opacity .5s ease var(--d,0s),transform .75s cubic-bezier(.2,.9,.26,1.25) var(--d,0s)}
 .atc-team .tm-n.ds-rv{opacity:0;transform:translateY(14px) scale(.85)}
 .atc-team .tm-p.ds-rv.is-in,.atc-team .tm-n.ds-rv.is-in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.tm-it,.tm-nc,.tm-ni::after{animation:none}.tm-cur{display:none}}
+@media (prefers-reduced-motion:reduce){.tm-it,.tm-nc,.tm-ni::after{animation:none}}
 @media (max-width:900px){
   .tm-wrap{display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:14px;min-height:0}
   .atc-team-head{width:100%;margin-bottom:12px}
