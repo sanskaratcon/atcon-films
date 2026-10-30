@@ -1378,8 +1378,9 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
   .tm-n{display:none}
 }
 
-/* Client reviews: a FigJam-like board. A dotted canvas, sticky notes in soft brand pastels swaying on a light breeze
-   (a slow pendulum around a point above each note), the author small at the foot, and two named cursors drifting by */
+/* Client reviews: the clients' words in the site's own language. On the dotted board, white notification cards like
+   the ATCON toasts elsewhere on the page: a brand avatar, the reviewer, their words in navy and five stars, each card
+   swinging gently and continuously as if a breeze moves it, with two named cursors reading the board */
 .atc-rev{position:relative;display:grid;place-items:center;padding-top:clamp(60px,9vh,110px);padding-bottom:clamp(70px,10vh,130px)}
 .cr-wrap{position:relative;width:min(100%,1240px)}
 .cr-dots{position:absolute;inset:-2% 0;background-image:radial-gradient(circle,rgba(0,16,37,.14) 1.1px,transparent 1.5px);background-size:26px 26px;
@@ -1388,30 +1389,34 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
 .cr-head .ds-label{margin:0 0 var(--sp-5)}
 .cr-head .ds-display{margin:0 auto}
 .cr-board{position:relative;z-index:1;height:clamp(320px,42vh,420px);margin-top:clamp(28px,5vh,56px)}
-.cr-note{position:absolute;width:21%;min-width:200px;margin:0}
-.cr-in{box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;min-height:215px;padding:18px 18px 14px;border-radius:6px;
-  background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 88%,#fff),var(--bg));
-  box-shadow:0 0 0 .5px rgba(0,16,37,.05),0 18px 30px -18px rgba(0,16,37,.35),0 2px 5px rgba(0,16,37,.05);
+.cr-note{position:absolute;width:23%;min-width:225px;margin:0}
+.cr-in{box-sizing:border-box;padding:16px 18px 15px;border-radius:16px;background:#fff;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 56px -34px rgba(0,16,37,.4),0 2px 6px rgba(0,16,37,.045);
   transform-origin:50% -46px;animation:cr-sway var(--sw,5.6s) ease-in-out infinite alternate}
-.cr-in blockquote{margin:0;font-size:15.5px;line-height:1.5;font-weight:500;letter-spacing:-.005em;color:var(--atc-navy)}
-.cr-in figcaption{margin-top:14px;font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:rgba(0,16,37,.45)}
-@keyframes cr-sway{from{transform:rotate(calc(var(--rt,0deg) - 1.3deg)) translateY(0)}to{transform:rotate(calc(var(--rt,0deg) + 1.3deg)) translateY(-5px)}}
+.cr-top{display:flex;align-items:center;gap:10px}
+.cr-av{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;font-size:12px;font-weight:600;letter-spacing:.02em;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 76%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.cr-top b{display:block;font-size:13px;font-weight:600;color:var(--atc-navy)}
+.cr-top small{display:block;margin-top:1px;font-size:11px;color:var(--atc-mute)}
+.cr-in blockquote{margin:12px 0 0;font-size:14.5px;line-height:1.5;font-weight:500;letter-spacing:-.005em;color:var(--atc-navy)}
+.cr-stars{display:flex;gap:3px;margin-top:12px}
+.cr-stars svg{width:13px;height:13px;fill:#2D63E6}
+@keyframes cr-sway{from{transform:rotate(calc(var(--rt,0deg) - 1.1deg)) translateY(0)}to{transform:rotate(calc(var(--rt,0deg) + 1.1deg)) translateY(-5px)}}
 /* the named cursors, drifting over the board like teammates reading it */
 .cr-cur{position:absolute;z-index:2;display:flex;align-items:flex-start;gap:2px;pointer-events:none;animation:cr-drift 13s ease-in-out infinite alternate}
 .cr-cur svg{width:17px;height:17px;overflow:visible}
 .cr-cur svg path{fill:var(--c);stroke:#fff;stroke-width:1.2;stroke-linejoin:round}
 .cr-cur span{margin-top:12px;padding:3px 10px;border-radius:999px;background:var(--c);color:#fff;font-size:11.5px;font-weight:600;white-space:nowrap;box-shadow:0 6px 14px -8px rgba(0,16,37,.5)}
-.cr-cur1{left:22%;top:78%}
-.cr-cur2{left:67%;top:72%;animation-duration:16s;animation-delay:-6s}
+.cr-cur1{left:22%;top:80%}
+.cr-cur2{left:67%;top:74%;animation-duration:16s;animation-delay:-6s}
 @keyframes cr-drift{0%{transform:translate(0,0)}35%{transform:translate(52px,-26px)}70%{transform:translate(-18px,-54px)}100%{transform:translate(30px,8px)}}
-/* arrival: each note pops onto the board in turn */
+/* arrival: each card pops onto the board in turn */
 .atc-rev .ds-rv{transition-delay:var(--d,0s)}
 .atc-rev .cr-note.ds-rv{opacity:0;transform:translateY(22px) scale(.78);transition:opacity .5s ease var(--d,0s),transform .7s cubic-bezier(.2,.9,.26,1.25) var(--d,0s)}
 .atc-rev .cr-note.ds-rv.is-in{opacity:1;transform:none}
 @media (max-width:900px){
   .cr-board{display:flex;flex-direction:column;align-items:center;gap:16px;height:auto}
   .cr-note{position:static;width:min(100%,340px)}
-  .cr-in{min-height:0;gap:12px}
   .cr-cur{display:none}
 }
 </style>
@@ -1830,22 +1835,39 @@ with a vision.</h2>
       </div>
     </section>
 
-    <!-- Client reviews: a FigJam-like board. Sticky notes with the clients' words on a dotted canvas, each swaying
-         gently as if a breeze moves it, and two named cursors drifting across the board -->
+    <!-- Client reviews: the clients' words on the board, in the site's own language: white notification cards like the
+         ATCON toasts, each with the reviewer, their words and five stars, swaying gently as if a breeze moves them, with
+         two named cursors reading the board -->
     <section class="atc-sec atc-rev" id="reviews" aria-labelledby="rev-title">
       <div class="cr-wrap">
         <i class="cr-dots" aria-hidden="true"></i>
         <div class="cr-head ds-rv" data-rv="">
           <p class="ds-label ds-grad-text">Client reviews</p>
-          <h2 class="ds-display" id="rev-title">Notes from our clients.</h2>
+          <h2 class="ds-display" id="rev-title">In their words.</h2>
         </div>
         <div class="cr-board">
-        <figure class="cr-note ds-rv" data-rv="" style="left:4%;top:12%;--rt:-3deg;--d:.05s"><div class="cr-in" style="--bg:#FDF3C9;--sw:5.4s;animation-delay:0s"><blockquote>They took ownership from day one. Our portal shipped in months, not years.</blockquote><figcaption>CIO · Energy sector</figcaption></div></figure>
-        <figure class="cr-note ds-rv" data-rv="" style="left:29%;top:30%;--rt:2deg;--d:.2s"><div class="cr-in" style="--bg:#DFEAFB;--sw:6.2s;animation-delay:-2.1s"><blockquote>One team for strategy, build and support. No more handoffs between vendors.</blockquote><figcaption>Head of Digital · Public sector</figcaption></div></figure>
-        <figure class="cr-note ds-rv" data-rv="" style="left:54%;top:6%;--rt:-2deg;--d:.35s"><div class="cr-in" style="--bg:#DFF2E7;--sw:5.8s;animation-delay:-3.4s"><blockquote>Finally, technology that moves with the business instead of against it.</blockquote><figcaption>COO · Logistics</figcaption></div></figure>
-        <figure class="cr-note ds-rv" data-rv="" style="left:78%;top:26%;--rt:3deg;--d:.5s"><div class="cr-in" style="--bg:#EFF5D6;--sw:6.6s;animation-delay:-1.2s"><blockquote>They stayed until it worked. And it works.</blockquote><figcaption>Founder · Retail platform</figcaption></div></figure>
-          <div class="cr-cur cr-cur1" aria-hidden="true" style="--c:#2D63E6"><svg viewBox="0 0 20 20"><path d="M3.5 1.5v16.3l4.3-4 3 6.2 2.6-1.2-3-6.2 5.9-.6z"/></svg><span>Sofie</span></div>
-          <div class="cr-cur cr-cur2" aria-hidden="true" style="--c:#3FB27E"><svg viewBox="0 0 20 20"><path d="M3.5 1.5v16.3l4.3-4 3 6.2 2.6-1.2-3-6.2 5.9-.6z"/></svg><span>Marc</span></div>
+          <figure class="cr-note ds-rv" data-rv="" style="left:3%;top:12%;--rt:-3deg;--d:.05s"><div class="cr-in" style="--sw:5.4s;animation-delay:0s">
+            <div class="cr-top"><b class="cr-av" style="--c:#2D63E6">MD</b><div><b>Marc D.</b><small>CIO · Energy sector</small></div></div>
+            <blockquote>“They took ownership from day one. Our portal shipped in months, not years.”</blockquote>
+            <div class="cr-stars"><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg></div>
+          </div></figure>
+          <figure class="cr-note ds-rv" data-rv="" style="left:28%;top:32%;--rt:2deg;--d:.2s"><div class="cr-in" style="--sw:6.2s;animation-delay:-2.1s">
+            <div class="cr-top"><b class="cr-av" style="--c:#3FB27E">SV</b><div><b>Sofie V.</b><small>Head of Digital · Public sector</small></div></div>
+            <blockquote>“One team for strategy, build and support. No more handoffs between vendors.”</blockquote>
+            <div class="cr-stars"><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg></div>
+          </div></figure>
+          <figure class="cr-note ds-rv" data-rv="" style="left:53%;top:6%;--rt:-2deg;--d:.35s"><div class="cr-in" style="--sw:5.8s;animation-delay:-3.4s">
+            <div class="cr-top"><b class="cr-av" style="--c:#5A86EE">ER</b><div><b>Elena R.</b><small>COO · Logistics</small></div></div>
+            <blockquote>“Finally, technology that moves with the business instead of against it.”</blockquote>
+            <div class="cr-stars"><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg></div>
+          </div></figure>
+          <figure class="cr-note ds-rv" data-rv="" style="left:77%;top:28%;--rt:3deg;--d:.5s"><div class="cr-in" style="--sw:6.6s;animation-delay:-1.2s">
+            <div class="cr-top"><b class="cr-av" style="--c:#9BBA2A">TB</b><div><b>Tom B.</b><small>Founder · Retail platform</small></div></div>
+            <blockquote>“They stayed until it worked. And it works.”</blockquote>
+            <div class="cr-stars"><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17.2l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg></div>
+          </div></figure>
+          <div class="cr-cur cr-cur1" aria-hidden="true" style="--c:#3FB27E"><svg viewBox="0 0 20 20"><path d="M3.5 1.5v16.3l4.3-4 3 6.2 2.6-1.2-3-6.2 5.9-.6z"/></svg><span>Sofie</span></div>
+          <div class="cr-cur cr-cur2" aria-hidden="true" style="--c:#2D63E6"><svg viewBox="0 0 20 20"><path d="M3.5 1.5v16.3l4.3-4 3 6.2 2.6-1.2-3-6.2 5.9-.6z"/></svg><span>Marc</span></div>
         </div>
       </div>
     </section>
