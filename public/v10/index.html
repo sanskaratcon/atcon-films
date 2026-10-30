@@ -1383,30 +1383,40 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
   .tm-n{display:none}
 }
 
-/* Client reviews: one voice at a time. A single oversized quote in the middle of the page, under a large gradient
-   quotation mark, crossfading from client to client on a slow clock; the speakers sit below as small dots, the active
-   one lit in turn. Pure typography, nothing else */
+/* Client reviews: one voice at a time, on the team's canvas. The blueprint grid and the soft light return, the
+   headline arrives already selected ("in their words." — the selection carried over from the team), and one oversized
+   quote crossfades from client to client on a slow clock, the speaker riding in a chip like the live notes above */
 .atc-rev{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(70px,10vh,130px)}
-.cq-wrap{position:relative;width:min(100%,980px);text-align:center}
-.cq-wrap .ds-label{margin:0}
-.cq-mark{display:block;margin:clamp(10px,2vh,22px) auto calc(clamp(10px,2vh,22px) * -1);font-size:clamp(72px,8vw,120px);line-height:1;font-weight:500}
-.cq-stage{position:relative;min-height:clamp(230px,34vh,300px)}
-.cq-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(18px,3.4vh,30px);margin:0;
+.cq-wrap{position:relative;width:min(100%,1240px);text-align:center}
+.cq-wrap::before{content:'';position:absolute;left:50%;top:56%;width:min(62%,760px);height:min(78%,460px);transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(90,134,238,.1) 0,rgba(90,134,238,.035) 55%,rgba(90,134,238,0) 100%);pointer-events:none}
+.cq-head{position:relative;z-index:1}
+.cq-head .ds-label{margin:0 0 var(--sp-5)}
+.cq-head .ds-display{margin:0 auto}
+/* the selection, carried over: already made when the section arrives, handles at rest */
+.atc-rev .tm-hl{background-size:100% 100%}
+.atc-rev .tm-h{opacity:1;transition:none}
+.cq-stage{position:relative;z-index:1;min-height:clamp(200px,28vh,260px);margin-top:clamp(26px,4.6vh,46px)}
+.cq-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,3.6vh,32px);margin:0;
   opacity:0;visibility:hidden;animation:cq-cycle 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
-.cq-item blockquote{margin:0;max-width:19em;font-size:clamp(24px,3.2vw,44px);line-height:1.22;letter-spacing:-.025em;font-weight:500;color:var(--atc-navy);text-wrap:balance}
-.cq-item figcaption{display:flex;align-items:center;gap:12px}
-.cr-av{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:#fff;font-size:12.5px;font-weight:600;letter-spacing:.02em;
+.cq-item blockquote{margin:0;max-width:20em;font-size:clamp(23px,2.9vw,40px);line-height:1.24;letter-spacing:-.025em;font-weight:500;color:var(--atc-navy);text-wrap:balance}
+/* the speaker rides in a floating chip: the same quiet surface as the team's live notes, presence dot and all */
+.cq-item figcaption{display:flex;align-items:center;gap:11px;padding:8px 18px 8px 9px;border-radius:999px;background:rgba(255,255,255,.94);
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 26px 50px -30px rgba(0,16,37,.38),0 2px 6px rgba(0,16,37,.04);
+  animation:tm-float 9s ease-in-out infinite}
+.cr-av{position:relative;flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:#fff;font-size:12px;font-weight:600;letter-spacing:.02em;
   background:linear-gradient(180deg,color-mix(in srgb,var(--c) 76%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.cr-av::after{content:'';position:absolute;right:-1px;bottom:-1px;width:9px;height:9px;border-radius:50%;background:#3FB27E;border:2px solid #fff;animation:tm-pulse 2.6s ease-out infinite}
 .cq-item figcaption span{text-align:left}
-.cq-item figcaption b{display:block;font-size:13.5px;font-weight:600;color:var(--atc-navy)}
+.cq-item figcaption span b{display:block;font-size:13px;font-weight:600;color:var(--atc-navy)}
 .cq-item figcaption small{display:block;margin-top:1px;font-size:11.5px;color:var(--atc-mute)}
 @keyframes cq-cycle{0%{opacity:0;transform:translateY(16px);visibility:visible}3.5%,21%{opacity:1;transform:none;visibility:visible}25%,100%{opacity:0;transform:translateY(-12px);visibility:hidden}}
-.cq-dots{display:flex;justify-content:center;gap:10px;margin-top:clamp(20px,3.6vh,34px)}
+.cq-dots{position:relative;z-index:1;display:flex;justify-content:center;gap:10px;margin-top:clamp(20px,3.6vh,34px)}
 .cq-dots i{width:8px;height:8px;border-radius:50%;background:#D5DCE8;transform:scale(.8);animation:cq-dot 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
 @keyframes cq-dot{0%,24%{background:#2D63E6;transform:scale(1)}26%,100%{background:#D5DCE8;transform:scale(.8)}}
 @media (max-width:900px){
   .cq-stage{min-height:300px}
-  .cq-item blockquote{font-size:24px}
+  .cq-item blockquote{font-size:23px}
 }
 </style>
 </helmet>
@@ -1824,12 +1834,16 @@ with a vision.</h2>
       </div>
     </section>
 
-    <!-- Client reviews: one voice at a time. A single oversized quote in the middle of the page under a gradient
-         quotation mark, crossfading from client to client on a slow clock, with the speakers as small dots below -->
+    <!-- Client reviews: one voice at a time, on the team's canvas. The blueprint grid returns, the headline arrives
+         already selected ("in their words." — the selection carried over from the team), and one oversized quote
+         crossfades from client to client, the speaker riding in a floating chip like the team's live notes -->
     <section class="atc-sec atc-rev" id="reviews" aria-labelledby="rev-title">
       <div class="cq-wrap ds-rv" data-rv="">
-        <p class="ds-label ds-grad-text" id="rev-title">Client reviews</p>
-        <span class="cq-mark ds-grad-text" aria-hidden="true">“</span>
+        <i class="atc-team-grid" aria-hidden="true"></i>
+        <div class="cq-head">
+          <p class="ds-label ds-grad-text">Client reviews</p>
+          <h2 class="ds-display" id="rev-title">Proof, <span class="tm-hl">in their words.<i class="tm-h tm-ha"></i><i class="tm-h tm-hb"></i></span></h2>
+        </div>
         <div class="cq-stage">
           <figure class="cq-item" style="--i:0">
             <blockquote>“They took ownership from day one. We shipped in months, not years.”</blockquote>
