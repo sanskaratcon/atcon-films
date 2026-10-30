@@ -1384,7 +1384,7 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
 }
 
 /* Client reviews: one voice at a time, on the team's canvas. The blueprint grid and the soft light return, the
-   headline arrives already selected ("in their words." — the selection carried over from the team), and one oversized
+   headline uses the site's two-tone pattern (the blue selection stays unique to the team section), and one oversized
    quote crossfades from client to client on a slow clock, the speaker riding in a chip like the live notes above */
 .atc-rev{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(70px,10vh,130px)}
 .cq-wrap{position:relative;width:min(100%,1240px);text-align:center}
@@ -1393,9 +1393,6 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
 .cq-head{position:relative;z-index:1}
 .cq-head .ds-label{margin:0 0 var(--sp-5)}
 .cq-head .ds-display{margin:0 auto}
-/* the selection, carried over: already made when the section arrives, handles at rest */
-.atc-rev .tm-hl{background-size:100% 100%}
-.atc-rev .tm-h{opacity:1;transition:none}
 .cq-stage{position:relative;z-index:1;min-height:clamp(200px,28vh,260px);margin-top:clamp(26px,4.6vh,46px)}
 .cq-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,3.6vh,32px);margin:0;
   opacity:0;visibility:hidden;animation:cq-cycle 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
@@ -1834,15 +1831,15 @@ with a vision.</h2>
       </div>
     </section>
 
-    <!-- Client reviews: one voice at a time, on the team's canvas. The blueprint grid returns, the headline arrives
-         already selected ("in their words." — the selection carried over from the team), and one oversized quote
-         crossfades from client to client, the speaker riding in a floating chip like the team's live notes -->
+    <!-- Client reviews: one voice at a time, on the team's canvas. The blueprint grid returns, the headline uses the
+         site's two-tone pattern (the selection stays unique to the team section), and one oversized quote crossfades
+         from client to client, the speaker riding in a floating chip like the team's live notes -->
     <section class="atc-sec atc-rev" id="reviews" aria-labelledby="rev-title">
       <div class="cq-wrap ds-rv" data-rv="">
         <i class="atc-team-grid" aria-hidden="true"></i>
         <div class="cq-head">
           <p class="ds-label ds-grad-text">Client reviews</p>
-          <h2 class="ds-display" id="rev-title">Proof, <span class="tm-hl">in their words.<i class="tm-h tm-ha"></i><i class="tm-h tm-hb"></i></span></h2>
+          <h2 class="ds-display" id="rev-title">Proof, <span class="ds-soft">in their words.</span></h2>
         </div>
         <div class="cq-stage">
           <figure class="cq-item" style="--i:0">
