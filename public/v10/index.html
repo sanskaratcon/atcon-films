@@ -3831,6 +3831,27 @@ class Component extends DCLogic {
     var sx = hijack ? mx : r.left + r.width * 0.5, sy = hijack ? my : Math.max(20, r.top - 90);
     if (hijack) document.documentElement.classList.add('tm-hide-cursor');
     else cur.style.opacity = '0';
+    // hold the page for a moment so the selection can play before the section scrolls away; a hard scroll breaks out
+    var held = fine, escAcc = 0, optsW = { passive: false };
+    function blockW(e) { escAcc += Math.abs(e.deltaY || 0); if (escAcc > 700) { unhold(); return; } e.preventDefault(); }
+    function blockT(e) { e.preventDefault(); }
+    function blockK(e) { if ([' ', 'ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'].indexOf(e.key) >= 0) e.preventDefault(); }
+    function unhold() {
+      if (!held) return; held = false;
+      removeEventListener('wheel', blockW, optsW); removeEventListener('touchmove', blockT, optsW); removeEventListener('keydown', blockK);
+    }
+    if (held) {
+      addEventListener('wheel', blockW, optsW); addEventListener('touchmove', blockT, optsW); addEventListener('keydown', blockK);
+      setTimeout(unhold, 3100);
+      // and glide the section to the middle of the screen while it is held
+      var r0 = sec.getBoundingClientRect();
+      var want = scrollY + r0.top - Math.max(12, (innerHeight - r0.height) / 2), from = scrollY, t0g = performance.now();
+      if (Math.abs(want - from) > 8) (function glide(now) {
+        var k = Math.min(1, (now - t0g) / 480); k = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        scrollTo(0, from + (want - from) * k);
+        if (k < 1 && held) requestAnimationFrame(glide);
+      })(t0g);
+    }
     var FLY = 520, HOLD = 260, DRAG = 1150;
     var ease = function (t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
     var put = function (x, y) { cur.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; };
