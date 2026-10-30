@@ -1397,16 +1397,14 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
 .cq-item{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,3.6vh,32px);margin:0;
   opacity:0;visibility:hidden;animation:cq-cycle 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
 .cq-item blockquote{margin:0;max-width:20em;font-size:clamp(23px,2.9vw,40px);line-height:1.24;letter-spacing:-.025em;font-weight:500;color:var(--atc-navy);text-wrap:balance}
-/* the speaker rides in a floating chip: the same quiet surface as the team's live notes, presence dot and all */
-.cq-item figcaption{display:flex;align-items:center;gap:11px;padding:8px 18px 8px 9px;border-radius:999px;background:rgba(255,255,255,.94);
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 26px 50px -30px rgba(0,16,37,.38),0 2px 6px rgba(0,16,37,.04);
-  animation:tm-float 9s ease-in-out infinite}
-.cr-av{position:relative;flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:#fff;font-size:12px;font-weight:600;letter-spacing:.02em;
+/* the speaker, unboxed: the avatar with its presence dot and one quiet line of type, straight on the canvas */
+.cq-item figcaption{display:flex;align-items:center;gap:11px}
+.cr-av{position:relative;flex:none;display:grid;place-items:center;width:33px;height:33px;border-radius:50%;color:#fff;font-size:11.5px;font-weight:600;letter-spacing:.02em;
   background:linear-gradient(180deg,color-mix(in srgb,var(--c) 76%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
 .cr-av::after{content:'';position:absolute;right:-1px;bottom:-1px;width:9px;height:9px;border-radius:50%;background:#3FB27E;border:2px solid #fff;animation:tm-pulse 2.6s ease-out infinite}
-.cq-item figcaption span{text-align:left}
-.cq-item figcaption span b{display:block;font-size:13px;font-weight:600;color:var(--atc-navy)}
-.cq-item figcaption small{display:block;margin-top:1px;font-size:11.5px;color:var(--atc-mute)}
+.cq-item figcaption span{display:flex;align-items:baseline;gap:9px;text-align:left}
+.cq-item figcaption span b{font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--atc-navy);white-space:nowrap}
+.cq-item figcaption small{font-size:12px;color:var(--atc-mute);white-space:nowrap}
 @keyframes cq-cycle{0%{opacity:0;transform:translateY(16px);visibility:visible}3.5%,21%{opacity:1;transform:none;visibility:visible}25%,100%{opacity:0;transform:translateY(-12px);visibility:hidden}}
 .cq-dots{position:relative;z-index:1;display:flex;justify-content:center;gap:10px;margin-top:clamp(20px,3.6vh,34px)}
 .cq-dots i{width:8px;height:8px;border-radius:50%;background:#D5DCE8;transform:scale(.8);animation:cq-dot 26s ease-in-out infinite;animation-delay:calc(var(--i) * 6.5s)}
