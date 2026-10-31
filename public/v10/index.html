@@ -2416,7 +2416,12 @@ class Component extends DCLogic {
     var el = this.q('splash'), root = this.q('root');
     if (!el) return;
     var now = performance.now();
-    if (this._splash === 0) { this._splash = 1; this._splInAt = now; this._ldShow = 0; }
+    if (this._splash === 0) {
+      this._splash = 1; this._splInAt = now; this._ldShow = 0;
+      this._ldFine = !!(window.matchMedia && matchMedia('(pointer:fine)').matches);
+      // the real pointer is hidden from the very first frame — wherever it sits, the stand-in is the cursor now
+      if (this._ldFine) document.documentElement.classList.add('tm-hide-cursor');
+    }
     var t = now - this._splInAt;
     var pr = t > 9000 ? 1 : this.loadProgress();
     var dtL = now - (this._ldLast || now); this._ldLast = now;
@@ -2447,17 +2452,13 @@ class Component extends DCLogic {
       var vwp = window.innerWidth, vhp = window.innerHeight;
       if (!this._ldCur && t > 240) {
         this._ldCur = 1; push.classList.add('is-on');
-        this._ldHj = window.matchMedia && matchMedia('(pointer:fine)').matches && this._mx != null;
+        this._ldHj = this._ldFine && this._mx != null;
         this._ldFx = this._ldHj ? this._mx : vwp * 0.6; this._ldFy = this._ldHj ? this._my : vhp * 0.72;
         this._ldT0 = now;
-        if (this._ldHj) document.documentElement.classList.add('tm-hide-cursor');
       }
-      // if the pointer only shows itself later (it had not moved yet when the stand-in set off), the illusion still
-      // takes over mid-drag: the real cursor disappears where it is, the stand-in is the cursor from then on, and at
-      // the end it flies back to the real position and hands over
-      if (this._ldCur && !this._ldHj && !this._ldBye && this._mx != null && window.matchMedia && matchMedia('(pointer:fine)').matches) {
-        this._ldHj = 1; document.documentElement.classList.add('tm-hide-cursor');
-      }
+      // if the pointer only shows itself later (it had not moved yet when the stand-in set off), the hand-back can
+      // still target it: from the first movement the return flight knows where to go
+      if (this._ldCur && !this._ldHj && !this._ldBye && this._mx != null && this._ldFine) this._ldHj = 1;
       if (this._ldCur) {
         var ft = Math.min(1, (now - this._ldT0) / 680), fe = ft < 0.5 ? 4 * ft * ft * ft : 1 - Math.pow(-2 * ft + 2, 3) / 2;
         var cx = this._ldFx + (sp / 100 * vwp - 7 - this._ldFx) * fe, cy = this._ldFy + (vhp * 0.5 - 5 - this._ldFy) * fe;
@@ -4098,8 +4099,10 @@ class Component extends DCLogic {
     document.body.appendChild(cur);
     var r = hl.getBoundingClientRect();
     var sx = hijack ? mx : r.left + r.width * 0.5, sy = hijack ? my : Math.max(20, r.top - 90);
-    if (hijack) document.documentElement.classList.add('tm-hide-cursor');
-    else cur.style.opacity = '0';
+    // the real pointer is hidden the moment the takeover starts, wherever it sits; without a known position the
+    // stand-in simply arrives from above as the one cursor on screen
+    if (fine) document.documentElement.classList.add('tm-hide-cursor');
+    if (!hijack) cur.style.opacity = '0';
     var FLY = 520, HOLD = 260, DRAG = 1150;
     var ease = function (t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
     var put = function (x, y) { cur.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; };
