@@ -2452,6 +2452,12 @@ class Component extends DCLogic {
         this._ldT0 = now;
         if (this._ldHj) document.documentElement.classList.add('tm-hide-cursor');
       }
+      // if the pointer only shows itself later (it had not moved yet when the stand-in set off), the illusion still
+      // takes over mid-drag: the real cursor disappears where it is, the stand-in is the cursor from then on, and at
+      // the end it flies back to the real position and hands over
+      if (this._ldCur && !this._ldHj && !this._ldBye && this._mx != null && window.matchMedia && matchMedia('(pointer:fine)').matches) {
+        this._ldHj = 1; document.documentElement.classList.add('tm-hide-cursor');
+      }
       if (this._ldCur) {
         var ft = Math.min(1, (now - this._ldT0) / 680), fe = ft < 0.5 ? 4 * ft * ft * ft : 1 - Math.pow(-2 * ft + 2, 3) / 2;
         var cx = this._ldFx + (sp / 100 * vwp - 7 - this._ldFx) * fe, cy = this._ldFy + (vhp * 0.5 - 5 - this._ldFy) * fe;
