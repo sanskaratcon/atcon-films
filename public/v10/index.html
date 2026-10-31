@@ -1309,6 +1309,30 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
+/* Case studies: the six real projects as quiet white cards on the 1240 canvas — a framed image like the team
+   portraits, the category in its brand colour, title and one line, and a view link whose arrow nudges on hover */
+.atc-cs{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(40px,6vh,80px)}
+.cs-wrap{position:relative;width:min(100%,1240px)}
+.cs-head{text-align:center}
+.cs-head .ds-label{margin:0 0 var(--sp-5)}
+.cs-head .ds-display{margin:0 auto}
+.cs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:clamp(30px,5vh,56px)}
+.cs-card{display:flex;flex-direction:column;padding:9px 9px 0;border-radius:18px;background:#fff;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 56px -34px rgba(0,16,37,.4),0 2px 6px rgba(0,16,37,.045);
+  transition:transform .35s cubic-bezier(.2,.8,.3,1),box-shadow .35s ease}
+.cs-card:hover{transform:translateY(-5px);box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 42px 70px -36px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05)}
+.cs-im{display:block;aspect-ratio:16/10;border-radius:11px;background-size:cover;background-position:50% 50%;filter:saturate(.9) contrast(1.02);box-shadow:inset 0 0 0 1px rgba(0,16,37,.06)}
+.cs-body{display:flex;flex-direction:column;flex:1;padding:15px 11px 17px}
+.cs-tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c,#2D63E6)}
+.cs-body h3{margin:8px 0 0;font-size:16.5px;line-height:1.35;letter-spacing:-.015em;font-weight:600;color:var(--atc-navy)}
+.cs-sub{margin:7px 0 0;font-size:13px;line-height:1.55;color:var(--atc-slate)}
+.cs-link{display:flex;align-items:center;gap:7px;margin-top:auto;padding-top:15px;font-size:12.5px;font-weight:600;color:var(--atc-navy)}
+.cs-link svg{width:11px;height:11px;transition:transform .3s ease}
+.cs-card:hover .cs-link svg{transform:translateX(3px)}
+.atc-cs .ds-rv{transition-delay:var(--d,0s)}
+@media (max-width:1100px) and (min-width:901px){.cs-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:900px){.cs-grid{grid-template-columns:1fr;gap:16px}}
+
 /* Meet our team: the people behind the proof. One contained canvas (never wider than 1240px), a blueprint grid with
    dotted crossings, a soft brand light behind the line, and the portraits and live notes clustered close around it */
 .atc-team{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(70px,10vh,120px)}
@@ -1804,6 +1828,73 @@ with a vision.</h2>
       </p>
     </section>
     </div>
+
+    <!-- Case studies: the six real projects from atconglobal.com, each as one quiet white card — framed image,
+         category in its brand colour, the title and one line, and a view link that nudges on hover -->
+    <section class="atc-sec atc-cs" id="cases" aria-labelledby="cs-title">
+      <div class="cs-wrap">
+        <div class="cs-head ds-rv" data-rv="">
+          <p class="ds-label ds-grad-text">Case studies</p>
+          <h2 class="ds-display" id="cs-title">Real results, <span class="ds-soft">from real partnerships.</span></h2>
+        </div>
+        <div class="cs-grid">
+          <article class="cs-card ds-rv" data-rv="" style="--d:.05s">
+            <i class="cs-im" style="background-image:url(../assets/cases/case-1.webp)"></i>
+            <div class="cs-body">
+              <p class="cs-tag" style="--c:#3FB27E">Automation</p>
+              <h3>Intelligent Financial Automation Ecosystem</h3>
+              <p class="cs-sub">Automating financial workflows to generate real-time insights and client-ready reports.</p>
+              <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+            </div>
+          </article>
+          <article class="cs-card ds-rv" data-rv="" style="--d:.15s">
+            <i class="cs-im" style="background-image:url(../assets/cases/case-2.webp)"></i>
+            <div class="cs-body">
+              <p class="cs-tag" style="--c:#2D63E6">Digital transformation</p>
+              <h3>B2B Valuation Platform Strategy</h3>
+              <p class="cs-sub">Building a scalable B2B platform for embedded property valuation services.</p>
+              <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+            </div>
+          </article>
+          <article class="cs-card ds-rv" data-rv="" style="--d:.25s">
+            <i class="cs-im" style="background-image:url(../assets/cases/case-3.webp)"></i>
+            <div class="cs-body">
+              <p class="cs-tag" style="--c:#3FB27E">Automation</p>
+              <h3>AI LinkedIn Lead Generation Agent</h3>
+              <p class="cs-sub">AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p>
+              <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+            </div>
+          </article>
+          <article class="cs-card ds-rv" data-rv="" style="--d:.1s">
+            <i class="cs-im" style="background-image:url(../assets/cases/case-4.webp)"></i>
+            <div class="cs-body">
+              <p class="cs-tag" style="--c:#3FB27E">Automation</p>
+              <h3>Healthcare AI Voice Agent</h3>
+              <p class="cs-sub">24/7 AI voice assistant handling patient calls and appointment scheduling.</p>
+              <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+            </div>
+          </article>
+          <article class="cs-card ds-rv" data-rv="" style="--d:.2s">
+            <i class="cs-im" style="background-image:url(../assets/cases/case-5.webp)"></i>
+            <div class="cs-body">
+              <p class="cs-tag" style="--c:#2D63E6">Digital transformation</p>
+              <h3>Digitizing a Major Mobile Brand's Retail &amp; Distribution Ecosystem</h3>
+              <p class="cs-sub">Mobile platform enabling real-time sales tracking and streamlined channel operations.</p>
+              <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+            </div>
+          </article>
+          <article class="cs-card ds-rv" data-rv="" style="--d:.3s">
+            <i class="cs-im" style="background-image:url(../assets/cases/case-6.webp)"></i>
+            <div class="cs-body">
+              <p class="cs-tag" style="--c:#2D63E6">Digital transformation</p>
+              <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
+              <p class="cs-sub">CRM platform connecting leads, sales pipelines, and production workflows.</p>
+              <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
     <!-- Meet our team: the people behind the proof. One contained canvas, the line in the middle and the portraits and
          live notes clustered close around it, the second half of the line selected as if someone is editing it -->
