@@ -2471,7 +2471,8 @@ class Component extends DCLogic {
       el.classList.add('is-out');
       document.documentElement.classList.remove('tm-hide-cursor');
       if (this._ldMm) { document.removeEventListener('mousemove', this._ldMm); this._ldMm = null; }
-      if (root) root.classList.add('is-ready');
+      // the hero rises only once the white is mostly gone, so the reveal and the entrance read as one motion
+      if (root) setTimeout(function () { root.classList.add('is-ready'); }, 460);
       this._splash = 2; this._ldDone = 0;
       this._goneT = setTimeout(function () { el.classList.add('is-gone'); }, 950);
     }
