@@ -4107,6 +4107,9 @@ class Component extends DCLogic {
     var t0 = performance.now();
     function frame(now) {
       var t = now - t0, rr = hl.getBoundingClientRect();
+      // if the pointer only reveals itself mid-animation (it had not moved before), the illusion still takes
+      // over: the real cursor disappears where it is and the stand-in is the cursor from here on
+      if (!hijack && fine && mx != null) { hijack = true; document.documentElement.classList.add('tm-hide-cursor'); cur.style.opacity = '1'; }
       var bx = rr.left + 1, by = rr.top + rr.height * 0.62;
       if (t < FLY) {
         var k = ease(Math.min(1, t / FLY));
@@ -4131,6 +4134,7 @@ class Component extends DCLogic {
     function release(fx, fy) {
       var t1 = performance.now(), RET = 420;
       function back(now) {
+        if (!hijack && fine && mx != null) { hijack = true; document.documentElement.classList.add('tm-hide-cursor'); cur.style.opacity = '1'; }
         var t = Math.min(1, (now - t1) / RET), k = ease(t);
         var tx = hijack && mx != null ? mx : fx, ty = hijack && my != null ? my : fy - 36;
         put(fx + (tx - fx) * k, fy + (ty - fy) * k);
