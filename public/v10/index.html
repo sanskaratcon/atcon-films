@@ -1259,10 +1259,6 @@ html,body{overflow-anchor:none}
 .atc-splash.ld.is-out{transform:translateY(-100%)}
 .ld-mark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.16em;font-family:var(--atc-font);
   font-size:clamp(38px,5.6vw,84px);font-weight:600;color:var(--atc-navy)}
-/* after the drag the mark floats up into the top left and lands exactly on the header's own mark */
-#ld-brand{position:fixed;top:16px;left:18px;z-index:21;height:26px;pointer-events:none;opacity:0}
-#ld-brand.is-on{opacity:1;transition:transform .85s cubic-bezier(.65,0,.25,1),opacity .3s ease}
-#ld-brand svg{display:block;height:100%;width:auto}
 /* the mark rises into place at the moment the wall's edge uncovers it */
 .ld-mark .ld-l{display:inline-block;opacity:0;transform:translateY(40px);transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.25,1.15)}
 .ld-mark .ld-l.is-in{opacity:1;transform:none}
@@ -2502,22 +2498,6 @@ class Component extends DCLogic {
     if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
     if (this._ldDone && now - this._ldDone > 460) {
       el.classList.add('is-out');
-      // the revealed mark floats from the centre up into the top left, landing exactly on the header's own mark
-      var mk = el.querySelector('.ld-mark .ld-l svg');
-      if (mk && !document.getElementById('ld-brand')) {
-        var br = document.createElement('span'); br.id = 'ld-brand'; br.innerHTML = mk.outerHTML;
-        var lg = document.querySelector('.atc-logo svg'), lrc = lg ? lg.getBoundingClientRect() : null;
-        if (lrc && lrc.width) { br.style.top = lrc.top + 'px'; br.style.left = lrc.left + 'px'; br.style.height = lrc.height + 'px'; }
-        document.body.appendChild(br);
-        var fr = br.getBoundingClientRect(), sr = mk.getBoundingClientRect();
-        br.style.transformOrigin = 'top left';
-        br.style.transform = 'translate(' + (sr.left - fr.left).toFixed(1) + 'px,' + (sr.top - fr.top).toFixed(1) + 'px) scale(' + (sr.height / fr.height).toFixed(3) + ')';
-        requestAnimationFrame(function () { requestAnimationFrame(function () {
-          mk.style.opacity = '0'; br.classList.add('is-on'); br.style.transform = 'none';
-          // once it has landed on the header mark, the header mark takes over
-          if (lrc) setTimeout(function () { br.remove(); }, 1000);
-        }); });
-      }
       document.documentElement.classList.remove('tm-hide-cursor');
       if (this._ldMm) { document.removeEventListener('mousemove', this._ldMm); this._ldMm = null; }
       // the hero rises only once the white is mostly gone, so the reveal and the entrance read as one motion
