@@ -1309,20 +1309,24 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* Case studies: the six real projects as quiet white cards on the 1240 canvas — a framed image like the team
-   portraits, the category in its brand colour, title and one line, and a view link whose arrow nudges on hover */
+/* Case studies: the six real projects, each one a small app window like the site's other software surfaces — the
+   window bar with its three dots and address, the case image as the screen, and the story below in the card body */
 .atc-cs{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(40px,6vh,80px)}
 .cs-wrap{position:relative;width:min(100%,1240px)}
 .cs-head{text-align:center}
 .cs-head .ds-label{margin:0 0 var(--sp-5)}
 .cs-head .ds-display{margin:0 auto}
 .cs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:clamp(30px,5vh,56px)}
-.cs-card{display:flex;flex-direction:column;padding:9px 9px 0;border-radius:18px;background:#fff;
+.cs-card{display:flex;flex-direction:column;overflow:hidden;border-radius:16px;background:#fff;
   box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 56px -34px rgba(0,16,37,.4),0 2px 6px rgba(0,16,37,.045);
   transition:transform .35s cubic-bezier(.2,.8,.3,1),box-shadow .35s ease}
 .cs-card:hover{transform:translateY(-5px);box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 42px 70px -36px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05)}
-.cs-im{display:block;aspect-ratio:16/10;border-radius:11px;background-size:cover;background-position:50% 50%;filter:saturate(.9) contrast(1.02);box-shadow:inset 0 0 0 1px rgba(0,16,37,.06)}
-.cs-body{display:flex;flex-direction:column;flex:1;padding:15px 11px 17px}
+.cs-bar{display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;background:#F7F8FA;border-bottom:1px solid rgba(0,16,37,.06)}
+.cs-bar i{flex:none;width:8px;height:8px;border-radius:50%;background:#D5D9E0}
+.cs-bar span{overflow:hidden;margin-left:7px;padding:3px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,16,37,.06);
+  font-size:10px;letter-spacing:.02em;color:var(--atc-mute);white-space:nowrap;text-overflow:ellipsis}
+.cs-im{display:block;aspect-ratio:16/9.2;background-size:cover;background-position:50% 50%;filter:saturate(.9) contrast(1.02);box-shadow:inset 0 -1px 0 rgba(0,16,37,.05)}
+.cs-body{display:flex;flex-direction:column;flex:1;padding:15px 18px 17px}
 .cs-tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c,#2D63E6)}
 .cs-body h3{margin:8px 0 0;font-size:16.5px;line-height:1.35;letter-spacing:-.015em;font-weight:600;color:var(--atc-navy)}
 .cs-sub{margin:7px 0 0;font-size:13px;line-height:1.55;color:var(--atc-slate)}
@@ -1839,6 +1843,7 @@ with a vision.</h2>
         </div>
         <div class="cs-grid">
           <article class="cs-card ds-rv" data-rv="" style="--d:.05s">
+            <div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/financial-automation</span></div>
             <i class="cs-im" style="background-image:url(../assets/cases/case-1.webp)"></i>
             <div class="cs-body">
               <p class="cs-tag" style="--c:#3FB27E">Automation</p>
@@ -1848,6 +1853,7 @@ with a vision.</h2>
             </div>
           </article>
           <article class="cs-card ds-rv" data-rv="" style="--d:.15s">
+            <div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/b2b-valuation</span></div>
             <i class="cs-im" style="background-image:url(../assets/cases/case-2.webp)"></i>
             <div class="cs-body">
               <p class="cs-tag" style="--c:#2D63E6">Digital transformation</p>
@@ -1857,6 +1863,7 @@ with a vision.</h2>
             </div>
           </article>
           <article class="cs-card ds-rv" data-rv="" style="--d:.25s">
+            <div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/linkedin-agent</span></div>
             <i class="cs-im" style="background-image:url(../assets/cases/case-3.webp)"></i>
             <div class="cs-body">
               <p class="cs-tag" style="--c:#3FB27E">Automation</p>
@@ -1866,6 +1873,7 @@ with a vision.</h2>
             </div>
           </article>
           <article class="cs-card ds-rv" data-rv="" style="--d:.1s">
+            <div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/healthcare-voice</span></div>
             <i class="cs-im" style="background-image:url(../assets/cases/case-4.webp)"></i>
             <div class="cs-body">
               <p class="cs-tag" style="--c:#3FB27E">Automation</p>
@@ -1875,6 +1883,7 @@ with a vision.</h2>
             </div>
           </article>
           <article class="cs-card ds-rv" data-rv="" style="--d:.2s">
+            <div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/retail-distribution</span></div>
             <i class="cs-im" style="background-image:url(../assets/cases/case-5.webp)"></i>
             <div class="cs-body">
               <p class="cs-tag" style="--c:#2D63E6">Digital transformation</p>
@@ -1884,6 +1893,7 @@ with a vision.</h2>
             </div>
           </article>
           <article class="cs-card ds-rv" data-rv="" style="--d:.3s">
+            <div class="cs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/manufacturing-crm</span></div>
             <i class="cs-im" style="background-image:url(../assets/cases/case-6.webp)"></i>
             <div class="cs-body">
               <p class="cs-tag" style="--c:#2D63E6">Digital transformation</p>
