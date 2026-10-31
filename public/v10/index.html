@@ -1269,7 +1269,10 @@ html,body{overflow-anchor:none}
 .ld-push svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 5px rgba(0,16,37,.4));transition:transform .25s ease}
 .ld-push.is-grab svg{transform:rotate(-14deg) scale(.95);animation:ld-tug 1.1s ease-in-out .4s infinite}
 @keyframes ld-tug{0%,100%{transform:rotate(-14deg) scale(.95) translate(0,0)}50%{transform:rotate(-17deg) scale(.95) translate(-3px,1px)}}
-.ld-ring{position:absolute;left:2px;top:1px;width:27px;height:27px;border-radius:50%;border:2px solid #5A86EE;opacity:0;transform:scale(.3);pointer-events:none}
+.ld-ring{position:absolute;left:2px;top:1px;width:27px;height:27px;border-radius:50%;opacity:0;transform:scale(.3);pointer-events:none;
+  background:linear-gradient(135deg,#A5DCC4,#A6BFF5 40%,#BFD0F8 68%,#D6E2A1);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 3px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 3px))}
 .ld-push.is-grab .ld-ring{animation:ld-grab .5s ease-out}
 @keyframes ld-grab{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.9)}}
 /* the counter sits still and lets the wall pass over it: white on navy, dark once the white is revealed */
@@ -2421,17 +2424,39 @@ class Component extends DCLogic {
     if (n && n.textContent !== txt) n.textContent = txt;
     if (wall) wall.style.transform = 'translateX(' + sp.toFixed(3) + 'vw)';
     el.style.setProperty('--ldp', sp.toFixed(2));
-    // the cursor flies in, clicks the handle on the wall's edge, and drags the wall off to the right by it
+    // when we know where the visitor's cursor is, it is their own cursor that takes the handle: the real pointer is
+    // hidden and the stand-in flies from its position, then flies back and hands over when the wall is gone.
+    // without a known position (touch, or a still mouse) the stand-in simply flies in from the lower right
+    if (!this._ldMm) { var sf0 = this; this._ldMm = function (ev) { sf0._mx = ev.clientX; sf0._my = ev.clientY; }; document.addEventListener('mousemove', this._ldMm, { passive: true }); }
     if (push) {
-      if (!this._ldCur) { this._ldCur = 1; push.classList.add('is-on'); }
-      var ft = Math.min(1, t / 560), fe = 1 - Math.pow(1 - ft, 3);
-      var cx = 60 + (sp - 60) * fe, cy = 72 + (50 - 72) * fe;
-      push.style.transform = 'translate(calc(' + cx.toFixed(3) + 'vw - 7px), calc(' + cy.toFixed(3) + 'vh - 5px))';
-      if (ft >= 1 && !this._ldGrab) { this._ldGrab = 1; push.classList.add('is-grab'); }
+      var vwp = window.innerWidth, vhp = window.innerHeight;
+      if (!this._ldCur && t > 240) {
+        this._ldCur = 1; push.classList.add('is-on');
+        this._ldHj = window.matchMedia && matchMedia('(pointer:fine)').matches && this._mx != null;
+        this._ldFx = this._ldHj ? this._mx : vwp * 0.6; this._ldFy = this._ldHj ? this._my : vhp * 0.72;
+        this._ldT0 = now;
+        if (this._ldHj) document.documentElement.classList.add('tm-hide-cursor');
+      }
+      if (this._ldCur) {
+        var ft = Math.min(1, (now - this._ldT0) / 560), fe = 1 - Math.pow(1 - ft, 3);
+        var cx = this._ldFx + (sp / 100 * vwp - 7 - this._ldFx) * fe, cy = this._ldFy + (vhp * 0.5 - 5 - this._ldFy) * fe;
+        if (this._ldDone) {
+          if (!this._ldRel) { this._ldRel = 1; push.classList.remove('is-grab'); }
+          if (this._ldHj && this._mx != null) {
+            var bt = Math.min(1, (now - this._ldDone) / 360), be = bt * bt * (3 - 2 * bt);
+            cx = (vwp - 7) + (this._mx - (vwp - 7)) * be; cy = (vhp * 0.5 - 5) + (this._my - (vhp * 0.5 - 5)) * be;
+            if (bt >= 1 && !this._ldBye) { this._ldBye = 1; push.classList.remove('is-on'); document.documentElement.classList.remove('tm-hide-cursor'); }
+          }
+        }
+        push.style.transform = 'translate(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px)';
+        if (ft >= 1 && !this._ldGrab && !this._ldDone) { this._ldGrab = 1; push.classList.add('is-grab'); }
+      }
     }
     if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
-    if (this._ldDone && now - this._ldDone > 420) {
+    if (this._ldDone && now - this._ldDone > 460) {
       el.classList.add('is-out');
+      document.documentElement.classList.remove('tm-hide-cursor');
+      if (this._ldMm) { document.removeEventListener('mousemove', this._ldMm); this._ldMm = null; }
       if (root) root.classList.add('is-ready');
       this._splash = 2; this._ldDone = 0;
       this._goneT = setTimeout(function () { el.classList.add('is-gone'); }, 950);
