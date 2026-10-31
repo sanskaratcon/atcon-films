@@ -1251,18 +1251,25 @@ html,body{overflow-anchor:none}
 .atc-splash.ld{background:#FFFFFF !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;transition:transform .85s cubic-bezier(.7,0,.2,1)}
 .atc-splash.ld.is-out{transform:translateY(-100%)}
 .ld-mark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--atc-font);
-  font-size:clamp(38px,5.6vw,84px);font-weight:600;color:var(--atc-navy)}
+  font-size:clamp(38px,5.6vw,84px);font-weight:600;color:var(--atc-navy);
+  transform:translateX(calc((var(--ldp,0) - 100) * .05vw))}
 .ld-mark svg{width:.98em;height:auto;margin-right:.14em}
 .ld-mark i{font-style:normal;letter-spacing:.18em}
 .ld-wall{position:absolute;inset:0 -2px 0 0;background:var(--atc-navy);will-change:transform;
+  background-image:radial-gradient(circle,rgba(255,255,255,.08) 1.2px,transparent 1.7px);background-size:54px 54px;
   box-shadow:-34px 0 60px -24px rgba(0,16,37,.35)}
-/* the pusher is the site's own cursor: it flies in, grabs the wall with a small click ring, and drags it off right */
-.ld-push{position:absolute;left:0;top:0;z-index:1;width:25px;height:25px;opacity:0;transform:translate(60vw,72vh);
+/* the handle on the wall's leading edge: the thing the cursor takes hold of */
+.ld-grip{position:absolute;left:-7px;top:50%;width:13px;height:66px;transform:translateY(-50%);border-radius:999px;
+  background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 6px 18px rgba(0,16,37,.32)}
+/* the pusher is the site's own cursor: it flies in, takes the handle with a small click ring, and keeps a visible
+   grip — leaning back and tugging — while the wall gives way to the right */
+.ld-push{position:absolute;left:0;top:0;z-index:1;width:32px;height:32px;opacity:0;transform:translate(60vw,72vh);
   will-change:transform;transition:opacity .3s ease}
 .ld-push.is-on{opacity:1}
-.ld-push svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 4px rgba(0,16,37,.4));transition:transform .25s ease}
-.ld-push.is-grab svg{transform:rotate(-12deg) scale(.92)}
-.ld-ring{position:absolute;left:1px;top:0;width:22px;height:22px;border-radius:50%;border:2px solid #5A86EE;opacity:0;transform:scale(.3);pointer-events:none}
+.ld-push svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 5px rgba(0,16,37,.4));transition:transform .25s ease}
+.ld-push.is-grab svg{transform:rotate(-14deg) scale(.95);animation:ld-tug 1.1s ease-in-out .4s infinite}
+@keyframes ld-tug{0%,100%{transform:rotate(-14deg) scale(.95) translate(0,0)}50%{transform:rotate(-17deg) scale(.95) translate(-3px,1px)}}
+.ld-ring{position:absolute;left:2px;top:1px;width:27px;height:27px;border-radius:50%;border:2px solid #5A86EE;opacity:0;transform:scale(.3);pointer-events:none}
 .ld-push.is-grab .ld-ring{animation:ld-grab .5s ease-out}
 @keyframes ld-grab{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.9)}}
 /* the counter sits still and lets the wall pass over it: white on navy, dark once the white is revealed */
@@ -1796,7 +1803,7 @@ with a vision.</h2>
            the right as the page really loads, revealing the wordmark on white; then the white lifts into the site -->
       <div class="atc-splash ld" data-atc="splash" aria-hidden="true">
         <span class="ld-mark" aria-hidden="true"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#001025"></path></svg><i>TCON</i></span>
-        <div class="ld-wall" data-atc="ldWall"></div>
+        <div class="ld-wall" data-atc="ldWall"><i class="ld-grip"></i></div>
         <span class="ld-push" data-atc="ldPush" aria-hidden="true"><i class="ld-ring"></i><svg viewBox="0 0 20 20"><path d="M3.5 1.5v16.3l4.3-4 3 6.2 2.6-1.2-3-6.2 5.9-.6z" fill="#001025" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"></path></svg></span>
         <span class="ld-n" data-atc="ldN">0</span>
       </div>
@@ -2413,13 +2420,13 @@ class Component extends DCLogic {
     var sp = this._ldShow * 100, txt = String(Math.floor(sp));
     if (n && n.textContent !== txt) n.textContent = txt;
     if (wall) wall.style.transform = 'translateX(' + sp.toFixed(3) + 'vw)';
-    // the cursor flies in, clicks, then rides its grip point on the wall as it drags it off to the right
+    el.style.setProperty('--ldp', sp.toFixed(2));
+    // the cursor flies in, clicks the handle on the wall's edge, and drags the wall off to the right by it
     if (push) {
       if (!this._ldCur) { this._ldCur = 1; push.classList.add('is-on'); }
       var ft = Math.min(1, t / 560), fe = 1 - Math.pow(1 - ft, 3);
-      var gx = sp + 14, gy = 46;
-      var cx = 60 + (gx - 60) * fe, cy = 72 + (gy - 72) * fe;
-      push.style.transform = 'translate(' + cx.toFixed(3) + 'vw, ' + cy.toFixed(3) + 'vh)';
+      var cx = 60 + (sp - 60) * fe, cy = 72 + (50 - 72) * fe;
+      push.style.transform = 'translate(calc(' + cx.toFixed(3) + 'vw - 7px), calc(' + cy.toFixed(3) + 'vh - 5px))';
       if (ft >= 1 && !this._ldGrab) { this._ldGrab = 1; push.classList.add('is-grab'); }
     }
     if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
