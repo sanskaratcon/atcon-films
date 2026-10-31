@@ -2412,10 +2412,13 @@ class Component extends DCLogic {
     if (!el) return;
     var now = performance.now();
     if (this._splash === 0) { this._splash = 1; this._splInAt = now; this._ldShow = 0; }
-    var t = now - this._splInAt, kt = Math.min(1, t / 2200), et = 1 - Math.pow(1 - kt, 3);
+    var t = now - this._splInAt;
     var pr = t > 9000 ? 1 : this.loadProgress();
-    // the wall never runs ahead of the real progress, and eases toward it
-    var want = Math.min(et, pr);
+    // the wall waits for the hand: a beat of stillness while the cursor flies in and takes the handle,
+    // and only then does the loading drag begin — never running ahead of the real progress
+    var tG = this._ldGrab ? now - this._ldGrabAt - 240 : 0;
+    var kt = Math.min(1, Math.max(0, tG) / 2200), et = 1 - Math.pow(1 - kt, 3);
+    var want = this._ldGrab ? Math.min(et, pr) : 0;
     var dtL = now - (this._ldLast || now); this._ldLast = now;
     this._ldShow += (want - this._ldShow) * (1 - Math.exp(-dtL / 110));
     if (want >= 1 && this._ldShow > 0.995) this._ldShow = 1;
@@ -2449,7 +2452,7 @@ class Component extends DCLogic {
           }
         }
         push.style.transform = 'translate(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px)';
-        if (ft >= 1 && !this._ldGrab && !this._ldDone) { this._ldGrab = 1; push.classList.add('is-grab'); }
+        if (ft >= 1 && !this._ldGrab && !this._ldDone) { this._ldGrab = 1; this._ldGrabAt = now; push.classList.add('is-grab'); }
       }
     }
     if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
