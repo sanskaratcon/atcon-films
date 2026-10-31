@@ -67,8 +67,6 @@ html,body{overscroll-behavior-y:none}
 /* The hero has no cross lines; they only show when they close in around the statement */
 .atc-ln-mid,.atc-ln-right,.atc-star{opacity:var(--lo,0)}
 
-/* the left scroll rail and its progress line are retired; the page keeps its clean left edge */
-.atc-ln-rail,.atc-prog{display:none}
 .atc-prog{position:absolute;left:var(--lx);top:var(--ty);bottom:0;width:1px;pointer-events:none;transition:opacity .7s var(--ease-io)}
 .atc-prog-fill{position:absolute;left:-.5px;top:0;width:2px;height:100%;background:var(--prog);transform-origin:top;transform:scaleY(0);transition:background-color var(--dur-theme) ease}
 .atc-prog-head{position:absolute;left:-3.5px;top:0;width:8px;height:8px;border-radius:50%;background:var(--head);box-shadow:0 0 12px rgba(255,255,255,.55);transform:translateY(-4px);transition:background-color var(--dur-theme) ease}
