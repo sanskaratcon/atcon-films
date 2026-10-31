@@ -78,12 +78,17 @@ html,body{overscroll-behavior-y:none}
 .atc-logo svg{width:calc(var(--rail) * .34);height:auto;display:block}
 .atc-burger{position:absolute;left:0;top:var(--rail);width:var(--rail);height:var(--rail)}
 .atc-contact{position:absolute;top:calc((var(--rail) - 44px) / 2);right:var(--gutter)}
-/* buttons follow the brand site: full pills with a round icon chip; the header Contact is the filled navy pill */
-.ds-btn{border-radius:999px;font-weight:600}
-.ds-btn .ds-btn-ic{border-radius:50%}
-.atc-contact{background:var(--atc-navy);color:#FFFFFF;box-shadow:0 10px 26px -12px rgba(0,16,37,.5)}
-.atc-contact:hover{background:#14284B;color:#FFFFFF}
-.atc-contact .ds-btn-ic{border-color:rgba(255,255,255,.35)}
+/* buttons as the site's own surfaces: a white pill wearing the cards' hairline ring and long soft shadow, the
+   arrow riding in a solid navy chip, and the brand gradient arriving on the rim when the hand does */
+.ds-btn{border-radius:999px;font-weight:600;border:1.5px solid transparent;color:var(--atc-navy);
+  background:linear-gradient(#FFFFFF,#FFFFFF) padding-box,linear-gradient(rgba(0,16,37,.12),rgba(0,16,37,.12)) border-box;
+  box-shadow:0 22px 40px -24px rgba(0,16,37,.35),0 2px 6px rgba(0,16,37,.05);
+  transition:transform .3s cubic-bezier(.2,.8,.3,1),box-shadow .3s ease}
+.ds-btn:hover{transform:translateY(-2px);color:var(--atc-navy);
+  background:linear-gradient(#FFFFFF,#FFFFFF) padding-box,var(--atc-grad) border-box;
+  box-shadow:0 28px 50px -26px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.06)}
+.ds-btn .ds-btn-ic{width:30px;height:30px;border:0;border-radius:50%;background:var(--atc-navy);color:#FFFFFF;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
+.ds-btn--sm .ds-btn-ic{width:27px;height:27px}
 .atc[data-menu="open"] .atc-chrome{--fg:#FFFFFF;--btn-bg:#FFFFFF;--btn-fg:#001025;--btn-bg-hover:#E6ECF4;--btn-ic-line:rgba(0,16,37,.22)}
 .atc .atc-nav{position:fixed;z-index:19}
 
