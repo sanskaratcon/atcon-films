@@ -1381,7 +1381,7 @@ html,body{overflow-anchor:none}
 .tm-h{position:absolute;top:-.1em;bottom:-.04em;width:.05em;min-width:2px;background:#2D63E6;opacity:0;transition:opacity .3s ease .12s}
 /* the site wears its own cursor, in the manner of the reference: the ATCON arrow replaces the native pointer
    everywhere, while links and buttons keep the hand */
-html{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='24' viewBox='0 0 22 26'%3E%3Cpath d='M5 1.8C5 .6 6 0 6.8 .9L17.9 13.3C18.7 14.2 18.1 15.6 16.9 15.6L11 15.6 6.9 19.8C6.1 20.6 5 20.1 5 19Z' fill='%23111' stroke='%23fff' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E") 4 1,auto}
+html{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='24' viewBox='0 0 22 26'%3E%3Cpath d='M5 2.8C5 .9 6.7 0 7.9 1.3L17.3 11.8C18.8 13.5 17.8 15.9 15.7 15.9L12 15.9C11.4 15.9 10.9 16.1 10.5 16.5L7.6 19.5C6.4 20.8 5 20 5 18.4Z' fill='%23111' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") 4 2,auto}
 a,button,[role="button"],label,select,summary{cursor:pointer}
 #tm-cursor{position:fixed;left:0;top:0;z-index:60;width:25px;height:25px;margin:-2px 0 0 -3px;pointer-events:none}
 #tm-cursor svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 2px 4px rgba(0,16,37,.4))}
@@ -1812,7 +1812,7 @@ with a vision.</h2>
       <div class="atc-splash ld" data-atc="splash" aria-hidden="true">
         <span class="ld-mark" aria-hidden="true"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#001025"></path></svg><i>TCON</i></span>
         <div class="ld-wall" data-atc="ldWall"><i class="ld-grip"></i></div>
-        <span class="ld-push" data-atc="ldPush" aria-hidden="true"><i class="ld-ring"></i><svg viewBox="0 0 22 26"><path d="M5 1.8C5 .6 6 0 6.8 .9L17.9 13.3C18.7 14.2 18.1 15.6 16.9 15.6L11 15.6 6.9 19.8C6.1 20.6 5 20.1 5 19Z" fill="#111" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"></path></svg></span>
+        <span class="ld-push" data-atc="ldPush" aria-hidden="true"><i class="ld-ring"></i><svg viewBox="0 0 22 26"><path d="M5 2.8C5 .9 6.7 0 7.9 1.3L17.3 11.8C18.8 13.5 17.8 15.9 15.7 15.9L12 15.9C11.4 15.9 10.9 16.1 10.5 16.5L7.6 19.5C6.4 20.8 5 20 5 18.4Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></path></svg></span>
         <span class="ld-n" data-atc="ldN">0</span>
       </div>
 
@@ -4094,7 +4094,7 @@ class Component extends DCLogic {
     var hijack = fine && mx != null;
     var cur = document.createElement('div');
     cur.id = 'tm-cursor';
-    cur.innerHTML = '<svg viewBox="0 0 22 26"><path d="M5 1.8C5 .6 6 0 6.8 .9L17.9 13.3C18.7 14.2 18.1 15.6 16.9 15.6L11 15.6 6.9 19.8C6.1 20.6 5 20.1 5 19Z" fill="#111" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"></path></svg>';
+    cur.innerHTML = '<svg viewBox="0 0 22 26"><path d="M5 2.8C5 .9 6.7 0 7.9 1.3L17.3 11.8C18.8 13.5 17.8 15.9 15.7 15.9L12 15.9C11.4 15.9 10.9 16.1 10.5 16.5L7.6 19.5C6.4 20.8 5 20 5 18.4Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></path></svg>';
     document.body.appendChild(cur);
     var r = hl.getBoundingClientRect();
     var sx = hijack ? mx : r.left + r.width * 0.5, sy = hijack ? my : Math.max(20, r.top - 90);
