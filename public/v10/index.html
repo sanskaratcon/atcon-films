@@ -1246,19 +1246,23 @@ html,body{overflow-anchor:none}
 .ospace .oend .atc-kpi{position:relative;top:auto;width:100%}
 @media (min-width:901px){.atc-after.v10-ov{z-index:3;margin-top:-100vh;margin-top:-100svh}}
 
-/* v9 loader: a thin counter runs to 100 while a brand-gradient line fills along the bottom, then the white slides up */
-.atc-splash.ld{background:#FFFFFF !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;transition:transform .9s cubic-bezier(.7,0,.2,1)}
+/* v10 loader: the site waits behind a navy wall. The A-mark leans in and pushes the wall off to the right as the page
+   really loads — a wipe that reveals the wordmark on white — then the white lifts up into the site */
+.atc-splash.ld{background:#FFFFFF !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;transition:transform .85s cubic-bezier(.7,0,.2,1)}
 .atc-splash.ld.is-out{transform:translateY(-100%)}
-.ld-k{position:absolute;left:calc(var(--rail) + 4vw);bottom:6vh;display:grid;height:1.2em;overflow:hidden;font-family:var(--atc-font);font-size:clamp(56px,9vw,168px);line-height:1.2;letter-spacing:-.05em;color:var(--atc-navy)}
-.ld-w{grid-area:1/1;display:block;white-space:nowrap}
-/* the word changes in turn, never overlapping: the old one rises out first, then the new one rises in from below */
-.ld-w.is-in{animation:ld-in .5s cubic-bezier(.2,.7,.15,1) .38s both}
-.ld-w.is-out{animation:ld-out .36s cubic-bezier(.6,0,.4,1) both}
-@keyframes ld-in{from{transform:translateY(105%);opacity:0;filter:blur(6px)}to{transform:none;opacity:1;filter:none}}
-@keyframes ld-out{to{transform:translateY(-105%);opacity:0;filter:blur(6px)}}
-.ld-n{position:absolute;right:4vw;bottom:7vh;font-family:var(--atc-font);font-size:clamp(28px,3vw,52px);line-height:1;letter-spacing:-.03em;color:var(--atc-mute);font-variant-numeric:tabular-nums}
-/* the word beside the counter follows the loading: Ideas, Strategy, Creative, Development, Partner */
-.ld-ln{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,#3FB27E,#2D63E6 45%,#5A86EE 70%,#9BBA2A)}
+.ld-mark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--atc-font);
+  font-size:clamp(38px,5.6vw,84px);font-weight:600;color:var(--atc-navy)}
+.ld-mark svg{width:.98em;height:auto;margin-right:.14em}
+.ld-mark i{font-style:normal;letter-spacing:.18em}
+.ld-wall{position:absolute;inset:0 -2px 0 0;background:var(--atc-navy);will-change:transform;
+  box-shadow:-34px 0 60px -24px rgba(0,16,37,.35)}
+/* the pusher: the A leaning into the wall, taking small steps as it goes */
+.ld-push{position:absolute;left:0;top:50%;width:clamp(56px,6.4vw,96px);transform:translate(-110%,-50%);will-change:transform}
+.ld-push svg{display:block;width:100%;height:auto;transform-origin:50% 92%;animation:ld-step .46s ease-in-out infinite alternate}
+@keyframes ld-step{from{transform:rotate(12deg) translateY(0)}to{transform:rotate(16deg) translateY(-5px)}}
+/* the counter sits still and lets the wall pass over it: white on navy, dark once the white is revealed */
+.ld-n{position:absolute;right:4vw;bottom:6vh;z-index:1;font-family:var(--atc-font);font-size:clamp(28px,3vw,52px);line-height:1;
+  letter-spacing:-.03em;color:#fff;mix-blend-mode:difference;font-variant-numeric:tabular-nums}
 
 
 /* v10 problem 02: one project's plan, told step by step: a different vendor on every phase, a wait at every handover,
@@ -1783,9 +1787,14 @@ with a vision.</h2>
         <a class="ds-btn ds-btn--sm ds-btn--grad atc-contact" href="mailto:ankit.tanna@atconglobal.com">Contact<span class="ds-btn-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></a>
       </div>
 
-      <!-- Splash: the ATCON A draws in, fills with its own colours as the page loads, then the navy stroke opens
-           into a window and we fly through it into the site -->
-      <div class="atc-splash ld" data-atc="splash" aria-hidden="true"><span class="ld-k" data-atc="ldK"><span class="ld-w">Ideas</span></span><span class="ld-n" data-atc="ldN">0</span><span class="ld-ln" data-atc="ldLn"></span></div>
+      <!-- Splash: the site waits behind a navy wall. The A-mark leans in and pushes the wall off to the right as the
+           page really loads, wiping it away to reveal the wordmark on white; then the white lifts into the site -->
+      <div class="atc-splash ld" data-atc="splash" aria-hidden="true">
+        <span class="ld-mark" aria-hidden="true"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#001025"></path></svg><i>TCON</i></span>
+        <div class="ld-wall" data-atc="ldWall"></div>
+        <span class="ld-push" data-atc="ldPush" aria-hidden="true"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#001025"></path></svg></span>
+        <span class="ld-n" data-atc="ldN">0</span>
+      </div>
 
   <div class="atc-after" data-theme="light">
 
@@ -2388,30 +2397,21 @@ class Component extends DCLogic {
     if (!el) return;
     var now = performance.now();
     if (this._splash === 0) { this._splash = 1; this._splInAt = now; this._ldShow = 0; }
-    var t = now - this._splInAt, kt = Math.min(1, t / 1400), et = 1 - Math.pow(1 - kt, 3);
+    var t = now - this._splInAt, kt = Math.min(1, t / 2200), et = 1 - Math.pow(1 - kt, 3);
     var pr = t > 9000 ? 1 : this.loadProgress();
-    // the number never runs ahead of the real progress, and eases toward it
-    // the words move on one at a time, each held long enough to read; the number keeps pace with them
-    var WORDS = ['Ideas', 'Strategy', 'Creative', 'Development', 'Partner'];
-    if (this._ldWi == null) { this._ldWi = 0; this._ldSwapAt = now; }
-    var want = Math.min(et, pr, (this._ldWi + 1) / WORDS.length);
+    // the wall never runs ahead of the real progress, and eases toward it
+    var want = Math.min(et, pr);
     var dtL = now - (this._ldLast || now); this._ldLast = now;
     this._ldShow += (want - this._ldShow) * (1 - Math.exp(-dtL / 110));
     if (want >= 1 && this._ldShow > 0.995) this._ldShow = 1;
-    var n = this.q('ldN'), ln = this.q('ldLn'), txt = String(Math.floor(this._ldShow * 100));
-    var kEl = this.q('ldK'), wt = Math.min(WORDS.length - 1, Math.floor(Math.min(et, pr) * WORDS.length + 0.001));
-    if (this._ldWi < wt && now - this._ldSwapAt > 750) { this._ldWi++; this._ldSwapAt = now; }
-    var wi = this._ldWi;
-    if (kEl && this._ldWord !== WORDS[wi]) {
-      this._ldWord = WORDS[wi];
-      var olds = kEl.querySelectorAll('.ld-w:not(.is-out)'), nw = document.createElement('span');
-      for (var oi2 = 0; oi2 < olds.length; oi2++) { if (olds[oi2].textContent === WORDS[wi]) continue; olds[oi2].classList.add('is-out'); (function (o) { setTimeout(function () { o.remove(); }, 400); })(olds[oi2]); }
-      if (!olds.length || olds[0].textContent !== WORDS[wi]) { nw.className = 'ld-w is-in'; nw.textContent = WORDS[wi]; kEl.appendChild(nw); }
-    }
+    var n = this.q('ldN'), wall = this.q('ldWall'), push = this.q('ldPush');
+    var sp = this._ldShow * 100, txt = String(Math.floor(sp));
     if (n && n.textContent !== txt) n.textContent = txt;
-    if (ln) ln.style.width = (this._ldShow * 100).toFixed(2) + '%';
-    if (this._ldShow >= 1 && wi === WORDS.length - 1 && now - this._ldSwapAt > 700 && !this._ldDone) this._ldDone = now;
-    if (this._ldDone && now - this._ldDone > 250) {
+    if (wall) wall.style.transform = 'translateX(' + sp.toFixed(3) + 'vw)';
+    // the pusher's hands stay on the wall's edge; past the right side it leaves with it
+    if (push) push.style.transform = 'translate(calc(' + sp.toFixed(3) + 'vw - 100%), -50%)';
+    if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
+    if (this._ldDone && now - this._ldDone > 420) {
       el.classList.add('is-out');
       if (root) root.classList.add('is-ready');
       this._splash = 2; this._ldDone = 0;
