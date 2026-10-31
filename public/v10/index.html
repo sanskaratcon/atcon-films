@@ -1256,9 +1256,10 @@ html,body{overflow-anchor:none}
 .ld-mark svg{width:.98em;height:auto;margin-right:.14em}
 .ld-mark i{font-style:normal;letter-spacing:.18em}
 .ld-wall{position:absolute;inset:0 -2px 0 0;will-change:transform;
-  background-image:radial-gradient(circle,rgba(255,255,255,.16) 1.2px,transparent 1.7px),var(--atc-grad);
+  background-image:radial-gradient(circle,rgba(0,16,37,.12) 1.2px,transparent 1.7px),
+    linear-gradient(100deg,#B9E4D1 0%,#BCCFF8 40%,#CEDBFA 64%,#DFE8B4 100%);
   background-size:54px 54px,100% 100%;
-  box-shadow:-34px 0 60px -24px rgba(0,16,37,.35)}
+  box-shadow:-34px 0 60px -24px rgba(0,16,37,.28)}
 /* the handle on the wall's leading edge: the thing the cursor takes hold of */
 .ld-grip{position:absolute;left:-7px;top:50%;width:13px;height:66px;transform:translateY(-50%);border-radius:999px;
   background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 6px 18px rgba(0,16,37,.32)}
@@ -1278,7 +1279,7 @@ html,body{overflow-anchor:none}
 @keyframes ld-grab{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.9)}}
 /* the counter rides the gradient in white, and fades away as the wall's tail passes over it */
 .ld-n{position:absolute;right:4vw;bottom:6vh;z-index:1;font-family:var(--atc-font);font-size:clamp(28px,3vw,52px);line-height:1;
-  letter-spacing:-.03em;color:#fff;text-shadow:0 1px 12px rgba(0,16,37,.3);font-variant-numeric:tabular-nums;
+  letter-spacing:-.03em;color:var(--atc-navy);font-variant-numeric:tabular-nums;
   opacity:clamp(0,calc((94 - var(--ldp,0)) / 8),1)}
 
 
