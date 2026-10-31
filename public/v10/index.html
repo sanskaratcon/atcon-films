@@ -1257,11 +1257,12 @@ html,body{overflow-anchor:none}
    right as the page really loads — a wipe that reveals the wordmark on white — then the white lifts up into the site */
 .atc-splash.ld{background:#FFFFFF !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;transition:transform .85s cubic-bezier(.7,0,.2,1)}
 .atc-splash.ld.is-out{transform:translateY(-100%)}
-.ld-mark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--atc-font);
-  font-size:clamp(38px,5.6vw,84px);font-weight:600;color:var(--atc-navy);
-  transform:translateX(calc((var(--ldp,0) - 100) * .05vw))}
-.ld-mark svg{width:.98em;height:auto;margin-right:.14em}
-.ld-mark i{font-style:normal;letter-spacing:.18em}
+.ld-mark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.16em;font-family:var(--atc-font);
+  font-size:clamp(38px,5.6vw,84px);font-weight:600;color:var(--atc-navy)}
+/* each letter rises into place at the moment the wall's edge uncovers it */
+.ld-mark .ld-l{display:inline-block;opacity:0;transform:translateY(.42em);transition:opacity .45s ease,transform .65s cubic-bezier(.2,.8,.25,1.15)}
+.ld-mark .ld-l.is-in{opacity:1;transform:none}
+.ld-mark svg{display:block;width:.98em;height:auto}
 .ld-wall{--g:clamp(50px,4.6vw,68px);position:absolute;inset:0 -2px 0 0;will-change:transform;
   background-image:linear-gradient(to right,rgba(0,16,37,.05) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,16,37,.05) 1px,transparent 1px),
     linear-gradient(100deg,#CCECDD 0%,#CEDCFA 40%,#DCE6FC 64%,#E8EEC8 100%);
@@ -1269,7 +1270,9 @@ html,body{overflow-anchor:none}
   box-shadow:-34px 0 60px -24px rgba(0,16,37,.28)}
 /* the handle on the wall's leading edge: the thing the cursor takes hold of */
 .ld-grip{position:absolute;left:-7px;top:50%;width:13px;height:66px;transform:translateY(-50%);border-radius:999px;
-  background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 6px 18px rgba(0,16,37,.32)}
+  background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.14),0 6px 18px rgba(0,16,37,.32);transition:transform .25s ease,box-shadow .25s ease}
+/* the handle gives a little under the grip */
+.atc-splash.ld-grabbed .ld-grip{transform:translateY(-50%) scale(.88);box-shadow:0 0 0 .5px rgba(0,16,37,.18),0 3px 9px rgba(0,16,37,.3)}
 /* the pusher is the site's own cursor: it flies in, takes the handle with a small click ring, and keeps a visible
    grip — leaning back and tugging — while the wall gives way to the right */
 .ld-push{position:absolute;left:0;top:0;z-index:1;width:32px;height:32px;opacity:0;transform:translate(60vw,72vh);
@@ -1821,7 +1824,7 @@ with a vision.</h2>
       <!-- Splash: the site waits behind a navy wall. The site's cursor flies in, grabs the wall, and drags it off to
            the right as the page really loads, revealing the wordmark on white; then the white lifts into the site -->
       <div class="atc-splash ld" data-atc="splash" aria-hidden="true">
-        <span class="ld-mark" aria-hidden="true"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#001025"></path></svg><i>TCON</i></span>
+        <span class="ld-mark" aria-hidden="true"><span class="ld-l"><svg viewBox="0 0 142 114"><path d="M0.11866 111.933C0.0628748 111.933 0.0255736 111.875 0.048264 111.824L49.8163 0.0457146C49.8287 0.0179119 49.8563 0 49.8867 0L70.271 0C70.3266 0 70.3639 0.0570831 70.3416 0.108001L21.3313 111.887C21.319 111.915 21.2913 111.933 21.2607 111.933H0.11866Z" fill="#001025"></path><path d="M116.925 111.535C116.981 111.535 117.018 111.477 116.996 111.427L84.5941 37.6707C84.5672 37.6095 84.4806 37.6092 84.4532 37.6701L74.0773 60.8053C74.0505 60.8651 74.0503 60.9335 74.0768 60.9935L96.4174 111.489C96.4297 111.517 96.4574 111.535 96.4879 111.535H116.925Z" fill="#001025"></path></svg></span><span class="ld-l">T</span><span class="ld-l">C</span><span class="ld-l">O</span><span class="ld-l">N</span></span>
         <div class="ld-wall" data-atc="ldWall"><i class="ld-grip"></i></div>
         <span class="ld-push" data-atc="ldPush" aria-hidden="true"><i class="ld-ring"></i><svg viewBox="0 0 24 24"><path d="M5 3C5 1.2 6.5 .5 7.7 1.6L19.4 12C20.8 13.3 19.8 15.5 17.9 15.5L13.9 15.5C13.3 15.5 12.8 15.8 12.4 16.2L8.3 19.9C7 21 5 20.3 5 18.6Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></path></svg></span>
         <span class="ld-n" data-atc="ldN">0</span>
@@ -2455,6 +2458,13 @@ class Component extends DCLogic {
     if (n && n.textContent !== txt) n.textContent = txt;
     if (wall) wall.style.transform = 'translateX(' + sp.toFixed(3) + 'vw)';
     el.style.setProperty('--ldp', sp.toFixed(2));
+    // the wordmark builds with the drag: each letter rises exactly as the wall's edge uncovers it
+    if (!this._ldLs || !this._ldLs.length || !this._ldLs[0].isConnected) this._ldLs = el.querySelectorAll('.ld-l');
+    var edgeX = sp / 100 * window.innerWidth;
+    for (var li = 0; li < this._ldLs.length; li++) {
+      var L = this._ldLs[li];
+      if (!L._in && L.getBoundingClientRect().left + 8 < edgeX) { L._in = 1; L.classList.add('is-in'); }
+    }
     // when we know where the visitor's cursor is, it is their own cursor that takes the handle: the real pointer is
     // hidden and the stand-in flies from its position, then flies back and hands over when the wall is gone.
     // without a known position (touch, or a still mouse) the stand-in simply flies in from the lower right
@@ -2482,7 +2492,7 @@ class Component extends DCLogic {
           }
         }
         push.style.transform = 'translate(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px)';
-        if (ft >= 1 && !this._ldGrab && !this._ldDone) { this._ldGrab = 1; this._ldGrabAt = now; push.classList.add('is-grab'); }
+        if (ft >= 1 && !this._ldGrab && !this._ldDone) { this._ldGrab = 1; this._ldGrabAt = now; push.classList.add('is-grab'); el.classList.add('ld-grabbed'); }
       }
     }
     if (this._ldShow >= 1 && !this._ldDone) this._ldDone = now;
