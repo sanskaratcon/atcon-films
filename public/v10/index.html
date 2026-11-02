@@ -1385,15 +1385,48 @@ html,body{overflow-anchor:none}
   box-shadow:0 0 0 .5px rgba(0,16,37,.05),0 44px 80px -42px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05);
   animation:cse-float 9s ease-in-out infinite}
 @keyframes cse-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-/* the picture is a drawing: one quiet line-art scene per case, in the brand's colours, no words at all */
+/* the picture is a miniature of the product itself: one rich app surface with a satellite card on it, every
+   word a quiet skeleton bar, every person an avatar dot, every state a coloured pill - dense, but wordless */
 .cse-il{position:absolute;inset:0;border-radius:18px;overflow:hidden;
   background-image:radial-gradient(circle,rgba(0,16,37,.05) 1px,transparent 1.4px),linear-gradient(120deg,#F4F8FC,#EAF0FA);
   background-size:26px 26px,100% 100%}
-.il-svg{position:absolute;inset:0;width:100%;height:100%}
-.il-svg .wv{transform-box:fill-box;transform-origin:50% 50%;animation:il-wv 1.1s ease-in-out infinite alternate}
+.il-s{position:absolute;background:#fff;border-radius:14px;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 22px 42px -24px rgba(0,16,37,.4),0 2px 5px rgba(0,16,37,.05)}
+.il-s--top{z-index:1;box-shadow:0 0 0 .5px rgba(0,16,37,.09),0 26px 48px -26px rgba(0,16,37,.48),0 2px 6px rgba(0,16,37,.06)}
+.il-hd{display:flex;align-items:center;gap:9px}
+.il-hd>span{flex:1;min-width:0}
+.il-dot{flex:none;width:22px;height:22px;border-radius:50%;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.il-b{display:block;height:7px;border-radius:4px;background:#E7ECF4}
+.il-b+.il-b{margin-top:5px}
+.il-b--n{background:#C3CDDD}
+.il-big{display:block;height:13px;border-radius:7px;background:#33415C;margin-bottom:7px}
+.il-pill{flex:none;display:block;width:34px;height:15px;border-radius:999px}
+.il-ro{display:flex;gap:9px}
+.il-tile{flex:1;min-width:0;padding:9px 10px;border-radius:10px;background:#F4F7FB}
+.il-tile .il-b--n{height:9px;margin-top:6px}
+.il-row2{display:flex;align-items:center;gap:9px;margin-top:8px;padding:8px 10px;border-radius:11px;background:#F6F8FB}
+.il-row2 .il-dot{width:20px;height:20px}
+.il-row2--hi{background:#fff;box-shadow:0 0 0 1.5px #3FB27E,0 10px 20px -12px rgba(0,16,37,.3)}
+.il-ok{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#3FB27E}
+.il-ok svg{width:12px;height:12px}
+.il-mic{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(180deg,#14284B,#0A1C33)}
+.il-gear{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:linear-gradient(180deg,#14284B,#0A1C33)}
+.il-wave{display:flex;align-items:center;gap:3px;height:30px}
+.il-wave i{width:4px;border-radius:2px;background:#2D63E6;animation:il-wv 1.1s ease-in-out infinite alternate}
 @keyframes il-wv{from{transform:scaleY(.45)}to{transform:scaleY(1)}}
-.il-svg .pls{transform-box:fill-box;transform-origin:50% 50%;animation:il-pls 2.4s ease-out infinite}
+.il-track{display:block;height:7px;border-radius:4px;background:#E8EDF5;overflow:hidden}
+.il-track i{display:block;height:100%;border-radius:4px;background:var(--atc-grad)}
+.il-cal{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.il-cal i{aspect-ratio:1;border-radius:6px;background:#EDF1F8}
+.il-cal i.is-on{background:#3FB27E;position:relative}
+.il-cal i.is-on::after{content:'';position:absolute;inset:0;margin:auto;width:7px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.il-map{position:relative;margin-top:11px;height:112px;border-radius:10px;background:#F4F7FB;overflow:hidden}
+.il-svg .pls,.il-map .pls{transform-box:fill-box;transform-origin:50% 50%;animation:il-pls 2.4s ease-out infinite}
 @keyframes il-pls{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+.il-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px;padding:8px;border-radius:10px;background:#F4F7FB}
+.il-mini{display:block;padding:8px 9px;border-radius:8px;background:#fff;box-shadow:0 0 0 .5px rgba(0,16,37,.07),0 6px 12px -8px rgba(0,16,37,.25)}
+.il-mini--hi{box-shadow:0 0 0 1.5px transparent,0 8px 16px -9px rgba(0,16,37,.3);border:1.5px solid transparent;
+  background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box}
 /* the story rides a frosted glass panel inside the card */
 .cse-glass{position:absolute;left:10px;right:10px;bottom:10px;padding:14px 16px;border-radius:14px;
   background:rgba(255,255,255,.8);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);
@@ -1908,11 +1941,19 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">01</b>
               <p class="cse-kick">THE QUARTER NOW REPORTS ITSELF.</p>
               <div class="cse-card">
-                <div class="cse-il" aria-hidden="true"><svg class="il-svg" viewBox="0 0 520 300"><defs><linearGradient id="ilf1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2D63E6" stop-opacity=".16"/><stop offset="1" stop-color="#2D63E6" stop-opacity="0"/></linearGradient></defs>
-<path d="M50 195 L125 145 L195 170 L270 102 L345 132 L450 62 L450 240 L50 240 Z" fill="url(#ilf1)"/>
-<path d="M50 195 L125 145 L195 170 L270 102 L345 132 L450 62" fill="none" stroke="#2D63E6" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-<g fill="#fff" stroke="#2D63E6" stroke-width="2.2"><circle cx="125" cy="145" r="5.5"/><circle cx="270" cy="102" r="5.5"/><circle cx="345" cy="132" r="5.5"/></g>
-<circle cx="450" cy="62" r="17" fill="#3FB27E"/><path d="M442.5 62 L448 67.5 L459 53.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="cse-il" aria-hidden="true">
+                <div class="il-s" style="left:6%;top:8%;width:55%;padding:13px 14px">
+                  <div class="il-hd"><i class="il-dot" style="background:linear-gradient(180deg,#82A3F2,#2D63E6)"></i><span><i class="il-b il-b--n" style="width:62%"></i><i class="il-b" style="width:38%"></i></span><i class="il-pill" style="background:#E9F7F0"></i></div>
+                  <svg viewBox="0 0 230 64" style="display:block;width:100%;margin-top:11px"><defs><linearGradient id="ilc1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2D63E6" stop-opacity=".2"/><stop offset="1" stop-color="#2D63E6" stop-opacity="0"/></linearGradient></defs>
+<path d="M4 50 L40 34 L74 42 L110 20 L146 30 L182 12 L226 22 L226 62 L4 62 Z" fill="url(#ilc1)"/>
+<path d="M4 50 L40 34 L74 42 L110 20 L146 30 L182 12 L226 22" fill="none" stroke="#2D63E6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="110" cy="20" r="4.5" fill="#fff" stroke="#2D63E6" stroke-width="2"/><circle cx="182" cy="12" r="4.5" fill="#fff" stroke="#2D63E6" stroke-width="2"/></svg>
+                  <div class="il-ro" style="margin-top:11px"><span class="il-tile"><i class="il-b" style="width:52%"></i><i class="il-b il-b--n" style="width:78%"></i></span><span class="il-tile"><i class="il-b" style="width:60%"></i><i class="il-b il-b--n" style="width:66%"></i></span><span class="il-tile"><i class="il-b" style="width:44%"></i><i class="il-b il-b--n" style="width:72%"></i></span></div>
+                </div>
+                <div class="il-s il-s--top" style="right:6%;top:15%;width:31%;padding:12px 13px;display:flex;align-items:center;gap:10px">
+                  <span class="il-ok"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"></path></svg></span><span style="flex:1"><i class="il-b il-b--n" style="width:86%"></i><i class="il-b" style="width:58%"></i></span>
+                </div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 01</em></div>
                   <h3>Intelligent Financial Automation Ecosystem</h3>
@@ -1925,14 +1966,19 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">02</b>
               <p class="cse-kick">PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
               <div class="cse-card">
-                <div class="cse-il" aria-hidden="true"><svg class="il-svg" viewBox="0 0 520 300">
-<g fill="none" stroke="#33415C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-<path d="M78 148 L150 92 L222 148"/><path d="M96 136 V212 H204 V136"/><path d="M136 212 V176 H164 V212"/></g>
-<path d="M248 176 H300" stroke="#C9D3E4" stroke-width="2.4" stroke-dasharray="2 7" stroke-linecap="round"/>
-<path d="M310 176 A68 68 0 0 1 446 176" fill="none" stroke="#E8EDF5" stroke-width="11" stroke-linecap="round"/>
-<defs><linearGradient id="ilg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3FB27E"/><stop offset="1" stop-color="#2D63E6"/></linearGradient></defs>
-<path d="M310 176 A68 68 0 0 1 436 143" fill="none" stroke="url(#ilg2)" stroke-width="11" stroke-linecap="round"/>
-<circle cx="436" cy="143" r="9" fill="#fff" stroke="#2D63E6" stroke-width="3"/></svg></div>
+                <div class="cse-il" aria-hidden="true">
+                <div class="il-s" style="left:6%;top:8%;width:55%;padding:13px 14px">
+                  <div class="il-hd"><i class="il-dot" style="background:linear-gradient(180deg,#9FB4F5,#5A86EE)"></i><span><i class="il-b il-b--n" style="width:58%"></i><i class="il-b" style="width:36%"></i></span><i class="il-pill" style="background:#E8EEFC"></i></div>
+                  <div class="il-ro" style="margin-top:12px;align-items:center"><span class="il-tile" style="flex:0 0 42%;padding:12px 10px"><svg viewBox="0 0 48 44" style="display:block;width:34px;margin:0 auto"><g fill="none" stroke="#33415C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22 L24 6 L44 22"/><path d="M9 19 V38 H39 V19"/><path d="M20 38 V28 H28 V38"/></g></svg></span><span style="flex:1"><i class="il-b il-b--n" style="width:88%"></i><i class="il-b" style="width:70%"></i><i class="il-b" style="width:52%"></i></span></div>
+                  <svg viewBox="0 0 150 76" style="display:block;width:62%;margin:12px auto 0"><path d="M12 70 A63 63 0 0 1 138 70" fill="none" stroke="#E8EDF5" stroke-width="11" stroke-linecap="round"/>
+<defs><linearGradient id="ilg3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3FB27E"/><stop offset="1" stop-color="#2D63E6"/></linearGradient></defs>
+<path d="M12 70 A63 63 0 0 1 128 40" fill="none" stroke="url(#ilg3)" stroke-width="11" stroke-linecap="round"/>
+<circle cx="128" cy="40" r="8" fill="#fff" stroke="#2D63E6" stroke-width="3"/></svg>
+                </div>
+                <div class="il-s il-s--top" style="right:6%;top:17%;width:30%;padding:12px 13px">
+                  <i class="il-b il-b--n" style="width:80%"></i><i class="il-b" style="width:54%"></i><div class="il-ro" style="margin-top:9px"><i class="il-pill" style="background:linear-gradient(180deg,#82A3F2,#2D63E6);width:52px"></i><i class="il-pill" style="background:#EDF1F8"></i></div>
+                </div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 02</em></div>
                   <h3>B2B Valuation Platform Strategy</h3>
@@ -1945,14 +1991,17 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">03</b>
               <p class="cse-kick">OUTREACH THAT NEVER SLEEPS.</p>
               <div class="cse-card">
-                <div class="cse-il" aria-hidden="true"><svg class="il-svg" viewBox="0 0 520 300">
-<g stroke="#C9D3E4" stroke-width="2.2"><line x1="238" y1="132" x2="142" y2="76"/><line x1="238" y1="148" x2="142" y2="208"/></g>
-<line x1="282" y1="128" x2="392" y2="86" stroke="#3FB27E" stroke-width="2.6"/>
-<circle cx="260" cy="140" r="27" fill="#0A1C33"/><g transform="translate(260,142)"><circle cx="0" cy="-5" r="5.5" fill="none" stroke="#fff" stroke-width="2.2"/><path d="M-9 11 c1.5-7 16.5-7 18 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></g>
-<g><circle cx="120" cy="66" r="21" fill="#fff" stroke="rgba(0,16,37,.16)" stroke-width="1.5"/><g transform="translate(120,68)"><circle cx="0" cy="-5" r="5.5" fill="none" stroke="#33415C" stroke-width="2.2"/><path d="M-9 11 c1.5-7 16.5-7 18 0" fill="none" stroke="#33415C" stroke-width="2.2" stroke-linecap="round"/></g></g>
-<g><circle cx="120" cy="218" r="21" fill="#fff" stroke="rgba(0,16,37,.16)" stroke-width="1.5"/><g transform="translate(120,220)"><circle cx="0" cy="-5" r="5.5" fill="none" stroke="#33415C" stroke-width="2.2"/><path d="M-9 11 c1.5-7 16.5-7 18 0" fill="none" stroke="#33415C" stroke-width="2.2" stroke-linecap="round"/></g></g>
-<g><circle cx="412" cy="80" r="23" fill="#fff" stroke="#3FB27E" stroke-width="2.4"/><g transform="translate(412,82)"><circle cx="0" cy="-5" r="5.5" fill="none" stroke="#33415C" stroke-width="2.2"/><path d="M-9 11 c1.5-7 16.5-7 18 0" fill="none" stroke="#33415C" stroke-width="2.2" stroke-linecap="round"/></g>
-<circle cx="432" cy="62" r="10" fill="#3FB27E"/><path d="M427.5 62 L431 65.5 L437 58.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
+                <div class="cse-il" aria-hidden="true">
+                <div class="il-s" style="left:6%;top:8%;width:55%;padding:13px 14px">
+                  <div class="il-hd"><i class="il-dot" style="background:linear-gradient(180deg,#82A3F2,#2D63E6)"></i><span><i class="il-b il-b--n" style="width:56%"></i><i class="il-b" style="width:34%"></i></span></div>
+                  <div class="il-row2" style="margin-top:11px"><i class="il-dot" style="background:linear-gradient(180deg,#9FB4F5,#5A86EE)"></i><span style="flex:1"><i class="il-b il-b--n" style="width:62%"></i><i class="il-b" style="width:44%"></i></span><i class="il-pill" style="background:#E8EEFC;width:40px"></i></div>
+                  <div class="il-row2 il-row2--hi"><i class="il-dot" style="background:linear-gradient(180deg,#6DC49D,#3FB27E)"></i><span style="flex:1"><i class="il-b il-b--n" style="width:70%"></i><i class="il-b" style="width:38%"></i></span><i class="il-pill" style="background:linear-gradient(180deg,#6DC49D,#3FB27E);width:40px"></i></div>
+                  <div class="il-row2"><i class="il-dot" style="background:linear-gradient(180deg,#B3CB5D,#9BBA2A)"></i><span style="flex:1"><i class="il-b il-b--n" style="width:54%"></i><i class="il-b" style="width:46%"></i></span><i class="il-pill" style="background:#EDF1F8;width:40px"></i></div>
+                </div>
+                <div class="il-s il-s--top" style="right:6%;top:15%;width:30%;padding:12px 13px">
+                  <i class="il-big" style="width:64%"></i><i class="il-b" style="width:82%"></i><i class="il-b" style="width:56%"></i><div style="margin-top:9px"><i class="il-pill" style="background:linear-gradient(180deg,#6DC49D,#3FB27E);width:46px"></i></div>
+                </div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 03</em></div>
                   <h3>AI LinkedIn Lead Generation Agent</h3>
@@ -1965,11 +2014,18 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">04</b>
               <p class="cse-kick">A VOICE THAT ANSWERS EVERY CALL.</p>
               <div class="cse-card">
-                <div class="cse-il" aria-hidden="true"><svg class="il-svg" viewBox="0 0 520 300">
-<circle cx="108" cy="140" r="28" fill="#0A1C33"/>
-<g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="101" y="122" width="14" height="24" rx="7"/><path d="M94 138 a14 14 0 0 0 28 0"/><path d="M108 152 v8"/></g>
-<rect class="wv" x="175" y="135" width="6" height="26" rx="3" fill="#2D63E6" style="animation-delay:0ms"/><rect class="wv" x="192" y="125" width="6" height="46" rx="3" fill="#5A86EE" style="animation-delay:90ms"/><rect class="wv" x="209" y="113" width="6" height="70" rx="3" fill="#2D63E6" style="animation-delay:180ms"/><rect class="wv" x="226" y="129" width="6" height="38" rx="3" fill="#5A86EE" style="animation-delay:270ms"/><rect class="wv" x="243" y="119" width="6" height="58" rx="3" fill="#2D63E6" style="animation-delay:360ms"/><rect class="wv" x="260" y="133" width="6" height="30" rx="3" fill="#5A86EE" style="animation-delay:450ms"/><rect class="wv" x="277" y="123" width="6" height="50" rx="3" fill="#2D63E6" style="animation-delay:540ms"/><rect class="wv" x="294" y="136" width="6" height="24" rx="3" fill="#5A86EE" style="animation-delay:630ms"/><rect class="wv" x="311" y="128" width="6" height="40" rx="3" fill="#2D63E6" style="animation-delay:720ms"/><rect class="wv" x="328" y="118" width="6" height="60" rx="3" fill="#5A86EE" style="animation-delay:810ms"/><rect class="wv" x="345" y="132" width="6" height="32" rx="3" fill="#2D63E6" style="animation-delay:900ms"/>
-<circle cx="412" cy="140" r="20" fill="#3FB27E"/><path d="M403.5 140 L410 146.5 L421.5 130.5" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="cse-il" aria-hidden="true">
+                <div class="il-s" style="left:6%;top:8%;width:55%;padding:13px 14px">
+                  <div class="il-hd"><i class="il-dot" style="background:linear-gradient(180deg,#6DC49D,#3FB27E)"></i><span><i class="il-b il-b--n" style="width:60%"></i><i class="il-b" style="width:40%"></i></span><i class="il-pill" style="background:#E9F7F0"></i></div>
+                  <div class="il-ro" style="margin-top:13px;align-items:center;gap:12px"><span class="il-mic"><svg viewBox="0 0 28 34" style="display:block;width:20px"><g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="8" y="3" width="12" height="18" rx="6"/><path d="M3 16 a11 11 0 0 0 22 0"/><path d="M14 27 v5"/></g></svg></span><span class="il-wave" style="flex:1"><i style="height:10px;animation-delay:0ms"></i><i style="height:20px;animation-delay:90ms"></i><i style="height:30px;animation-delay:180ms"></i><i style="height:15px;animation-delay:270ms"></i><i style="height:25px;animation-delay:360ms"></i><i style="height:12px;animation-delay:450ms"></i><i style="height:22px;animation-delay:540ms"></i><i style="height:9px;animation-delay:630ms"></i><i style="height:17px;animation-delay:720ms"></i><i style="height:26px;animation-delay:810ms"></i><i style="height:13px;animation-delay:900ms"></i></span></div>
+                  <div style="margin-top:13px"><span class="il-track"><i style="width:68%"></i></span></div>
+                  <div class="il-ro" style="margin-top:10px"><span class="il-tile"><i class="il-b" style="width:58%"></i><i class="il-b il-b--n" style="width:74%"></i></span><span class="il-tile"><i class="il-b" style="width:48%"></i><i class="il-b il-b--n" style="width:64%"></i></span></div>
+                </div>
+                <div class="il-s il-s--top" style="right:6%;top:15%;width:31%;padding:12px 13px">
+                  <div class="il-cal"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="is-on"></i><i></i><i></i></div>
+                  <i class="il-b il-b--n" style="width:76%"></i><i class="il-b" style="width:50%"></i>
+                </div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 04</em></div>
                   <h3>Healthcare AI Voice Agent</h3>
@@ -1982,16 +2038,21 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">05</b>
               <p class="cse-kick">EVERY SALE, VISIBLE AS IT HAPPENS.</p>
               <div class="cse-card">
-                <div class="cse-il" aria-hidden="true"><svg class="il-svg" viewBox="0 0 520 300">
-<g stroke="#C9D3E4" stroke-width="2.2" stroke-dasharray="2 7" stroke-linecap="round"><path d="M132 112 L392 118"/><path d="M186 205 L396 136"/><path d="M296 92 L394 112"/></g>
-<g fill="#fff" stroke="#33415C" stroke-width="2.4" stroke-linejoin="round">
-<path d="M110 62 c-13 0 -21 9 -21 20 c0 13 21 32 21 32 c0 0 21 -19 21 -32 c0 -11 -8 -20 -21 -20 z"/>
-<path d="M164 155 c-13 0 -21 9 -21 20 c0 13 21 32 21 32 c0 0 21 -19 21 -32 c0 -11 -8 -20 -21 -20 z"/>
-<path d="M276 42 c-13 0 -21 9 -21 20 c0 13 21 32 21 32 c0 0 21 -19 21 -32 c0 -11 -8 -20 -21 -20 z"/></g>
-<circle cx="110" cy="83" r="6" fill="#5A86EE"/><circle cx="164" cy="176" r="6" fill="#9BBA2A"/><circle cx="276" cy="63" r="6" fill="#3FB27E"/>
-<circle class="pls" cx="276" cy="63" r="12" fill="none" stroke="#3FB27E" stroke-width="2"/>
-<circle cx="420" cy="124" r="26" fill="#0A1C33"/>
-<g fill="#fff"><circle cx="412" cy="117" r="3.2"/><circle cx="428" cy="117" r="3.2"/><circle cx="412" cy="132" r="3.2"/><circle cx="428" cy="132" r="3.2"/></g></svg></div>
+                <div class="cse-il" aria-hidden="true">
+                <div class="il-s" style="left:6%;top:8%;width:55%;padding:13px 14px">
+                  <div class="il-hd"><i class="il-dot" style="background:linear-gradient(180deg,#9FB4F5,#5A86EE)"></i><span><i class="il-b il-b--n" style="width:54%"></i><i class="il-b" style="width:36%"></i></span><i class="il-pill" style="background:#E9F7F0"></i></div>
+                  <div class="il-map"><svg viewBox="0 0 240 120" style="display:block;width:100%;height:100%">
+                    <g stroke="#C9D3E4" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"><path d="M52 40 L186 62"/><path d="M84 96 L186 68"/><path d="M138 30 L186 58"/></g>
+                    <path d="M52 16 c-11 0 -18 8 -18 17 c0 11 18 27 18 27 c0 0 18 -16 18 -27 c0 -9 -7 -17 -18 -17 z" fill="#fff" stroke="#33415C" stroke-width="2.2" stroke-linejoin="round"/><circle cx="52" cy="33" r="5" fill="#5A86EE"/><path d="M84 72 c-11 0 -18 8 -18 17 c0 11 18 27 18 27 c0 0 18 -16 18 -27 c0 -9 -7 -17 -18 -17 z" fill="#fff" stroke="#33415C" stroke-width="2.2" stroke-linejoin="round"/><circle cx="84" cy="89" r="5" fill="#9BBA2A"/><path d="M138 6 c-11 0 -18 8 -18 17 c0 11 18 27 18 27 c0 0 18 -16 18 -27 c0 -9 -7 -17 -18 -17 z" fill="#fff" stroke="#33415C" stroke-width="2.2" stroke-linejoin="round"/><circle cx="138" cy="23" r="5" fill="#3FB27E"/>
+                    <circle class="pls" cx="138" cy="23" r="11" fill="none" stroke="#3FB27E" stroke-width="2"/>
+                    <circle cx="192" cy="64" r="15" fill="#0A1C33"/><g fill="#fff"><circle cx="187" cy="60" r="2.2"/><circle cx="197" cy="60" r="2.2"/><circle cx="187" cy="69" r="2.2"/><circle cx="197" cy="69" r="2.2"/></g>
+                  </svg></div>
+                </div>
+                <div class="il-s il-s--top" style="right:6%;top:15%;width:30%;padding:12px 13px">
+                  <div class="il-hd"><span class="il-ok"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"></path></svg></span><span style="flex:1"><i class="il-b il-b--n" style="width:80%"></i><i class="il-b" style="width:52%"></i></span></div>
+                  <div style="margin-top:9px"><i class="il-b" style="width:92%"></i><i class="il-b" style="width:70%"></i></div>
+                </div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 05</em></div>
                   <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
@@ -2004,13 +2065,19 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">06</b>
               <p class="cse-kick">FROM LEAD TO PRODUCTION, ONE FLOW.</p>
               <div class="cse-card">
-                <div class="cse-il" aria-hidden="true"><svg class="il-svg" viewBox="0 0 520 300">
-<g stroke="#C9D3E4" stroke-width="2.4" stroke-linecap="round"><line x1="140" y1="130" x2="222" y2="130"/><line x1="298" y1="130" x2="372" y2="130"/></g>
-<g fill="#2D63E6"><circle cx="168" cy="130" r="4"/><circle cx="196" cy="130" r="4"/><circle cx="326" cy="130" r="4"/><circle cx="352" cy="130" r="4"/></g>
-<g><circle cx="112" cy="130" r="25" fill="#fff" stroke="rgba(0,16,37,.16)" stroke-width="1.5"/><g transform="translate(112,132)"><circle cx="0" cy="-5" r="5.5" fill="none" stroke="#33415C" stroke-width="2.2"/><path d="M-9 11 c1.5-7 16.5-7 18 0" fill="none" stroke="#33415C" stroke-width="2.2" stroke-linecap="round"/></g></g>
-<g><circle cx="260" cy="130" r="25" fill="#fff" stroke="rgba(0,16,37,.16)" stroke-width="1.5"/>
-<g fill="none" stroke="#33415C" stroke-width="2.2" stroke-linecap="round"><rect x="250" y="117" width="20" height="26" rx="3"/><path d="M255 125 h10 M255 131 h10 M255 137 h6"/></g></g>
-<circle cx="412" cy="130" r="28" fill="#0A1C33"/><g stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"><circle cx="412" cy="130" r="9"/><line x1="412" y1="116" x2="412" y2="112"/><line x1="412" y1="144" x2="412" y2="148"/><line x1="398" y1="130" x2="394" y2="130"/><line x1="426" y1="130" x2="430" y2="130"/><line x1="402" y1="120" x2="399" y2="117"/><line x1="422" y1="120" x2="425" y2="117"/><line x1="402" y1="140" x2="399" y2="143"/><line x1="422" y1="140" x2="425" y2="143"/></g></svg></div>
+                <div class="cse-il" aria-hidden="true">
+                <div class="il-s" style="left:6%;top:8%;width:55%;padding:13px 14px">
+                  <div class="il-hd"><i class="il-dot" style="background:linear-gradient(180deg,#B3CB5D,#9BBA2A)"></i><span><i class="il-b il-b--n" style="width:58%"></i><i class="il-b" style="width:38%"></i></span></div>
+                  <div class="il-ro" style="margin-top:11px">
+                    <span class="il-col"><span class="il-mini"><i class="il-b il-b--n" style="width:70%"></i><i class="il-b" style="width:46%"></i></span><span class="il-mini"><i class="il-b il-b--n" style="width:58%"></i><i class="il-b" style="width:40%"></i></span></span>
+                    <span class="il-col"><span class="il-mini"><i class="il-b il-b--n" style="width:64%"></i><i class="il-b" style="width:44%"></i></span></span>
+                    <span class="il-col"><span class="il-mini il-mini--hi"><i class="il-b il-b--n" style="width:72%"></i><i class="il-b" style="width:48%"></i></span><span class="il-mini"><i class="il-b il-b--n" style="width:52%"></i><i class="il-b" style="width:38%"></i></span></span>
+                  </div>
+                </div>
+                <div class="il-s il-s--top" style="right:6%;top:15%;width:30%;padding:12px 13px;display:flex;align-items:center;gap:11px">
+                  <span class="il-gear"><svg viewBox="0 0 40 40" style="display:block;width:24px"><g stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"><circle cx="20" cy="20" r="7.5"/><path d="M20 4 v5 M20 31 v5 M4 20 h5 M31 20 h5 M8.7 8.7 l3.5 3.5 M27.8 27.8 l3.5 3.5 M8.7 31.3 l3.5 -3.5 M27.8 12.2 l3.5 -3.5"/></g></svg></span><span style="flex:1"><i class="il-b il-b--n" style="width:84%"></i><i class="il-b" style="width:56%"></i></span>
+                </div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 06</em></div>
                   <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
