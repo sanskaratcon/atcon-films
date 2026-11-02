@@ -1350,6 +1350,12 @@ html,body{overflow-anchor:none}
 .cs-head{text-align:center}
 .cs-head .ds-label{margin:0 0 var(--sp-5)}
 .cs-head .ds-display{margin:0 auto}
+/* the lines speak first, each rising out of its own mask - and only then does the window come up from the bottom */
+.cs-ln{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
+.cs-ln>span{display:inline-block;transform:translateY(112%);transition:transform .85s cubic-bezier(.22,.8,.2,1) var(--d,0s)}
+.cs-ln.is-in>span{transform:none}
+.atc-cs .csw.ds-rv{opacity:0;transform:translateY(clamp(80px,14vh,150px));transition:opacity .75s ease var(--d,0s),transform 1s cubic-bezier(.2,.8,.25,1) var(--d,0s)}
+.atc-cs .csw.ds-rv.is-in{opacity:1;transform:none}
 .csw{width:min(100%,1080px);margin:clamp(30px,5vh,56px) auto 0;border-radius:18px;background:#fff;overflow:hidden;
   box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 40px 80px -44px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.045)}
 .csw-bar{display:flex;align-items:center;gap:6px;height:38px;padding:0 16px;background:#F7F8FA;border-bottom:1px solid rgba(0,16,37,.06)}
@@ -1857,11 +1863,12 @@ with a vision.</h2>
          each case's screen and story taking the stage in turn - on its own clock, or at a click -->
     <section class="atc-sec atc-cs" id="cases" aria-labelledby="cs-title">
       <div class="cs-wrap">
-        <div class="cs-head ds-rv" data-rv="">
-          <p class="ds-label ds-grad-text">Case studies</p>
-          <h2 class="ds-display" id="cs-title">Real results, <span class="ds-soft">from real partnerships.</span></h2>
+        <div class="cs-head">
+          <p class="ds-label ds-grad-text ds-rv" data-rv="">Case studies</p>
+          <h2 class="ds-display" id="cs-title"><span class="cs-ln ds-rv" data-rv="" style="--d:.18s"><span>Real results,</span></span><br>
+            <span class="cs-ln ds-rv" data-rv="" style="--d:.45s"><span class="ds-soft">from real partnerships.</span></span></h2>
         </div>
-        <div class="csw ds-rv" data-rv="">
+        <div class="csw ds-rv" data-rv="" style="--d:.75s">
           <div class="csw-bar" aria-hidden="true"><i></i><i></i><i></i><span class="csw-url" data-cs="url">atconglobal.com/cases/financial-automation</span></div>
           <div class="csw-tabs">
             <button class="csw-tab is-on" type="button" data-k="0"><em>01</em>Finance<i></i></button>
@@ -3394,7 +3401,7 @@ class Component extends DCLogic {
       var hideA = wide && aft.getBoundingClientRect().top > 1 ? 'hidden' : '';
       if (aft.style.visibility !== hideA) aft.style.visibility = hideA;
       // its heading is already shown when it takes over, so it matches the card it replaces
-      if (hideA && !this._aftRv) { this._aftRv = 1; aft.querySelectorAll('.atc-cs [data-rv], .atc-kpi [data-rv]').forEach(function (n) { n.style.transition = 'none'; n.classList.add('is-in'); }); }
+      if (hideA && !this._aftRv) { this._aftRv = 1; aft.querySelectorAll('.atc-cs .cs-head [data-rv], .atc-kpi [data-rv]').forEach(function (n) { n.style.transition = 'none'; n.classList.add('is-in'); }); }
     }
     var live = u > S.mark[0] - 6;
     box.style.visibility = live ? 'visible' : 'hidden';
@@ -3954,6 +3961,8 @@ class Component extends DCLogic {
       var kc = kpi.cloneNode(true);
       kc.removeAttribute('aria-labelledby'); kc.removeAttribute('id'); kc.querySelectorAll('[id]').forEach(function (n) { n.removeAttribute('id'); });
       kc.querySelectorAll('[data-rv]').forEach(function (n) { n.classList.add('is-in'); });
+      // the end card carries only the words; the window itself rises from the bottom once the real section is in
+      var kw = kc.querySelector('.csw'); if (kw) kw.remove();
       // the three result cards are not on it yet: they arrive once the real section has taken over, as they always do
       kc.querySelectorAll('[data-atc]').forEach(function (n) { n.removeAttribute('data-atc'); });
       kc.querySelectorAll('.atc-kpis').forEach(function (n) { n.classList.remove('is-play'); });
