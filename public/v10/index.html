@@ -1381,13 +1381,15 @@ html,body{overflow-anchor:none}
   letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px rgba(0,16,37,.1)}
 /* the card and its story travel together: the illustration card above, the story panel tucked under its edge */
 .cse-stack{position:absolute;left:7%;top:12%;width:86%;z-index:1;animation:cse-float 9s ease-in-out infinite}
-/* the scene stands free on the board: no frame, no fill, only its own cast shadows */
-.cse-card{position:relative;aspect-ratio:16/9.6}
+/* the card: the illustrated scene, wearing the brand-gradient rim */
+.cse-card{position:relative;aspect-ratio:16/9.6;border-radius:20px;overflow:hidden;
+  border:1.5px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.05),0 44px 80px -42px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05)}
 @keyframes cse-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 /* the picture explains the case: one hand-drawn isometric scene per project - outlined objects, flat fills in the
    brand palette, long soft cast shadows - each built from the things that project actually changed */
-.cse-il{position:absolute;inset:0}
-.il-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:scale(1.12);transform-origin:50% 42%}
+.cse-il{position:absolute;inset:0;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#F1F6FC,#E4ECF7)}
+.il-svg{position:absolute;inset:0;width:100%;height:100%}
 /* the story rides a frosted glass panel tucked under the card's lower edge */
 .cse-glass{position:relative;z-index:1;margin:-34px 5% 0;padding:14px 16px;border-radius:14px;
   background:rgba(255,255,255,.8);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);
