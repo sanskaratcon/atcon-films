@@ -1341,9 +1341,10 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* Case studies: a scrapbook page. Each project is a tilted photo print with a taped paper note under it, a
-   rotated caption above, the case word large at the side - changing in turn on the clock, or at a click on the
-   index below. On wide screens the section fills the viewport so it can take over from the offer's end card */
+/* Case studies: a carousel of cards. The current case stands centre stage, its neighbours peeking from the
+   sides; on each step the centre card falls back to the left and the right one takes the stage - on the clock,
+   on the index below, or at a click on a side card. On wide screens the section fills the viewport for the
+   takeover from the offer's end card */
 .atc-cs{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(40px,6vh,80px)}
 @media (min-width:901px){.atc-cs{min-height:100vh;min-height:100svh}}
 .cs-wrap{position:relative;width:min(100%,1240px)}
@@ -1356,40 +1357,31 @@ html,body{overflow-anchor:none}
 .cs-ln.is-in>span{transform:none}
 .atc-cs .csw.ds-rv{opacity:0;transform:translateY(clamp(80px,14vh,150px));transition:opacity .75s ease var(--d,0s),transform 1s cubic-bezier(.2,.8,.25,1) var(--d,0s)}
 .atc-cs .csw.ds-rv.is-in{opacity:1;transform:none}
-.csw{position:relative;width:min(100%,1160px);margin:clamp(18px,3vh,34px) auto 0}
-.csb-side{position:absolute;left:1%;top:46%;margin:0;font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--atc-mute)}
-.csb-stage{position:relative;height:clamp(430px,58vh,560px)}
-/* the photo print: a white-framed, slightly tilted print with a long soft shadow */
-.csw-im{position:absolute;left:30%;top:2%;width:clamp(300px,34vw,440px);aspect-ratio:16/11.6;transform:rotate(var(--rt,-2deg));
-  border:11px solid #fff;border-bottom-width:42px;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02);
-  box-shadow:0 0 0 .5px rgba(0,16,37,.1),0 36px 64px -36px rgba(0,16,37,.45),0 3px 8px rgba(0,16,37,.08);
-  opacity:0;transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.3,1)}
-.csw-im.is-on{opacity:1}
-/* everything written around it lives on one layer per case */
-.csw-txt{position:absolute;inset:0;opacity:0;transition:opacity .45s ease;pointer-events:none}
-.csw-txt.is-on{opacity:1;pointer-events:auto;transition-delay:.1s}
-.csb-cap{position:absolute;left:29%;top:-2%;max-width:19em;margin:0;transform:rotate(var(--rt,-5deg));transform-origin:left bottom;
-  font-size:11.5px;font-weight:700;letter-spacing:.06em;line-height:1.5;color:#2D63E6}
-.csb-cap i{display:inline-block;width:8px;height:8px;margin-right:8px;background:#2D63E6}
-.csb-big{position:absolute;right:1%;top:42%;font-size:clamp(34px,4.2vw,68px);font-weight:600;letter-spacing:.04em;line-height:1;
-  text-transform:uppercase;color:var(--atc-navy)}
-.csb-foot{position:absolute;left:58%;bottom:16%;font-style:normal;transform:rotate(3.5deg);
-  font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--atc-mute)}
-/* the note: a paper card taped under the print, with a dotted margin like a notepad */
-.csb-note{position:absolute;left:19%;bottom:0;width:min(320px,30vw);padding:20px 20px 18px 34px;transform:rotate(var(--rt,-1.5deg));
-  background:linear-gradient(180deg,#FDFDFB,#F8F8F4);
-  background-image:radial-gradient(circle,#D9DEE7 1.5px,transparent 1.9px),linear-gradient(180deg,#FDFDFB,#F8F8F4);
-  background-size:28px 26px,100% 100%;background-position:-1px 16px,0 0;background-repeat:repeat-y,no-repeat;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 28px 50px -30px rgba(0,16,37,.42),0 2px 6px rgba(0,16,37,.06)}
-.csb-tape{position:absolute;left:14px;top:-11px;padding:4px 14px;transform:rotate(-3deg);background:var(--c,#2D63E6);color:#fff;
-  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 4px 10px -4px rgba(0,16,37,.35)}
-.csb-note h3{margin:4px 0 0;font-size:15.5px;line-height:1.35;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
-.csb-body{margin:8px 0 0;font-size:12.5px;line-height:1.65;color:var(--atc-slate)}
-.cs-link{display:flex;align-items:center;gap:7px;margin-top:12px;font-size:12px;font-weight:600;color:var(--atc-navy)}
+.csw{position:relative;width:min(100%,1240px);margin:clamp(18px,3.4vh,36px) auto 0}
+.crs{position:relative;height:clamp(430px,56vh,540px);perspective:1400px}
+/* one card per case: the image as the stage, the story below; neighbours wait at the sides */
+.crs-card{position:absolute;left:50%;top:0;width:min(56vw,620px);margin:0;border-radius:20px;background:#fff;overflow:hidden;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 44px 84px -46px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05);
+  transform:translateX(-50%) scale(.72);opacity:0;pointer-events:none;
+  transition:transform .7s cubic-bezier(.3,.8,.3,1),opacity .5s ease,filter .5s ease}
+.crs-card.is-c{transform:translateX(-50%) scale(1);opacity:1;z-index:3;pointer-events:auto}
+.crs-card.is-r{transform:translateX(5%) scale(.8) rotateY(-7deg);opacity:.55;z-index:2;pointer-events:auto;filter:saturate(.8);cursor:pointer}
+.crs-card.is-l{transform:translateX(-105%) scale(.8) rotateY(7deg);opacity:.55;z-index:2;pointer-events:auto;filter:saturate(.8);cursor:pointer}
+.crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.8}
+.crs-im{position:relative;display:block;aspect-ratio:16/8.6;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02);
+  box-shadow:inset 0 -1px 0 rgba(0,16,37,.05)}
+.crs-n{position:absolute;right:14px;top:12px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);
+  font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--atc-navy);box-shadow:inset 0 0 0 .5px rgba(0,16,37,.1)}
+.crs-bd{position:relative;padding:22px 26px 22px}
+.crs-tag{position:absolute;top:-13px;left:22px;padding:5px 13px;transform:rotate(-2deg);background:var(--c,#2D63E6);color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 6px 12px -5px rgba(0,16,37,.4)}
+.crs-bd h3{margin:8px 0 0;font-size:clamp(16px,1.5vw,19.5px);line-height:1.3;letter-spacing:-.012em;font-weight:600;color:var(--atc-navy)}
+.crs-bd p{margin:7px 0 0;font-size:13px;line-height:1.6;color:var(--atc-slate)}
+.cs-link{display:flex;align-items:center;gap:7px;margin-top:13px;font-size:12px;font-weight:600;color:var(--atc-navy)}
 .cs-link svg{width:11px;height:11px;transition:transform .3s ease}
-.csb-note:hover .cs-link svg{transform:translateX(3px)}
+.crs-card.is-c:hover .cs-link svg{transform:translateX(3px)}
 /* the index below: quiet numbered words, the active one carrying the gradient timer */
-.csw-tabs{display:flex;justify-content:center;gap:clamp(8px,1.6vw,26px);margin-top:clamp(18px,3vh,30px);overflow-x:auto;scrollbar-width:none}
+.csw-tabs{display:flex;justify-content:center;gap:clamp(8px,1.6vw,26px);margin-top:clamp(16px,2.6vh,26px);overflow-x:auto;scrollbar-width:none}
 .csw-tabs::-webkit-scrollbar{display:none}
 .csw-tab{position:relative;display:flex;align-items:center;gap:6px;padding:8px 4px 11px;border:0;background:none;
   font-family:var(--atc-font);font-size:12px;font-weight:600;letter-spacing:.01em;color:var(--atc-mute);white-space:nowrap;transition:color .3s ease}
@@ -1400,14 +1392,10 @@ html,body{overflow-anchor:none}
 .csw-tab.is-on i{animation:csw-prog var(--csw-cycle,5s) linear forwards}
 @keyframes csw-prog{to{transform:scaleX(1)}}
 @media (max-width:900px){
-  .csb-side,.csb-big,.csb-foot{display:none}
-  .csb-stage{height:auto;min-height:0;display:block;padding-top:8px}
-  .csw-im{position:relative;left:0;top:0;display:none;width:min(100%,420px);margin:0 auto}
-  .csw-im.is-on{display:block}
-  .csw-txt{position:relative;inset:auto;display:none}
-  .csw-txt.is-on{display:block}
-  .csb-cap{position:static;display:block;margin:14px 4px 0;transform:rotate(-1.5deg)}
-  .csb-note{position:relative;left:0;bottom:0;width:auto;margin:18px 2px 0}
+  .crs{height:clamp(420px,58vh,520px)}
+  .crs-card{width:86vw}
+  .crs-card.is-r{transform:translateX(42%) scale(.82)}
+  .crs-card.is-l{transform:translateX(-142%) scale(.82)}
   .csw-tab em{display:none}
 }
 
@@ -1885,80 +1873,61 @@ with a vision.</h2>
             <span class="cs-ln ds-rv" data-rv="" style="--d:.45s"><span class="ds-soft">from real partnerships.</span></span></h2>
         </div>
         <div class="csw ds-rv" data-rv="" style="--d:.75s">
-          <p class="csb-side" aria-hidden="true">/Cases</p>
-          <div class="csb-stage">
-            <i class="csw-im is-on" style="--rt:-2.6deg;background-image:url(../assets/cases/case-1.webp)"></i>
-            <i class="csw-im" style="--rt:2.2deg;background-image:url(../assets/cases/case-2.webp)"></i>
-            <i class="csw-im" style="--rt:-2deg;background-image:url(../assets/cases/case-3.webp)"></i>
-            <i class="csw-im" style="--rt:2.4deg;background-image:url(../assets/cases/case-4.webp)"></i>
-            <i class="csw-im" style="--rt:-2.4deg;background-image:url(../assets/cases/case-5.webp)"></i>
-            <i class="csw-im" style="--rt:2deg;background-image:url(../assets/cases/case-6.webp)"></i>
-            <div class="csw-txt is-on">
-              <p class="csb-cap" style="--rt:-5deg"><i></i>THE QUARTER NOW REPORTS ITSELF.</p>
-              <strong class="csb-big" aria-hidden="true">Finance</strong>
-              <div class="csb-note" style="--rt:-1.6deg">
-                <span class="csb-tape" style="--c:#3FB27E">Case 01</span>
+          <div class="crs">
+            <article class="crs-card is-c" data-k="0">
+              <i class="crs-im" style="background-image:url(../assets/cases/case-1.webp)"><b class="crs-n">01</b></i>
+              <div class="crs-bd">
+                <span class="crs-tag" style="--c:#3FB27E">Automation</span>
                 <h3>Intelligent Financial Automation Ecosystem</h3>
-                <p class="csb-body">Automating financial workflows to generate real-time insights and client-ready reports.</p>
+                <p>Automating financial workflows to generate real-time insights and client-ready reports.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
-              <em class="csb-foot">AUTOMATION</em>
-            </div>
-            <div class="csw-txt">
-              <p class="csb-cap" style="--rt:-4deg"><i></i>PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
-              <strong class="csb-big" aria-hidden="true">Valuation</strong>
-              <div class="csb-note" style="--rt:1.4deg">
-                <span class="csb-tape" style="--c:#2D63E6">Case 02</span>
+            </article>
+            <article class="crs-card is-r" data-k="1">
+              <i class="crs-im" style="background-image:url(../assets/cases/case-2.webp)"><b class="crs-n">02</b></i>
+              <div class="crs-bd">
+                <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
                 <h3>B2B Valuation Platform Strategy</h3>
-                <p class="csb-body">Building a scalable B2B platform for embedded property valuation services.</p>
+                <p>Building a scalable B2B platform for embedded property valuation services.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
-              <em class="csb-foot">DIGITAL TRANSFORMATION</em>
-            </div>
-            <div class="csw-txt">
-              <p class="csb-cap" style="--rt:-6deg"><i></i>OUTREACH THAT NEVER SLEEPS.</p>
-              <strong class="csb-big" aria-hidden="true">LinkedIn</strong>
-              <div class="csb-note" style="--rt:1.8deg">
-                <span class="csb-tape" style="--c:#3FB27E">Case 03</span>
+            </article>
+            <article class="crs-card" data-k="2">
+              <i class="crs-im" style="background-image:url(../assets/cases/case-3.webp)"><b class="crs-n">03</b></i>
+              <div class="crs-bd">
+                <span class="crs-tag" style="--c:#3FB27E">Automation</span>
                 <h3>AI LinkedIn Lead Generation Agent</h3>
-                <p class="csb-body">AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p>
+                <p>AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
-              <em class="csb-foot">AUTOMATION</em>
-            </div>
-            <div class="csw-txt">
-              <p class="csb-cap" style="--rt:-4.5deg"><i></i>A VOICE THAT ANSWERS EVERY CALL.</p>
-              <strong class="csb-big" aria-hidden="true">Healthcare</strong>
-              <div class="csb-note" style="--rt:-1.8deg">
-                <span class="csb-tape" style="--c:#3FB27E">Case 04</span>
+            </article>
+            <article class="crs-card" data-k="3">
+              <i class="crs-im" style="background-image:url(../assets/cases/case-4.webp)"><b class="crs-n">04</b></i>
+              <div class="crs-bd">
+                <span class="crs-tag" style="--c:#3FB27E">Automation</span>
                 <h3>Healthcare AI Voice Agent</h3>
-                <p class="csb-body">24/7 AI voice assistant handling patient calls and appointment scheduling.</p>
+                <p>24/7 AI voice assistant handling patient calls and appointment scheduling.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
-              <em class="csb-foot">AUTOMATION</em>
-            </div>
-            <div class="csw-txt">
-              <p class="csb-cap" style="--rt:-5deg"><i></i>EVERY SALE, VISIBLE AS IT HAPPENS.</p>
-              <strong class="csb-big" aria-hidden="true">Retail</strong>
-              <div class="csb-note" style="--rt:1.5deg">
-                <span class="csb-tape" style="--c:#2D63E6">Case 05</span>
+            </article>
+            <article class="crs-card" data-k="4">
+              <i class="crs-im" style="background-image:url(../assets/cases/case-5.webp)"><b class="crs-n">05</b></i>
+              <div class="crs-bd">
+                <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
                 <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
-                <p class="csb-body">Mobile platform enabling real-time sales tracking and streamlined channel operations.</p>
+                <p>Mobile platform enabling real-time sales tracking and streamlined channel operations.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
-              <em class="csb-foot">DIGITAL TRANSFORMATION</em>
-            </div>
-            <div class="csw-txt">
-              <p class="csb-cap" style="--rt:-4deg"><i></i>FROM LEAD TO PRODUCTION, ONE FLOW.</p>
-              <strong class="csb-big" aria-hidden="true">Manufacturing</strong>
-              <div class="csb-note" style="--rt:-1.5deg">
-                <span class="csb-tape" style="--c:#2D63E6">Case 06</span>
+            </article>
+            <article class="crs-card is-l" data-k="5">
+              <i class="crs-im" style="background-image:url(../assets/cases/case-6.webp)"><b class="crs-n">06</b></i>
+              <div class="crs-bd">
+                <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
                 <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
-                <p class="csb-body">CRM platform connecting leads, sales pipelines, and production workflows.</p>
+                <p>CRM platform connecting leads, sales pipelines, and production workflows.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
-              <em class="csb-foot">DIGITAL TRANSFORMATION</em>
-            </div>
+            </article>
           </div>
           <div class="csw-tabs">
             <button class="csw-tab is-on" type="button" data-k="0"><em>01</em>Finance<i></i></button>
@@ -4134,10 +4103,15 @@ class Component extends DCLogic {
     idx = (k + URLS.length) % URLS.length;
     var u = sec.querySelector('[data-cs="url"]');
     if (u) u.textContent = 'atconglobal.com/cases/' + URLS[idx];
-    ['.csw-tab', '.csw-im', '.csw-txt'].forEach(function (sel) {
-      var list = sec.querySelectorAll(sel);
-      for (var i = 0; i < list.length; i++) list[i].classList.toggle('is-on', i === idx);
-    });
+    var tabs = sec.querySelectorAll('.csw-tab');
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle('is-on', i === idx);
+    var cards = sec.querySelectorAll('.crs-card');
+    for (var j = 0; j < cards.length; j++) {
+      var d = (j - idx + cards.length) % cards.length;
+      cards[j].classList.toggle('is-c', d === 0);
+      cards[j].classList.toggle('is-r', d === 1);
+      cards[j].classList.toggle('is-l', d === cards.length - 1);
+    }
   }
   function tick() { apply(idx + 1); }
   function play() { clearInterval(timer); timer = setInterval(tick, CYCLE); }
@@ -4155,8 +4129,9 @@ class Component extends DCLogic {
   }
   setInterval(bind, 800); bind();
   document.addEventListener('click', function (e) {
-    var t = e.target && e.target.closest ? e.target.closest('.csw-tab') : null;
+    var t = e.target && e.target.closest ? e.target.closest('.csw-tab, .crs-card') : null;
     if (!t || !sec) return;
+    if (t.classList.contains('crs-card') && t.classList.contains('is-c')) return;
     started = true; apply(parseInt(t.getAttribute('data-k'), 10) || 0); play();
   });
 })();
