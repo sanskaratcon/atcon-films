@@ -1370,36 +1370,36 @@ html,body{overflow-anchor:none}
 .crs-card.is-r{transform:translateX(27%) translateY(-3.5%) scale(.6);opacity:.32;z-index:2;pointer-events:auto;filter:saturate(.6);cursor:pointer}
 .crs-card.is-l{transform:translateX(-127%) translateY(-3.5%) scale(.6);opacity:.32;z-index:2;pointer-events:auto;filter:saturate(.6);cursor:pointer}
 .crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.6}
-/* the neighbours wait as quiet prints: their words stay with the centre of the stage */
-.crs-card .scb-note{transition:opacity .4s ease}
-.crs-card:not(.is-c) .scb-note{opacity:0}
-/* the hook line, written at a tilt above the print */
-.scb-cap{position:absolute;left:13%;top:1.2%;max-width:23em;margin:0;transform:rotate(calc(var(--rt,-5deg) * .4));transform-origin:left bottom;
-  font-size:12px;font-weight:700;letter-spacing:.07em;line-height:1.55;color:#2D63E6;transition:opacity .4s ease}
-.scb-cap i{display:inline-block;width:8px;height:8px;margin-right:9px;background:#2D63E6}
-.crs-card:not(.is-c) .scb-cap{opacity:0}
-/* the photo card: the team portraits' surface - white padded frame, hairline ring, long soft shadow, gentle float */
-.scb-ph{position:absolute;left:13%;top:9%;width:74%;aspect-ratio:16/10.2;border-radius:16px;
-  border:8px solid #fff;background-color:#fff;background-size:cover;background-position:50% 50%;background-clip:padding-box;
-  filter:saturate(.9) contrast(1.02);
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 56px -34px rgba(0,16,37,.4),0 2px 6px rgba(0,16,37,.045);
-  animation:scb-float 9s ease-in-out infinite}
-@keyframes scb-float{0%,100%{transform:rotate(calc(var(--rt,-2deg) * .55)) translateY(0)}50%{transform:rotate(calc(var(--rt,-2deg) * .55)) translateY(-6px)}}
-/* the category sits below the card, in the team labels' voice */
-.scb-foot{position:absolute;left:4px;bottom:-24px;font-style:normal;
-  font-size:9.5px;font-weight:600;letter-spacing:.11em;color:var(--atc-mute)}
-/* the note: the same quiet surface as the team's live notes */
-.scb-note{position:absolute;left:13%;bottom:1.5%;width:min(56%,320px);padding:19px 20px 17px;border-radius:16px;
-  background:rgba(255,255,255,.94);
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 26px 50px -30px rgba(0,16,37,.38),0 2px 6px rgba(0,16,37,.04)}
-.scb-tape{position:absolute;left:16px;top:-12px;padding:4px 13px;border-radius:999px;background:var(--c,#2D63E6);color:#fff;
-  font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;box-shadow:0 5px 12px -5px rgba(0,16,37,.45)}
-.scb-note h3{margin:6px 0 0;font-size:15px;line-height:1.38;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
-.scb-note p{margin:8px 0 0;font-size:12.5px;line-height:1.65;color:var(--atc-slate)}
-.cs-link{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;font-weight:600;color:var(--atc-navy)}
+/* the neighbours wait as plain rimmed images: words belong to the centre of the stage alone */
+.crs-card .cse-glass,.crs-card .cse-kick,.crs-card .cse-num{transition:opacity .4s ease}
+.crs-card:not(.is-c) .cse-glass,.crs-card:not(.is-c) .cse-kick,.crs-card:not(.is-c) .cse-num{opacity:0}
+/* the hook: a centred kicker in the brand gradient, straight and quiet */
+.cse-kick{position:absolute;left:0;right:0;top:2%;margin:0;text-align:center;font-size:11.5px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;background:var(--atc-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* a large pale case number stands on the board behind the card */
+.cse-num{position:absolute;right:-2%;top:-3%;z-index:0;font-size:clamp(120px,14vw,200px);line-height:1;font-weight:600;
+  letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px rgba(0,16,37,.1)}
+/* the card: one full-bleed image wearing the brand-gradient rim, floating gently */
+.cse-card{position:absolute;left:7%;top:12%;width:86%;aspect-ratio:16/10.4;border-radius:20px;z-index:1;overflow:hidden;
+  border:1.5px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.05),0 44px 80px -42px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05);
+  animation:cse-float 9s ease-in-out infinite}
+@keyframes cse-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.cse-im{position:absolute;inset:0;border-radius:18px;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02)}
+/* the story rides a frosted glass panel inside the card */
+.cse-glass{position:absolute;left:10px;right:10px;bottom:10px;padding:14px 16px;border-radius:14px;
+  background:rgba(255,255,255,.8);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);
+  box-shadow:inset 0 0 0 .5px rgba(255,255,255,.65),0 12px 30px -18px rgba(0,16,37,.4)}
+.cse-row{display:flex;align-items:center;justify-content:space-between}
+.cse-chip{padding:4px 12px;border-radius:999px;background:var(--c,#2D63E6);color:#fff;font-size:9.5px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase}
+.cse-row em{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.12em;color:#5B6B78;text-transform:uppercase}
+.cse-glass h3{margin:9px 0 0;font-size:15.5px;line-height:1.35;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
+.cse-glass p{margin:6px 0 0;font-size:12.5px;line-height:1.6;color:#2B3B4E}
+.cs-link{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;font-weight:600;color:var(--atc-navy)}
 .cs-link svg{box-sizing:content-box;width:10px;height:10px;padding:4px;border-radius:50%;background:var(--atc-navy);color:#fff;
   transition:transform .3s ease}
-.crs-card.is-c .scb-note:hover .cs-link svg{transform:translateX(3px)}
+.cse-glass:hover .cs-link svg{transform:translateX(3px)}
 /* the index below: quiet numbered words, the active one carrying the gradient timer */
 .csw-tabs{display:flex;justify-content:center;gap:clamp(8px,1.6vw,26px);margin-top:clamp(16px,2.6vh,26px);overflow-x:auto;scrollbar-width:none}
 .csw-tabs::-webkit-scrollbar{display:none}
@@ -1416,7 +1416,7 @@ html,body{overflow-anchor:none}
   .crs-card{width:88vw}
   .crs-card.is-r{transform:translateX(44%) scale(.78)}
   .crs-card.is-l{transform:translateX(-144%) scale(.78)}
-  .scb-note{width:min(72%,310px)}
+  .cse-card{left:3%;width:94%}
   .csw-tab em{display:none}
 }
 
@@ -1883,9 +1883,9 @@ with a vision.</h2>
 
   <div class="atc-after" data-theme="light">
 
-    <!-- Case studies: one living window instead of six cards. The six real projects share a single browser window in
-         the site's own chrome: a tab strip with a gradient timer on the active tab, the address following along, and
-         each case's screen and story taking the stage in turn - on its own clock, or at a click -->
+    <!-- Case studies: a carousel of gradient-rimmed image cards. Each case is one full-bleed picture with the story
+         on a frosted glass panel inside it, a pale outlined case number on the board behind, and a gradient kicker
+         above - the centre card swaps back left as the next arrives, on the clock or at a click -->
     <section class="atc-sec atc-cs" id="cases" aria-labelledby="cs-title">
       <div class="cs-wrap">
         <div class="cs-head">
@@ -1897,63 +1897,81 @@ with a vision.</h2>
           <i class="atc-team-grid" aria-hidden="true"></i>
           <div class="crs">
             <article class="crs-card is-c" data-k="0">
-              <p class="scb-cap" style="--rt:-5deg"><i></i>THE QUARTER NOW REPORTS ITSELF.</p>
-              <i class="scb-ph" style="--rt:-2.4deg;background-image:url(../assets/cases/case-1.webp)"><em class="scb-foot">AUTOMATION</em></i>
-              <div class="scb-note" style="--rt:-1.6deg">
-                <span class="scb-tape" style="--c:#3FB27E">Case 01</span>
-                <h3>Intelligent Financial Automation Ecosystem</h3>
-                <p>Automating financial workflows to generate real-time insights and client-ready reports.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+              <b class="cse-num" aria-hidden="true">01</b>
+              <p class="cse-kick">THE QUARTER NOW REPORTS ITSELF.</p>
+              <div class="cse-card">
+                <i class="cse-im" style="background-image:url(../assets/cases/case-1.webp)"></i>
+                <div class="cse-glass">
+                  <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 01</em></div>
+                  <h3>Intelligent Financial Automation Ecosystem</h3>
+                  <p>Automating financial workflows to generate real-time insights and client-ready reports.</p>
+                  <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+                </div>
               </div>
             </article>
             <article class="crs-card is-r" data-k="1">
-              <p class="scb-cap" style="--rt:-4deg"><i></i>PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
-              <i class="scb-ph" style="--rt:2.2deg;background-image:url(../assets/cases/case-2.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
-              <div class="scb-note" style="--rt:1.4deg">
-                <span class="scb-tape" style="--c:#2D63E6">Case 02</span>
-                <h3>B2B Valuation Platform Strategy</h3>
-                <p>Building a scalable B2B platform for embedded property valuation services.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+              <b class="cse-num" aria-hidden="true">02</b>
+              <p class="cse-kick">PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
+              <div class="cse-card">
+                <i class="cse-im" style="background-image:url(../assets/cases/case-2.webp)"></i>
+                <div class="cse-glass">
+                  <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 02</em></div>
+                  <h3>B2B Valuation Platform Strategy</h3>
+                  <p>Building a scalable B2B platform for embedded property valuation services.</p>
+                  <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+                </div>
               </div>
             </article>
             <article class="crs-card" data-k="2">
-              <p class="scb-cap" style="--rt:-5.5deg"><i></i>OUTREACH THAT NEVER SLEEPS.</p>
-              <i class="scb-ph" style="--rt:-2deg;background-image:url(../assets/cases/case-3.webp)"><em class="scb-foot">AUTOMATION</em></i>
-              <div class="scb-note" style="--rt:1.6deg">
-                <span class="scb-tape" style="--c:#3FB27E">Case 03</span>
-                <h3>AI LinkedIn Lead Generation Agent</h3>
-                <p>AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+              <b class="cse-num" aria-hidden="true">03</b>
+              <p class="cse-kick">OUTREACH THAT NEVER SLEEPS.</p>
+              <div class="cse-card">
+                <i class="cse-im" style="background-image:url(../assets/cases/case-3.webp)"></i>
+                <div class="cse-glass">
+                  <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 03</em></div>
+                  <h3>AI LinkedIn Lead Generation Agent</h3>
+                  <p>AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p>
+                  <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+                </div>
               </div>
             </article>
             <article class="crs-card" data-k="3">
-              <p class="scb-cap" style="--rt:-4.5deg"><i></i>A VOICE THAT ANSWERS EVERY CALL.</p>
-              <i class="scb-ph" style="--rt:2.4deg;background-image:url(../assets/cases/case-4.webp)"><em class="scb-foot">AUTOMATION</em></i>
-              <div class="scb-note" style="--rt:-1.8deg">
-                <span class="scb-tape" style="--c:#3FB27E">Case 04</span>
-                <h3>Healthcare AI Voice Agent</h3>
-                <p>24/7 AI voice assistant handling patient calls and appointment scheduling.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+              <b class="cse-num" aria-hidden="true">04</b>
+              <p class="cse-kick">A VOICE THAT ANSWERS EVERY CALL.</p>
+              <div class="cse-card">
+                <i class="cse-im" style="background-image:url(../assets/cases/case-4.webp)"></i>
+                <div class="cse-glass">
+                  <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 04</em></div>
+                  <h3>Healthcare AI Voice Agent</h3>
+                  <p>24/7 AI voice assistant handling patient calls and appointment scheduling.</p>
+                  <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+                </div>
               </div>
             </article>
             <article class="crs-card" data-k="4">
-              <p class="scb-cap" style="--rt:-5deg"><i></i>EVERY SALE, VISIBLE AS IT HAPPENS.</p>
-              <i class="scb-ph" style="--rt:-2.2deg;background-image:url(../assets/cases/case-5.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
-              <div class="scb-note" style="--rt:1.5deg">
-                <span class="scb-tape" style="--c:#2D63E6">Case 05</span>
-                <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
-                <p>Mobile platform enabling real-time sales tracking and streamlined channel operations.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+              <b class="cse-num" aria-hidden="true">05</b>
+              <p class="cse-kick">EVERY SALE, VISIBLE AS IT HAPPENS.</p>
+              <div class="cse-card">
+                <i class="cse-im" style="background-image:url(../assets/cases/case-5.webp)"></i>
+                <div class="cse-glass">
+                  <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 05</em></div>
+                  <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
+                  <p>Mobile platform enabling real-time sales tracking and streamlined channel operations.</p>
+                  <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+                </div>
               </div>
             </article>
             <article class="crs-card is-l" data-k="5">
-              <p class="scb-cap" style="--rt:-4deg"><i></i>FROM LEAD TO PRODUCTION, ONE FLOW.</p>
-              <i class="scb-ph" style="--rt:2deg;background-image:url(../assets/cases/case-6.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
-              <div class="scb-note" style="--rt:-1.4deg">
-                <span class="scb-tape" style="--c:#2D63E6">Case 06</span>
-                <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
-                <p>CRM platform connecting leads, sales pipelines, and production workflows.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+              <b class="cse-num" aria-hidden="true">06</b>
+              <p class="cse-kick">FROM LEAD TO PRODUCTION, ONE FLOW.</p>
+              <div class="cse-card">
+                <i class="cse-im" style="background-image:url(../assets/cases/case-6.webp)"></i>
+                <div class="cse-glass">
+                  <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 06</em></div>
+                  <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
+                  <p>CRM platform connecting leads, sales pipelines, and production workflows.</p>
+                  <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
+                </div>
               </div>
             </article>
           </div>
