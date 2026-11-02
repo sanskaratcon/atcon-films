@@ -1385,7 +1385,39 @@ html,body{overflow-anchor:none}
   box-shadow:0 0 0 .5px rgba(0,16,37,.05),0 44px 80px -42px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05);
   animation:cse-float 9s ease-in-out infinite}
 @keyframes cse-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.cse-im{position:absolute;inset:0;border-radius:18px;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02)}
+/* the picture is an illustration in the site's own surfaces: each scene shows what the case actually does */
+.cse-il{position:absolute;inset:0;border-radius:18px;overflow:hidden;
+  background-image:radial-gradient(circle,rgba(0,16,37,.05) 1px,transparent 1.4px),linear-gradient(120deg,#F4F8FC,#EAF0FA);
+  background-size:26px 26px,100% 100%}
+.il-s{position:absolute;background:#fff;border-radius:12px;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 18px 34px -20px rgba(0,16,37,.35),0 2px 5px rgba(0,16,37,.05)}
+.il-k{display:block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8C95A6}
+.il-v{display:block;margin-top:3px;font-size:20px;font-weight:600;letter-spacing:-.02em;color:var(--atc-navy)}
+.il-sub{display:block;margin-top:6px;font-size:9.5px;color:#8C95A6}
+.il-bar{display:block;height:6px;margin-top:10px;border-radius:4px;background:#E8EDF5;overflow:hidden}
+.il-bar i{display:block;height:100%;border-radius:4px;background:var(--atc-grad)}
+.il-row{position:absolute;display:flex;align-items:center;gap:9px;padding:9px 13px;background:#fff;border-radius:11px;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 16px 30px -18px rgba(0,16,37,.35),0 2px 5px rgba(0,16,37,.05)}
+.il-row b{display:block;font-size:11px;font-weight:600;color:var(--atc-navy);white-space:nowrap}
+.il-row small{display:block;margin-top:1px;font-size:9.5px;color:#8C95A6;white-space:nowrap}
+.il-av{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-size:9.5px;font-weight:700;
+  background:linear-gradient(180deg,#5F88EC,#2D63E6)}
+.il-av svg{width:12px;height:12px}
+.il-av--g{background:linear-gradient(180deg,#6DC49D,#3FB27E)}
+.il-av--l{background:linear-gradient(180deg,#B3CB5D,#9BBA2A)}
+.il-av--b{background:linear-gradient(180deg,#82A3F2,#5A86EE)}
+.il-tag{margin-left:6px;padding:3px 9px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--c,#2D63E6)}
+.il-chip{position:absolute;display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;background:#fff;
+  font-size:10.5px;font-weight:600;color:var(--atc-navy);box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 12px 24px -14px rgba(0,16,37,.35)}
+.il-chip i{flex:none;width:7px;height:7px;border-radius:50%;background:#3FB27E}
+.il-wave{display:flex;align-items:center;gap:3px;height:28px;margin-top:9px}
+.il-wave i{width:3px;border-radius:2px;background:#2D63E6;animation:il-wv 1.1s ease-in-out infinite alternate}
+@keyframes il-wv{from{transform:scaleY(.45)}to{transform:scaleY(1)}}
+.il-flow{position:absolute;display:flex;align-items:center;gap:8px}
+.il-st{padding:7px 13px;border-radius:10px;background:#fff;font-size:10.5px;font-weight:600;color:var(--atc-navy);
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 12px 24px -14px rgba(0,16,37,.3)}
+.il-st.is-on{background:var(--atc-navy);color:#fff}
+.il-fl{width:16px;height:2px;border-radius:2px;background:#C9D3E4}
 /* the story rides a frosted glass panel inside the card */
 .cse-glass{position:absolute;left:10px;right:10px;bottom:10px;padding:14px 16px;border-radius:14px;
   background:rgba(255,255,255,.8);backdrop-filter:blur(16px) saturate(1.15);-webkit-backdrop-filter:blur(16px) saturate(1.15);
@@ -1900,7 +1932,14 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">01</b>
               <p class="cse-kick">THE QUARTER NOW REPORTS ITSELF.</p>
               <div class="cse-card">
-                <i class="cse-im" style="background-image:url(../assets/cases/case-1.webp)"></i>
+                <div class="cse-il" aria-hidden="true">
+                  <div class="il-s" style="left:7%;top:11%;width:44%;padding:12px 14px">
+                    <span class="il-k">Revenue &middot; live</span><span class="il-v">&euro;12.4M</span>
+                    <svg viewBox="0 0 120 34" style="display:block;width:100%;margin-top:7px"><path d="M2 26 L20 18 L36 22 L52 12 L70 16 L88 8 L118 14" fill="none" stroke="#2D63E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                  <div class="il-row" style="right:6%;top:15%"><span class="il-av il-av--g"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"></path></svg></span><span><b>Board report ready</b><small>generated &middot; just now</small></span></div>
+                  <span class="il-chip" style="left:9%;top:50%"><i></i>Reconciled automatically</span>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 01</em></div>
                   <h3>Intelligent Financial Automation Ecosystem</h3>
@@ -1913,7 +1952,14 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">02</b>
               <p class="cse-kick">PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
               <div class="cse-card">
-                <i class="cse-im" style="background-image:url(../assets/cases/case-2.webp)"></i>
+                <div class="cse-il" aria-hidden="true">
+                  <div class="il-s" style="left:8%;top:11%;width:46%;padding:12px 14px">
+                    <span class="il-k">Property valuation</span><span class="il-v">&euro; 840,000</span>
+                    <span class="il-bar"><i style="width:82%"></i></span><small class="il-sub">confidence 82%</small>
+                  </div>
+                  <div class="il-row" style="right:5%;top:17%"><span class="il-av">API</span><span><b>Embedded in partner app</b><small>response &middot; 120 ms</small></span></div>
+                  <span class="il-chip" style="left:10%;top:52%"><i style="background:#2D63E6"></i>4,100 valuations a day</span>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 02</em></div>
                   <h3>B2B Valuation Platform Strategy</h3>
@@ -1926,7 +1972,11 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">03</b>
               <p class="cse-kick">OUTREACH THAT NEVER SLEEPS.</p>
               <div class="cse-card">
-                <i class="cse-im" style="background-image:url(../assets/cases/case-3.webp)"></i>
+                <div class="cse-il" aria-hidden="true">
+                  <div class="il-row" style="left:7%;top:12%"><span class="il-av">MK</span><span><b>Maya K.</b><small>Operations lead</small></span><span class="il-tag" style="--c:#2D63E6">Connected</span></div>
+                  <div class="il-row" style="left:13%;top:34%"><span class="il-av il-av--l">JT</span><span><b>Jonas T.</b><small>Plant manager</small></span><span class="il-tag" style="--c:#3FB27E">Replied</span></div>
+                  <div class="il-s" style="right:6%;top:15%;padding:12px 14px"><span class="il-k">This week</span><span class="il-v">+48 leads</span></div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 03</em></div>
                   <h3>AI LinkedIn Lead Generation Agent</h3>
@@ -1939,7 +1989,14 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">04</b>
               <p class="cse-kick">A VOICE THAT ANSWERS EVERY CALL.</p>
               <div class="cse-card">
-                <i class="cse-im" style="background-image:url(../assets/cases/case-4.webp)"></i>
+                <div class="cse-il" aria-hidden="true">
+                  <div class="il-s" style="left:7%;top:12%;width:44%;padding:12px 14px">
+                    <span class="il-k">Incoming call</span>
+                    <span class="il-wave"><i style="height:10px;animation-delay:0ms"></i><i style="height:18px;animation-delay:80ms"></i><i style="height:26px;animation-delay:160ms"></i><i style="height:14px;animation-delay:240ms"></i><i style="height:22px;animation-delay:320ms"></i><i style="height:12px;animation-delay:400ms"></i><i style="height:19px;animation-delay:480ms"></i></span>
+                  </div>
+                  <div class="il-row" style="right:6%;top:36%"><span class="il-av il-av--g"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5 L5 9 L9.5 3.5"></path></svg></span><span><b>Appointment booked</b><small>Tue &middot; 09:30 &middot; Dr. Lane</small></span></div>
+                  <span class="il-chip" style="left:10%;top:52%"><i></i>Answering 24/7</span>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#3FB27E">Automation</span><em>Case 04</em></div>
                   <h3>Healthcare AI Voice Agent</h3>
@@ -1952,7 +2009,11 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">05</b>
               <p class="cse-kick">EVERY SALE, VISIBLE AS IT HAPPENS.</p>
               <div class="cse-card">
-                <i class="cse-im" style="background-image:url(../assets/cases/case-5.webp)"></i>
+                <div class="cse-il" aria-hidden="true">
+                  <div class="il-row" style="left:7%;top:12%"><span class="il-av il-av--b">114</span><span><b>Store 114 &middot; Pune</b><small>sale synced &middot; just now</small></span><span class="il-tag" style="--c:#3FB27E">Live</span></div>
+                  <div class="il-row" style="left:13%;top:34%"><span class="il-av il-av--b">067</span><span><b>Store 067 &middot; Jaipur</b><small>stock updated &middot; 2 min</small></span></div>
+                  <div class="il-s" style="right:5%;top:15%;padding:12px 14px"><span class="il-k">Today &middot; all channels</span><span class="il-v">18,240 sales</span></div>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 05</em></div>
                   <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
@@ -1965,7 +2026,11 @@ with a vision.</h2>
               <b class="cse-num" aria-hidden="true">06</b>
               <p class="cse-kick">FROM LEAD TO PRODUCTION, ONE FLOW.</p>
               <div class="cse-card">
-                <i class="cse-im" style="background-image:url(../assets/cases/case-6.webp)"></i>
+                <div class="cse-il" aria-hidden="true">
+                  <div class="il-flow" style="left:8%;top:15%"><span class="il-st">Lead</span><i class="il-fl"></i><span class="il-st">Quote</span><i class="il-fl"></i><span class="il-st is-on">Production</span></div>
+                  <div class="il-row" style="left:11%;top:36%"><span class="il-av il-av--l">#</span><span><b>Order 1042 to production</b><small>sales &rarr; floor &middot; automatic</small></span></div>
+                  <span class="il-chip" style="right:8%;top:54%"><i style="background:#9BBA2A"></i>One pipeline, no re-entry</span>
+                </div>
                 <div class="cse-glass">
                   <div class="cse-row"><span class="cse-chip" style="--c:#2D63E6">Digital transformation</span><em>Case 06</em></div>
                   <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
