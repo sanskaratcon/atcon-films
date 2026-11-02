@@ -1358,26 +1358,34 @@ html,body{overflow-anchor:none}
 .atc-cs .csw.ds-rv{opacity:0;transform:translateY(clamp(80px,14vh,150px));transition:opacity .75s ease var(--d,0s),transform 1s cubic-bezier(.2,.8,.25,1) var(--d,0s)}
 .atc-cs .csw.ds-rv.is-in{opacity:1;transform:none}
 .csw{position:relative;width:min(100%,1240px);margin:clamp(18px,3.4vh,36px) auto 0}
-.crs{position:relative;height:clamp(430px,56vh,540px);perspective:1400px}
+.crs{position:relative;height:clamp(470px,60vh,580px);perspective:1400px}
 /* one card per case: the image as the stage, the story below; neighbours wait at the sides */
-.crs-card{position:absolute;left:50%;top:0;width:min(56vw,620px);margin:0;border-radius:16px;background:#fff;overflow:hidden;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 44px 84px -46px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05);
+.crs-card{position:absolute;left:50%;top:0;width:min(54vw,600px);height:100%;margin:0;
   transform:translateX(-50%) scale(.72);opacity:0;pointer-events:none;
   transition:transform .7s cubic-bezier(.3,.8,.3,1),opacity .5s ease,filter .5s ease}
 .crs-card.is-c{transform:translateX(-50%) scale(1);opacity:1;z-index:3;pointer-events:auto}
-.crs-card.is-r{transform:translateX(5%) scale(.8) rotateY(-7deg);opacity:.55;z-index:2;pointer-events:auto;filter:saturate(.8);cursor:pointer}
-.crs-card.is-l{transform:translateX(-105%) scale(.8) rotateY(7deg);opacity:.55;z-index:2;pointer-events:auto;filter:saturate(.8);cursor:pointer}
-.crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.8}
-.crs-bar{display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;background:#F7F8FA;border-bottom:1px solid rgba(0,16,37,.06)}
-.crs-bar i{flex:none;width:8px;height:8px;border-radius:50%;background:#D5D9E0}
-.crs-bar span{overflow:hidden;margin-left:7px;padding:3px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,16,37,.06);
-  font-size:10px;letter-spacing:.02em;color:var(--atc-mute);white-space:nowrap;text-overflow:ellipsis}
-.crs-im{position:relative;display:block;aspect-ratio:16/8;background-size:cover;background-position:50% 50%;filter:saturate(.9) contrast(1.02);
-  box-shadow:inset 0 -1px 0 rgba(0,16,37,.05)}
-.crs-bd{padding:15px 18px 17px}
-.crs-tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c,#2D63E6)}
-.crs-bd h3{margin:8px 0 0;font-size:clamp(15.5px,1.45vw,18px);line-height:1.35;letter-spacing:-.012em;font-weight:600;color:var(--atc-navy)}
-.crs-bd p{margin:7px 0 0;font-size:13px;line-height:1.55;color:var(--atc-slate)}
+.crs-card.is-r{transform:translateX(14%) scale(.74);opacity:.45;z-index:2;pointer-events:auto;filter:saturate(.75);cursor:pointer}
+.crs-card.is-l{transform:translateX(-114%) scale(.74);opacity:.45;z-index:2;pointer-events:auto;filter:saturate(.75);cursor:pointer}
+.crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.7}
+/* the hook line, written at a tilt above the print */
+.scb-cap{position:absolute;left:9%;top:0;max-width:21em;margin:0;transform:rotate(var(--rt,-5deg));transform-origin:left bottom;
+  font-size:11.5px;font-weight:700;letter-spacing:.06em;line-height:1.5;color:#2D63E6}
+.scb-cap i{display:inline-block;width:8px;height:8px;margin-right:8px;background:#2D63E6}
+/* the photo print: white-framed and tilted, with a long soft shadow */
+.scb-ph{position:absolute;left:13%;top:9%;width:74%;aspect-ratio:16/10.6;transform:rotate(var(--rt,-2deg));
+  border:10px solid #fff;border-bottom-width:40px;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02);
+  box-shadow:0 0 0 .5px rgba(0,16,37,.1),0 36px 64px -36px rgba(0,16,37,.45),0 3px 8px rgba(0,16,37,.08)}
+.scb-foot{position:absolute;right:2%;bottom:26%;font-style:normal;transform:rotate(3.5deg);
+  font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--atc-mute)}
+/* the note: a paper card taped over the print's lower corner, with a dotted notepad margin */
+.scb-note{position:absolute;left:0;bottom:0;width:min(60%,310px);padding:18px 18px 16px 32px;transform:rotate(var(--rt,-1.5deg));
+  background-image:radial-gradient(circle,#D9DEE7 1.5px,transparent 1.9px),linear-gradient(180deg,#FDFDFB,#F8F8F4);
+  background-size:28px 26px,100% 100%;background-position:-1px 16px,0 0;background-repeat:repeat-y,no-repeat;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 28px 50px -30px rgba(0,16,37,.42),0 2px 6px rgba(0,16,37,.06)}
+.scb-tape{position:absolute;left:12px;top:-11px;padding:4px 13px;transform:rotate(-3deg);background:var(--c,#2D63E6);color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 4px 10px -4px rgba(0,16,37,.35)}
+.scb-note h3{margin:4px 0 0;font-size:14.5px;line-height:1.35;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
+.scb-note p{margin:7px 0 0;font-size:12px;line-height:1.6;color:var(--atc-slate)}
 .cs-link{display:flex;align-items:center;gap:7px;margin-top:13px;font-size:12px;font-weight:600;color:var(--atc-navy)}
 .cs-link svg{width:11px;height:11px;transition:transform .3s ease}
 .crs-card.is-c:hover .cs-link svg{transform:translateX(3px)}
@@ -1393,10 +1401,11 @@ html,body{overflow-anchor:none}
 .csw-tab.is-on i{animation:csw-prog var(--csw-cycle,5s) linear forwards}
 @keyframes csw-prog{to{transform:scaleX(1)}}
 @media (max-width:900px){
-  .crs{height:clamp(420px,58vh,520px)}
-  .crs-card{width:86vw}
-  .crs-card.is-r{transform:translateX(42%) scale(.82)}
-  .crs-card.is-l{transform:translateX(-142%) scale(.82)}
+  .crs{height:clamp(440px,60vh,540px)}
+  .crs-card{width:88vw}
+  .crs-card.is-r{transform:translateX(44%) scale(.78)}
+  .crs-card.is-l{transform:translateX(-144%) scale(.78)}
+  .scb-note{width:min(72%,310px)}
   .csw-tab em{display:none}
 }
 
@@ -1876,60 +1885,66 @@ with a vision.</h2>
         <div class="csw ds-rv" data-rv="" style="--d:.75s">
           <div class="crs">
             <article class="crs-card is-c" data-k="0">
-              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/financial-automation</span></div>
-              <i class="crs-im" style="background-image:url(../assets/cases/case-1.webp)"></i>
-              <div class="crs-bd">
-                <span class="crs-tag" style="--c:#3FB27E">Automation</span>
+              <p class="scb-cap" style="--rt:-5deg"><i></i>THE QUARTER NOW REPORTS ITSELF.</p>
+              <i class="scb-ph" style="--rt:-2.4deg;background-image:url(../assets/cases/case-1.webp)"></i>
+              <em class="scb-foot">AUTOMATION</em>
+              <div class="scb-note" style="--rt:-1.6deg">
+                <span class="scb-tape" style="--c:#3FB27E">Case 01</span>
                 <h3>Intelligent Financial Automation Ecosystem</h3>
                 <p>Automating financial workflows to generate real-time insights and client-ready reports.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
             </article>
             <article class="crs-card is-r" data-k="1">
-              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/b2b-valuation</span></div>
-              <i class="crs-im" style="background-image:url(../assets/cases/case-2.webp)"></i>
-              <div class="crs-bd">
-                <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
+              <p class="scb-cap" style="--rt:-4deg"><i></i>PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
+              <i class="scb-ph" style="--rt:2.2deg;background-image:url(../assets/cases/case-2.webp)"></i>
+              <em class="scb-foot">DIGITAL TRANSFORMATION</em>
+              <div class="scb-note" style="--rt:1.4deg">
+                <span class="scb-tape" style="--c:#2D63E6">Case 02</span>
                 <h3>B2B Valuation Platform Strategy</h3>
                 <p>Building a scalable B2B platform for embedded property valuation services.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
             </article>
             <article class="crs-card" data-k="2">
-              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/linkedin-agent</span></div>
-              <i class="crs-im" style="background-image:url(../assets/cases/case-3.webp)"></i>
-              <div class="crs-bd">
-                <span class="crs-tag" style="--c:#3FB27E">Automation</span>
+              <p class="scb-cap" style="--rt:-5.5deg"><i></i>OUTREACH THAT NEVER SLEEPS.</p>
+              <i class="scb-ph" style="--rt:-2deg;background-image:url(../assets/cases/case-3.webp)"></i>
+              <em class="scb-foot">AUTOMATION</em>
+              <div class="scb-note" style="--rt:1.6deg">
+                <span class="scb-tape" style="--c:#3FB27E">Case 03</span>
                 <h3>AI LinkedIn Lead Generation Agent</h3>
                 <p>AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
             </article>
             <article class="crs-card" data-k="3">
-              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/healthcare-voice</span></div>
-              <i class="crs-im" style="background-image:url(../assets/cases/case-4.webp)"></i>
-              <div class="crs-bd">
-                <span class="crs-tag" style="--c:#3FB27E">Automation</span>
+              <p class="scb-cap" style="--rt:-4.5deg"><i></i>A VOICE THAT ANSWERS EVERY CALL.</p>
+              <i class="scb-ph" style="--rt:2.4deg;background-image:url(../assets/cases/case-4.webp)"></i>
+              <em class="scb-foot">AUTOMATION</em>
+              <div class="scb-note" style="--rt:-1.8deg">
+                <span class="scb-tape" style="--c:#3FB27E">Case 04</span>
                 <h3>Healthcare AI Voice Agent</h3>
                 <p>24/7 AI voice assistant handling patient calls and appointment scheduling.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
             </article>
             <article class="crs-card" data-k="4">
-              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/retail-distribution</span></div>
-              <i class="crs-im" style="background-image:url(../assets/cases/case-5.webp)"></i>
-              <div class="crs-bd">
-                <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
+              <p class="scb-cap" style="--rt:-5deg"><i></i>EVERY SALE, VISIBLE AS IT HAPPENS.</p>
+              <i class="scb-ph" style="--rt:-2.2deg;background-image:url(../assets/cases/case-5.webp)"></i>
+              <em class="scb-foot">DIGITAL TRANSFORMATION</em>
+              <div class="scb-note" style="--rt:1.5deg">
+                <span class="scb-tape" style="--c:#2D63E6">Case 05</span>
                 <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
                 <p>Mobile platform enabling real-time sales tracking and streamlined channel operations.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
               </div>
             </article>
             <article class="crs-card is-l" data-k="5">
-              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/manufacturing-crm</span></div>
-              <i class="crs-im" style="background-image:url(../assets/cases/case-6.webp)"></i>
-              <div class="crs-bd">
-                <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
+              <p class="scb-cap" style="--rt:-4deg"><i></i>FROM LEAD TO PRODUCTION, ONE FLOW.</p>
+              <i class="scb-ph" style="--rt:2deg;background-image:url(../assets/cases/case-6.webp)"></i>
+              <em class="scb-foot">DIGITAL TRANSFORMATION</em>
+              <div class="scb-note" style="--rt:-1.4deg">
+                <span class="scb-tape" style="--c:#2D63E6">Case 06</span>
                 <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
                 <p>CRM platform connecting leads, sales pipelines, and production workflows.</p>
                 <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
