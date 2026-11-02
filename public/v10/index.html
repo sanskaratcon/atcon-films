@@ -1360,7 +1360,7 @@ html,body{overflow-anchor:none}
 .csw{position:relative;width:min(100%,1240px);margin:clamp(18px,3.4vh,36px) auto 0}
 .crs{position:relative;height:clamp(430px,56vh,540px);perspective:1400px}
 /* one card per case: the image as the stage, the story below; neighbours wait at the sides */
-.crs-card{position:absolute;left:50%;top:0;width:min(56vw,620px);margin:0;border-radius:20px;background:#fff;overflow:hidden;
+.crs-card{position:absolute;left:50%;top:0;width:min(56vw,620px);margin:0;border-radius:16px;background:#fff;overflow:hidden;
   box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 44px 84px -46px rgba(0,16,37,.5),0 2px 6px rgba(0,16,37,.05);
   transform:translateX(-50%) scale(.72);opacity:0;pointer-events:none;
   transition:transform .7s cubic-bezier(.3,.8,.3,1),opacity .5s ease,filter .5s ease}
@@ -1368,15 +1368,16 @@ html,body{overflow-anchor:none}
 .crs-card.is-r{transform:translateX(5%) scale(.8) rotateY(-7deg);opacity:.55;z-index:2;pointer-events:auto;filter:saturate(.8);cursor:pointer}
 .crs-card.is-l{transform:translateX(-105%) scale(.8) rotateY(7deg);opacity:.55;z-index:2;pointer-events:auto;filter:saturate(.8);cursor:pointer}
 .crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.8}
-.crs-im{position:relative;display:block;aspect-ratio:16/8.6;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02);
+.crs-bar{display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;background:#F7F8FA;border-bottom:1px solid rgba(0,16,37,.06)}
+.crs-bar i{flex:none;width:8px;height:8px;border-radius:50%;background:#D5D9E0}
+.crs-bar span{overflow:hidden;margin-left:7px;padding:3px 10px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,16,37,.06);
+  font-size:10px;letter-spacing:.02em;color:var(--atc-mute);white-space:nowrap;text-overflow:ellipsis}
+.crs-im{position:relative;display:block;aspect-ratio:16/8;background-size:cover;background-position:50% 50%;filter:saturate(.9) contrast(1.02);
   box-shadow:inset 0 -1px 0 rgba(0,16,37,.05)}
-.crs-n{position:absolute;right:14px;top:12px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);
-  font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--atc-navy);box-shadow:inset 0 0 0 .5px rgba(0,16,37,.1)}
-.crs-bd{position:relative;padding:22px 26px 22px}
-.crs-tag{position:absolute;top:-13px;left:22px;padding:5px 13px;transform:rotate(-2deg);background:var(--c,#2D63E6);color:#fff;
-  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 6px 12px -5px rgba(0,16,37,.4)}
-.crs-bd h3{margin:8px 0 0;font-size:clamp(16px,1.5vw,19.5px);line-height:1.3;letter-spacing:-.012em;font-weight:600;color:var(--atc-navy)}
-.crs-bd p{margin:7px 0 0;font-size:13px;line-height:1.6;color:var(--atc-slate)}
+.crs-bd{padding:15px 18px 17px}
+.crs-tag{margin:0;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c,#2D63E6)}
+.crs-bd h3{margin:8px 0 0;font-size:clamp(15.5px,1.45vw,18px);line-height:1.35;letter-spacing:-.012em;font-weight:600;color:var(--atc-navy)}
+.crs-bd p{margin:7px 0 0;font-size:13px;line-height:1.55;color:var(--atc-slate)}
 .cs-link{display:flex;align-items:center;gap:7px;margin-top:13px;font-size:12px;font-weight:600;color:var(--atc-navy)}
 .cs-link svg{width:11px;height:11px;transition:transform .3s ease}
 .crs-card.is-c:hover .cs-link svg{transform:translateX(3px)}
@@ -1875,7 +1876,8 @@ with a vision.</h2>
         <div class="csw ds-rv" data-rv="" style="--d:.75s">
           <div class="crs">
             <article class="crs-card is-c" data-k="0">
-              <i class="crs-im" style="background-image:url(../assets/cases/case-1.webp)"><b class="crs-n">01</b></i>
+              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/financial-automation</span></div>
+              <i class="crs-im" style="background-image:url(../assets/cases/case-1.webp)"></i>
               <div class="crs-bd">
                 <span class="crs-tag" style="--c:#3FB27E">Automation</span>
                 <h3>Intelligent Financial Automation Ecosystem</h3>
@@ -1884,7 +1886,8 @@ with a vision.</h2>
               </div>
             </article>
             <article class="crs-card is-r" data-k="1">
-              <i class="crs-im" style="background-image:url(../assets/cases/case-2.webp)"><b class="crs-n">02</b></i>
+              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/b2b-valuation</span></div>
+              <i class="crs-im" style="background-image:url(../assets/cases/case-2.webp)"></i>
               <div class="crs-bd">
                 <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
                 <h3>B2B Valuation Platform Strategy</h3>
@@ -1893,7 +1896,8 @@ with a vision.</h2>
               </div>
             </article>
             <article class="crs-card" data-k="2">
-              <i class="crs-im" style="background-image:url(../assets/cases/case-3.webp)"><b class="crs-n">03</b></i>
+              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/linkedin-agent</span></div>
+              <i class="crs-im" style="background-image:url(../assets/cases/case-3.webp)"></i>
               <div class="crs-bd">
                 <span class="crs-tag" style="--c:#3FB27E">Automation</span>
                 <h3>AI LinkedIn Lead Generation Agent</h3>
@@ -1902,7 +1906,8 @@ with a vision.</h2>
               </div>
             </article>
             <article class="crs-card" data-k="3">
-              <i class="crs-im" style="background-image:url(../assets/cases/case-4.webp)"><b class="crs-n">04</b></i>
+              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/healthcare-voice</span></div>
+              <i class="crs-im" style="background-image:url(../assets/cases/case-4.webp)"></i>
               <div class="crs-bd">
                 <span class="crs-tag" style="--c:#3FB27E">Automation</span>
                 <h3>Healthcare AI Voice Agent</h3>
@@ -1911,7 +1916,8 @@ with a vision.</h2>
               </div>
             </article>
             <article class="crs-card" data-k="4">
-              <i class="crs-im" style="background-image:url(../assets/cases/case-5.webp)"><b class="crs-n">05</b></i>
+              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/retail-distribution</span></div>
+              <i class="crs-im" style="background-image:url(../assets/cases/case-5.webp)"></i>
               <div class="crs-bd">
                 <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
                 <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
@@ -1920,7 +1926,8 @@ with a vision.</h2>
               </div>
             </article>
             <article class="crs-card is-l" data-k="5">
-              <i class="crs-im" style="background-image:url(../assets/cases/case-6.webp)"><b class="crs-n">06</b></i>
+              <div class="crs-bar" aria-hidden="true"><i></i><i></i><i></i><span>atconglobal.com/cases/manufacturing-crm</span></div>
+              <i class="crs-im" style="background-image:url(../assets/cases/case-6.webp)"></i>
               <div class="crs-bd">
                 <span class="crs-tag" style="--c:#2D63E6">Digital transformation</span>
                 <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
