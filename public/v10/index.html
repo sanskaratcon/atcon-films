@@ -1362,13 +1362,17 @@ html,body{overflow-anchor:none}
   background:radial-gradient(closest-side,rgba(90,134,238,.1) 0,rgba(90,134,238,.035) 55%,rgba(90,134,238,0) 100%);pointer-events:none}
 .crs{position:relative;z-index:1;height:clamp(470px,60vh,580px);perspective:1400px}
 /* one card per case: the image as the stage, the story below; neighbours wait at the sides */
+.atc-cs .atc-team-grid{opacity:.55}
 .crs-card{position:absolute;left:50%;top:0;width:min(54vw,600px);height:100%;margin:0;
   transform:translateX(-50%) scale(.72);opacity:0;pointer-events:none;
   transition:transform .7s cubic-bezier(.3,.8,.3,1),opacity .5s ease,filter .5s ease}
 .crs-card.is-c{transform:translateX(-50%) scale(1);opacity:1;z-index:3;pointer-events:auto}
-.crs-card.is-r{transform:translateX(14%) scale(.74);opacity:.45;z-index:2;pointer-events:auto;filter:saturate(.75);cursor:pointer}
-.crs-card.is-l{transform:translateX(-114%) scale(.74);opacity:.45;z-index:2;pointer-events:auto;filter:saturate(.75);cursor:pointer}
-.crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.7}
+.crs-card.is-r{transform:translateX(19%) scale(.68);opacity:.35;z-index:2;pointer-events:auto;filter:saturate(.6);cursor:pointer}
+.crs-card.is-l{transform:translateX(-119%) scale(.68);opacity:.35;z-index:2;pointer-events:auto;filter:saturate(.6);cursor:pointer}
+.crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.6}
+/* the neighbours wait as quiet prints: their words stay with the centre of the stage */
+.crs-card .scb-note{transition:opacity .4s ease}
+.crs-card:not(.is-c) .scb-note{opacity:0}
 /* the hook line, written at a tilt above the print */
 .scb-cap{position:absolute;left:13%;top:.6%;max-width:23em;margin:0;transform:rotate(var(--rt,-5deg));transform-origin:left bottom;
   font-size:12px;font-weight:700;letter-spacing:.07em;line-height:1.55;color:#2D63E6;transition:opacity .4s ease}
