@@ -1357,8 +1357,10 @@ html,body{overflow-anchor:none}
 .cs-ln.is-in>span{transform:none}
 .atc-cs .csw.ds-rv{opacity:0;transform:translateY(clamp(80px,14vh,150px));transition:opacity .75s ease var(--d,0s),transform 1s cubic-bezier(.2,.8,.25,1) var(--d,0s)}
 .atc-cs .csw.ds-rv.is-in{opacity:1;transform:none}
-.csw{position:relative;width:min(100%,1240px);margin:clamp(18px,3.4vh,36px) auto 0}
-.crs{position:relative;height:clamp(470px,60vh,580px);perspective:1400px}
+.csw{position:relative;width:min(100%,1240px);margin:clamp(18px,3.4vh,36px) auto 0;padding:clamp(14px,2.4vh,26px) 0 6px}
+.csw::before{content:'';position:absolute;left:50%;top:44%;width:min(58%,700px);height:min(74%,460px);transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(90,134,238,.1) 0,rgba(90,134,238,.035) 55%,rgba(90,134,238,0) 100%);pointer-events:none}
+.crs{position:relative;z-index:1;height:clamp(470px,60vh,580px);perspective:1400px}
 /* one card per case: the image as the stage, the story below; neighbours wait at the sides */
 .crs-card{position:absolute;left:50%;top:0;width:min(54vw,600px);height:100%;margin:0;
   transform:translateX(-50%) scale(.72);opacity:0;pointer-events:none;
@@ -1368,27 +1370,38 @@ html,body{overflow-anchor:none}
 .crs-card.is-l{transform:translateX(-114%) scale(.74);opacity:.45;z-index:2;pointer-events:auto;filter:saturate(.75);cursor:pointer}
 .crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.7}
 /* the hook line, written at a tilt above the print */
-.scb-cap{position:absolute;left:9%;top:0;max-width:21em;margin:0;transform:rotate(var(--rt,-5deg));transform-origin:left bottom;
-  font-size:11.5px;font-weight:700;letter-spacing:.06em;line-height:1.5;color:#2D63E6}
-.scb-cap i{display:inline-block;width:8px;height:8px;margin-right:8px;background:#2D63E6}
+.scb-cap{position:absolute;left:13%;top:.6%;max-width:23em;margin:0;transform:rotate(var(--rt,-5deg));transform-origin:left bottom;
+  font-size:12px;font-weight:700;letter-spacing:.07em;line-height:1.55;color:#2D63E6;transition:opacity .4s ease}
+.scb-cap i{display:inline-block;width:8px;height:8px;margin-right:9px;background:#2D63E6}
+.crs-card:not(.is-c) .scb-cap{opacity:0}
 /* the photo print: white-framed and tilted, with a long soft shadow */
 .scb-ph{position:absolute;left:13%;top:9%;width:74%;aspect-ratio:16/10.6;transform:rotate(var(--rt,-2deg));
   border:10px solid #fff;border-bottom-width:40px;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02);
-  box-shadow:0 0 0 .5px rgba(0,16,37,.1),0 36px 64px -36px rgba(0,16,37,.45),0 3px 8px rgba(0,16,37,.08)}
-.scb-foot{position:absolute;right:2%;bottom:26%;font-style:normal;transform:rotate(3.5deg);
-  font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--atc-mute)}
+  box-shadow:0 0 0 .5px rgba(0,16,37,.1),0 36px 64px -36px rgba(0,16,37,.45),0 3px 8px rgba(0,16,37,.08);
+  transition:transform .5s cubic-bezier(.2,.8,.3,1)}
+.crs-card.is-c:hover .scb-ph{transform:rotate(calc(var(--rt,-2deg) * .35)) scale(1.012)}
+/* two strips of translucent tape hold the print to the board */
+.scb-ph::before,.scb-ph::after{content:'';position:absolute;top:-22px;width:76px;height:24px;background:rgba(226,232,243,.72);
+  box-shadow:0 0 0 .5px rgba(0,16,37,.07),0 2px 5px rgba(0,16,37,.08);backdrop-filter:blur(1px)}
+.scb-ph::before{left:-30px;transform:rotate(-42deg)}
+.scb-ph::after{right:-30px;transform:rotate(42deg)}
+/* the category is written on the print's own bottom strip */
+.scb-foot{position:absolute;right:8px;bottom:-31px;font-style:normal;
+  font-size:9px;font-weight:700;letter-spacing:.16em;color:#9AA3B2}
 /* the note: a paper card taped over the print's lower corner, with a dotted notepad margin */
-.scb-note{position:absolute;left:0;bottom:0;width:min(60%,310px);padding:18px 18px 16px 32px;transform:rotate(var(--rt,-1.5deg));
-  background-image:radial-gradient(circle,#D9DEE7 1.5px,transparent 1.9px),linear-gradient(180deg,#FDFDFB,#F8F8F4);
-  background-size:28px 26px,100% 100%;background-position:-1px 16px,0 0;background-repeat:repeat-y,no-repeat;
-  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 28px 50px -30px rgba(0,16,37,.42),0 2px 6px rgba(0,16,37,.06)}
-.scb-tape{position:absolute;left:12px;top:-11px;padding:4px 13px;transform:rotate(-3deg);background:var(--c,#2D63E6);color:#fff;
-  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 4px 10px -4px rgba(0,16,37,.35)}
-.scb-note h3{margin:4px 0 0;font-size:14.5px;line-height:1.35;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
-.scb-note p{margin:7px 0 0;font-size:12px;line-height:1.6;color:var(--atc-slate)}
-.cs-link{display:flex;align-items:center;gap:7px;margin-top:13px;font-size:12px;font-weight:600;color:var(--atc-navy)}
-.cs-link svg{width:11px;height:11px;transition:transform .3s ease}
-.crs-card.is-c:hover .cs-link svg{transform:translateX(3px)}
+.scb-note{position:absolute;left:0;bottom:0;width:min(62%,330px);padding:20px 20px 17px 36px;transform:rotate(var(--rt,-1.5deg));
+  background-image:radial-gradient(circle,#D7DCE6 1.5px,transparent 1.9px),
+    repeating-linear-gradient(180deg,transparent 0 25px,rgba(0,16,37,.045) 25px 26px),linear-gradient(180deg,#FDFDFB,#F7F7F3);
+  background-size:28px 26px,100% 26px,100% 100%;background-position:0 18px,0 10px,0 0;background-repeat:repeat-y,repeat,no-repeat;
+  box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 54px -30px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.06)}
+.scb-tape{position:absolute;left:14px;top:-12px;padding:5px 14px;transform:rotate(-3deg);background:var(--c,#2D63E6);color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;box-shadow:0 5px 12px -5px rgba(0,16,37,.45)}
+.scb-note h3{margin:6px 0 0;font-size:15px;line-height:1.38;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
+.scb-note p{margin:8px 0 0;font-size:12.5px;line-height:1.65;color:var(--atc-slate)}
+.cs-link{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;font-weight:600;color:var(--atc-navy)}
+.cs-link svg{box-sizing:content-box;width:10px;height:10px;padding:4px;border-radius:50%;background:var(--atc-navy);color:#fff;
+  transition:transform .3s ease}
+.crs-card.is-c .scb-note:hover .cs-link svg{transform:translateX(3px)}
 /* the index below: quiet numbered words, the active one carrying the gradient timer */
 .csw-tabs{display:flex;justify-content:center;gap:clamp(8px,1.6vw,26px);margin-top:clamp(16px,2.6vh,26px);overflow-x:auto;scrollbar-width:none}
 .csw-tabs::-webkit-scrollbar{display:none}
@@ -1883,11 +1896,11 @@ with a vision.</h2>
             <span class="cs-ln ds-rv" data-rv="" style="--d:.45s"><span class="ds-soft">from real partnerships.</span></span></h2>
         </div>
         <div class="csw ds-rv" data-rv="" style="--d:.75s">
+          <i class="atc-team-grid" aria-hidden="true"></i>
           <div class="crs">
             <article class="crs-card is-c" data-k="0">
               <p class="scb-cap" style="--rt:-5deg"><i></i>THE QUARTER NOW REPORTS ITSELF.</p>
-              <i class="scb-ph" style="--rt:-2.4deg;background-image:url(../assets/cases/case-1.webp)"></i>
-              <em class="scb-foot">AUTOMATION</em>
+              <i class="scb-ph" style="--rt:-2.4deg;background-image:url(../assets/cases/case-1.webp)"><em class="scb-foot">AUTOMATION</em></i>
               <div class="scb-note" style="--rt:-1.6deg">
                 <span class="scb-tape" style="--c:#3FB27E">Case 01</span>
                 <h3>Intelligent Financial Automation Ecosystem</h3>
@@ -1897,8 +1910,7 @@ with a vision.</h2>
             </article>
             <article class="crs-card is-r" data-k="1">
               <p class="scb-cap" style="--rt:-4deg"><i></i>PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
-              <i class="scb-ph" style="--rt:2.2deg;background-image:url(../assets/cases/case-2.webp)"></i>
-              <em class="scb-foot">DIGITAL TRANSFORMATION</em>
+              <i class="scb-ph" style="--rt:2.2deg;background-image:url(../assets/cases/case-2.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
               <div class="scb-note" style="--rt:1.4deg">
                 <span class="scb-tape" style="--c:#2D63E6">Case 02</span>
                 <h3>B2B Valuation Platform Strategy</h3>
@@ -1908,8 +1920,7 @@ with a vision.</h2>
             </article>
             <article class="crs-card" data-k="2">
               <p class="scb-cap" style="--rt:-5.5deg"><i></i>OUTREACH THAT NEVER SLEEPS.</p>
-              <i class="scb-ph" style="--rt:-2deg;background-image:url(../assets/cases/case-3.webp)"></i>
-              <em class="scb-foot">AUTOMATION</em>
+              <i class="scb-ph" style="--rt:-2deg;background-image:url(../assets/cases/case-3.webp)"><em class="scb-foot">AUTOMATION</em></i>
               <div class="scb-note" style="--rt:1.6deg">
                 <span class="scb-tape" style="--c:#3FB27E">Case 03</span>
                 <h3>AI LinkedIn Lead Generation Agent</h3>
@@ -1919,8 +1930,7 @@ with a vision.</h2>
             </article>
             <article class="crs-card" data-k="3">
               <p class="scb-cap" style="--rt:-4.5deg"><i></i>A VOICE THAT ANSWERS EVERY CALL.</p>
-              <i class="scb-ph" style="--rt:2.4deg;background-image:url(../assets/cases/case-4.webp)"></i>
-              <em class="scb-foot">AUTOMATION</em>
+              <i class="scb-ph" style="--rt:2.4deg;background-image:url(../assets/cases/case-4.webp)"><em class="scb-foot">AUTOMATION</em></i>
               <div class="scb-note" style="--rt:-1.8deg">
                 <span class="scb-tape" style="--c:#3FB27E">Case 04</span>
                 <h3>Healthcare AI Voice Agent</h3>
@@ -1930,8 +1940,7 @@ with a vision.</h2>
             </article>
             <article class="crs-card" data-k="4">
               <p class="scb-cap" style="--rt:-5deg"><i></i>EVERY SALE, VISIBLE AS IT HAPPENS.</p>
-              <i class="scb-ph" style="--rt:-2.2deg;background-image:url(../assets/cases/case-5.webp)"></i>
-              <em class="scb-foot">DIGITAL TRANSFORMATION</em>
+              <i class="scb-ph" style="--rt:-2.2deg;background-image:url(../assets/cases/case-5.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
               <div class="scb-note" style="--rt:1.5deg">
                 <span class="scb-tape" style="--c:#2D63E6">Case 05</span>
                 <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
@@ -1941,8 +1950,7 @@ with a vision.</h2>
             </article>
             <article class="crs-card is-l" data-k="5">
               <p class="scb-cap" style="--rt:-4deg"><i></i>FROM LEAD TO PRODUCTION, ONE FLOW.</p>
-              <i class="scb-ph" style="--rt:2deg;background-image:url(../assets/cases/case-6.webp)"></i>
-              <em class="scb-foot">DIGITAL TRANSFORMATION</em>
+              <i class="scb-ph" style="--rt:2deg;background-image:url(../assets/cases/case-6.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
               <div class="scb-note" style="--rt:-1.4deg">
                 <span class="scb-tape" style="--c:#2D63E6">Case 06</span>
                 <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
