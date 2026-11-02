@@ -1341,85 +1341,66 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* Case studies: a carousel of cards. The current case stands centre stage, its neighbours peeking from the
-   sides; on each step the centre card falls back to the left and the right one takes the stage - on the clock,
-   on the index below, or at a click on a side card. On wide screens the section fills the viewport for the
-   takeover from the offer's end card */
-.atc-cs{position:relative;display:grid;place-items:center;padding-top:clamp(70px,10vh,120px);padding-bottom:clamp(40px,6vh,80px)}
-@media (min-width:901px){.atc-cs{min-height:100vh;min-height:100svh}}
-.cs-wrap{position:relative;width:min(100%,1240px)}
-.cs-head{text-align:center}
+/* Case studies: the prints ride a great wheel. The section pins while the page scrolls and the wheel turns, each
+   tilted print sweeping through the top of the arc in turn; a dashed guide ring turns with it, and the top print's
+   note waits under the arc. On wide screens the first screen takes over from the offer's end card */
+.atc-cs{position:relative;height:340vh}
+.cs-pin{--R:clamp(680px,74vw,1060px);position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;padding-top:clamp(52px,7.5vh,92px)}
+.cs-pin .atc-team-grid{position:absolute;inset:0}
+.cs-head{position:relative;z-index:2;text-align:center}
 .cs-head .ds-label{margin:0 0 var(--sp-5)}
 .cs-head .ds-display{margin:0 auto}
-/* the lines speak first, each rising out of its own mask - and only then does the window come up from the bottom */
+/* the lines speak first, each rising out of its own mask - then the wheel comes up from below */
 .cs-ln{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
 .cs-ln>span{display:inline-block;transform:translateY(112%);transition:transform .85s cubic-bezier(.22,.8,.2,1) var(--d,0s)}
 .cs-ln.is-in>span{transform:none}
-.atc-cs .csw.ds-rv{opacity:0;transform:translateY(clamp(80px,14vh,150px));transition:opacity .75s ease var(--d,0s),transform 1s cubic-bezier(.2,.8,.25,1) var(--d,0s)}
+.csw{position:absolute;inset:0;z-index:1}
+.atc-cs .csw.ds-rv{opacity:0;transform:translateY(clamp(60px,10vh,110px));transition:opacity .75s ease var(--d,0s),transform 1s cubic-bezier(.2,.8,.25,1) var(--d,0s)}
 .atc-cs .csw.ds-rv.is-in{opacity:1;transform:none}
-.csw{position:relative;width:min(100%,1240px);margin:clamp(18px,3.4vh,36px) auto 0;padding:clamp(14px,2.4vh,26px) 0 6px}
-.csw::before{content:'';position:absolute;left:50%;top:44%;width:min(58%,700px);height:min(74%,460px);transform:translate(-50%,-50%);
-  background:radial-gradient(closest-side,rgba(90,134,238,.1) 0,rgba(90,134,238,.035) 55%,rgba(90,134,238,0) 100%);pointer-events:none}
-.crs{position:relative;z-index:1;height:clamp(470px,60vh,580px);perspective:1400px}
-/* one card per case: the image as the stage, the story below; neighbours wait at the sides */
-.crs-card{position:absolute;left:50%;top:0;width:min(54vw,600px);height:100%;margin:0;
-  transform:translateX(-50%) scale(.72);opacity:0;pointer-events:none;
-  transition:transform .7s cubic-bezier(.3,.8,.3,1),opacity .5s ease,filter .5s ease}
-.crs-card.is-c{transform:translateX(-50%) scale(1);opacity:1;z-index:3;pointer-events:auto}
-.crs-card.is-r{transform:translateX(14%) scale(.74);opacity:.45;z-index:2;pointer-events:auto;filter:saturate(.75);cursor:pointer}
-.crs-card.is-l{transform:translateX(-114%) scale(.74);opacity:.45;z-index:2;pointer-events:auto;filter:saturate(.75);cursor:pointer}
-.crs-card.is-r:hover,.crs-card.is-l:hover{opacity:.7}
-/* the hook line, written at a tilt above the print */
-.scb-cap{position:absolute;left:13%;top:.6%;max-width:23em;margin:0;transform:rotate(var(--rt,-5deg));transform-origin:left bottom;
-  font-size:12px;font-weight:700;letter-spacing:.07em;line-height:1.55;color:#2D63E6;transition:opacity .4s ease}
-.scb-cap i{display:inline-block;width:8px;height:8px;margin-right:9px;background:#2D63E6}
-.crs-card:not(.is-c) .scb-cap{opacity:0}
-/* the photo print: white-framed and tilted, with a long soft shadow */
-.scb-ph{position:absolute;left:13%;top:9%;width:74%;aspect-ratio:16/10.6;transform:rotate(var(--rt,-2deg));
-  border:10px solid #fff;border-bottom-width:40px;background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02);
-  box-shadow:0 0 0 .5px rgba(0,16,37,.1),0 36px 64px -36px rgba(0,16,37,.45),0 3px 8px rgba(0,16,37,.08);
-  transition:transform .5s cubic-bezier(.2,.8,.3,1)}
-.crs-card.is-c:hover .scb-ph{transform:rotate(calc(var(--rt,-2deg) * .35)) scale(1.012)}
-/* two strips of translucent tape hold the print to the board */
+/* the wheel: its centre far below the screen, the prints hung along the top of the arc */
+.whl{position:absolute;left:50%;top:calc(47% + var(--R));width:0;height:0}
+.whl-it{position:absolute;left:0;top:0;width:clamp(250px,27vw,360px);margin:0;
+  transform:rotate(calc(var(--a) + var(--wa,0deg))) translateY(calc(var(--R) * -1)) translate(-50%,-50%) rotate(var(--rt,0deg))}
+.whl-it .scb-ph{transition:filter .5s ease,opacity .5s ease}
+.whl-it:not(.is-top) .scb-ph{filter:saturate(.7) contrast(1);opacity:.9}
+.cs-ring{position:absolute;left:50%;top:calc(47% + var(--R));width:calc(var(--R) * 2 + 150px);height:calc(var(--R) * 2 + 150px);
+  transform:translate(-50%,-50%) rotate(calc(var(--wa,0deg) * .6));border-radius:50%;border:2px dashed rgba(0,16,37,.16)}
+/* the print keeps its scrapbook body: white frame, taped corners, the category written on the bottom strip */
+.scb-ph{position:relative;display:block;width:100%;aspect-ratio:16/10.6;border:10px solid #fff;border-bottom-width:40px;
+  background-size:cover;background-position:50% 50%;filter:saturate(.92) contrast(1.02);
+  box-shadow:0 0 0 .5px rgba(0,16,37,.1),0 36px 64px -36px rgba(0,16,37,.45),0 3px 8px rgba(0,16,37,.08)}
 .scb-ph::before,.scb-ph::after{content:'';position:absolute;top:-22px;width:76px;height:24px;background:rgba(226,232,243,.72);
-  box-shadow:0 0 0 .5px rgba(0,16,37,.07),0 2px 5px rgba(0,16,37,.08);backdrop-filter:blur(1px)}
+  box-shadow:0 0 0 .5px rgba(0,16,37,.07),0 2px 5px rgba(0,16,37,.08)}
 .scb-ph::before{left:-30px;transform:rotate(-42deg)}
 .scb-ph::after{right:-30px;transform:rotate(42deg)}
-/* the category is written on the print's own bottom strip */
-.scb-foot{position:absolute;right:8px;bottom:-31px;font-style:normal;
-  font-size:9px;font-weight:700;letter-spacing:.16em;color:#9AA3B2}
-/* the note: a paper card taped over the print's lower corner, with a dotted notepad margin */
-.scb-note{position:absolute;left:0;bottom:0;width:min(62%,330px);padding:20px 20px 17px 36px;transform:rotate(var(--rt,-1.5deg));
+.scb-foot{position:absolute;right:8px;bottom:-31px;font-style:normal;font-size:9px;font-weight:700;letter-spacing:.16em;color:#9AA3B2}
+/* the top print's words wait under the arc and change with the wheel */
+.whl-notes{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);width:min(460px,88vw);height:clamp(200px,28vh,250px);z-index:2}
+.whl-nt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .5s cubic-bezier(.2,.8,.3,1);pointer-events:none}
+.whl-nt.is-on{opacity:1;transform:none;pointer-events:auto;transition-delay:.08s}
+.scb-cap{margin:0 0 13px;max-width:26em;text-align:center;font-size:11.5px;font-weight:700;letter-spacing:.07em;line-height:1.55;color:#2D63E6}
+.scb-cap i{display:inline-block;width:8px;height:8px;margin-right:9px;background:#2D63E6}
+.scb-note{position:relative;width:100%;padding:20px 22px 17px 38px;transform:rotate(-1.2deg);
   background-image:radial-gradient(circle,#D7DCE6 1.5px,transparent 1.9px),
     repeating-linear-gradient(180deg,transparent 0 25px,rgba(0,16,37,.045) 25px 26px),linear-gradient(180deg,#FDFDFB,#F7F7F3);
   background-size:28px 26px,100% 26px,100% 100%;background-position:0 18px,0 10px,0 0;background-repeat:repeat-y,repeat,no-repeat;
   box-shadow:0 0 0 .5px rgba(0,16,37,.08),0 30px 54px -30px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.06)}
-.scb-tape{position:absolute;left:14px;top:-12px;padding:5px 14px;transform:rotate(-3deg);background:var(--c,#2D63E6);color:#fff;
+.scb-tape{position:absolute;left:16px;top:-12px;padding:5px 14px;transform:rotate(-3deg);background:var(--c,#2D63E6);color:#fff;
   font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;box-shadow:0 5px 12px -5px rgba(0,16,37,.45)}
 .scb-note h3{margin:6px 0 0;font-size:15px;line-height:1.38;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
 .scb-note p{margin:8px 0 0;font-size:12.5px;line-height:1.65;color:var(--atc-slate)}
 .cs-link{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;font-weight:600;color:var(--atc-navy)}
-.cs-link svg{box-sizing:content-box;width:10px;height:10px;padding:4px;border-radius:50%;background:var(--atc-navy);color:#fff;
-  transition:transform .3s ease}
-.crs-card.is-c .scb-note:hover .cs-link svg{transform:translateX(3px)}
-/* the index below: quiet numbered words, the active one carrying the gradient timer */
-.csw-tabs{display:flex;justify-content:center;gap:clamp(8px,1.6vw,26px);margin-top:clamp(16px,2.6vh,26px);overflow-x:auto;scrollbar-width:none}
-.csw-tabs::-webkit-scrollbar{display:none}
-.csw-tab{position:relative;display:flex;align-items:center;gap:6px;padding:8px 4px 11px;border:0;background:none;
-  font-family:var(--atc-font);font-size:12px;font-weight:600;letter-spacing:.01em;color:var(--atc-mute);white-space:nowrap;transition:color .3s ease}
-.csw-tab em{font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.08em;color:#B9C1CE;transition:color .3s ease}
-.csw-tab:hover,.csw-tab.is-on{color:var(--atc-navy)}
-.csw-tab.is-on em{color:#8C95A6}
-.csw-tab i{position:absolute;left:0;right:0;bottom:3px;height:2px;border-radius:2px;background:var(--atc-grad);transform:scaleX(0);transform-origin:left}
-.csw-tab.is-on i{animation:csw-prog var(--csw-cycle,5s) linear forwards}
-@keyframes csw-prog{to{transform:scaleX(1)}}
+.cs-link svg{box-sizing:content-box;width:10px;height:10px;padding:4px;border-radius:50%;background:var(--atc-navy);color:#fff;transition:transform .3s ease}
+.scb-note:hover .cs-link svg{transform:translateX(3px)}
+.whl-count{position:absolute;right:4%;bottom:5.5%;z-index:2;font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--atc-mute)}
+.whl-count b{color:var(--atc-navy);font-weight:700}
 @media (max-width:900px){
-  .crs{height:clamp(440px,60vh,540px)}
-  .crs-card{width:88vw}
-  .crs-card.is-r{transform:translateX(44%) scale(.78)}
-  .crs-card.is-l{transform:translateX(-144%) scale(.78)}
-  .scb-note{width:min(72%,310px)}
-  .csw-tab em{display:none}
+  .atc-cs{height:300vh}
+  .cs-pin{--R:clamp(430px,120vw,640px)}
+  .whl-it{width:min(62vw,320px)}
+  .whl-notes{bottom:4%}
 }
 
 /* Meet our team: the people behind the proof. One contained canvas (never wider than 1240px), a blueprint grid with
@@ -1885,88 +1866,53 @@ with a vision.</h2>
 
   <div class="atc-after" data-theme="light">
 
-    <!-- Case studies: one living window instead of six cards. The six real projects share a single browser window in
-         the site's own chrome: a tab strip with a gradient timer on the active tab, the address following along, and
-         each case's screen and story taking the stage in turn - on its own clock, or at a click -->
+    <!-- Case studies: the prints ride a great wheel. The section pins while the page scrolls and the wheel turns,
+         each tilted print sweeping through the top of the arc in turn, its note waiting below the arc -->
     <section class="atc-sec atc-cs" id="cases" aria-labelledby="cs-title">
-      <div class="cs-wrap">
+      <div class="cs-pin">
+        <i class="atc-team-grid" aria-hidden="true"></i>
         <div class="cs-head">
           <p class="ds-label ds-grad-text ds-rv" data-rv="">Case studies</p>
           <h2 class="ds-display" id="cs-title"><span class="cs-ln ds-rv" data-rv="" style="--d:.18s"><span>Real results,</span></span><br>
             <span class="cs-ln ds-rv" data-rv="" style="--d:.45s"><span class="ds-soft">from real partnerships.</span></span></h2>
         </div>
-        <div class="csw ds-rv" data-rv="" style="--d:.75s">
-          <i class="atc-team-grid" aria-hidden="true"></i>
-          <div class="crs">
-            <article class="crs-card is-c" data-k="0">
-              <p class="scb-cap" style="--rt:-5deg"><i></i>THE QUARTER NOW REPORTS ITSELF.</p>
-              <i class="scb-ph" style="--rt:-2.4deg;background-image:url(../assets/cases/case-1.webp)"><em class="scb-foot">AUTOMATION</em></i>
-              <div class="scb-note" style="--rt:-1.6deg">
-                <span class="scb-tape" style="--c:#3FB27E">Case 01</span>
-                <h3>Intelligent Financial Automation Ecosystem</h3>
-                <p>Automating financial workflows to generate real-time insights and client-ready reports.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
-              </div>
-            </article>
-            <article class="crs-card is-r" data-k="1">
-              <p class="scb-cap" style="--rt:-4deg"><i></i>PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
-              <i class="scb-ph" style="--rt:2.2deg;background-image:url(../assets/cases/case-2.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
-              <div class="scb-note" style="--rt:1.4deg">
-                <span class="scb-tape" style="--c:#2D63E6">Case 02</span>
-                <h3>B2B Valuation Platform Strategy</h3>
-                <p>Building a scalable B2B platform for embedded property valuation services.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
-              </div>
-            </article>
-            <article class="crs-card" data-k="2">
-              <p class="scb-cap" style="--rt:-5.5deg"><i></i>OUTREACH THAT NEVER SLEEPS.</p>
-              <i class="scb-ph" style="--rt:-2deg;background-image:url(../assets/cases/case-3.webp)"><em class="scb-foot">AUTOMATION</em></i>
-              <div class="scb-note" style="--rt:1.6deg">
-                <span class="scb-tape" style="--c:#3FB27E">Case 03</span>
-                <h3>AI LinkedIn Lead Generation Agent</h3>
-                <p>AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
-              </div>
-            </article>
-            <article class="crs-card" data-k="3">
-              <p class="scb-cap" style="--rt:-4.5deg"><i></i>A VOICE THAT ANSWERS EVERY CALL.</p>
-              <i class="scb-ph" style="--rt:2.4deg;background-image:url(../assets/cases/case-4.webp)"><em class="scb-foot">AUTOMATION</em></i>
-              <div class="scb-note" style="--rt:-1.8deg">
-                <span class="scb-tape" style="--c:#3FB27E">Case 04</span>
-                <h3>Healthcare AI Voice Agent</h3>
-                <p>24/7 AI voice assistant handling patient calls and appointment scheduling.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
-              </div>
-            </article>
-            <article class="crs-card" data-k="4">
-              <p class="scb-cap" style="--rt:-5deg"><i></i>EVERY SALE, VISIBLE AS IT HAPPENS.</p>
-              <i class="scb-ph" style="--rt:-2.2deg;background-image:url(../assets/cases/case-5.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
-              <div class="scb-note" style="--rt:1.5deg">
-                <span class="scb-tape" style="--c:#2D63E6">Case 05</span>
-                <h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3>
-                <p>Mobile platform enabling real-time sales tracking and streamlined channel operations.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
-              </div>
-            </article>
-            <article class="crs-card is-l" data-k="5">
-              <p class="scb-cap" style="--rt:-4deg"><i></i>FROM LEAD TO PRODUCTION, ONE FLOW.</p>
-              <i class="scb-ph" style="--rt:2deg;background-image:url(../assets/cases/case-6.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i>
-              <div class="scb-note" style="--rt:-1.4deg">
-                <span class="scb-tape" style="--c:#2D63E6">Case 06</span>
-                <h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3>
-                <p>CRM platform connecting leads, sales pipelines, and production workflows.</p>
-                <span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span>
-              </div>
-            </article>
+        <div class="csw ds-rv" data-rv="" style="--d:.6s">
+          <i class="cs-ring" aria-hidden="true"></i>
+          <div class="whl" data-cs="wheel">
+            <figure class="whl-it is-top" style="--a:0deg;--rt:-2.4deg"><i class="scb-ph" style="background-image:url(../assets/cases/case-1.webp)"><em class="scb-foot">AUTOMATION</em></i></figure>
+            <figure class="whl-it" style="--a:24deg;--rt:1.8deg"><i class="scb-ph" style="background-image:url(../assets/cases/case-2.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i></figure>
+            <figure class="whl-it" style="--a:48deg;--rt:-2deg"><i class="scb-ph" style="background-image:url(../assets/cases/case-3.webp)"><em class="scb-foot">AUTOMATION</em></i></figure>
+            <figure class="whl-it" style="--a:72deg;--rt:2.2deg"><i class="scb-ph" style="background-image:url(../assets/cases/case-4.webp)"><em class="scb-foot">AUTOMATION</em></i></figure>
+            <figure class="whl-it" style="--a:96deg;--rt:-1.8deg"><i class="scb-ph" style="background-image:url(../assets/cases/case-5.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i></figure>
+            <figure class="whl-it" style="--a:120deg;--rt:2deg"><i class="scb-ph" style="background-image:url(../assets/cases/case-6.webp)"><em class="scb-foot">DIGITAL TRANSFORMATION</em></i></figure>
           </div>
-          <div class="csw-tabs">
-            <button class="csw-tab is-on" type="button" data-k="0"><em>01</em>Finance<i></i></button>
-            <button class="csw-tab" type="button" data-k="1"><em>02</em>Valuation<i></i></button>
-            <button class="csw-tab" type="button" data-k="2"><em>03</em>LinkedIn<i></i></button>
-            <button class="csw-tab" type="button" data-k="3"><em>04</em>Healthcare<i></i></button>
-            <button class="csw-tab" type="button" data-k="4"><em>05</em>Retail<i></i></button>
-            <button class="csw-tab" type="button" data-k="5"><em>06</em>Manufacturing<i></i></button>
+          <div class="whl-notes">
+            <div class="whl-nt is-on">
+              <p class="scb-cap"><i></i>THE QUARTER NOW REPORTS ITSELF.</p>
+              <div class="scb-note"><span class="scb-tape" style="--c:#3FB27E">Case 01</span><h3>Intelligent Financial Automation Ecosystem</h3><p>Automating financial workflows to generate real-time insights and client-ready reports.</p><span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></div>
+            </div>
+            <div class="whl-nt">
+              <p class="scb-cap"><i></i>PROPERTY VALUATION, EMBEDDED AT SCALE.</p>
+              <div class="scb-note"><span class="scb-tape" style="--c:#2D63E6">Case 02</span><h3>B2B Valuation Platform Strategy</h3><p>Building a scalable B2B platform for embedded property valuation services.</p><span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></div>
+            </div>
+            <div class="whl-nt">
+              <p class="scb-cap"><i></i>OUTREACH THAT NEVER SLEEPS.</p>
+              <div class="scb-note"><span class="scb-tape" style="--c:#3FB27E">Case 03</span><h3>AI LinkedIn Lead Generation Agent</h3><p>AI-powered LinkedIn outreach that continuously generates qualified B2B leads.</p><span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></div>
+            </div>
+            <div class="whl-nt">
+              <p class="scb-cap"><i></i>A VOICE THAT ANSWERS EVERY CALL.</p>
+              <div class="scb-note"><span class="scb-tape" style="--c:#3FB27E">Case 04</span><h3>Healthcare AI Voice Agent</h3><p>24/7 AI voice assistant handling patient calls and appointment scheduling.</p><span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></div>
+            </div>
+            <div class="whl-nt">
+              <p class="scb-cap"><i></i>EVERY SALE, VISIBLE AS IT HAPPENS.</p>
+              <div class="scb-note"><span class="scb-tape" style="--c:#2D63E6">Case 05</span><h3>Digitizing a Major Mobile Brand&#x27;s Retail &amp; Distribution Ecosystem</h3><p>Mobile platform enabling real-time sales tracking and streamlined channel operations.</p><span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></div>
+            </div>
+            <div class="whl-nt">
+              <p class="scb-cap"><i></i>FROM LEAD TO PRODUCTION, ONE FLOW.</p>
+              <div class="scb-note"><span class="scb-tape" style="--c:#2D63E6">Case 06</span><h3>Automating Sales &amp; Production Workflow for a Manufacturing Company</h3><p>CRM platform connecting leads, sales pipelines, and production workflows.</p><span class="cs-link">View case study<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5"></path></svg></span></div>
+            </div>
           </div>
+          <span class="whl-count"><b data-cs="cur">01</b>&nbsp;/&nbsp;06</span>
         </div>
       </div>
     </section>
@@ -4122,48 +4068,39 @@ class Component extends DCLogic {
 }
 </script>
 <script>
-/* Case studies: the window lives on its own clock. The tabs advance one by one, a gradient timer running along the
-   active tab, the address following; a click on any tab takes over the clock. The page re-renders its markup on
-   mount, so the script keeps re-binding to the live window. */
+/* Case studies: the wheel turns with the page. While the section is pinned, scroll position drives the wheel's
+   angle, each print sweeping through the top of the arc in turn; the note below follows the print at the top.
+   The page re-renders its markup on mount, so the script keeps re-binding to the live section. */
 (function () {
-  var CYCLE = 5000, URLS = ['financial-automation', 'b2b-valuation', 'linkedin-agent', 'healthcare-voice', 'retail-distribution', 'manufacturing-crm'];
-  var sec = null, bound = null, timer = null, idx = 0, started = false;
-  function apply(k) {
-    if (!sec) return;
-    idx = (k + URLS.length) % URLS.length;
-    var u = sec.querySelector('[data-cs="url"]');
-    if (u) u.textContent = 'atconglobal.com/cases/' + URLS[idx];
-    var tabs = sec.querySelectorAll('.csw-tab');
-    for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle('is-on', i === idx);
-    var cards = sec.querySelectorAll('.crs-card');
-    for (var j = 0; j < cards.length; j++) {
-      var d = (j - idx + cards.length) % cards.length;
-      cards[j].classList.toggle('is-c', d === 0);
-      cards[j].classList.toggle('is-r', d === 1);
-      cards[j].classList.toggle('is-l', d === cards.length - 1);
-    }
-  }
-  function tick() { apply(idx + 1); }
-  function play() { clearInterval(timer); timer = setInterval(tick, CYCLE); }
+  var STEP = 24, N = 6;
+  var sec = null, bound = null, idx = -1;
   function bind() {
     var live = document.getElementById('cases');
     if (!live || !live.isConnected || live === bound) return;
-    bound = sec = live;
-    if (started) { apply(idx); play(); return; }
-    try {
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (en) { if (en.isIntersecting && !started) { started = true; io.disconnect(); apply(0); play(); } });
-      }, { threshold: 0.35 });
-      io.observe(live);
-    } catch (e) { }
+    bound = sec = live; idx = -1;
   }
-  setInterval(bind, 800); bind();
-  document.addEventListener('click', function (e) {
-    var t = e.target && e.target.closest ? e.target.closest('.csw-tab, .crs-card') : null;
-    if (!t || !sec) return;
-    if (t.classList.contains('crs-card') && t.classList.contains('is-c')) return;
-    started = true; apply(parseInt(t.getAttribute('data-k'), 10) || 0); play();
-  });
+  bind(); setInterval(bind, 800);
+  (function frame() {
+    if (sec && sec.isConnected) {
+      var vh = window.innerHeight, r = sec.getBoundingClientRect();
+      var total = Math.max(1, r.height - vh);
+      var p = Math.min(1, Math.max(0, -r.top / total));
+      var wa = -(p * STEP * (N - 1));
+      var w = sec.querySelector('[data-cs="wheel"]');
+      if (w && w.parentElement) w.parentElement.style.setProperty('--wa', wa.toFixed(3) + 'deg');
+      var k = Math.max(0, Math.min(N - 1, Math.round(p * (N - 1))));
+      if (k !== idx) {
+        idx = k;
+        var ns = sec.querySelectorAll('.whl-nt');
+        for (var i = 0; i < ns.length; i++) ns[i].classList.toggle('is-on', i === k);
+        var its = sec.querySelectorAll('.whl-it');
+        for (var j = 0; j < its.length; j++) its[j].classList.toggle('is-top', j === k);
+        var c = sec.querySelector('[data-cs="cur"]');
+        if (c) c.textContent = '0' + (k + 1);
+      }
+    } else { bound = null; bind(); }
+    requestAnimationFrame(frame);
+  })();
 })();
 </script>
 <script>
