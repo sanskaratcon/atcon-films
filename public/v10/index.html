@@ -1404,24 +1404,12 @@ html,body{overflow-anchor:none}
 .cs-link svg{box-sizing:content-box;width:10px;height:10px;padding:4px;border-radius:50%;background:var(--atc-navy);color:#fff;
   transition:transform .3s ease}
 .cse-glass:hover .cs-link svg{transform:translateX(3px)}
-/* the index below: quiet numbered words, the active one carrying the gradient timer */
-.csw-tabs{display:flex;justify-content:center;gap:clamp(8px,1.6vw,26px);margin-top:clamp(16px,2.6vh,26px);overflow-x:auto;scrollbar-width:none}
-.csw-tabs::-webkit-scrollbar{display:none}
-.csw-tab{position:relative;display:flex;align-items:center;gap:6px;padding:8px 4px 11px;border:0;background:none;
-  font-family:var(--atc-font);font-size:12px;font-weight:600;letter-spacing:.01em;color:var(--atc-mute);white-space:nowrap;transition:color .3s ease}
-.csw-tab em{font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.08em;color:#B9C1CE;transition:color .3s ease}
-.csw-tab:hover,.csw-tab.is-on{color:var(--atc-navy)}
-.csw-tab.is-on em{color:#8C95A6}
-.csw-tab i{position:absolute;left:0;right:0;bottom:3px;height:2px;border-radius:2px;background:var(--atc-grad);transform:scaleX(0);transform-origin:left}
-.csw-tab.is-on i{animation:csw-prog var(--csw-cycle,5s) linear forwards}
-@keyframes csw-prog{to{transform:scaleX(1)}}
 @media (max-width:900px){
   .crs{height:clamp(440px,60vh,540px)}
   .crs-card{width:88vw}
   .crs-card.is-r{transform:translateX(44%) scale(.78)}
   .crs-card.is-l{transform:translateX(-144%) scale(.78)}
   .cse-stack{left:3%;width:94%}
-  .csw-tab em{display:none}
 }
 
 /* Meet our team: the people behind the proof. One contained canvas (never wider than 1240px), a blueprint grid with
@@ -2063,14 +2051,6 @@ with a vision.</h2>
                 </div>
               </div>
             </article>
-          </div>
-          <div class="csw-tabs">
-            <button class="csw-tab is-on" type="button" data-k="0"><em>01</em>Finance<i></i></button>
-            <button class="csw-tab" type="button" data-k="1"><em>02</em>Valuation<i></i></button>
-            <button class="csw-tab" type="button" data-k="2"><em>03</em>LinkedIn<i></i></button>
-            <button class="csw-tab" type="button" data-k="3"><em>04</em>Healthcare<i></i></button>
-            <button class="csw-tab" type="button" data-k="4"><em>05</em>Retail<i></i></button>
-            <button class="csw-tab" type="button" data-k="5"><em>06</em>Manufacturing<i></i></button>
           </div>
         </div>
       </div>
@@ -4175,9 +4155,8 @@ class Component extends DCLogic {
 }
 </script>
 <script>
-/* Case studies: the window lives on its own clock. The tabs advance one by one, a gradient timer running along the
-   active tab, the address following; a click on any tab takes over the clock. The page re-renders its markup on
-   mount, so the script keeps re-binding to the live window. */
+/* Case studies: the carousel lives on its own clock, the cases advancing one by one; a click on a waiting card takes
+   over the clock. The page re-renders its markup on mount, so the script keeps re-binding to the live section. */
 (function () {
   var CYCLE = 5000, URLS = ['financial-automation', 'b2b-valuation', 'linkedin-agent', 'healthcare-voice', 'retail-distribution', 'manufacturing-crm'];
   var sec = null, bound = null, timer = null, idx = 0, started = false;
@@ -4186,8 +4165,6 @@ class Component extends DCLogic {
     idx = (k + URLS.length) % URLS.length;
     var u = sec.querySelector('[data-cs="url"]');
     if (u) u.textContent = 'atconglobal.com/cases/' + URLS[idx];
-    var tabs = sec.querySelectorAll('.csw-tab');
-    for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle('is-on', i === idx);
     var cards = sec.querySelectorAll('.crs-card');
     for (var j = 0; j < cards.length; j++) {
       var d = (j - idx + cards.length) % cards.length;
@@ -4212,7 +4189,7 @@ class Component extends DCLogic {
   }
   setInterval(bind, 800); bind();
   document.addEventListener('click', function (e) {
-    var t = e.target && e.target.closest ? e.target.closest('.csw-tab, .crs-card') : null;
+    var t = e.target && e.target.closest ? e.target.closest('.crs-card') : null;
     if (!t || !sec) return;
     if (t.classList.contains('crs-card') && t.classList.contains('is-c')) return;
     started = true; apply(parseInt(t.getAttribute('data-k'), 10) || 0); play();
