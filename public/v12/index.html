@@ -1342,8 +1342,9 @@ html,body{overflow-anchor:none}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
 /* Case studies on the floor: the camera has come down out of the dark space onto a white room with a grid floor
-   running to the horizon, and there it stays. Each case is a screen lying flat on the floor; in turn each one swings up
-   on its hinge to stand upright, its story beside it on the left, then lies back down flat before the next one rises */
+   running to the horizon. The cases lie flat on the floor as screens, each in its own place; the camera finds each one
+   in turn - a little forward and to the right, then a little back - and it swings up on its hinge to stand upright, its
+   story beside it on the left, then lies back down flat before the camera moves on to the next */
 .atc-flr{position:relative;background:#fff}
 .flr-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 .fls{position:absolute;inset:0;overflow:hidden;perspective:1100px;perspective-origin:50% 66%;
@@ -1352,23 +1353,25 @@ html,body{overflow-anchor:none}
 .fls::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 100% at 50% 20%,#0B1C38,#020A1A);opacity:var(--dark,0)}
 .fl-floor{position:absolute;left:50%;bottom:0;width:8400px;height:5400px;margin-left:-4200px;transform-origin:50% 100%;
   transform-style:preserve-3d;transform:rotateX(var(--fa,80deg))}
-.fl-grid{position:absolute;inset:0;pointer-events:none;background-color:#F2F5FA;
+/* the grid moves with the camera by less than one square at a time (it repeats), so it is never redrawn */
+.fl-grid{position:absolute;inset:-300px;pointer-events:none;background-color:#F2F5FA;transform:translate3d(var(--gx,0px),var(--gy,0px),0);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cpath d='M150 118v64M118 150h64' stroke='%2313213F' stroke-width='6' stroke-linecap='square'/%3E%3C/svg%3E"),linear-gradient(to right,rgba(0,16,37,.075) 3px,transparent 3px),linear-gradient(to bottom,rgba(0,16,37,.075) 3px,transparent 3px);
   background-size:300px 300px;background-position:-150px -150px,0 0,0 0;
   -webkit-mask-image:linear-gradient(to top,#000 22%,transparent 86%);mask-image:linear-gradient(to top,#000 22%,transparent 86%)}
 /* (each layer keeps a hair of height off the one under it: surfaces in exactly the same plane confuse the 3D sorting) */
-.fl-grid.fl-night{background-color:#081630;opacity:var(--dark,0);transform:translateZ(1px);
+.fl-grid.fl-night{background-color:#081630;opacity:var(--dark,0);transform:translate3d(var(--gx,0px),var(--gy,0px),1px);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cpath d='M150 118v64M118 150h64' stroke='%23FFFFFF' stroke-width='6' stroke-linecap='square'/%3E%3C/svg%3E"),linear-gradient(to right,rgba(255,255,255,.07) 3px,transparent 3px),linear-gradient(to bottom,rgba(255,255,255,.07) 3px,transparent 3px)}
-/* a case: a screen standing on the floor, hinged at its foot; --r runs from lying flat (0) to upright (1) */
-/* (it stands turned a little towards its story; the turn is part of where it lies, so rising it only swings on its hinge) */
+/* a case: a screen on the floor, hinged at its foot; --r runs from lying flat (0) to upright (1), and --ox/--oy are where it
+   lies relative to the camera. (It stands turned a little towards its story; the turn is part of where it lies, so
+   rising it only swings on its hinge) */
 .fl-panel{position:absolute;left:0;top:0;transform-origin:50% 100%;transform-style:preserve-3d;opacity:0;
-  transform:rotateZ(var(--yaw,11deg)) rotateX(calc(var(--fa,80deg) * var(--r,0) * -1))}
+  transform:translate3d(var(--ox,0px),var(--oy,0px),0) rotateZ(var(--yaw,11deg)) rotateX(calc(var(--fa,80deg) * var(--r,0) * -1))}
 .fl-panel::before{content:'';position:absolute;inset:0;border-radius:26px;background:linear-gradient(180deg,#DCE3EE,#B9C5D8);transform:translateZ(-20px)}
 .fl-face{position:absolute;inset:0;border-radius:26px;background:#fff;box-shadow:0 0 0 2px rgba(0,16,37,.07)}
 .fl-face .cse-il{position:absolute;inset:16px;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#F1F6FC,#E4ECF7)}
 .fl-face .il-svg{position:absolute;inset:0;width:100%;height:100%}
 .atc-flr .fl-night{display:none}
-.fl-shade{position:absolute;left:0;top:0;border-radius:50%;pointer-events:none;opacity:0;transform:translate3d(0,0,3px);
+.fl-shade{position:absolute;left:0;top:0;border-radius:50%;pointer-events:none;opacity:0;transform:translate3d(var(--ox,0px),var(--oy,0px),3px);
   background:radial-gradient(closest-side,rgba(0,16,37,.22),rgba(0,16,37,0))}
 /* the words: the section's line first, then each case's story on the left */
 .flr-head{position:absolute;left:0;right:0;top:15vh;z-index:3;text-align:center;padding:0 20px;opacity:0;will-change:transform,opacity}
@@ -1867,8 +1870,8 @@ with a vision.</h2>
   <div class="atc-after" data-theme="light">
 
     <!-- Case studies on the floor: the camera has come down out of the dark space onto a white room with a grid
-         floor; each case lies flat on it as a screen, swings up to stand with its story on the left, and lies
-         back down before the next one rises -->
+         floor; the cases lie flat on it as screens, each in its own place; the camera finds each in turn and it
+         swings up to stand with its story on the left, then lies back down before the camera moves on -->
     <section class="atc-flr" id="cases" aria-labelledby="cs-title">
       <div class="flr-pin">
         <div class="fls">
@@ -4103,14 +4106,18 @@ class Component extends DCLogic {
 }
 </script>
 <script>
-/* Case studies on the floor. The section is pinned while the page scrolls through it, and the camera stays where the
-   way down out of the dark space left it: first the section's line, alone over the empty floor; then each case in turn -
-   its screen, lying flat on the floor, swings up on its hinge until it stands upright, its story comes in on the left,
-   and it lies back down flat before the next one rises in the same place. Everything is measured in screens scrolled
-   since the floor was pinned. The page re-renders its markup on mount, so the script keeps re-binding to the live section. */
+/* Case studies on the floor. The section is pinned while the page scrolls through it. First its line, over the floor
+   where the cases lie flat, each screen in its own place; then the camera finds each case in turn - it moves a little,
+   forward and to the right, then a little back, the floor moving with it - and the screen swings up on its hinge to
+   stand upright while its story comes in on the left, then lies back down flat before the camera moves on. Everything
+   is measured in screens scrolled since the floor was pinned. The page re-renders its markup on mount, so the script
+   keeps re-binding to the live section. */
 (function () {
-  var sec = null, scene, panels = [], shades = [], cases = [], head, raf = 0, G = {};
+  var sec = null, scene, grids = [], panels = [], shades = [], cases = [], head, raf = 0, G = {};
   var START = .7, HOLD = 1;   // the first case begins START screens in; each case has HOLD screens
+  // where each case lies on the floor (floor units from the first one): a zig-zag, each a little to the right and
+  // alternately forward and back, never on top of another
+  var SPOTS = [[0, 0], [900, -1200], [1800, 0], [2700, -1200], [3600, 0], [4500, -1200]];
   function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
   function ease(x) { return x * x * (3 - 2 * x); }
   function layout() {
@@ -4140,17 +4147,31 @@ class Component extends DCLogic {
     var hi = ease(clamp((t - .02) / .25)), ho = ease(clamp((t - .45) / .3));
     head.style.opacity = (hi * (1 - ho)).toFixed(3);
     head.style.transform = 'translateY(' + ((1 - hi) * 26 - ho * 50).toFixed(1) + 'px)';
+    // the camera: on each case while it stands, then a short move to the next one once it lies flat again
+    var u = t - START, b = Math.max(0, Math.min(n - 1, Math.floor(u))), m = u < 0 ? 0 : ease(clamp((u - b - .8) / .2));
+    var c0 = SPOTS[b], c1 = SPOTS[Math.min(n - 1, b + 1)], k = G.k;
+    var cx = (c0[0] + (c1[0] - c0[0]) * m) * k, cy = (c0[1] + (c1[1] - c0[1]) * m) * k;
+    var gx = (-cx % 300).toFixed(1) + 'px', gy = (-cy % 300).toFixed(1) + 'px';
+    grids.forEach(function (g) { g.style.setProperty('--gx', gx); g.style.setProperty('--gy', gy); });
+    // the screens come into view lying flat while the line is up
+    var seen = ease(clamp((t - .04) / .3));
     panels.forEach(function (p, i) {
       var s = t - START - i * HOLD;
-      // up from flat to upright, held while its story is read, and back down flat before the next one comes up
-      var rise = ease(clamp(s / .32)) * (1 - ease(clamp((s - .7) / .28)));
-      // lying flat it is not there at all (a screen in the floor's own plane would confuse the 3D sorting)
-      var on = s > 0 && s < 1 && rise > .004 ? '' : 'none';
-      if (p.style.display !== on) { p.style.display = on; shades[i].style.display = on; }
-      p.style.setProperty('--r', rise.toFixed(4));
-      p.style.opacity = clamp(rise / .06).toFixed(3);
-      shades[i].style.opacity = (rise * .9).toFixed(3);
-      var o = ease(clamp((s - .16) / .14)) * (1 - ease(clamp((s - .64) / .12)));
+      // up from flat to upright, held while its story is read, and back down flat before the camera moves on; lying
+      // down it keeps a hair of lift (a screen in the floor's own plane would confuse the 3D sorting)
+      var rise = ease(clamp(s / .28)) * (1 - ease(clamp((s - .58) / .24)));
+      var ox = (SPOTS[i][0] * k - cx).toFixed(1) + 'px', oy = (SPOTS[i][1] * k - cy).toFixed(1) + 'px';
+      p.style.setProperty('--ox', ox); p.style.setProperty('--oy', oy);
+      p.style.setProperty('--r', (.015 + .985 * rise).toFixed(4));
+      // once the camera has moved on, the screen it leaves behind fades away, so the floor under the story stays clear;
+      // the ones still ahead stay lying where the camera will find them
+      var vis = seen * (i < n - 1 ? 1 - ease(clamp((s - .82) / .18)) : 1), show = vis > .002 ? '' : 'none';
+      if (p.style.display !== show) { p.style.display = show; shades[i].style.display = show; }
+      p.style.opacity = vis.toFixed(3);
+      var sh = shades[i];
+      sh.style.setProperty('--ox', ox); sh.style.setProperty('--oy', oy);
+      sh.style.opacity = (rise * .9).toFixed(3);
+      var o = ease(clamp((s - .14) / .14)) * (1 - ease(clamp((s - .56) / .12)));
       var c = cases[i];
       c.style.opacity = o.toFixed(3);
       c.style.transform = (G.narrow ? '' : 'translateY(-50%) ') + 'translateY(' + ((1 - o) * (s < .5 ? 24 : -24)).toFixed(1) + 'px)';
@@ -4162,6 +4183,7 @@ class Component extends DCLogic {
     var live = document.querySelector('.atc-flr');
     if (!live || live === sec) return;
     sec = live; scene = live.querySelector('.fls');
+    grids = [].slice.call(live.querySelectorAll('.fl-grid'));
     panels = [].slice.call(live.querySelectorAll('.fl-panel'));
     shades = [].slice.call(live.querySelectorAll('.fl-shade'));
     cases = [].slice.call(live.querySelectorAll('.flr-case'));
