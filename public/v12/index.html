@@ -1351,27 +1351,21 @@ html,body{overflow-anchor:none}
   background:linear-gradient(180deg,#FFFFFF 0%,#F7F9FC 40%,#EEF2F8 100%)}
 /* the night: the same room in the dark space's navy, for the moment the camera comes down out of it */
 .fls::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 100% at 50% 20%,#0B1C38,#020A1A);opacity:var(--dark,0)}
-.fl-floor{position:absolute;left:50%;bottom:0;width:8400px;height:5400px;margin-left:-4200px;transform-origin:50% 100%;
-  transform-style:preserve-3d;transform:rotateX(var(--fa,80deg))}
-/* the grid moves with the camera by less than one square at a time (it repeats), so it is never redrawn */
-.fl-grid{position:absolute;inset:-300px;pointer-events:none;background-color:#F2F5FA;transform:translate3d(var(--gx,0px),var(--gy,0px),0);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cpath d='M150 118v64M118 150h64' stroke='%2313213F' stroke-width='6' stroke-linecap='square'/%3E%3C/svg%3E"),linear-gradient(to right,rgba(0,16,37,.075) 3px,transparent 3px),linear-gradient(to bottom,rgba(0,16,37,.075) 3px,transparent 3px);
-  background-size:300px 300px;background-position:-150px -150px,0 0,0 0;
-  -webkit-mask-image:linear-gradient(to top,#000 22%,transparent 86%);mask-image:linear-gradient(to top,#000 22%,transparent 86%)}
-/* (each layer keeps a hair of height off the one under it: surfaces in exactly the same plane confuse the 3D sorting) */
-.fl-grid.fl-night{background-color:#081630;opacity:var(--dark,0);transform:translate3d(var(--gx,0px),var(--gy,0px),1px);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cpath d='M150 118v64M118 150h64' stroke='%23FFFFFF' stroke-width='6' stroke-linecap='square'/%3E%3C/svg%3E"),linear-gradient(to right,rgba(255,255,255,.07) 3px,transparent 3px),linear-gradient(to bottom,rgba(255,255,255,.07) 3px,transparent 3px)}
+/* the floor is drawn on a flat canvas with the same camera as the screens (see atcFloor in the script): a tilted grid as
+   one huge 3D layer is more than a computer without a graphics card can redraw while it scrolls; the screens stand on it
+   in real 3D, in a floor-sized frame that carries the same camera */
+.fl-canvas{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.fl-floor{position:absolute;left:50%;bottom:0;width:7200px;height:4200px;margin-left:-3600px;transform-origin:50% 100%;transform-style:preserve-3d;
+  transform:rotateX(var(--fa,80deg)) translate(var(--pvx,0px),var(--pvy,0px)) rotateZ(var(--cyaw,0deg)) translate(calc(var(--pvx,0px) * -1),calc(var(--pvy,0px) * -1))}
 /* a case: a screen on the floor, hinged at its foot; --r runs from lying flat (0) to upright (1), and --ox/--oy are where it
    lies relative to the camera. (It stands turned a little towards its story; the turn is part of where it lies, so
    rising it only swings on its hinge) */
 .fl-panel{position:absolute;left:0;top:0;transform-origin:50% 100%;transform-style:preserve-3d;opacity:0;
   transform:translate3d(var(--ox,0px),var(--oy,0px),0) rotateZ(var(--yaw,11deg)) rotateX(calc(var(--fa,80deg) * var(--r,0) * -1))}
-.fl-panel::before{content:'';position:absolute;inset:0;border-radius:26px;background:linear-gradient(180deg,#DCE3EE,#B9C5D8);transform:translateZ(-20px)}
-.fl-face{position:absolute;inset:0;border-radius:26px;background:#fff;box-shadow:0 0 0 2px rgba(0,16,37,.07)}
+.fl-face{position:absolute;inset:0;border-radius:26px;background:#fff;box-shadow:0 0 0 2px rgba(0,16,37,.07),0 0 0 9px rgba(0,16,37,.035)}
 .fl-face .cse-il{position:absolute;inset:16px;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#F1F6FC,#E4ECF7)}
 .fl-face .il-svg{position:absolute;inset:0;width:100%;height:100%}
-.atc-flr .fl-night{display:none}
-.fl-shade{position:absolute;left:0;top:0;border-radius:50%;pointer-events:none;opacity:0;transform:translate3d(var(--ox,0px),var(--oy,0px),3px);
+.fl-shade{position:absolute;left:0;top:0;border-radius:50%;pointer-events:none;opacity:0;transform:translate3d(var(--ox,0px),var(--oy,0px),4px);
   background:radial-gradient(closest-side,rgba(0,16,37,.22),rgba(0,16,37,0))}
 /* the words: the section's line first, then each case's story on the left */
 .flr-head{position:absolute;left:0;right:0;top:15vh;z-index:3;text-align:center;padding:0 20px;opacity:0;will-change:transform,opacity}
@@ -1875,7 +1869,7 @@ with a vision.</h2>
     <section class="atc-flr" id="cases" aria-labelledby="cs-title">
       <div class="flr-pin">
         <div class="fls">
-          <div class="fl-floor"><div class="fl-grid"></div><div class="fl-grid fl-night"></div><i class="fl-shade"></i><div class="fl-panel"><div class="fl-face"><div class="cse-il"><svg class="il-svg" viewBox="0 0 600 360" aria-hidden="true"><defs>
+          <canvas class="fl-canvas" aria-hidden="true"></canvas><div class="fl-floor"><i class="fl-shade"></i><div class="fl-panel"><div class="fl-face"><div class="cse-il"><svg class="il-svg" viewBox="0 0 600 360" aria-hidden="true"><defs>
         <linearGradient id="hgr1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3FB27E"/><stop offset=".45" stop-color="#2D63E6"/><stop offset=".72" stop-color="#5A86EE"/><stop offset="1" stop-color="#9BBA2A"/></linearGradient>
         <linearGradient id="hcw1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9D3E2"/></linearGradient>
         <linearGradient id="hcg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5CC394"/><stop offset="1" stop-color="#2C8A5F"/></linearGradient>
@@ -4048,10 +4042,10 @@ class Component extends DCLogic {
     e.style.opacity = '1';
     e.style.transform = dn < 1 ? 'translateY(' + ((1 - dn) * H).toFixed(1) + 'px)' : '';
     e.style.borderRadius = '';
-    e.style.setProperty('--dark', (1 - lt).toFixed(3));
-    e.style.setProperty('--fa', (6 + 74 * up).toFixed(2) + 'deg');
-    var fs = e.firstChild;
-    if (fs) fs.style.perspectiveOrigin = '50% ' + Math.round(H * (W < 900 ? 0.34 : 0.47) + 1100 / Math.tan(80 * Math.PI / 180)) + 'px';
+    var dk = 1 - lt, fs = e.firstChild;
+    e.style.setProperty('--dark', dk.toFixed(3));
+    // the floor is drawn with the case studies' own camera, tilting up from looking straight down to the horizon
+    if (fs && window.atcFloor) window.atcFloor.draw(fs.querySelector('.fl-canvas'), { W: W, H: H, fa: 6 + 74 * up, dark: dk });
     return rects;
   }
 
@@ -4112,25 +4106,84 @@ class Component extends DCLogic {
    stand upright while its story comes in on the left, then lies back down flat before the camera moves on. Everything
    is measured in screens scrolled since the floor was pinned. The page re-renders its markup on mount, so the script
    keeps re-binding to the live section. */
+// The floor, drawn on a canvas with the very camera the screens stand under (perspective P from atcFloor.origin, the
+// floor tilted by fa about the screen's bottom edge, turned by yaw about the spot (pvx, pvy), moved by the camera (cx,
+// cy)); the dark space's way down onto it draws it too, in navy (dark = 1) turning white (dark = 0)
+window.atcFloor = (function () {
+  var P = 1100, SQ = 300;
+  function origin(W, H) { return H * (W < 900 ? .34 : .47) + P / Math.tan(80 * Math.PI / 180); }
+  function mix(a, b, k) { return a.map(function (v, i) { return v + (b[i] - v) * k; }); }
+  function rgba(c, al) { return 'rgba(' + Math.round(c[0]) + ',' + Math.round(c[1]) + ',' + Math.round(c[2]) + ',' + al + ')'; }
+  function draw(cv, o) {
+    if (!cv) return;
+    var W = o.W, H = o.H, dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    var c = cv.getContext('2d');
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, W, H);
+    var fa = (o.fa || 80) * Math.PI / 180, ca = Math.cos(fa), sa = Math.sin(fa), oy = origin(W, H), ox = W / 2;
+    var yw = (o.yaw || 0) * Math.PI / 180, cyw = Math.cos(yw), syw = Math.sin(yw), pvx = o.pvx || 0, pvy = o.pvy || 0;
+    var cx = o.cx || 0, cz = o.cy || 0, dk = o.dark || 0;
+    function pr(X, Y) {
+      var x1 = X - pvx, y1 = Y - pvy, xr = x1 * cyw - y1 * syw + pvx, yr = x1 * syw + y1 * cyw + pvy;
+      var px = ox + xr, py = H + yr * ca, pz = yr * sa, sc = P / (P - pz);
+      return [ox + (px - ox) * sc, oy + (py - oy) * sc];
+    }
+    function quad(x0, y0, x1, y1) {
+      var a = pr(x0, y0), b = pr(x1, y0), d = pr(x1, y1), e = pr(x0, y1);
+      c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.lineTo(d[0], d[1]); c.lineTo(e[0], e[1]); c.closePath();
+    }
+    var X0 = -4200, X1 = 4200, YN = 600, YF = -4200, k, j;
+    // the floor itself
+    c.beginPath(); quad(X0, YN, X1, YF); c.fillStyle = rgba(mix([242, 245, 250], [8, 22, 48], dk), 1); c.fill();
+    // the lines, every square, moving with the camera
+    var lc = mix([0, 16, 37], [255, 255, 255], dk), k0 = Math.ceil((X0 + cx) / SQ), k1 = Math.floor((X1 + cx) / SQ);
+    var j0 = Math.ceil((YF + cz) / SQ), j1 = Math.floor((YN + cz) / SQ);
+    c.beginPath();
+    for (k = k0; k <= k1; k++) { var X = k * SQ - cx; quad(X - 1.5, YN, X + 1.5, YF); }
+    for (j = j0; j <= j1; j++) { var Y = j * SQ - cz; quad(X0, Y + 1.5, X1, Y - 1.5); }
+    c.fillStyle = rgba(lc, .075 - .005 * dk); c.fill();
+    // a cross where the lines meet
+    c.beginPath();
+    for (k = k0; k <= k1; k++) for (j = j0; j <= j1; j++) {
+      var Xc = k * SQ - cx, Yc = j * SQ - cz;
+      quad(Xc - 32, Yc + 3, Xc + 32, Yc - 3); quad(Xc - 3, Yc + 32, Xc + 3, Yc - 32);
+    }
+    c.fillStyle = rgba(mix([19, 33, 63], [255, 255, 255], dk), 1); c.fill();
+    // the haze towards the horizon, so the far floor melts into the sky
+    var hy = oy - P * ca / sa, sky = mix([245, 248, 251], [5, 15, 34], dk);
+    var gr = c.createLinearGradient(0, hy - 2, 0, hy + H * .3);
+    gr.addColorStop(0, rgba(sky, 1)); gr.addColorStop(.35, rgba(sky, .85)); gr.addColorStop(1, rgba(sky, 0));
+    c.fillStyle = gr; c.fillRect(0, Math.max(0, hy - 4), W, H * .3 + 6);
+  }
+  return { draw: draw, origin: origin };
+})();
 (function () {
-  var sec = null, scene, grids = [], panels = [], shades = [], cases = [], head, raf = 0, G = {};
+  var sec = null, scene, floor, canvas, panels = [], shades = [], svgs = [], cases = [], head, raf = 0, G = {}, drawn = '';
   var START = .7, HOLD = 1;   // the first case begins START screens in; each case has HOLD screens
   // where each case lies on the floor (floor units from the first one): a zig-zag, each a little to the right and
   // alternately forward and back, never on top of another
   var SPOTS = [[0, 0], [900, -1200], [1800, 0], [2700, -1200], [3600, 0], [4500, -1200]];
+  // and how the camera turns to look at each one (degrees), so every move swings the view a little
+  var YAWS = [0, -8, 7, -8, 7, -7];
   function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
   function ease(x) { return x * x * (3 - 2 * x); }
   function layout() {
     if (!sec) return;
     var W = innerWidth, H = innerHeight, narrow = W < 900;
     var k = narrow ? Math.min(W / 760, H / 1100) : Math.min(W / 1440, H / 900);
-    var P = 1100, A = 80 * Math.PI / 180;
     // the horizon sits a little under the middle of the screen; the floor runs from the bottom edge up to it
-    scene.style.perspectiveOrigin = '50% ' + Math.round(H * (narrow ? .34 : .47) + P / Math.tan(A)) + 'px';
+    scene.style.perspectiveOrigin = '50% ' + window.atcFloor.origin(W, H).toFixed(1) + 'px';
+    drawn = '';
     G = { W: W, H: H, k: k, narrow: narrow, pw: 1500 * k, ph: 900 * k, depth: 1500, off: narrow ? 0 : 450 * k };
-    var x = 4200 + G.off - G.pw / 2, base = 5400 - G.depth;
+    var x = 3600 + G.off - G.pw / 2, base = 4200 - G.depth;
+    G.pvx = G.off; G.pvy = -G.depth;
+    // the camera turns about the spot where the screen in front of it stands
+    floor.style.setProperty('--pvx', G.off.toFixed(1) + 'px'); floor.style.setProperty('--pvy', -G.depth + 'px');
     panels.forEach(function (p, i) {
       p.style.width = G.pw + 'px'; p.style.height = G.ph + 'px'; p.style.left = x.toFixed(1) + 'px'; p.style.top = (base - G.ph).toFixed(1) + 'px';
+      // each one lies turned so that, once the camera has turned to it, it stands facing a little towards its story
+      p.style.setProperty('--yaw', (11 - YAWS[i]) + 'deg');
       var sh = shades[i];
       sh.style.width = G.pw * 1.15 + 'px'; sh.style.height = G.ph * .5 + 'px';
       sh.style.left = (x - G.pw * .075).toFixed(1) + 'px'; sh.style.top = (base - G.ph * .18).toFixed(1) + 'px';
@@ -4151,8 +4204,11 @@ class Component extends DCLogic {
     var u = t - START, b = Math.max(0, Math.min(n - 1, Math.floor(u))), m = u < 0 ? 0 : ease(clamp((u - b - .8) / .2));
     var c0 = SPOTS[b], c1 = SPOTS[Math.min(n - 1, b + 1)], k = G.k;
     var cx = (c0[0] + (c1[0] - c0[0]) * m) * k, cy = (c0[1] + (c1[1] - c0[1]) * m) * k;
-    var gx = (-cx % 300).toFixed(1) + 'px', gy = (-cy % 300).toFixed(1) + 'px';
-    grids.forEach(function (g) { g.style.setProperty('--gx', gx); g.style.setProperty('--gy', gy); });
+    var yb = YAWS[b], yn = YAWS[Math.min(n - 1, b + 1)], yaw = yb + (yn - yb) * m;
+    floor.style.setProperty('--cyaw', yaw.toFixed(3) + 'deg');
+    // the floor is drawn again only when the camera has moved
+    var key = cx.toFixed(1) + '|' + cy.toFixed(1) + '|' + yaw.toFixed(3) + '|' + G.W + 'x' + G.H;
+    if (key !== drawn) { drawn = key; window.atcFloor.draw(canvas, { W: G.W, H: G.H, fa: 80, dark: 0, cx: cx, cy: cy, yaw: yaw, pvx: G.pvx, pvy: G.pvy }); }
     // the screens come into view lying flat while the line is up
     var seen = ease(clamp((t - .04) / .3));
     panels.forEach(function (p, i) {
@@ -4163,9 +4219,14 @@ class Component extends DCLogic {
       var ox = (SPOTS[i][0] * k - cx).toFixed(1) + 'px', oy = (SPOTS[i][1] * k - cy).toFixed(1) + 'px';
       p.style.setProperty('--ox', ox); p.style.setProperty('--oy', oy);
       p.style.setProperty('--r', (.015 + .985 * rise).toFixed(4));
+      // only the screen that is up plays its scene; the ones lying flat hold still, so nothing is redrawn for them
+      var play = rise > .01, g = svgs[i];
+      if (g && g.__play !== play && g.pauseAnimations) { g.__play = play; if (play) g.unpauseAnimations(); else g.pauseAnimations(); }
       // once the camera has moved on, the screen it leaves behind fades away, so the floor under the story stays clear;
       // the ones still ahead stay lying where the camera will find them
-      var vis = seen * (i < n - 1 ? 1 - ease(clamp((s - .82) / .18)) : 1), show = vis > .002 ? '' : 'none';
+      var vis = seen * (i < n - 1 ? 1 - ease(clamp((s - .82) / .18)) : 1);
+      // only the screens near the camera are in the scene at all: the one in front, the next, and the one it is leaving
+      var show = vis > .002 && i >= b - 1 && i <= b + 2 ? '' : 'none';
       if (p.style.display !== show) { p.style.display = show; shades[i].style.display = show; }
       p.style.opacity = vis.toFixed(3);
       var sh = shades[i];
@@ -4182,10 +4243,10 @@ class Component extends DCLogic {
   function bind() {
     var live = document.querySelector('.atc-flr');
     if (!live || live === sec) return;
-    sec = live; scene = live.querySelector('.fls');
-    grids = [].slice.call(live.querySelectorAll('.fl-grid'));
+    sec = live; scene = live.querySelector('.fls'); floor = live.querySelector('.fl-floor'); canvas = live.querySelector('.fl-canvas');
     panels = [].slice.call(live.querySelectorAll('.fl-panel'));
     shades = [].slice.call(live.querySelectorAll('.fl-shade'));
+    svgs = panels.map(function (p) { return p.querySelector('svg'); });
     cases = [].slice.call(live.querySelectorAll('.flr-case'));
     head = live.querySelector('.flr-head');
     layout(); req();
