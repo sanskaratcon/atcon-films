@@ -1341,8 +1341,8 @@ html,body{overflow-anchor:none}
 .pill.is-go{animation:mg-pop .5s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
-/* Case studies: the words come first, alone in the middle of the screen; then the cases rise past them in two
-   even lanes either side, every card the same size, faster than the page scrolls */
+/* Case studies: the words come up from below and keep rising slowly through the section; the cases rise past them
+   in two even lanes either side, every card the same size, much faster than the words */
 .atc-cs{position:relative;padding:0;margin-bottom:-22vh}
 .csf{position:relative}
 .csf-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center;perspective:1500px}
@@ -4082,13 +4082,14 @@ class Component extends DCLogic {
 }
 </script>
 <script>
-/* Case studies: the words hold the middle of the screen while the cases rise past them in two even lanes, one each
-   side, every card the same size, on the same beat and faster than the page scrolls. The lanes are measured from the
-   words themselves, so a card never touches them; on narrow screens the cards pass over the words. The page
-   re-renders its markup on mount, so the script keeps re-binding to the live section. */
+/* Case studies: the words never hold still - they come up from below the screen and keep rising, far slower than the
+   cases, which rise past them in two even lanes, one each side, every card the same size, on the same beat and faster
+   than the page scrolls. The lanes are measured from the words themselves, so a card never touches them; on narrow
+   screens the cards pass over the words. The page re-renders its markup on mount, so the script keeps re-binding to
+   the live section. */
 (function () {
   var STEP = .45, SPEED = 1.65;          // a card every STEP screens of scrolling, rising SPEED times faster
-  var wrap = null, cards = [], hov = [], span = 0, raf = 0, narrow = false;
+  var wrap = null, head = null, cards = [], hov = [], span = 0, hh = 0, raf = 0, narrow = false;
   function layout() {
     if (!wrap) return;
     var pin = wrap.querySelector('.csf-pin'), vh = innerHeight, W = pin.clientWidth;
@@ -4116,13 +4117,21 @@ class Component extends DCLogic {
     });
     span = (cards.length - 1) * STEP * vh + (vh + hmax + 60) / SPEED;
     wrap.style.height = Math.round(span + vh) + 'px';
+    hh = head ? head.offsetHeight : 0;
   }
   function frame() {
     raf = 0;
     if (!wrap || !wrap.isConnected) return;
     var vh = innerHeight, r = wrap.getBoundingClientRect();
     if (r.bottom < 0 || r.top > vh) return;
-    var d = Math.max(0, Math.min(span, -r.top)), moving = false;
+    var raw = -r.top, d = Math.max(0, Math.min(span, raw)), moving = false;
+    // the words enter at the bottom when they would have anyway, then rise at one steady, slow pace (about a third of
+    // the scroll) and leave at the top just as the last card does
+    if (head) {
+      var a = -(vh + hh) / 2, s = (vh + hh) / (span - a), c = vh + hh / 2 - s * (raw - a);
+      var ht = 'translate3d(0,' + (c - (d - raw) - vh / 2).toFixed(1) + 'px,0)';
+      if (head.__t !== ht) { head.style.transform = ht; head.__t = ht; }
+    }
     cards.forEach(function (c, i) {
       var y = Math.min(vh + 40, vh + 40 - (d - (.1 + i * STEP) * vh) * SPEED);
       // in 3D: low on the screen a card leans back, level with the words it lies flat and closest, near the top it
@@ -4143,6 +4152,7 @@ class Component extends DCLogic {
     var live = document.querySelector('#cases .csf');
     if (!live || live === wrap) return;
     wrap = live;
+    head = live.querySelector('.cs-head');
     cards = [].slice.call(live.querySelectorAll('.csf-card'));
     hov = cards.map(function (c, i) {
       var o = { x: 0, y: 0, tx: 0, ty: 0 };
