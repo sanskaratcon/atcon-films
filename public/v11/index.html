@@ -1361,15 +1361,6 @@ html,body{overflow-anchor:none}
 .cs-head .ds-label{margin:0 0 var(--sp-5)}
 .cs-head .ds-display{margin:0 auto}
 .cs-head .cs-lede{margin:var(--sp-5) auto 0;max-width:26em;color:var(--atc-slate);transition-delay:.6s}
-/* where the reel is: the case passing now, and how far through the six */
-.cs-prog{position:absolute;left:50%;bottom:clamp(22px,4.5vh,40px);z-index:2;display:flex;align-items:center;gap:14px;
-  transform:translateX(-50%);font-size:11px;font-weight:600;letter-spacing:.12em;color:#8A97A6;font-variant-numeric:tabular-nums;
-  opacity:0;transition:opacity .5s ease}
-.cs-prog.is-on{opacity:1}
-.cs-prog .cs-now{color:var(--atc-navy)}
-.cs-bars{display:flex;gap:5px}
-.cs-bars i{width:24px;height:2px;border-radius:2px;background:rgba(0,16,37,.1);overflow:hidden}
-.cs-bars u{display:block;height:100%;background:var(--atc-grad);transform:scaleX(0);transform-origin:left}
 /* the lines speak first, each rising out of its own mask */
 .cs-ln{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
 .cs-ln>span{display:inline-block;transform:translateY(112%);transition:transform .85s cubic-bezier(.22,.8,.2,1) var(--d,0s)}
@@ -1938,9 +1929,7 @@ with a vision.</h2>
           <h2 class="ds-display" id="cs-title"><span class="cs-ln ds-rv" data-rv="" style="--d:.18s"><span>Real results,</span></span><br>
             <span class="cs-ln ds-rv" data-rv="" style="--d:.45s"><span class="ds-soft">from real partnerships.</span></span></h2>
           <p class="ds-lede cs-lede ds-rv" data-rv="">Six partnerships across finance, healthcare, retail and manufacturing: what we built, and what changed.</p>
-        </div>
-        <div class="cs-prog" aria-hidden="true"><b class="cs-now">01</b><span class="cs-bars"><i><u></u></i><i><u></u></i><i><u></u></i><i><u></u></i><i><u></u></i><i><u></u></i></span><b>06</b></div>
-          <article class="csf-card">
+        </div>          <article class="csf-card">
             <div class="csf-art"><div class="cse-il"><svg class="il-svg" viewBox="0 0 600 360" aria-hidden="true"><defs>
 <linearGradient id="hgr1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3FB27E"/><stop offset=".45" stop-color="#2D63E6"/><stop offset=".72" stop-color="#5A86EE"/><stop offset="1" stop-color="#9BBA2A"/></linearGradient>
 <linearGradient id="hcw1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9D3E2"/></linearGradient>
@@ -4125,7 +4114,7 @@ class Component extends DCLogic {
   // words), its depth (1 = the usual size; above it nearer, larger and faster; below it farther, smaller, slower and
   // fainter) and a nudge to its beat in screens, so the cases don't arrive like clockwork
   var SPOTS = [[-1, 0, 1.15, 0], [1, .8, .6, .12], [-1, .5, .9, -.06], [1, 0, 1.22, -.04], [-1, .85, .58, .1], [1, .35, .86, .06]];
-  var wrap = null, head = null, prog = null, now = null, bars = [], cards = [], hov = [], span = 0, hh = 0, raf = 0, narrow = false;
+  var wrap = null, head = null, cards = [], hov = [], span = 0, hh = 0, raf = 0, narrow = false;
   var put = [];                          // per card: depth, rising speed, start, the centre's first height, its height
   function layout() {
     if (!wrap) return;
@@ -4236,9 +4225,7 @@ class Component extends DCLogic {
       var ho = Math.max(0, Math.min(1, (c - hh * .2) / (vh * .18))).toFixed(3);
       if (head.__o !== ho) { head.style.opacity = ho; head.__o = ho; }
     }
-    // the reel's place: each bar fills as its card crosses the screen, the number follows the card on screen nearest the
-    // middle, and the whole row shows once the words have risen clear of it, until the last card has gone
-    var best = -1, bd = 1e9, gone = 0, last = 1;     // last: how far the slowest card still on its way has got
+    var last = 1;                        // how far the slowest card still on its way has got across the screen
     cards.forEach(function (c, i) {
       var p = put[i];
       if (!p) return;
@@ -4254,20 +4241,8 @@ class Component extends DCLogic {
           'deg) rotateY(' + (-p.dx * e * (narrow ? 9 : 15)).toFixed(2) + 'deg)';
       } else ct = 'translate3d(0,' + (y / p.k).toFixed(3) + 'px,0)';
       if (c.__t !== ct) { c.style.transform = ct; c.__t = ct; }
-      var f = Math.max(0, Math.min(1, 1 - mid / vh));
-      if (f > 0 && f < 1 && Math.abs(mid - vh / 2) < bd) { bd = Math.abs(mid - vh / 2); best = i; }
-      if (f >= 1) gone = i;
-      last = Math.min(last, f);
-      var u = bars[i];
-      if (u) { var ft = 'scaleX(' + f.toFixed(3) + ')'; if (u.__t !== ft) { u.style.transform = ft; u.__t = ft; } }
+      last = Math.min(last, Math.max(0, Math.min(1, 1 - mid / vh)));
     });
-    if (prog) {
-      var on = c < vh - hh / 2 - 90 && last < .98;
-      if (prog.classList.contains('is-on') !== on) prog.classList.toggle('is-on', on);
-      if (best < 0) best = gone;
-      var nt = (best < 9 ? '0' : '') + (best + 1);
-      if (now.textContent !== nt) now.textContent = nt;
-    }
     var done = last >= .98;
     if (wrap.classList.contains('is-done') !== done) wrap.classList.toggle('is-done', done);
     if (moving) req();
@@ -4278,8 +4253,6 @@ class Component extends DCLogic {
     if (!live || live === wrap) return;
     wrap = live;
     head = live.querySelector('.cs-head');
-    prog = live.querySelector('.cs-prog'); now = prog && prog.querySelector('.cs-now');
-    bars = [].slice.call(live.querySelectorAll('.cs-bars u'));
     cards = [].slice.call(live.querySelectorAll('.csf-card'));
     hov = cards.map(function (c, i) {
       var o = { x: 0, y: 0, tx: 0, ty: 0 };
