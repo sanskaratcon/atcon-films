@@ -1356,7 +1356,8 @@ html,body{overflow-anchor:none}
     linear-gradient(to bottom,rgba(0,16,37,.05) 1px,transparent 1px) 50% 50%/var(--g) var(--g);transition:opacity .7s ease}
 /* once the last card has gone the room fades, so its grid never doubles the reviews' own as that section comes up */
 .csf.is-done .csf-bg{opacity:0}
-.cs-head{position:relative;z-index:2;text-align:center;padding:0 20px}
+/* (placed from the top and moved by the script in whole pixels, so the words are never caught between two) */
+.cs-head{position:absolute;left:0;right:0;top:0;z-index:2;text-align:center;padding:0 20px}
 .cs-head .ds-label{margin:0 0 var(--sp-5)}
 .cs-head .ds-display{margin:0 auto}
 .cs-head .cs-lede{margin:var(--sp-5) auto 0;max-width:26em;color:var(--atc-slate);transition-delay:.6s}
@@ -1377,15 +1378,20 @@ html,body{overflow-anchor:none}
 .csf-card{position:absolute;left:0;top:0;z-index:1;width:300px;padding:10px 10px 14px;border-radius:22px;background:#fff;
   box-shadow:0 0 0 1px rgba(0,16,37,.07),0 40px 70px -36px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.04);
   transform:translate3d(0,110vh,0);transform-style:preserve-3d;will-change:transform;transition:box-shadow .3s ease}
-/* in 3D: the card is a slab with a visible edge behind its face, the scene and the words stand off the face, and a
-   soft sheen follows the pointer */
+/* in 3D: the card is a slab with a visible edge behind its face, seen as it leans on the way in and out, and a soft
+   sheen follows the pointer. The scene and the words lie on the face itself, so they stay sharp (raised layers are
+   resampled every frame and go soft) */
 .csf-card::before{content:'';position:absolute;inset:0;border-radius:inherit;transform:translateZ(-16px);
   background:linear-gradient(160deg,#DCE3EE,#B9C5D8);box-shadow:0 0 0 1px rgba(0,16,37,.1)}
-.csf-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;transform:translateZ(34px);opacity:0;
+.csf-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
   background:radial-gradient(90% 70% at var(--gx,50%) var(--gy,20%),rgba(255,255,255,.5),rgba(255,255,255,0) 60%);transition:opacity .35s ease}
 .csf-card.is-lit::after{opacity:1}
-.csf-card>*{transform:translateZ(14px)}
-.csf-card>.csf-art{transform:translateZ(36px);box-shadow:0 22px 30px -18px rgba(0,16,37,.42)}
+/* (the face's contents are positioned, so they paint above the slab even when a card is drawn flat) */
+.csf-card>*{position:relative}
+/* a far case is faint, the room showing a little through it; fading draws a card flat, so it goes without its slab */
+.csf-card.is-far{opacity:.8}
+.csf-card.is-far::before{display:none}
+.csf-card>.csf-art{box-shadow:0 22px 30px -18px rgba(0,16,37,.42)}
 .csf-card:hover{box-shadow:0 0 0 1px rgba(0,16,37,.1),0 50px 80px -36px rgba(0,16,37,.55),0 2px 6px rgba(0,16,37,.05)}
 .csf-art{position:relative;aspect-ratio:5/3;border-radius:14px;overflow:hidden;border:1.5px solid transparent;
   background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box}
@@ -4189,21 +4195,34 @@ class Component extends DCLogic {
       var q = find(own, 0, .3 * vh) || find(other, 0, .3 * vh) || find(own.concat(other), .3 * vh, 2 * vh) ||
         { k: k, v: v, s: s, y0: y0, h: h, hk: hk, wk: wk, cx: cx };
       q.dx = Math.max(-1, Math.min(1, (q.cx - W / 2) / (W / 2)));
-      c.style.left = Math.round(q.cx - cw / 2) + 'px';
+      // its size comes from zoom, not a scale on the moving layer, so its words and scene are drawn sharp at that size
+      // (a zoomed card's lengths and moves are all multiplied by its zoom, so they are given divided by it)
+      c.style.zoom = k;
+      c.style.left = (Math.round(q.cx - wk / 2) / k).toFixed(3) + 'px';
       c.style.zIndex = k < .75 ? 1 : k > 1.1 ? 4 : 3;
-      c.style.opacity = k < .75 ? '.78' : '';
+      c.classList.toggle('is-far', k < .75);
       put.push(q);
       span = Math.max(span, q.s + (y0 + hk / 2 + 40) / v);
     });
     wrap.style.height = Math.round(span + vh) + 'px';
     hh = head ? head.offsetHeight : 0;
   }
-  function frame() {
+  var sm = null, lt = 0;                 // the eased scroll the scene follows, and when it was last moved
+  function frame(now_) {
     raf = 0;
     if (!wrap || !wrap.isConnected) return;
     var vh = innerHeight, r = wrap.getBoundingClientRect();
-    if (r.bottom < 0 || r.top > vh) return;
-    var raw = -r.top, d = Math.max(0, Math.min(span, raw)), moving = false;
+    if (r.bottom < 0 || r.top > vh) { sm = null; return; }
+    // the scene follows the scroll through a short, soft ease, so a wheel's steps still move it in one glide; arriving
+    // from far away (a jump) it starts in place
+    var real = -r.top, moving = false, t = now_ || performance.now();
+    if (sm === null || Math.abs(real - sm) > vh) sm = real;
+    else {
+      sm += (real - sm) * (1 - Math.exp(-Math.min(50, t - lt) / 140));
+      if (Math.abs(real - sm) < .3) sm = real; else moving = true;
+    }
+    lt = t;
+    var raw = sm, d = Math.max(0, Math.min(span, raw)), pd = Math.max(0, Math.min(span, real)) - real;
     // the words enter at the bottom when they would have anyway, then rise at one steady, slow pace (about a third of
     // the scroll) and leave at the top just as the last card does
     // near the top they fade away rather than slide under the header
@@ -4211,7 +4230,8 @@ class Component extends DCLogic {
     if (head) {
       var a = -(vh + hh) / 2, s = (vh + hh) / (span - a);
       c = vh + hh / 2 - s * (raw - a);
-      var ht = 'translate3d(0,' + (c - (d - raw) - vh / 2).toFixed(1) + 'px,0)';
+      // (placed against where the pinned screen really is, in whole pixels so the words stay sharp)
+      var ht = 'translate3d(0,' + Math.round(c - hh / 2 - pd) + 'px,0)';
       if (head.__t !== ht) { head.style.transform = ht; head.__t = ht; }
       var ho = Math.max(0, Math.min(1, (c - hh * .2) / (vh * .18))).toFixed(3);
       if (head.__o !== ho) { head.style.opacity = ho; head.__o = ho; }
@@ -4222,17 +4242,18 @@ class Component extends DCLogic {
     cards.forEach(function (c, i) {
       var p = put[i];
       if (!p) return;
-      var mid = Math.min(p.y0, p.y0 - (d - p.s) * p.v), h = p.h, y = mid - h / 2;
-      // in 3D: low on the screen a card leans back, level with the words it lies flat and closest, near the top it
-      // tips the other way; each turns a little towards the middle, the more the farther out it is, and the pointer
-      // adds its own lean
-      var n = (mid - vh / 2) / (vh / 2 + h * p.k / 2);
+      var mid = Math.min(p.y0, p.y0 - (d - p.s) * p.v), y = Math.round(mid - p.hk / 2);
+      // in 3D only on the way in and out: low on the screen a card leans back and turns a little towards the middle,
+      // near the top it tips the other way; across the middle of the screen it lies flat, in whole pixels, so its
+      // words are sharp while they are read
+      var n = (mid - vh / 2) / (vh / 2 + p.hk / 2);
       n = n < -1 ? -1 : n > 1 ? 1 : n;
-      var hv = hov[i];
-      hv.x += (hv.tx - hv.x) * .12; hv.y += (hv.ty - hv.y) * .12;
-      if (Math.abs(hv.tx - hv.x) > .002 || Math.abs(hv.ty - hv.y) > .002) moving = true;
-      var rx = n * 20 - hv.y * 14, ry = -p.dx * (narrow ? 9 : 17) + hv.x * 18, tz = -Math.abs(n) * 90;
-      c.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,' + tz.toFixed(1) + 'px) scale(' + p.k + ') rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+      var e = Math.max(0, (Math.abs(n) - .4) / .6), ct;
+      if (e > 0) {
+        ct = 'translate3d(0,' + (y / p.k).toFixed(2) + 'px,' + (-e * 90 / p.k).toFixed(1) + 'px) rotateX(' + ((n < 0 ? -1 : 1) * e * 22).toFixed(2) +
+          'deg) rotateY(' + (-p.dx * e * (narrow ? 9 : 15)).toFixed(2) + 'deg)';
+      } else ct = 'translate3d(0,' + (y / p.k).toFixed(3) + 'px,0)';
+      if (c.__t !== ct) { c.style.transform = ct; c.__t = ct; }
       var f = Math.max(0, Math.min(1, 1 - mid / vh));
       if (f > 0 && f < 1 && Math.abs(mid - vh / 2) < bd) { bd = Math.abs(mid - vh / 2); best = i; }
       if (f >= 1) gone = i;
