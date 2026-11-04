@@ -4118,7 +4118,7 @@ class Component extends DCLogic {
   // each case's place: its side of the words (-1 left, 1 right), where across that side (0 = outer edge, 1 = beside the
   // words), its depth (1 = the usual size; above it nearer, larger and faster; below it farther, smaller, slower and
   // fainter) and a nudge to its beat in screens, so the cases don't arrive like clockwork
-  var SPOTS = [[-1, 0, 1.15, 0], [1, .8, .6, .12], [1, .25, .9, -.06], [-1, .85, .56, .1], [1, 0, 1.22, -.04], [-1, .5, .86, .06]];
+  var SPOTS = [[-1, 0, 1.15, 0], [1, .8, .6, .12], [-1, .5, .9, -.06], [1, 0, 1.22, -.04], [-1, .85, .58, .1], [1, .35, .86, .06]];
   var wrap = null, head = null, prog = null, now = null, bars = [], cards = [], hov = [], span = 0, hh = 0, raf = 0, narrow = false;
   var put = [];                          // per card: depth, rising speed, start, the centre's first height, its height
   function layout() {
@@ -4137,24 +4137,63 @@ class Component extends DCLogic {
     [].forEach.call(wrap.querySelectorAll('.cs-head .cs-ln, .cs-head .ds-label, .cs-head .cs-lede'), function (e) { tw = Math.max(tw, e.getBoundingClientRect().width); });
     var colL = (W - tw) / 2 - 70, colR = (W + tw) / 2 + 70;     // (a card turned towards the middle reaches further in)
     span = 0; put = [];
+    // one side's room for a card this wide; without room beside the words (narrow screens) the sides share the whole
+    // content width and the cases pass over the words
+    function zone(side, wk) {
+      var zl = side < 0 ? g : colR, zr = side < 0 ? colL : W - g;
+      if (zr - zl < wk * .75) { zl = side < 0 ? g : W / 2; zr = side < 0 ? W / 2 : W - g; }
+      return [zl, zr];
+    }
+    function fit(x, wk) { return g + wk / 2 > W / 2 ? W / 2 : Math.max(g + wk / 2, Math.min(W - g - wk / 2, x)); }
+    function at(p, d) { return Math.min(p.y0, p.y0 - (d - p.s) * p.v); }
+    // would this card ever touch one already placed while both are on the screen? Their paths are followed the whole
+    // way, since a faster card can catch up with a slower one ahead of it (boxes a little larger, for the lean)
+    function clash(q) {
+      for (var d = q.s; d <= q.s + (q.y0 + q.hk / 2 + 40) / q.v; d += 12) {
+        var y = at(q, d);
+        if (y - q.hk / 2 > vh) continue;
+        for (var j = 0; j < put.length; j++) {
+          var p = put[j], py = at(p, d);
+          if (py + p.hk / 2 < 0 || py - p.hk / 2 > vh) continue;
+          if (Math.abs(py - y) < (p.hk + q.hk) * .56 + 44 && Math.abs(p.cx - q.cx) < (p.wk + q.wk) * .56 + 44) return true;
+        }
+      }
+      return false;
+    }
     cards.forEach(function (c, i) {
       // (on a phone a near card grows only as far as the content width allows, so it never crosses the rail)
       var sp = SPOTS[i % SPOTS.length], k = Math.min(sp[2], Math.max(1, (inner + 24) / cw)), wk = cw * k;
       c.style.width = Math.round(cw) + 'px';
-      var zl = sp[0] < 0 ? g : colR, zr = sp[0] < 0 ? colL : W - g, u = sp[0] < 0 ? sp[1] : 1 - sp[1];
-      // without room beside the words (narrow screens) the sides share the whole content width and the cases pass
-      // over the words
-      if (zr - zl < wk * .75) { zl = sp[0] < 0 ? g : W / 2; zr = sp[0] < 0 ? W / 2 : W - g; }
-      var lo = zl + wk / 2, hi = zr - wk / 2, cx = hi > lo ? lo + (hi - lo) * u : (zl + zr) / 2;
-      cx = g + wk / 2 > W / 2 ? W / 2 : Math.max(g + wk / 2, Math.min(W - g - wk / 2, cx));
-      c.style.left = Math.round(cx - cw / 2) + 'px';
-      c.style.zIndex = k < .75 ? 1 : k > 1.1 ? 4 : 3;
-      c.style.opacity = k < .75 ? '.78' : '';
-      var h = c.offsetHeight, v = SPEED * k, y0 = vh + 40 + h * k / 2;
+      var z = zone(sp[0], wk), u = sp[0] < 0 ? sp[1] : 1 - sp[1], lo = z[0] + wk / 2, hi = z[1] - wk / 2;
+      var cx = fit(hi > lo ? lo + (hi - lo) * u : (z[0] + z[1]) / 2, wk);
+      var h = c.offsetHeight, hk = h * k, v = SPEED * k, y0 = vh + 40 + hk / 2;
       // every card crosses the middle on its own beat, whatever its speed
       var mid = (.1 + i * STEP + sp[3]) * vh + (vh / 2 + 40 + h / 2) / SPEED, s = mid - (y0 - vh / 2) / v;
-      put.push({ k: k, v: v, s: s, y0: y0, h: h, dx: Math.max(-1, Math.min(1, (cx - W / 2) / (W / 2))) });
-      span = Math.max(span, s + (y0 + h * k / 2 + 40) / v);
+      // its own spot first; if that would ever touch another card, the nearest clear spot on its side or a short wait
+      // for its turn, then the other side, and only then a longer wait
+      function spots(side) {
+        var zz = zone(side, wk), l = zz[0] + wk / 2, r = zz[1] - wk / 2, xs = [];
+        for (var n = 0; n <= 10; n++) xs.push(fit(r > l ? l + (r - l) * n / 10 : (zz[0] + zz[1]) / 2, wk));
+        return xs.sort(function (a, b) { return Math.abs(a - cx) - Math.abs(b - cx); });
+      }
+      function find(xs, from, to) {
+        for (var wait = from; wait <= to; wait += .04 * vh) {
+          for (var n = 0; n < xs.length; n++) {
+            var t = { k: k, v: v, s: s + wait, y0: y0, h: h, hk: hk, wk: wk, cx: xs[n] };
+            if (!clash(t)) return t;
+          }
+        }
+        return null;
+      }
+      var own = [cx].concat(spots(sp[0])), other = spots(-sp[0]);
+      var q = find(own, 0, .3 * vh) || find(other, 0, .3 * vh) || find(own.concat(other), .3 * vh, 2 * vh) ||
+        { k: k, v: v, s: s, y0: y0, h: h, hk: hk, wk: wk, cx: cx };
+      q.dx = Math.max(-1, Math.min(1, (q.cx - W / 2) / (W / 2)));
+      c.style.left = Math.round(q.cx - cw / 2) + 'px';
+      c.style.zIndex = k < .75 ? 1 : k > 1.1 ? 4 : 3;
+      c.style.opacity = k < .75 ? '.78' : '';
+      put.push(q);
+      span = Math.max(span, q.s + (y0 + hk / 2 + 40) / v);
     });
     wrap.style.height = Math.round(span + vh) + 'px';
     hh = head ? head.offsetHeight : 0;
