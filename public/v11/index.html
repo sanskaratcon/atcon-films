@@ -21,7 +21,8 @@ a{color:#FFFFFF}a:hover{color:#E6ECF4}
 
 /* Page layout only. Tokens, type, buttons, menu and reveal helpers come from atcon-ds.css */
 .atc{position:relative;background:var(--atc-navy);color:var(--fg);font-family:var(--atc-font);overflow-x:clip;-webkit-font-smoothing:antialiased;
-  --lx:var(--rail);--ty:var(--rail);--rx:var(--right-x);--by:var(--line-y);--rt:var(--rail);--rh:calc(var(--line-y) - var(--rail))}
+  --lx:var(--rail);--ty:var(--rail);--rx:var(--right-x);--by:var(--line-y);--rt:var(--rail);--rh:calc(var(--line-y) - var(--rail));
+  --rail-x:var(--rail)}
 .atc *{box-sizing:border-box}
 .atc-track{position:relative}
 html,body{overscroll-behavior-y:none}
@@ -126,7 +127,7 @@ html,body{overscroll-behavior-y:none}
 .atc-l1,.atc-l2{will-change:opacity,transform;overflow:hidden}
 .atc-ov-0{display:none}
 .atc-hero2{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,.74fr) minmax(0,1.6fr);column-gap:4vw;align-items:center;
-  padding:calc(var(--rail) + 3.5vh) 14px 5vh calc(var(--rail) + 4vw)}
+  padding:calc(var(--rail) + 3.5vh) 14px 5vh calc(var(--rail-x) + 4vw)}
 .atc-hero2-text{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-5);color:var(--atc-navy)}
 .atc-hero2-eyebrow{display:flex;align-items:center;gap:12px;margin:0;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--atc-mute)}
 .atc-hero2-eyebrow i{display:block;width:28px;height:1px;background:currentColor}
@@ -140,7 +141,7 @@ html,body{overscroll-behavior-y:none}
   color:var(--atc-navy);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 18px -8px rgba(0,16,37,.35)}
 .atc-hero2-tag i{width:6px;height:6px;border-radius:50%;background:#3FB27E}
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
-  .atc-hero2{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);row-gap:4vh;padding:calc(var(--rail) + 3vh) 16px 4vh calc(var(--rail) + 18px)}
+  .atc-hero2{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);row-gap:4vh;padding:calc(var(--rail) + 3vh) 16px 4vh calc(var(--rail-x) + 18px)}
 }
 .atc-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-3);margin-top:var(--sp-2)}
 .atc-title{white-space:pre-line}
@@ -234,7 +235,7 @@ html,body{overscroll-behavior-y:none}
 .atc-sign-logo{display:block;width:clamp(140px,11vw,210px);height:auto}
 .atc .atc-sign-tag{color:var(--fg-soft);max-width:24em}
 /* The solution: tagline on top, the map of business, ATCON and the technology ecosystem below */
-.atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:calc(var(--rail) + 2.4vh) 1.4vw 1vh calc(var(--rail) + 1.4vw);visibility:hidden;pointer-events:none;text-align:center}
+.atc-sol{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:calc(var(--rail) + 2.4vh) 1.4vw 1vh calc(var(--rail-x) + 1.4vw);visibility:hidden;pointer-events:none;text-align:center}
 .atc-sol-head{display:flex;flex-direction:column;align-items:center}
 .atc-sol-win{position:relative;isolation:isolate;width:min(100%,max(1600px,min(76vw,135vh)));margin-top:0;--wo:1}
 .atc-sol-win::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px 22px 0 0;background:#F4F5F8;box-shadow:0 0 0 1px rgba(0,16,37,.05);opacity:var(--wo);
@@ -877,20 +878,20 @@ html,body{overscroll-behavior-y:none}
 }
 
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
-  .atc-block{left:calc(var(--rail) + 18px);right:16px}
+  .atc-block{left:calc(var(--rail-x) + 18px);right:16px}
   .atc-line{white-space:normal;display:inline}
   .atc-hero-lede{max-width:none}
   .atc-contact{top:4px;right:12px}
-  .atc-stack{left:calc(var(--rail) + 18px);right:16px;width:auto;top:46%;bottom:20px;padding-top:0;justify-content:flex-end}
+  .atc-stack{left:calc(var(--rail-x) + 18px);right:16px;width:auto;top:46%;bottom:20px;padding-top:0;justify-content:flex-end}
   .atc-stack{align-content:end}
   .atc-steps{margin:16px 0 14px}
   .atc .atc-stack .atc-card-title{font-size:26px}
   .atc .atc-stack .atc-card-body{font-size:15px}
-  .atc-gfx.atc-gfx--side{left:calc(var(--rail) + 12px)}
-  .atc-gfx{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
-  .atc-iso{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
-  .atc-gap{left:calc(var(--rail) + 18px);right:16px}
-  .atc-gapmark{left:calc(var(--rail) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:62%}
+  .atc-gfx.atc-gfx--side{left:calc(var(--rail-x) + 12px)}
+  .atc-gfx{left:calc(var(--rail-x) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
+  .atc-iso{left:calc(var(--rail-x) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:54%}
+  .atc-gap{left:calc(var(--rail-x) + 18px);right:16px}
+  .atc-gapmark{left:calc(var(--rail-x) + 12px);right:12px;top:calc(var(--rail) + 12px);bottom:62%}
   .atc-gapmark svg{width:min(28vw,18vh)}
   .atc-gfx--mid{top:46%;bottom:calc(var(--rail) + 120px)}
 }
@@ -904,7 +905,7 @@ html,body{overscroll-behavior-y:none}
 /* Phones: the window fills the screen, the circuit sits in its middle, the offer list stays compact above its panel,
    and the problem text sits right under its visual */
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
-  .atc-sol{padding:calc(var(--rail) + 12px) 12px 12px calc(var(--rail) + 10px)}
+  .atc-sol{padding:calc(var(--rail) + 12px) 12px 12px calc(var(--rail-x) + 10px)}
   .atc-sol-win{flex:1;min-height:0;display:flex;flex-direction:column}
   .atc-sol-bar{flex:none;padding:0 12px}
   .atc-sol-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;margin:0 6px 6px;padding:12px 8px}
@@ -929,9 +930,9 @@ html,body{overscroll-behavior-y:none}
 }
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   /* the logo strip centres in the space beside the rail */
-  .atc-brands{padding-left:var(--rail)}
+  .atc-brands{padding-left:var(--rail-x)}
   /* closing banner: the copy sits low on a soft white wash so it reads over the photo */
-  .atc-vtext{left:calc(var(--rail) + 18px);bottom:calc(28px + env(safe-area-inset-bottom,0px));isolation:isolate}
+  .atc-vtext{left:calc(var(--rail-x) + 18px);bottom:calc(28px + env(safe-area-inset-bottom,0px));isolation:isolate}
   .atc-vtext::before{content:"";position:absolute;z-index:-1;left:-60px;right:-40px;top:-70px;bottom:-60px;pointer-events:none;
     background:linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,.86) 38%,rgba(255,255,255,.94) 100%)}
 }
@@ -939,7 +940,7 @@ html,body{overscroll-behavior-y:none}
 @media (min-width:600px) and (max-width:1100px) and (orientation:portrait){
   .mac{width:min(100%,calc((50vh - var(--rail) - 12px) * 10 / 11))}
   .atc-iso,.atc-gfx{bottom:50%}
-  .atc-stack{top:calc(50% + 20px);left:calc(var(--rail) + 6vw);right:6vw}
+  .atc-stack{top:calc(50% + 20px);left:calc(var(--rail-x) + 6vw);right:6vw}
   .atc .atc-stack .atc-card-title{font-size:40px}
   .atc .atc-stack .atc-card-body{font-size:19px}
   .atc-offer{padding:28px 32px 20px;gap:22px}
@@ -1063,8 +1064,8 @@ html,body{overscroll-behavior-y:none}
 
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
   .wv-card{width:88vw;height:78vh;grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:12px;padding:22px}
-  .wv-card{width:calc(100vw - var(--rail) - 24px)}
-  .wv-card[data-k='0'],.wv-card[data-k='2']{left:calc(var(--rail) + (100vw - var(--rail)) / 2)}.wv-card[data-k='1'],.wv-card[data-k='3']{left:calc(var(--rail) + (100vw - var(--rail)) / 2 + 90vw)}
+  .wv-card{width:calc(100vw - var(--rail-x) - 24px)}
+  .wv-card[data-k='0'],.wv-card[data-k='2']{left:calc(var(--rail-x) + (100vw - var(--rail-x)) / 2)}.wv-card[data-k='1'],.wv-card[data-k='3']{left:calc(var(--rail-x) + (100vw - var(--rail-x)) / 2 + 90vw)}
   .wv-text h3{font-size:24px;margin:10px 0 8px}.wv-text p{font-size:14px}
   .wv-slot .mac{width:min(100%,calc((78vh - 210px) * 10 / 11))}
 }
@@ -1081,7 +1082,7 @@ html,body{overscroll-behavior-y:none}
 .wv-rider{position:absolute;left:0;top:0;display:flex;align-items:center;justify-content:center;pointer-events:none;will-change:transform,opacity;transform-origin:50% 50%;backface-visibility:hidden}
 .wv-rider .mac{width:min(100%,calc(min(68vh,640px) * .86 * 10 / 11))}
 @media (max-width:760px),(max-width:1100px) and (orientation:portrait){
-  .wv-card{left:calc(var(--rail) + (100vw - var(--rail)) / 2) !important}
+  .wv-card{left:calc(var(--rail-x) + (100vw - var(--rail-x)) / 2) !important}
   .wv-card[data-k='1']{top:150vh !important}.wv-card[data-k='2']{top:250vh !important}.wv-card[data-k='3']{top:350vh !important}
   .wv-card[data-k='1'],.wv-card[data-k='3']{grid-template-columns:1fr}.wv-card[data-k='1'] .wv-text,.wv-card[data-k='3'] .wv-text{order:0}
   .wv-rider .mac{width:min(100%,calc((78vh - 210px) * 10 / 11))}
@@ -1174,7 +1175,7 @@ html,body{overflow-anchor:none}
 .ospace [data-in]{opacity:1 !important;transform:none !important}
 .ospace .an-rev{clip-path:none !important}
 /* the card: white, the site's light look, filling the screen once it arrives */
-.atc .atc-offer{box-sizing:border-box;overflow:hidden;background:#fff;padding:calc(var(--rail) + 2.6vh) 4vw 3vh calc(var(--rail) + 4vw) !important;
+.atc .atc-offer{box-sizing:border-box;overflow:hidden;background:#fff;padding:calc(var(--rail) + 2.6vh) 4vw 3vh calc(var(--rail-x) + 4vw) !important;
   box-shadow:0 40px 120px -30px rgba(0,0,0,.65)}
 @media (min-width:1101px){.atc .atc-offer .atc-offer-title{font-size:clamp(30px,3.1vw,54px);line-height:1.08;letter-spacing:-.035em;max-width:20em}}
 
@@ -1536,6 +1537,19 @@ html.tm-hide-cursor,html.tm-hide-cursor *{cursor:none !important}
 @media (max-width:900px){
   .cq-stage{min-height:300px}
   .cq-item blockquote{font-size:23px}
+}
+
+/* On a phone there is no rail down the left: the content takes the whole width, and the mark, Contact and the menu
+   share one bar along the top (the rail's height still sets that bar) */
+@media (max-width:760px){
+  .atc{--rail-x:0px;--content-x:20px}
+  .atc-burger{left:auto;right:0;top:0}
+  .atc-contact{right:calc(var(--rail) + 2px)}
+  /* the bar keeps the page from running under the mark: the colour of the section it sits over, no blur */
+  .atc-chrome::before{content:'';position:absolute;left:0;right:0;top:0;height:var(--rail);z-index:-1;pointer-events:none;
+    background:rgba(255,255,255,.94);transition:background-color var(--dur-theme) ease}
+  .atc[data-theme="dark"] .atc-chrome::before{background:rgba(0,16,37,.92)}
+  .atc[data-menu="open"] .atc-chrome::before{background:transparent}
 }
 </style>
 </helmet>
@@ -4108,10 +4122,12 @@ class Component extends DCLogic {
     var r = (logo && logo.offsetWidth) || 80;
     var narrow = W <= 760;
     var hy = (narrow ? 0.68 : 0.715) * H;
-    var hero = [r, r, narrow ? W + 12 : 0.856 * W, hy, 0, H + 24];
+    // (on a phone there is no rail: its line waits just off the left edge, and still comes in to frame the statement)
+    var rl = narrow ? -32 : r;
+    var hero = [rl, r, narrow ? W + 12 : 0.856 * W, hy, 0, H + 24];
     // After the hero, the right line slides out past the right edge and the lower line
     // past the bottom edge; only the rail and the top line stay.
-    var framed = [r, r, W + 24, H + 24, 0, H + 24];
+    var framed = [rl, r, W + 24, H + 24, 0, H + 24];
     var tw = famText ? famText.offsetWidth : W * 0.5, th = famText ? famText.offsetHeight : H * 0.2;
     var bw = Math.min(W - 24, tw + 2 * Math.max(36, W * 0.05));
     var bh = th + 2 * Math.max(36, H * 0.085);
