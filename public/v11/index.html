@@ -1345,7 +1345,7 @@ html,body{overflow-anchor:none}
    much faster, scattered through the room at different depths - near ones large, far ones small and behind the words */
 .atc-cs{position:relative;padding:0;margin-bottom:-22vh}
 .csf{position:relative}
-.csf-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center;perspective:1500px}
+.csf-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center}
 /* the room they rise through: the site's blueprint grid, faint and fading to white at every edge, with a soft brand
    light at its heart. It is painted once and stays still - the far plane behind the slow words and the fast cards */
 .csf-bg{--g:clamp(50px,4.6vw,68px);position:absolute;inset:0;pointer-events:none;
@@ -1368,20 +1368,15 @@ html,body{overflow-anchor:none}
 /* a floating case: the scene on top, then its number, title and the way in */
 .csf-card{position:absolute;left:0;top:0;z-index:1;width:300px;padding:10px 10px 14px;border-radius:22px;background:#fff;
   box-shadow:0 0 0 1px rgba(0,16,37,.07),0 40px 70px -36px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.04);
-  transform:translate3d(0,110vh,0);transform-style:preserve-3d;will-change:transform;transition:box-shadow .3s ease}
-/* in 3D: the card is a slab with a visible edge behind its face, seen as it leans on the way in and out, and a soft
-   sheen follows the pointer. The scene and the words lie on the face itself, so they stay sharp (raised layers are
-   resampled every frame and go soft) */
-.csf-card::before{content:'';position:absolute;inset:0;border-radius:inherit;transform:translateZ(-16px);
-  background:linear-gradient(160deg,#DCE3EE,#B9C5D8);box-shadow:0 0 0 1px rgba(0,16,37,.1)}
+  transform:translate3d(0,110vh,0);will-change:transform;transition:box-shadow .3s ease}
+/* the cards stay flat and only ever slide, in whole pixels: without a graphics card, a tilted or scaled layer is
+   resampled every frame, its edges go jagged and its words go soft. Depth comes from size, speed, faintness and
+   shadow instead. A soft sheen follows the pointer */
 .csf-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
   background:radial-gradient(90% 70% at var(--gx,50%) var(--gy,20%),rgba(255,255,255,.5),rgba(255,255,255,0) 60%);transition:opacity .35s ease}
 .csf-card.is-lit::after{opacity:1}
-/* (the face's contents are positioned, so they paint above the slab even when a card is drawn flat) */
-.csf-card>*{position:relative}
-/* a far case is faint, the room showing a little through it; fading draws a card flat, so it goes without its slab */
+/* a far case is faint, the room showing a little through it */
 .csf-card.is-far{opacity:.8}
-.csf-card.is-far::before{display:none}
 .csf-card>.csf-art{box-shadow:0 22px 30px -18px rgba(0,16,37,.42)}
 .csf-card:hover{box-shadow:0 0 0 1px rgba(0,16,37,.1),0 50px 80px -36px rgba(0,16,37,.55),0 2px 6px rgba(0,16,37,.05)}
 .csf-art{position:relative;aspect-ratio:5/3;border-radius:14px;overflow:hidden;border:1.5px solid transparent;
@@ -2632,7 +2627,8 @@ class Component extends DCLogic {
     this.seek(this.q('v3'), u < 400 ? map(u, T.v3[0], 400) * 0.25 : 0.25 + 0.75 * map(u, 400, 480));
     var l4 = this.q('l4'), l3 = this.q('l3'), white = this.q('white');
     if (l4) l4.style.opacity = String(ease(map(u, T.v4[0] - 3, T.v4[0] + 4)));
-    if (l3) l3.style.opacity = String(ease(map(u, T.v3[0] - 3, T.v3[0] + 4)));
+    // (once the shot has landed in the dock, the block below keeps it hidden; setting it here too would flip it every frame)
+    if (l3 && u < 549) l3.style.opacity = String(ease(map(u, T.v3[0] - 3, T.v3[0] + 4)));
     if (white) white.style.opacity = String(ease(map(u, T.white[0], T.white[1])));
     // The two of them at the table: the whole shot tilts back and, in one continuous move, shrinks into the dock, the camera
     // still moving into the laptop until its white screen fills the frame; on the way the calendar's blue band and date
@@ -2823,6 +2819,12 @@ class Component extends DCLogic {
       var want = (this._oDark || 0) > 0.5 ? 'dark' : (u >= T.indoor || grow < 0.6) ? 'light' : 'dark';
       if (root.getAttribute('data-theme') !== want) root.setAttribute('data-theme', want);
     }
+
+    // Once the story has scrolled away above the screen and has been drawn as it ends, it is left as it is until it
+    // comes back (or the window changes height): the sections below it don't pay for restyling it every frame
+    var storyK = u + '|' + vh;
+    if (rect.bottom < 0 && this._storyK === storyK) return;
+    this._storyK = rect.bottom < 0 ? storyK : null;
 
     // Hero and video 2 text, with their overlays
     var ranges = [T.ch0, T.ch1];
@@ -4113,8 +4115,8 @@ class Component extends DCLogic {
   // each case's place: its side of the words (-1 left, 1 right), where across that side (0 = outer edge, 1 = beside the
   // words), its depth (1 = the usual size; above it nearer, larger and faster; below it farther, smaller, slower and
   // fainter) and a nudge to its beat in screens, so the cases don't arrive like clockwork
-  var SPOTS = [[-1, 0, 1.15, 0], [1, .8, .6, .12], [-1, .5, .9, -.06], [1, 0, 1.22, -.04], [-1, .85, .58, .1], [1, .35, .86, .06]];
-  var wrap = null, head = null, cards = [], hov = [], span = 0, hh = 0, raf = 0, narrow = false;
+  var SPOTS = [[-1, 0, 1.1, 0], [1, .8, .6, .12], [-1, .5, .9, -.06], [1, 0, 1.15, -.04], [-1, .85, .58, .1], [1, .35, .86, .06]];
+  var wrap = null, head = null, cards = [], hov = [], span = 0, hh = 0, raf = 0;
   var put = [];                          // per card: depth, rising speed, start, the centre's first height, its height
   function layout() {
     if (!wrap) return;
@@ -4125,12 +4127,11 @@ class Component extends DCLogic {
     pin.appendChild(probe);
     var g = Math.max(20, probe.getBoundingClientRect().width);
     probe.remove();
-    narrow = W < 900;
     var inner = W - 2 * g, cw = inner < 312 ? Math.min(260, inner) : 300;
     // the words keep a clear column down the middle; the cases scatter through the room either side of it
     var tw = 0;
     [].forEach.call(wrap.querySelectorAll('.cs-head .cs-ln, .cs-head .ds-label, .cs-head .cs-lede'), function (e) { tw = Math.max(tw, e.getBoundingClientRect().width); });
-    var colL = (W - tw) / 2 - 70, colR = (W + tw) / 2 + 70;     // (a card turned towards the middle reaches further in)
+    var colL = (W - tw) / 2 - 50, colR = (W + tw) / 2 + 50;
     span = 0; put = [];
     // one side's room for a card this wide; without room beside the words (narrow screens) the sides share the whole
     // content width and the cases pass over the words
@@ -4161,7 +4162,8 @@ class Component extends DCLogic {
       c.style.width = Math.round(cw) + 'px';
       var z = zone(sp[0], wk), u = sp[0] < 0 ? sp[1] : 1 - sp[1], lo = z[0] + wk / 2, hi = z[1] - wk / 2;
       var cx = fit(hi > lo ? lo + (hi - lo) * u : (z[0] + z[1]) / 2, wk);
-      var h = c.offsetHeight, hk = h * k, v = SPEED * k, y0 = vh + 40 + hk / 2;
+      // (nearer is faster, but gently: the quickest card judders less between frames)
+      var h = c.offsetHeight, hk = h * k, v = SPEED * (.55 + .45 * k), y0 = vh + 40 + hk / 2;
       // every card crosses the middle on its own beat, whatever its speed
       var mid = (.1 + i * STEP + sp[3]) * vh + (vh / 2 + 40 + h / 2) / SPEED, s = mid - (y0 - vh / 2) / v;
       // its own spot first; if that would ever touch another card, the nearest clear spot on its side or a short wait
@@ -4183,7 +4185,6 @@ class Component extends DCLogic {
       var own = [cx].concat(spots(sp[0])), other = spots(-sp[0]);
       var q = find(own, 0, .3 * vh) || find(other, 0, .3 * vh) || find(own.concat(other), .3 * vh, 2 * vh) ||
         { k: k, v: v, s: s, y0: y0, h: h, hk: hk, wk: wk, cx: cx };
-      q.dx = Math.max(-1, Math.min(1, (q.cx - W / 2) / (W / 2)));
       // its size comes from zoom, not a scale on the moving layer, so its words and scene are drawn sharp at that size
       // (a zoomed card's lengths and moves are all multiplied by its zoom, so they are given divided by it)
       c.style.zoom = k;
@@ -4229,17 +4230,9 @@ class Component extends DCLogic {
     cards.forEach(function (c, i) {
       var p = put[i];
       if (!p) return;
+      // flat, and in whole pixels on the screen, so it is drawn once and only ever slid
       var mid = Math.min(p.y0, p.y0 - (d - p.s) * p.v), y = Math.round(mid - p.hk / 2);
-      // in 3D only on the way in and out: low on the screen a card leans back and turns a little towards the middle,
-      // near the top it tips the other way; across the middle of the screen it lies flat, in whole pixels, so its
-      // words are sharp while they are read
-      var n = (mid - vh / 2) / (vh / 2 + p.hk / 2);
-      n = n < -1 ? -1 : n > 1 ? 1 : n;
-      var e = Math.max(0, (Math.abs(n) - .4) / .6), ct;
-      if (e > 0) {
-        ct = 'translate3d(0,' + (y / p.k).toFixed(2) + 'px,' + (-e * 90 / p.k).toFixed(1) + 'px) rotateX(' + ((n < 0 ? -1 : 1) * e * 22).toFixed(2) +
-          'deg) rotateY(' + (-p.dx * e * (narrow ? 9 : 15)).toFixed(2) + 'deg)';
-      } else ct = 'translate3d(0,' + (y / p.k).toFixed(3) + 'px,0)';
+      var ct = 'translate3d(0,' + (y / p.k).toFixed(3) + 'px,0)';
       if (c.__t !== ct) { c.style.transform = ct; c.__t = ct; }
       last = Math.min(last, Math.max(0, Math.min(1, 1 - mid / vh)));
     });
