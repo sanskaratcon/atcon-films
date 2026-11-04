@@ -92,7 +92,10 @@ html,body{overscroll-behavior-y:none}
 /* with a mouse, the button comes alive under the hand: as it lifts, a pale brand wash fills it from the arrow's side,
    the chip turns brand blue and grows a touch, and its arrow slips out to the right and back in from the left;
    pressed, it gives a little. (Only small layers move, so it costs nothing to draw) */
-.ds-btn{position:relative;isolation:isolate;overflow:hidden}
+.ds-btn{isolation:isolate;overflow:hidden}
+/* (the wash needs the button positioned; :where() keeps that weightless, so a button placed on its own - the header's
+   Contact, absolutely - keeps its place) */
+:where(.ds-btn){position:relative}
 .ds-btn::before{content:'';position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
   background:linear-gradient(90deg,rgba(63,178,126,.08),rgba(45,99,230,.1));transform:scaleX(0);transform-origin:right center;
   transition:transform .5s cubic-bezier(.2,.8,.3,1)}
