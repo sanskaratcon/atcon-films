@@ -1342,7 +1342,7 @@ html,body{overflow-anchor:none}
 @keyframes mg-pop{40%{transform:scale(1.12)}100%{transform:none}}
 
 /* Case studies: the words come up from below and keep rising slowly through the section; the cases rise past them
-   in two even lanes either side, every card the same size, much faster than the words */
+   much faster, scattered through the room at different depths - near ones large, far ones small and behind the words */
 .atc-cs{position:relative;padding:0;margin-bottom:-22vh}
 .csf{position:relative}
 .csf-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center;perspective:1500px}
@@ -1401,8 +1401,9 @@ html,body{overflow-anchor:none}
   transition:transform .3s ease}
 .csf-card:hover .cs-link svg{transform:translateX(3px)}
 @media (max-width:900px){
-  /* clear of the rail on the left and centred over the cards' own lane */
-  .cs-head{padding:0 var(--content-x,24px)}
+  /* clear of the rail on the left and centred over the cards' own lane; a soft white halo keeps the words clear of a
+     far case passing behind them */
+  .cs-head{padding:0 var(--content-x,24px);text-shadow:0 0 10px #fff,0 0 3px #fff,0 0 22px #fff}
   .csf-card{padding:8px 8px 12px;border-radius:18px}
   .csf-card h3{font-size:13.5px}
 }
@@ -4108,39 +4109,53 @@ class Component extends DCLogic {
 </script>
 <script>
 /* Case studies: the words never hold still - they come up from below the screen and keep rising, far slower than the
-   cases, which rise past them in two even lanes, one each side, every card the same size, on the same beat and faster
-   than the page scrolls. The lanes are measured from the words themselves, so a card never touches them; on narrow
-   screens the cards pass over the words. The page re-renders its markup on mount, so the script keeps re-binding to
-   the live section. */
+   cases. The cases are scattered through the room at different depths: a near one is larger and rises fastest in
+   front of everything, a far one is small, faint and slow and passes behind the words. They still arrive on one
+   steady beat, each crossing the middle of the screen in turn. The page re-renders its markup on mount, so the script
+   keeps re-binding to the live section. */
 (function () {
-  var STEP = .45, SPEED = 1.65;          // a card every STEP screens of scrolling, rising SPEED times faster
+  var STEP = .45, SPEED = 1.65;          // a card every STEP screens of scrolling; a card at the usual depth rises SPEED times faster
+  // each case's place: its side of the words (-1 left, 1 right), where across that side (0 = outer edge, 1 = beside the
+  // words), its depth (1 = the usual size; above it nearer, larger and faster; below it farther, smaller, slower and
+  // fainter) and a nudge to its beat in screens, so the cases don't arrive like clockwork
+  var SPOTS = [[-1, 0, 1.15, 0], [1, .8, .6, .12], [1, .25, .9, -.06], [-1, .85, .56, .1], [1, 0, 1.22, -.04], [-1, .5, .86, .06]];
   var wrap = null, head = null, prog = null, now = null, bars = [], cards = [], hov = [], span = 0, hh = 0, raf = 0, narrow = false;
+  var put = [];                          // per card: depth, rising speed, start, the centre's first height, its height
   function layout() {
     if (!wrap) return;
     var pin = wrap.querySelector('.csf-pin'), vh = innerHeight, W = pin.clientWidth;
-    var tw = 0;
-    [].forEach.call(wrap.querySelectorAll('.cs-head .cs-ln, .cs-head .ds-label, .cs-head .cs-lede'), function (e) { tw = Math.max(tw, e.getBoundingClientRect().width); });
-    // the lanes keep to the page's own content edges, with clear air between them and the words
+    // the cards keep to the page's own content edges
     var probe = document.createElement('i');
     probe.style.cssText = 'position:absolute;left:0;width:var(--content-x,40px)';
     pin.appendChild(probe);
     var g = Math.max(20, probe.getBoundingClientRect().width);
     probe.remove();
-    var side = (W - tw) / 2 - g - 50, cw = Math.min(300, side);
-    // without room beside the words the two lanes share the content width and the cards pass over the words; on a
-    // phone there is room for one lane only, down the middle
-    narrow = cw < 190;
-    var inner = W - 2 * g, single = narrow && inner < 312;
-    if (narrow) cw = single ? Math.min(260, inner) : Math.min(300, (inner - 12) / 2);
-    var hmax = 0;
+    narrow = W < 900;
+    var inner = W - 2 * g, cw = inner < 312 ? Math.min(260, inner) : 300;
+    // the words keep a clear column down the middle; the cases scatter through the room either side of it
+    var tw = 0;
+    [].forEach.call(wrap.querySelectorAll('.cs-head .cs-ln, .cs-head .ds-label, .cs-head .cs-lede'), function (e) { tw = Math.max(tw, e.getBoundingClientRect().width); });
+    var colL = (W - tw) / 2 - 70, colR = (W + tw) / 2 + 70;     // (a card turned towards the middle reaches further in)
+    span = 0; put = [];
     cards.forEach(function (c, i) {
-      var right = i % 2 === 1;
+      // (on a phone a near card grows only as far as the content width allows, so it never crosses the rail)
+      var sp = SPOTS[i % SPOTS.length], k = Math.min(sp[2], Math.max(1, (inner + 24) / cw)), wk = cw * k;
       c.style.width = Math.round(cw) + 'px';
-      c.style.left = Math.round(single ? g + (inner - cw) / 2 : right ? W - g - cw : g) + 'px';
-      c.style.zIndex = 3;
-      hmax = Math.max(hmax, c.offsetHeight);
+      var zl = sp[0] < 0 ? g : colR, zr = sp[0] < 0 ? colL : W - g, u = sp[0] < 0 ? sp[1] : 1 - sp[1];
+      // without room beside the words (narrow screens) the sides share the whole content width and the cases pass
+      // over the words
+      if (zr - zl < wk * .75) { zl = sp[0] < 0 ? g : W / 2; zr = sp[0] < 0 ? W / 2 : W - g; }
+      var lo = zl + wk / 2, hi = zr - wk / 2, cx = hi > lo ? lo + (hi - lo) * u : (zl + zr) / 2;
+      cx = g + wk / 2 > W / 2 ? W / 2 : Math.max(g + wk / 2, Math.min(W - g - wk / 2, cx));
+      c.style.left = Math.round(cx - cw / 2) + 'px';
+      c.style.zIndex = k < .75 ? 1 : k > 1.1 ? 4 : 3;
+      c.style.opacity = k < .75 ? '.78' : '';
+      var h = c.offsetHeight, v = SPEED * k, y0 = vh + 40 + h * k / 2;
+      // every card crosses the middle on its own beat, whatever its speed
+      var mid = (.1 + i * STEP + sp[3]) * vh + (vh / 2 + 40 + h / 2) / SPEED, s = mid - (y0 - vh / 2) / v;
+      put.push({ k: k, v: v, s: s, y0: y0, h: h, dx: Math.max(-1, Math.min(1, (cx - W / 2) / (W / 2))) });
+      span = Math.max(span, s + (y0 + h * k / 2 + 40) / v);
     });
-    span = (cards.length - 1) * STEP * vh + (vh + hmax + 60) / SPEED;
     wrap.style.height = Math.round(span + vh) + 'px';
     hh = head ? head.offsetHeight : 0;
   }
@@ -4164,23 +4179,25 @@ class Component extends DCLogic {
     }
     // the reel's place: each bar fills as its card crosses the screen, the number follows the card on screen nearest the
     // middle, and the whole row shows once the words have risen clear of it, until the last card has gone
-    var best = -1, bd = 1e9, gone = 0, last = 0;
+    var best = -1, bd = 1e9, gone = 0, last = 1;     // last: how far the slowest card still on its way has got
     cards.forEach(function (c, i) {
-      var y = Math.min(vh + 40, vh + 40 - (d - (.1 + i * STEP) * vh) * SPEED);
+      var p = put[i];
+      if (!p) return;
+      var mid = Math.min(p.y0, p.y0 - (d - p.s) * p.v), h = p.h, y = mid - h / 2;
       // in 3D: low on the screen a card leans back, level with the words it lies flat and closest, near the top it
-      // tips the other way; each lane turns a little towards the middle, and the pointer adds its own lean
-      var h = c.offsetHeight, n = (y + h / 2 - vh / 2) / (vh / 2 + h / 2);
+      // tips the other way; each turns a little towards the middle, the more the farther out it is, and the pointer
+      // adds its own lean
+      var n = (mid - vh / 2) / (vh / 2 + h * p.k / 2);
       n = n < -1 ? -1 : n > 1 ? 1 : n;
       var hv = hov[i];
       hv.x += (hv.tx - hv.x) * .12; hv.y += (hv.ty - hv.y) * .12;
       if (Math.abs(hv.tx - hv.x) > .002 || Math.abs(hv.ty - hv.y) > .002) moving = true;
-      var side = i % 2 === 1 ? -1 : 1;
-      var rx = n * 20 - hv.y * 14, ry = side * (narrow ? 7 : 17) + hv.x * 18, tz = -Math.abs(n) * 90;
-      c.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,' + tz.toFixed(1) + 'px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
-      var mid = y + h / 2, f = Math.max(0, Math.min(1, 1 - mid / vh));
+      var rx = n * 20 - hv.y * 14, ry = -p.dx * (narrow ? 9 : 17) + hv.x * 18, tz = -Math.abs(n) * 90;
+      c.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,' + tz.toFixed(1) + 'px) scale(' + p.k + ') rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+      var f = Math.max(0, Math.min(1, 1 - mid / vh));
       if (f > 0 && f < 1 && Math.abs(mid - vh / 2) < bd) { bd = Math.abs(mid - vh / 2); best = i; }
       if (f >= 1) gone = i;
-      if (i === cards.length - 1) last = f;
+      last = Math.min(last, f);
       var u = bars[i];
       if (u) { var ft = 'scaleX(' + f.toFixed(3) + ')'; if (u.__t !== ft) { u.style.transform = ft; u.__t = ft; } }
     });
