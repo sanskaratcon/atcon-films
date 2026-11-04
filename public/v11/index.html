@@ -1365,39 +1365,36 @@ html,body{overflow-anchor:none}
 .cs-ln{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
 .cs-ln>span{display:inline-block;transform:translateY(112%);transition:transform .85s cubic-bezier(.22,.8,.2,1) var(--d,0s)}
 .cs-ln.is-in>span{transform:none}
-/* a floating case: the scene on top, then its number, title and the way in */
-.csf-card{position:absolute;left:0;top:0;z-index:1;width:300px;padding:10px 10px 14px;border-radius:22px;background:#fff;
-  box-shadow:0 0 0 1px rgba(0,16,37,.07),0 40px 70px -36px rgba(0,16,37,.45),0 2px 6px rgba(0,16,37,.04);
-  transform:translate3d(0,110vh,0);will-change:transform;transition:box-shadow .3s ease}
+/* a floating case, in the site's own card (as the proven results'): white, a quiet hairline edge and only a whisper of
+   shadow; the title in the heading weight over its number in small grey, a hairline, the scene in a pale panel, then
+   the way in with the site's arrow box */
+.csf-card{position:absolute;left:0;top:0;z-index:1;box-sizing:border-box;width:300px;display:flex;flex-direction:column;
+  padding:20px 20px 18px;border-radius:22px;border:1.5px solid #E7ECF5;background:#fff;box-shadow:0 24px 44px -34px rgba(0,16,37,.2);
+  transform:translate3d(0,110vh,0);will-change:transform;transition:border-color .3s ease,box-shadow .3s ease}
 /* the cards stay flat and only ever slide, in whole pixels: without a graphics card, a tilted or scaled layer is
-   resampled every frame, its edges go jagged and its words go soft. Depth comes from size, speed, faintness and
-   shadow instead. A soft sheen follows the pointer */
-.csf-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
-  background:radial-gradient(90% 70% at var(--gx,50%) var(--gy,20%),rgba(255,255,255,.5),rgba(255,255,255,0) 60%);transition:opacity .35s ease}
-.csf-card.is-lit::after{opacity:1}
-/* a far case is faint, the room showing a little through it */
+   resampled every frame, its edges go jagged and its words go soft. Depth comes from size, speed and faintness */
 .csf-card.is-far{opacity:.8}
-.csf-card>.csf-art{box-shadow:0 22px 30px -18px rgba(0,16,37,.42)}
-.csf-card:hover{box-shadow:0 0 0 1px rgba(0,16,37,.1),0 50px 80px -36px rgba(0,16,37,.55),0 2px 6px rgba(0,16,37,.05)}
-.csf-art{position:relative;aspect-ratio:5/3;border-radius:14px;overflow:hidden;border:1.5px solid transparent;
-  background:linear-gradient(#fff,#fff) padding-box,var(--atc-grad) border-box}
+.csf-card:hover{border-color:#D5DEEC;box-shadow:0 28px 50px -34px rgba(0,16,37,.3)}
+.csf-art{order:3;position:relative;margin-top:16px;aspect-ratio:5/3;border-radius:14px;overflow:hidden}
 /* the picture explains the case: one hand-drawn isometric scene per project - outlined objects, flat fills in the
    brand palette, long soft cast shadows - each built from the things that project actually changed */
 .cse-il{position:absolute;inset:0;overflow:hidden;background:linear-gradient(160deg,#F1F6FC,#E4ECF7)}
 .il-svg{position:absolute;inset:0;width:100%;height:100%;transform:translateY(4%)}
-.csf-meta{margin:14px 6px 0}
-.csf-meta em{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.12em;color:#5B6B78;text-transform:uppercase}
-.csf-card h3{margin:10px 6px 0;font-size:15.5px;line-height:1.35;letter-spacing:-.01em;font-weight:600;color:var(--atc-navy)}
-.cs-link{display:inline-flex;align-items:center;gap:10px;margin:12px 6px 0;font-size:12.5px;font-weight:600;color:var(--atc-navy)}
-.cs-link svg{box-sizing:content-box;width:10px;height:10px;padding:5px;border-radius:50%;background:var(--atc-navy);color:#fff;
+.csf-card h3{order:1;margin:0;font-size:17px;line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:500;color:var(--atc-navy)}
+.csf-meta{order:2;margin:6px 0 0;padding-bottom:16px;border-bottom:1px solid #E7ECF5}
+.csf-meta em{font-style:normal;font-size:13px;line-height:var(--lh-small);color:var(--atc-slate)}
+.cs-link{order:4;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;margin-top:16px;font-size:13px;font-weight:500;color:var(--atc-navy)}
+.cs-link svg{box-sizing:content-box;width:10px;height:10px;padding:6px;border-radius:3px;border:1px solid rgba(0,16,37,.18);
   transition:transform .3s ease}
-.csf-card:hover .cs-link svg{transform:translateX(3px)}
+.csf-card:hover .cs-link svg{transform:translateX(2px)}
 @media (max-width:900px){
   /* clear of the rail on the left and centred over the cards' own lane; a soft white halo keeps the words clear of a
      far case passing behind them */
   .cs-head{padding:0 var(--content-x,24px);text-shadow:0 0 10px #fff,0 0 3px #fff,0 0 22px #fff}
-  .csf-card{padding:8px 8px 12px;border-radius:18px}
-  .csf-card h3{font-size:13.5px}
+  .csf-card{padding:16px 16px 14px;border-radius:18px}
+  .csf-card h3{font-size:15px}
+  .csf-meta{padding-bottom:13px}
+  .csf-art,.cs-link{margin-top:13px}
 }
 
 /* Meet our team: the people behind the proof. One contained canvas (never wider than 1240px), a blueprint grid with
@@ -4116,7 +4113,7 @@ class Component extends DCLogic {
   // words), its depth (1 = the usual size; above it nearer, larger and faster; below it farther, smaller, slower and
   // fainter) and a nudge to its beat in screens, so the cases don't arrive like clockwork
   var SPOTS = [[-1, 0, 1.1, 0], [1, .8, .6, .12], [-1, .5, .9, -.06], [1, 0, 1.15, -.04], [-1, .85, .58, .1], [1, .35, .86, .06]];
-  var wrap = null, head = null, cards = [], hov = [], span = 0, hh = 0, raf = 0;
+  var wrap = null, head = null, cards = [], span = 0, hh = 0, raf = 0;
   var put = [];                          // per card: depth, rising speed, start, the centre's first height, its height
   function layout() {
     if (!wrap) return;
@@ -4247,18 +4244,6 @@ class Component extends DCLogic {
     wrap = live;
     head = live.querySelector('.cs-head');
     cards = [].slice.call(live.querySelectorAll('.csf-card'));
-    hov = cards.map(function (c, i) {
-      var o = { x: 0, y: 0, tx: 0, ty: 0 };
-      c.addEventListener('pointermove', function (e) {
-        var b = c.getBoundingClientRect();
-        o.tx = (e.clientX - b.left) / b.width - .5; o.ty = (e.clientY - b.top) / b.height - .5;
-        c.style.setProperty('--gx', ((o.tx + .5) * 100).toFixed(0) + '%');
-        c.style.setProperty('--gy', ((o.ty + .5) * 100).toFixed(0) + '%');
-        c.classList.add('is-lit'); req();
-      });
-      c.addEventListener('pointerleave', function () { o.tx = 0; o.ty = 0; c.classList.remove('is-lit'); req(); });
-      return o;
-    });
     layout(); req();
   }
   addEventListener('scroll', req, { passive: true });
